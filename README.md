@@ -1,1 +1,2 @@
-Copy of mldangelo personal-site, just for practice.
+An awesome web flashcards app
+===
