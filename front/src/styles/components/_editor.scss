@@ -1,9 +1,4 @@
-// .editor-container {
-//     width: 100%;
-//     background-color: red !important;
-// }
 .editor {
-    // width: 90%;
     margin: 0 2.5rem;
     &__header {
         margin-left: 2rem;
@@ -14,6 +9,14 @@
     * {
         width: 300px;
     }
+}
+
+.card-entry {
+    &__qa {
+        
+        margin-top: auto;
+    }
+
 }
 
 // @supports (display: grid) {

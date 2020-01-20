@@ -9,3 +9,6 @@
 .editor * {
   width: 300px;
 }
+.card-entry__qa {
+  margin-top: auto;
+}

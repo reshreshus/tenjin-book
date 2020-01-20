@@ -1,0 +1,25 @@
+.btn {
+    cursor: pointer;
+}
+
+.btn-primary {
+    @include bg-blue-softer;
+    border-radius: 3px;
+    color: $clr-text-light-primary;
+}
+
+
+.btn-circ {
+    border-radius: 1000px;
+    text-align: center;
+    &--md {
+        width: 30px;
+        height: 30px;
+        line-height: 30px;
+    }
+    &--sm {
+        width: 20px;
+        height: 20px;
+        line-height: 20px;
+    }
+}
