@@ -2,7 +2,7 @@ import React, {useEffect} from 'react'
 import './styles/main.scss'
 import {Switch, Route} from 'react-router-dom';
 
-import EditCard from './pages/EditCard';
+import Editor from './pages/Editor';
 import RepeatCard from './pages/RepeatCard';
 import Sidebar from './components/Sidebar/Sidebar';
 
@@ -36,12 +36,12 @@ export default function App() {
     <div className="app">
       <Sidebar />
       <div className="resizer"/>
-      <div>
         <Switch>
-          <Route exact path="/" component={EditCard}/>
+          <Route exact path="/" component={() =>
+            (<Editor card={{'deckTitle':'English', 'templateTitle': 'Basic'}}/>)}
+            />
           <Route exact path="/repeat" component={RepeatCard}/>
         </Switch>
-      </div>
     </div>
   )
 }

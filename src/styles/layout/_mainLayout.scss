@@ -21,9 +21,7 @@ body {
     // top: 0;
     width: 10px;
     height: 100vh;
-    background: rgb(73, 107, 175);
-    border-left: 1px solid #4a4c52;
-    border-right: 1px solid #202125;
+    background: $clr-blue-soft;
     box-sizing: border-box;
     cursor: col-resize;
     z-index: 1;

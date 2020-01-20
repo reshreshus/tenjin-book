@@ -1,0 +1,11 @@
+.editor {
+  margin: 0 2.5rem;
+}
+.editor__header {
+  margin-left: 2rem;
+  display: flex;
+  width: 100%;
+}
+.editor * {
+  width: 300px;
+}

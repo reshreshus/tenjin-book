@@ -1,0 +1,40 @@
+// .editor-container {
+//     width: 100%;
+//     background-color: red !important;
+// }
+.editor {
+    // width: 90%;
+    margin: 0 2.5rem;
+    &__header {
+        margin-left: 2rem;
+        display: flex;
+        width: 100%;
+    }
+
+    * {
+        width: 300px;
+    }
+}
+
+// @supports (display: grid) {
+//     .editor {
+//         &__header {
+//             display: grid;
+//             grid-template-columns: 1fr 1fr;
+//             grid-template-rows: repeat(3, 1fr);
+//             grid-template-areas: 
+//                 "subtitle subtitle"
+//                 "title title"
+//                 "title title";
+            
+//         }
+//         &__title {
+//             grid-area: title;
+//             width: 100px;
+//         }
+//         &__subtitle {
+//             grid-area: subtitle;
+//             width: 100px;
+//         }
+//     }
+// }
