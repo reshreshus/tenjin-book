@@ -1,0 +1,23 @@
+$clr-bg-primary: #F4F7FF;
+
+$clr-text-turquoise-dark: #053346;
+$clr-text-turquoise-darker: #041015;
+$clr-text-blue-bright: #3E68FA;
+
+$clr-blue-softer: #8598DA;
+$clr-red-soft: #D47E78;
+$clr-green-soft: #8CD794;
+$clr-blue-soft: #688DED;
+
+@mixin bg-blue-soft {
+    background-color: $clr-blue-soft;
+}
+@mixin bg-blue-softer {
+    background-color: $clr-blue-softer;
+}
+@mixin bg-green-soft {
+    background-color: $clr-green-soft;
+}
+@mixin bg-red-soft {
+    background-color: $clr-red-soft;
+}

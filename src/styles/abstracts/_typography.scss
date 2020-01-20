@@ -1,0 +1,22 @@
+$font-code: 'Source Code Pro', 'Helvetica';
+$font-text: 'Roboto', 'Helvetica';
+
+@mixin font-code {
+    font-family: $font-code;
+}
+
+@mixin font-text {
+    font-family: $font-text;
+}
+
+@mixin font-turquoise-dark {
+    color: $clr-text-turquoise-dark;
+}
+
+@mixin font-turquoise-darker {
+    color: $clr-text-turquoise-darker;
+}
+
+@mixin font-blue-bright {
+    color: $clr-text-blue-bright;
+}
