@@ -1,12 +1,19 @@
 import React from 'react'
-import ActionCircle from '../Buttons/ActionCircle';
 import TextField from '../TextField';
 
-export default function CardEntry() {
+export default function CardEntry({data}) {
     return (
         <div className="card-entry">
-            <div className="btn btn--primary btn--qa">Q</div>
+           
+            <div className="card-entry__qa btn-primary btn-circ">
+            {
+                data.isQuestion ? 
+                "Q" : "A"
+            }
+            </div> :
             <TextField />
+            <div className="card-entry__remove btn-primary btn-circ">-</div>
+            AMA CARD ENTRY
         </div>
     )
 }

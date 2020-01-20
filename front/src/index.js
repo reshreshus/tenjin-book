@@ -4,13 +4,16 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { BrowserRouter as Router} from 'react-router-dom';
+import {CollectionProvider} from './context/CollectionContext'
 
 // import 'bootstrap/dist/css/bootstrap.min.css';
 
 ReactDOM.render(
-    <Router >
-        <App />
-    </Router>
+    <CollectionProvider>
+        <Router >
+            <App />
+        </Router>
+    </CollectionProvider>
 
 , document.getElementById('root'));
 

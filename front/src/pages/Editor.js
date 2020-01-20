@@ -1,24 +1,35 @@
 import React from 'react'
-// import Editor from '../components/Editor/Editor';
+import CardEntry from '../components/Editor/CardEntry';
 
 export default function Editor({card}) {
-    const {deckTitle, templateTitle} = card;
+    const {deck_title, template_title, entries} = card;
     return (
         <div className="editor">
             <div className="editor__header">
                 <div className="editor__header-left">
                     <div className="editor__subtitle text-blue-bright"> Deck </div>
                     <div className="editor__title text-dark">
-                        {deckTitle}
+                        {deck_title}
                     </div>
                 </div>
                 <div className="editor__header-right">
                     <div className="editor__subtitle text-blue-bright"> Template </div>
                     <div className="editor__title text-dark">
-                        {templateTitle}
+                        {template_title}
                     </div>
                 </div>
             </div>
+
+            <div className="editor__entries">
+                {   entries ?
+                    entries.map((e) => (
+                        <CardEntry data={e} />
+                    )) : "Hmm, a card is empty. Strange..."
+                }
+            </div>
+            <div className="editor__add_entry btn-primary btn-circ">+</div>
+            <div className="editor__save btn-primary btn-circ">Save</div>
+
         </div>
     )
 }
