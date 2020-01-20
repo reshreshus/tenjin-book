@@ -11,14 +11,12 @@ export default function App() {
 
   useEffect(() => {
     document.querySelectorAll('.resizer').forEach(e=>{
-      console.log("found a resizer!")
       // setting default widths
       // e.previousElementSibling.style.width=
       // e.nextElementSibling.style.width=
       // e.parentNode.offsetWidth/2-e.offsetWidth/2+'px';
 
       e.onmousedown=()=>{
-          console.log("resizing!")
         e.parentNode.onmousemove=ev=>{
           e.previousElementSibling.style.width=
           ev.clientX-e.offsetWidth/2+'px';

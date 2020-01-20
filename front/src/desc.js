@@ -1,5 +1,5 @@
 const cards = []
-const card = {
+export const card = {
     id: "database generated",
     deck_id: "from db",
     template_id: "from db",
