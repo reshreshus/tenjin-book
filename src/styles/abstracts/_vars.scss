@@ -3,11 +3,19 @@ $clr-bg-primary: #F4F7FF;
 $clr-text-turquoise-dark: #053346;
 $clr-text-turquoise-darker: #041015;
 $clr-text-blue-bright: #3E68FA;
+$clr-text-soft: #464A4C;
+$clr-text-light-primary: white;
 
 $clr-blue-softer: #8598DA;
 $clr-red-soft: #D47E78;
 $clr-green-soft: #8CD794;
 $clr-blue-soft: #688DED;
+
+$clr-stroke-blue-sharp: #4C5AD8;
+
+@mixin stroke-blue-sharp {
+    border: 1px solid $clr-stroke-blue-sharp;
+}
 
 @mixin bg-blue-soft {
     background-color: $clr-blue-soft;
