@@ -1,14 +1,17 @@
-import React, { Component } from 'react'
-import './styles/main.scss';
+import React from 'react'
+import './styles/main.scss'
+import {Switch, Route} from 'react-router-dom';
 
-export default class App extends Component {
+import EditCard from './pages/EditCard';
+import RepeatCard from './pages/RepeatCard';
 
-  render () {
-    return (
-      <div className="container">
-        <h1>Meru Meru</h1>
-      </div>
-    );
-  }
-  
+export default function App() {
+  return (
+    <div>
+      <Switch>
+        <Route exact path="/" component={EditCard}/>
+        <Route exact path="/repeat" component={RepeatCard}/>
+      </Switch>
+    </div>
+  )
 }
