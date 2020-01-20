@@ -1,0 +1,9 @@
+.sidebar {
+    position: relative;
+    @include bg-light-primary;
+    @include stroke-blue-sharp;
+    height: 100vh;
+    width: 300px;
+    padding: 1rem;
+}
+

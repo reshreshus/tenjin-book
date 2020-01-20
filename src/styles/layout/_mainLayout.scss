@@ -1,6 +1,30 @@
 body {
-    font-size: 16px !important;
-    background-color: $clr-bg-primary !important;
-    margin: 0 !important;
-    padding: 0 !important;
+    // font-size: 16px !important;
+    // background-color: $clr-bg-primary !important;
+    // margin: 0 !important;
+    // padding: 0 !important;
+    font-size: 16px;
+    background-color:  $clr-bg-primary;
+    margin: 0;
+    padding: 0;
 }
+
+.app {
+    display: flex;
+    flex-direction: row;
+}
+
+
+.resizer {
+    // position: absolute;
+    // right: 0;
+    // top: 0;
+    width: 10px;
+    height: 100vh;
+    background: rgb(73, 107, 175);
+    border-left: 1px solid #4a4c52;
+    border-right: 1px solid #202125;
+    box-sizing: border-box;
+    cursor: col-resize;
+    z-index: 1;
+  }

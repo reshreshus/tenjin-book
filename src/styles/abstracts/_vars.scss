@@ -17,6 +17,10 @@ $clr-stroke-blue-sharp: #4C5AD8;
     border: 1px solid $clr-stroke-blue-sharp;
 }
 
+@mixin bg-light-primary {
+    background-color: $clr-text-light-primary;
+}
+
 @mixin bg-blue-soft {
     background-color: $clr-blue-soft;
 }
