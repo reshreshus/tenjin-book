@@ -7,12 +7,12 @@ export const card = {
     template_title: "Basic",
     entries: [
         {
-            entry_id: "a simple one. I guess. Perhaps just an index",
+            entry_id: "1",
             content: "probably some editorJs stuff or html",
             isQuestion: true,
         },
         {
-            entry_id: "a simple one. I guess. Perhaps just an index",
+            entry_id: "2",
             content: "probably some editorJs stuff or html",
             isQuestion: false
         }

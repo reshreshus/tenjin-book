@@ -13,8 +13,8 @@
     border-radius: 1000px;
     text-align: center;
     &--md {
-        width: 30px;
-        height: 30px;
+        width: 30px !important;
+        height: 30px !important; 
         line-height: 30px;
     }
     &--sm {

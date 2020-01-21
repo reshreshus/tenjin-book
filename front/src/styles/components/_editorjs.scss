@@ -1,0 +1,9 @@
+.ce-block__content {
+    // width: 100%;
+    max-width: 1920px;
+}
+
+.codex-editor__redactor {
+    // editorjs overrides it so has to use !importnant
+    padding-bottom: 0px !important;
+}

@@ -2,6 +2,8 @@ import React from 'react'
 import CardEntry from '../components/Editor/CardEntry';
 import { CollectionConsumer } from '../context/CollectionContext';
 
+  
+
 export default function Editor() {
     return (<CollectionConsumer >
         { (value) => {
@@ -32,7 +34,7 @@ export default function Editor() {
                         }
                     </div>
                     <div className="editor__add_entry btn btn-primary btn-circ">+</div>
-                    <div className="editor__save btn btn-primary btn-circ">Save</div>
+                    <div  className="editor__save btn btn-primary btn-circ">Save</div>
                 </div>
             )
             }
