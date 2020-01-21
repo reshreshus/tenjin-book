@@ -13,7 +13,7 @@ export default function CardEntry({data}) {
             }
             </div>
             <TextField data={data} id={data.entry_id}/>
-            <div className="card-entry__remove btn btn-circ">-</div>
+            <div className="btn btn-circ btn-plus-minus">-</div>
         </div>
     )
 }

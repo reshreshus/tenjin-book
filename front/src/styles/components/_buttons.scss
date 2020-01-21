@@ -4,7 +4,6 @@
     border-radius: 3px;
     color: $clr-text-light-primary;
     @include font-text;
-   
 }
 
 .btn-primary {
@@ -14,6 +13,7 @@
 
 
 .btn-circ {
+    display: inline-block;
     border-radius: 1000px;
     text-align: center;
     width: 30px;
@@ -24,4 +24,8 @@
     //     height: 20px !important;
     //     line-height: 20px;
     // }
+}
+
+.btn-plus-minus {
+    font-size: 30px;
 }

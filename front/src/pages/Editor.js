@@ -34,8 +34,8 @@ export default function Editor() {
                         }
                     </div>
                     <div className="editor__actions">
-                        <div className="editor__add_entry btn btn-circ">+</div>
-                        <div className="editor__save btn btn-primary">Save</div>
+                        <div className="btn btn-circ btn-plus-minus">+</div>
+                        <div className="btn btn-primary">Save</div>
                     </div>
                 </div>
             )
