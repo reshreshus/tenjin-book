@@ -5,17 +5,25 @@ import EditorJs from 'react-editor-js';
 import { EDITOR_JS_TOOLS } from './editorJsTools'  
 
 export default function Editor() {
+    
    
 return (<CollectionConsumer >
     { (value) => {
-        // console.log("card", value.card);
         const {deck_title, template_title, entries} = value.card;
         const entries_editors = new Array(entries.length)
         const handleSave = async () => {
+            // TODO: You can utilize smart way of changing stuff like github
+            const newCardEntries = []
             entries_editors.map(async (editor) => {
                 const savedData = await editor.save();
-                console.log("savedData", savedData);
+                newCardEntries.push([...savedData.blocks])
             })
+            // console.log("newCardEntries", newCardEntries)
+            // what if update template / deck ?
+            const changes = {
+                "newCardEntries": newCardEntries
+            }
+            value.updateCard(changes);
         }    
         return (
             <div className="editor">
@@ -37,7 +45,6 @@ return (<CollectionConsumer >
                 <div className="editor__entries">
                     {   entries ?
                         entries.map((e, i) => (
-                            // <CardEntry key={i} data={e} isSaving={isSaving}/>
                             <div className="card-entry" key={i}>
                                 <div className="card-entry__qa btn btn-circ">
                                 {
@@ -45,7 +52,6 @@ return (<CollectionConsumer >
                                     "Q" : "A"
                                 }
                                 </div>
-                                {/* <TextField data={data} id={data.entry_id} isSaving={isSaving}/> */}
                                 <div className="" className="text-field" 
                                     id={"editor-js-" + e.entry_id}>
                                     <EditorJs 

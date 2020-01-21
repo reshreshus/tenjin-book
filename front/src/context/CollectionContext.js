@@ -21,6 +21,10 @@ const card = {
     ]
 }
 
+const updateCard = (changes) => {
+    console.log("card is updating (supposedly)", changes)
+}
+
 
 const Collection = React.createContext();
 
@@ -29,7 +33,8 @@ class CollectionProvider extends React.Component {
         console.log("desc card", card);
         return (
             <Collection.Provider value={{
-                    card: card,
+                    card,
+                    updateCard
             }}>
                 {this.props.children}
             </Collection.Provider>
