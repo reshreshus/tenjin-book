@@ -33,8 +33,10 @@ export default function Editor() {
                             )) : "Hmm, a card is empty. Strange..."
                         }
                     </div>
-                    <div className="editor__add_entry btn btn-primary btn-circ">+</div>
-                    <div  className="editor__save btn btn-primary btn-circ">Save</div>
+                    <div className="editor__actions">
+                        <div className="editor__add_entry btn btn-circ">+</div>
+                        <div className="editor__save btn btn-primary">Save</div>
+                    </div>
                 </div>
             )
             }

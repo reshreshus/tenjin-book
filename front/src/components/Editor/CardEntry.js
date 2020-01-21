@@ -6,14 +6,14 @@ export default function CardEntry({data}) {
     return (
         <div className="card-entry">
            
-            <div className="card-entry__qa btn btn-primary btn-circ btn-circ--md">
+            <div className="card-entry__qa btn btn-circ">
             {
                 data.isQuestion ? 
                 "Q" : "A"
             }
             </div>
             <TextField data={data} id={data.entry_id}/>
-            <div className="card-entry__remove btn btn-primary btn-circ btn-circ--md">-</div>
+            <div className="card-entry__remove btn btn-circ">-</div>
         </div>
     )
 }
