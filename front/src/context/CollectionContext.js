@@ -5,7 +5,6 @@ import React from 'react'
 
 const updateCardEntries = (cardId, changes) => {
     console.log("card is updating (supposedly)", changes)
-    console.log("card", card);
 }
 
 
@@ -26,13 +25,15 @@ class CollectionProvider extends React.Component {
                 entries: [
                     {
                         entry_id: 0,
+                        entry_name: "Front",
                         content: "probably some editorJs stuff or html",
-                        isQuestion: true,
+                        entry_type: "Q",
                     },
                     {
                         entry_id: 1,
+                        entry_name: "Back",
                         content: "probably some editorJs stuff or html",
-                        isQuestion: false
+                        entry_type: "A",
                     },
                     
                 ]
@@ -46,7 +47,8 @@ class CollectionProvider extends React.Component {
         newCard.entries = [...this.state.card.entries, {
             entry_id: this.state.card.entries.length,
             content: "probably some editorJs stuff or html",
-            isQuestion: false
+            entry_type: "A",
+            entry_name: "Back",
         }]
         this.setState({
             card: newCard

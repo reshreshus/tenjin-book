@@ -1,24 +1,38 @@
-.btn {
+@mixin btn {
     cursor: pointer;
+    display: inline-block;
+}
+
+.btn {
+    @include btn;
+}
+
+@mixin btn-primary {
+    @include btn;
     @include bg-blue-softer;
+    @include font-text;
     border-radius: 3px;
     color: $clr-text-light-primary;
-    @include font-text;
 }
 
 .btn-primary {
-    padding: 7px;
-    display: inline;
+    @include btn-primary;
 }
 
+.btn-text {
+    @include btn-primary;
+    padding: 7px;
+    // display: inline;
+}
 
 .btn-circ {
+    @include btn-primary;
     display: inline-block;
     border-radius: 1000px;
     text-align: center;
-    width: 30px;
-    height: 30px; 
-    line-height: 30px;
+    width: 20px;
+    height: 20px; 
+    line-height: 20px;
     // &--sm {
     //     width: 20px !important;
     //     height: 20px !important;
@@ -27,5 +41,5 @@
 }
 
 .btn-plus-minus {
-    font-size: 30px;
+    font-size: 20px;
 }

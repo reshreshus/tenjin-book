@@ -33,3 +33,8 @@ $clr-stroke-blue-sharp: #4C5AD8;
 @mixin bg-red-soft {
     background-color: $clr-red-soft;
 }
+
+@mixin bg-primary {
+    @include bg-light-primary;
+    @include stroke-blue-sharp; 
+}
