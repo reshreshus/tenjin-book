@@ -3,7 +3,7 @@ import React, {useState} from 'react'
 import EditorJs from 'react-editor-js';
 import { EDITOR_JS_TOOLS } from './editorJsTools' 
 
-export default function Entry({e, saveEditorInstance, idx, deleteEntry}) {
+export default function Entry({e, saveEditorInstance, idx, deleteEntry, chooseType}) {
     const [isChoosingType, updateChoosingType] = useState(false);
 
     
@@ -18,10 +18,6 @@ export default function Entry({e, saveEditorInstance, idx, deleteEntry}) {
         updateChoosingType(false)
     }
 
-    const chooseType = (newType) => {
-
-    }
-
     return (
         <div className="card-entry" >
             <div className="card-entry__header">
@@ -33,7 +29,11 @@ export default function Entry({e, saveEditorInstance, idx, deleteEntry}) {
                                 <div key={i} 
                                     className={`btn ${type===e.entry_type ? 
                                         'btn-circ' : ''}`}
-                                    onClick={()=> {chooseType(e.entry_id, type)}}
+                                    onClick={()=> 
+                                        {
+                                            closeChoosingType();
+                                            chooseType(e.entry_id, type);
+                                        }}
                                     >
                                     { type }
                                 </div>

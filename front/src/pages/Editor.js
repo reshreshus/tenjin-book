@@ -7,7 +7,9 @@ export default function Editor() {
     
    
 return (<CollectionConsumer >
-    { ({card, updateCardEntries, addNewEntryContext, deleteEntryContext}) => {
+    { ({card, updateCardEntries, addNewEntryContext, deleteEntryContext,
+        chooseTypeC
+    }) => {
     const {deck_title, template_title, entries} = card;
     const entries_editors = new Array(entries.length)
     
@@ -38,6 +40,10 @@ return (<CollectionConsumer >
         deleteEntryContext(card.id, entryId)
     }
 
+    const chooseType = (entryId, type) => {
+        chooseTypeC(card.id, entryId, type);
+    }
+
 
 
     return (
@@ -62,6 +68,7 @@ return (<CollectionConsumer >
                         <Entry e={e} key={i} idx={i} 
                         saveEditorInstance={saveEditorInstance}
                         deleteEntry={deleteEntry}
+                        chooseType={chooseType}
                         />
                     )) : "Hmm, a card is empty. Strange..."
                 }
