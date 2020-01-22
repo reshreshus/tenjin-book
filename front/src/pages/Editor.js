@@ -30,27 +30,14 @@ return (<CollectionConsumer >
         addNewEntryContext(card.id)
     }
 
+    const saveEditorInstance = (instance, idx) => {
+        entries_editors[idx] = instance
+    }
+
     const deleteEntry = (entryId) => {
         deleteEntryContext(card.id, entryId)
     }
 
-    const openChoosingType = (entryId) => {
-        console.log("openChoosingType")
-        updateChoosingType(true)
-    }
-
-    const closeChoosingType = (entryId) => {
-        console.log("closeChoosingType")
-        updateChoosingType(false)
-    }
-
-    const chooseType = (entryId, newType) => {
-
-    }
-
-    const saveEditorInstance = (instance, idx) => {
-        entries_editors[idx] = instance
-    }
 
 
     return (
@@ -72,7 +59,10 @@ return (<CollectionConsumer >
             <div className="editor__entries">
                 {   entries ?
                     entries.map((e, i) => (
-                        <Entry e={e} key={i} idx={i} saveEditorInstance={saveEditorInstance}/>
+                        <Entry e={e} key={i} idx={i} 
+                        saveEditorInstance={saveEditorInstance}
+                        deleteEntry={deleteEntry}
+                        />
                     )) : "Hmm, a card is empty. Strange..."
                 }
             </div>

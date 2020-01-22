@@ -1,8 +1,5 @@
 import React from 'react'
 
-// import card from '../desc';
-
-
 const updateCardEntries = (cardId, changes) => {
     console.log("card is updating (supposedly)", changes)
 }

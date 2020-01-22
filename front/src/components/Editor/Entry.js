@@ -3,8 +3,24 @@ import React, {useState} from 'react'
 import EditorJs from 'react-editor-js';
 import { EDITOR_JS_TOOLS } from './editorJsTools' 
 
-export default function Entry({e, saveEditorInstance, idx}) {
+export default function Entry({e, saveEditorInstance, idx, deleteEntry}) {
     const [isChoosingType, updateChoosingType] = useState(false);
+
+    
+
+    const openChoosingType = () => {
+        console.log("openChoosingType")
+        updateChoosingType(true)
+    }
+
+    const closeChoosingType = () => {
+        console.log("closeChoosingType")
+        updateChoosingType(false)
+    }
+
+    const chooseType = (newType) => {
+
+    }
 
     return (
         <div className="card-entry" >
