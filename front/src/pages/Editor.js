@@ -1,12 +1,9 @@
 import React, {useState} from 'react'
 import { CollectionConsumer } from '../context/CollectionContext';
 
-import EditorJs from 'react-editor-js';
-import { EDITOR_JS_TOOLS } from './editorJsTools'  
+import Entry from '../components/Editor/Entry';
 
 export default function Editor() {
-
-    const [isChoosingType, updateChoosingType] = useState(false);
     
    
 return (<CollectionConsumer >
@@ -14,7 +11,8 @@ return (<CollectionConsumer >
     const {deck_title, template_title, entries} = card;
     const entries_editors = new Array(entries.length)
     
-    const saveCardEntries = async () => { // TODO: You can utilize smart way of changing stuff like github
+    const saveCardEntries = async () => { 
+        // TODO: You can utilize smart way of changing stuff like github
         const newCardEntries = []
         entries_editors.map(async (editor) => {
             const savedData = await editor.save();
@@ -23,6 +21,7 @@ return (<CollectionConsumer >
         const changes = {
             "newCardEntries": newCardEntries
         }
+        console.log("newCardEntries", newCardEntries);
         updateCardEntries(card.id, changes);
     }
 
@@ -49,6 +48,10 @@ return (<CollectionConsumer >
 
     }
 
+    const saveEditorInstance = (instance, idx) => {
+        entries_editors[idx] = instance
+    }
+
 
     return (
         <div className="editor">
@@ -69,48 +72,7 @@ return (<CollectionConsumer >
             <div className="editor__entries">
                 {   entries ?
                     entries.map((e, i) => (
-                        <div className="card-entry" key={i}>
-                            <div className="card-entry__header">
-                                {
-                                    isChoosingType ? 
-                                    <div className="card-entry__choose-type">
-                                        {
-                                            ['A', 'Q', 'C'].map((type, i) => (
-                                                <div key={i} 
-                                                    className={`btn ${type===e.entry_type ? 
-                                                        'btn-circ' : ''}`}
-                                                    onClick={()=> {chooseType(e.entry_id, type)}}
-                                                    >
-                                                    { type }
-                                                </div>
-                                        ))
-                                        }
-                                    </div>
-                                    :
-                                    <div onClick={() => {openChoosingType(e.entryId)}}
-                                    className="card-entry__qa btn-circ"> { e.entry_type }
-                                    </div>
-                                }
-                                
-                                <div className="card-entry__name">
-                                    {
-                                        e.entry_name
-                                    }
-                                </div>
-                            </div>
-
-                            <div className="card-entry__field">
-                                <div className="card-entry__text-field" 
-                                    id={"editor-js-" + e.entry_id}>
-                                    <EditorJs 
-                                        instanceRef={instance => entries_editors[i] = instance}
-                                        tools={EDITOR_JS_TOOLS}
-                                        holder={"editor-js-" + e.entry_id}
-                                    />
-                                </div>
-                                <div onClick={() => deleteEntry(e.entry_id)} className="btn-circ btn-plus-minus">-</div>
-                            </div>
-                        </div>
+                        <Entry e={e} key={i} idx={i} saveEditorInstance={saveEditorInstance}/>
                     )) : "Hmm, a card is empty. Strange..."
                 }
             </div>
