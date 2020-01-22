@@ -60,6 +60,7 @@ export default function Entry({e, saveEditorInstance, idx, deleteEntry}) {
                         instanceRef={instance => saveEditorInstance(instance, idx)}
                         tools={EDITOR_JS_TOOLS}
                         holder={"editor-js-" + e.entry_id}
+                        data={e.content}
                     />
                 </div>
                 <div onClick={() => deleteEntry(e.entry_id)} className="btn-circ btn-plus-minus">-</div>

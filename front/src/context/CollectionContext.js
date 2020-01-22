@@ -23,13 +23,23 @@ class CollectionProvider extends React.Component {
                     {
                         entry_id: 0,
                         entry_name: "Front",
-                        content: "probably some editorJs stuff or html",
+                        content: {
+                            blocks: [{
+                                type: "paragraph",
+                                data: { text: "probably some editorJs stuff or html" }
+                            }]
+                        },
                         entry_type: "Q",
                     },
                     {
                         entry_id: 1,
                         entry_name: "Back",
-                        content: "probably some editorJs stuff or html",
+                        content: {
+                            blocks: [{
+                                type: "paragraph",
+                                data: { text: "probably some editorJs stuff or html" }
+                            }]
+                        },
                         entry_type: "A",
                     },
                     
