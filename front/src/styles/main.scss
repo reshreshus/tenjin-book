@@ -2,9 +2,10 @@
 @import 'abstracts/typography';
 @import 'base/typography';
 
-@import 'layout/mainLayout';
-
 @import 'components/sidebar';
-@import 'components/editor';
 @import 'components/buttons';
+
+@import 'components/editor';
 @import 'components/editorjs';
+
+@import 'layout/mainLayout';

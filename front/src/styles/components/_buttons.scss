@@ -1,6 +1,7 @@
 @mixin btn {
     cursor: pointer;
     display: inline-block;
+    @include font-text;
 }
 
 .btn {
@@ -10,7 +11,6 @@
 @mixin btn-primary {
     @include btn;
     @include bg-blue-softer;
-    @include font-text;
     border-radius: 3px;
     color: $clr-text-light-primary;
 }
@@ -25,7 +25,7 @@
     // display: inline;
 }
 
-.btn-circ {
+@mixin btn-circ {
     @include btn-primary;
     display: inline-block;
     border-radius: 1000px;
@@ -33,6 +33,10 @@
     width: 30px;
     height: 30px; 
     line-height: 30px;
+}
+
+.btn-circ {
+    @include btn-circ
     // &--sm {
     //     width: 20px !important;
     //     height: 20px !important;

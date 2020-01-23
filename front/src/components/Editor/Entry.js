@@ -5,25 +5,28 @@ import { EDITOR_JS_TOOLS } from './editorJsTools'
 
 export default function Entry({e, saveEditorInstance, idx, deleteEntry, chooseType}) {
     const [isChoosingType, updateChoosingType] = useState(false);
-
     
 
     const openChoosingType = () => {
         console.log("openChoosingType")
         updateChoosingType(true)
+        // $('.card-entry__choose-type').slideToggle()
+        // $('.card-entry__qa').slideToggle()
     }
 
     const closeChoosingType = () => {
         console.log("closeChoosingType")
         updateChoosingType(false)
+        // $('.card-entry__choose-type').slideToggle()
+        // $('.card-entry__qa').slideToggle()
     }
 
     return (
         <div className="card-entry" >
             <div className="card-entry__header">
-                {
-                    isChoosingType ? 
-                    <div className="card-entry__choose-type">
+                {/* { */}
+                   
+                    <div className={`card-entry__choose-type ${isChoosingType ? "": "hide"}`}>
                         {
                             ['A', 'Q', 'C'].map((type, i) => (
                                 <div key={i} 
@@ -33,6 +36,7 @@ export default function Entry({e, saveEditorInstance, idx, deleteEntry, chooseTy
                                         {
                                             closeChoosingType();
                                             chooseType(e.entry_id, type);
+                                            
                                         }}
                                     >
                                     { type }
@@ -40,11 +44,16 @@ export default function Entry({e, saveEditorInstance, idx, deleteEntry, chooseTy
                         ))
                         }
                     </div>
-                    :
-                    <div onClick={() => {openChoosingType(e.entryId)}}
-                    className="card-entry__qa btn-circ"> { e.entry_type }
+                    
+                    <div onClick={() => {
+                        openChoosingType(e.entryId)
+                    }}
+                    className={`card-entry__qa btn-circ ${isChoosingType ? "hide": ""}`}> { e.entry_type }
                     </div>
-                }
+                    {
+                        
+                    }
+                {/* } */}
                 
                 <div className="card-entry__name">
                     {
