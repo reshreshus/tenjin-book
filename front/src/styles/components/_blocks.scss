@@ -1,29 +1,38 @@
-.block {
-    margin-left: 1rem;
+.blocks {
+    margin-left: 1.5rem;
 }
 .block {
+    margin-left: 1rem;
     cursor: pointer;
     position: relative;
     .caret {
         position: absolute;
         top: 0;;
-        left: -1.2rem;
+        left: -3rem;
         color: black;
         display: inline-block;
         user-select: none;
+        // why the hell it works
+        transition: 0.2s;
         // margin-right: 6px;
+    }
+
+    &__type {
+        font-size: 16px;
+        line-height: 16px;
+        position: absolute;
+        left: -1.85rem;
+        top: .2rem;
+        color: $clr-text-blue-bright;
     }
     
     
     &__name {
         display: block;
         &:active {
-            background-color: $clr-text-blue-bright;
-            // background-color: $clr-text-blue-bright;
             background-color: $clr-blue-soft;
         }
         &--active {
-            // background-color: $clr-text-blue-bright;
             background-color: $clr-blue-soft;
             
             border-radius: 2px;
@@ -49,6 +58,7 @@
 
 .caret-down {
     transform: rotate(90deg);
+    transition: 0.2s;
 }   
 
 .active {

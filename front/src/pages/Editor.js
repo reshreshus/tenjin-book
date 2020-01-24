@@ -1,15 +1,17 @@
-import React, {useState} from 'react'
+import React from 'react'
 import { CollectionConsumer } from '../context/CollectionContext';
+import {useParams} from 'react-router-dom';
 
 import Entry from '../components/Editor/Entry';
 
 export default function Editor() {
-    
+    const { id } = useParams();
    
 return (<CollectionConsumer >
-    { ({card, updateCardEntries, addNewEntryContext, deleteEntryContext,
+    { ({getCard, updateCardEntries, addNewEntryContext, deleteEntryContext,
         chooseTypeC
     }) => {
+    const card = getCard(id);
     const {deck_title, template_title, entries} = card;
     const entries_editors = new Array(entries.length)
     

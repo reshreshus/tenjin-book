@@ -39,7 +39,7 @@ export default function App() {
       <Sidebar />
       <div className="resizer"/>
         <Switch>
-          <Route exact path="/edit" component={() =>
+          <Route exact path="/edit/:id" component={() =>
             (<Editor card={{'deckTitle':'English', 'templateTitle': 'Basic'}}/>)}
             />
           <Route exact path="/repeat" component={RepeatCard}/>

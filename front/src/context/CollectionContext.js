@@ -14,30 +14,42 @@ class CollectionProvider extends React.Component {
                 {
                     "id": "1",
                     "name": "English",
+                    "expanded": true,
+                    "type": "D",
                     "children": [
                         {
                             "id": "4",
                             "name": "Witcher 3",
+                            "type": "D",
+                            "expanded": false,
                             "children": [
                                 {
                                     "id": "5",
-                                    "name": "The Last Wish"
+                                    "name": "The Last Wish",
+                                    "type": "D",
                                 }
                             ]
+                        }, 
+                        {
+                            "type": "f",
+                            "id": "_1",
+                            "name": "a flashcard"
                         }
                     ]
                 },
                 {
                     "id": "2",
-                    "name": "Math"
+                    "name": "Math",
+                    "type": "D",
                 },
                 {
                     "id": "3",
-                    "name": "Programming"
+                    "name": "Programming",
+                    "type": "D",
                 },
             ],
-            card: {
-                id: "database generated",
+            cards: [{
+                id: "_1",
                 block_id: "from db",
                 template_id: "from db",
                 block_title: "Enlish",
@@ -67,8 +79,14 @@ class CollectionProvider extends React.Component {
                     },
                     
                 ]
-            }
+            }]
         };
+    }
+
+    getCard = (cardId) => {
+        return this.state.cards.filter((c) => 
+            c.id === cardId
+            )[0]
     }
 
     addNewEntryContext = (cardId) => {
@@ -119,7 +137,7 @@ class CollectionProvider extends React.Component {
     render () {
         return (
             <Collection.Provider value={{
-                    card: this.state.card,
+                    getCard: this.getCard,
                     blocks: this.state.blocks,
                     getBlock: this.getBlock,
                     updateCardEntries,
