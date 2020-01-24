@@ -15,7 +15,7 @@ export default function Decks() {
                     <div className="decks">
                         {
                             decks ? decks.map((d, i) => (
-                                <Deck key={i} selectedDeckId={selectedDeckId} deck={d}
+                                <Deck deck={d} key={i} selectedDeckId={selectedDeckId} deck={d}
                                  updateSelectedDeckId={updateSelectedDeckId}/>
                             )) : "NO DECKS"
                         }

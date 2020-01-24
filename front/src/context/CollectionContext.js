@@ -103,19 +103,23 @@ class CollectionProvider extends React.Component {
         console.log("chooseType Context")
     }
 
+    getDeck = (id) => {
+        return this.state.decks.filter (d => d.id === id)[0]
+    }
+
     render () {
         return (
             <Collection.Provider value={{
                     card: this.state.card,
                     decks: this.state.decks,
+                    getDeck: this.getDeck,
                     updateCardEntries,
                     addNewEntryContext: this.addNewEntryContext,
                     deleteEntryContext: this.deleteEntryContext,
                     chooseTypeC: this.chooseTypeC,
             }}>
                 {this.props.children}
-            </Collection.Provider>
-        )
+            </Collection.Provider>)
     }
     
 }

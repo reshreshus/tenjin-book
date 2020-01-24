@@ -35,7 +35,7 @@ export default function Deck({deck, selectedDeckId, updateSelectedDeckId}) {
         onClick={(e)  => onDeckClick(e)}
             > 
             <Link className={`deck__link`}
-                to='/show-deck' >
+                to={`/show-deck/${deck.id}`} >
                 <ContentEditable 
                     innerRef={contentEditable}
                     html={name}

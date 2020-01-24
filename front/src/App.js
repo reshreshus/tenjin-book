@@ -40,7 +40,8 @@ export default function App() {
             (<Editor card={{'deckTitle':'English', 'templateTitle': 'Basic'}}/>)}
             />
           <Route exact path="/repeat" component={RepeatCard}/>
-          <Route exact path="/show-deck" component={ShowDeck} />
+          // "?" after id means id is optional
+          <Route exact path="/show-deck/:id?" component={ShowDeck} />
         </Switch>
     </div>
   )
