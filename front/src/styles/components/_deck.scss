@@ -1,0 +1,8 @@
+.deck {
+    cursor: pointer;
+    &--active {
+        background-color: $clr-text-blue-bright;
+        color: white;
+        border-radius: 2px;
+    }
+}

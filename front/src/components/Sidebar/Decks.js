@@ -1,9 +1,12 @@
-import React from 'react'
+import React, {useState} from 'react'
 import Deck from './Deck'
 import AddDeck from './AddDeck'
 import  {CollectionConsumer} from '../../context/CollectionContext';
 
 export default function Decks() {
+
+    const [selectedDeckId, updateSelectedDeckId] = useState('');
+
     return (
         <CollectionConsumer> 
         {
@@ -12,7 +15,8 @@ export default function Decks() {
                     <div className="decks">
                         {
                             decks ? decks.map((d, i) => (
-                                <Deck key={i} deck={d} />
+                                <Deck key={i} selectedDeckId={selectedDeckId} deck={d}
+                                 updateSelectedDeckId={updateSelectedDeckId}/>
                             )) : "NO DECKS"
                         }
                         <AddDeck />
