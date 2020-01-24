@@ -44,7 +44,7 @@
     // }
 }
 
-.btn-contrast {
+@mixin btn-contrast {
     @include btn;
     background-color: $clr-text-blue-bright;
     padding: 7px;
@@ -53,6 +53,15 @@
     color: $clr-text-light-primary;
     font-style: italic;
     font-size: 20px;
+}
+
+.btn-contrast {
+    @include btn-contrast;
+    &--sm{
+        @include btn-contrast;
+        font-size: 16px;
+        padding: 1px;
+    }
 }
 
 .btn-plus-minus {

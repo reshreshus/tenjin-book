@@ -2,10 +2,13 @@ import React, {useEffect} from 'react'
 import './styles/main.scss'
 import {Switch, Route} from 'react-router-dom';
 
+import Sidebar from './components/Sidebar/Sidebar';
+
+import Home from './pages/Home';
 import Editor from './pages/Editor';
 import ShowDeck from './pages/ShowDeck';
 import RepeatCard from './pages/RepeatCard';
-import Sidebar from './components/Sidebar/Sidebar';
+
 
 
 export default function App() {
@@ -29,19 +32,20 @@ export default function App() {
       ()=>{e.parentNode.onmousemove=undefined};
     });
   }, [])
-
+  
   
   return (
     <div className="app">
       <Sidebar />
       <div className="resizer"/>
         <Switch>
-          <Route exact path="/" component={() =>
+          <Route exact path="/edit" component={() =>
             (<Editor card={{'deckTitle':'English', 'templateTitle': 'Basic'}}/>)}
             />
           <Route exact path="/repeat" component={RepeatCard}/>
           // "?" after id means id is optional
           <Route exact path="/show-deck/:id?" component={ShowDeck} />
+          <Route exact path="/" component={Home} />
         </Switch>
     </div>
   )

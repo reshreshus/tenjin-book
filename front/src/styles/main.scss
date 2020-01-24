@@ -2,6 +2,8 @@
 @import 'abstracts/typography';
 @import 'base/typography';
 
+@import 'layout/mainLayout';
+
 @import 'components/buttons';
 
 @import 'components/sidebar';
@@ -11,5 +13,4 @@
 @import 'components/editor';
 @import 'components/editorjs';
 @import 'components/showDeck';
-
-@import 'layout/mainLayout';
+@import 'components/home';

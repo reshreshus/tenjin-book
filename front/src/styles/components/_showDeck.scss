@@ -1,15 +1,4 @@
 .show-deck {
     margin: 0 2rem;
-    &__title {
-        @include font-blue-bright;
-        font-size: 5rem;
-        font-weight: 500;
-        letter-spacing: -.3rem;
-        margin: 1rem 0;
-    }
-
-    &__subtitle {
-        font-size: 1.5rem;
-        font-weight: 500;
-    }
 }
+
