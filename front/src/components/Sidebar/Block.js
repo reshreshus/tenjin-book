@@ -48,7 +48,12 @@ export default function Block({block, selectedBlockId, updateSelectedBlockId}) {
             <div className={`block__name ${block.id !== selectedBlockId ? '': 'block__name--active'}` }
             onClick={(e)  => onBlockClick(e)} >
                 <Link className={`block__link`}
-                    to={`/show-deck/${block.id}`} >
+                    // to={`/show-deck/${block.id}`} 
+                    to={{pathname: `/show-deck/${block.id}`, 
+                        state: {
+                        block: block
+                    }}}
+                    >
                     <ContentEditable 
                         innerRef={contentEditable}
                         html={name}

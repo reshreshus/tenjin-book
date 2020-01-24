@@ -1,20 +1,21 @@
 import React from 'react'
-import {useParams} from 'react-router-dom';
+import {useParams, useLocation} from 'react-router-dom';
 import {CollectionConsumer} from '../context/CollectionContext';
 
 export default function ShowDeck() {
-    let { id } = useParams();
-    console.log("show deck id" , id);
+    // let { id } = useParams();
+    let { block } = useLocation().state;
+    console.log("show deck" , block);
     return (
         <CollectionConsumer>  
         {
             ({getBlock}) => {
-                const deck = getBlock(id);
+                // const deck = getBlock(id);
                 return (
                     <div className="show-deck">
                         <h1 className="title">( ･ิɷ･ิ)</h1>
                         {
-                            (deck && deck.name) ? <div>
+                            (block && block.name) ? <div>
                             <h2 className="subtitle">This is a chosen deck. "{deck.name}"<br />
                             What will you do with it?</h2>
                             <div className="btn-contrast">

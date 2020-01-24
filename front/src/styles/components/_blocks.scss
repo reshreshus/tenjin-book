@@ -10,12 +10,13 @@
         left: -1.2rem;
         color: black;
         display: inline-block;
+        user-select: none;
         // margin-right: 6px;
     }
     
     
     &__name {
-        display: inline-block;
+        display: block;
         &:active {
             background-color: $clr-text-blue-bright;
         }
