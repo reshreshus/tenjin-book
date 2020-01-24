@@ -4,9 +4,6 @@ const updateCardEntries = (cardId, changes) => {
     console.log("card is updating (supposedly)", changes)
 }
 
-
-
-
 const Collection = React.createContext();
 
 class CollectionProvider extends React.Component {

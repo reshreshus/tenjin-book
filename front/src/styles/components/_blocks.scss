@@ -19,9 +19,12 @@
         display: block;
         &:active {
             background-color: $clr-text-blue-bright;
+            // background-color: $clr-text-blue-bright;
+            background-color: $clr-blue-soft;
         }
         &--active {
-            background-color: $clr-text-blue-bright;
+            // background-color: $clr-text-blue-bright;
+            background-color: $clr-blue-soft;
             
             border-radius: 2px;
 
