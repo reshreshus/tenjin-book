@@ -1,0 +1,56 @@
+.block {
+    margin-left: 1rem;
+}
+.block {
+    cursor: pointer;
+    position: relative;
+    .caret {
+        position: absolute;
+        top: 0;;
+        left: -1.2rem;
+        color: black;
+        display: inline-block;
+        // margin-right: 6px;
+    }
+    
+    
+    &__name {
+        display: inline-block;
+        &:active {
+            background-color: $clr-text-blue-bright;
+        }
+        &--active {
+            background-color: $clr-text-blue-bright;
+            
+            border-radius: 2px;
+
+            a:any-link {
+                color: white;
+            }
+        }
+       
+    } 
+    &__link {
+        text-decoration: none;
+        &:active {
+            color: white;
+        }
+    }
+
+    &__children {
+        display: none;
+        margin-left: 1rem;
+    }
+}
+
+.caret-down {
+    transform: rotate(90deg);
+}   
+
+.active {
+  display: block;
+}
+
+.add-block {
+    margin-top: .5rem;
+}

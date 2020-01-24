@@ -13,10 +13,22 @@ class CollectionProvider extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            decks: [
+            blocks: [
                 {
                     "id": "1",
-                    "name": "English"
+                    "name": "English",
+                    "children": [
+                        {
+                            "id": "4",
+                            "name": "Witcher 3",
+                            "children": [
+                                {
+                                    "id": "5",
+                                    "name": "The Last Wish"
+                                }
+                            ]
+                        }
+                    ]
                 },
                 {
                     "id": "2",
@@ -29,9 +41,9 @@ class CollectionProvider extends React.Component {
             ],
             card: {
                 id: "database generated",
-                deck_id: "from db",
+                block_id: "from db",
                 template_id: "from db",
-                deck_title: "Enlish",
+                block_title: "Enlish",
                 template_title: "Basic",
                 entries: [
                     {
@@ -103,16 +115,16 @@ class CollectionProvider extends React.Component {
         console.log("chooseType Context")
     }
 
-    getDeck = (id) => {
-        return this.state.decks.filter (d => d.id === id)[0]
+    getBlock = (id) => {
+        return this.state.blocks.filter (d => d.id === id)[0]
     }
 
     render () {
         return (
             <Collection.Provider value={{
                     card: this.state.card,
-                    decks: this.state.decks,
-                    getDeck: this.getDeck,
+                    blocks: this.state.blocks,
+                    getBlock: this.getBlock,
                     updateCardEntries,
                     addNewEntryContext: this.addNewEntryContext,
                     deleteEntryContext: this.deleteEntryContext,

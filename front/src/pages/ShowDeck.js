@@ -8,8 +8,8 @@ export default function ShowDeck() {
     return (
         <CollectionConsumer>  
         {
-            ({getDeck}) => {
-                const deck = getDeck(id);
+            ({getBlock}) => {
+                const deck = getBlock(id);
                 return (
                     <div className="show-deck">
                         <h1 className="title">( ･ิɷ･ิ)</h1>
@@ -18,10 +18,10 @@ export default function ShowDeck() {
                             <h2 className="subtitle">This is a chosen deck. "{deck.name}"<br />
                             What will you do with it?</h2>
                             <div className="btn-contrast">
-                                study
+                                study 
                             </div>
                             </div>
-                            :
+                             :
                             <h2 className="subtitle">Grunt Grunt <br/>
                             You need to choose a deck to study
                             </h2>
