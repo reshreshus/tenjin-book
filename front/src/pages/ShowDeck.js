@@ -22,7 +22,7 @@ export default function ShowDeck() {
                             </div>
                             </div>
                             :
-                            <h2 className="show-deck__subtitle">Grunt Grunt <br/>
+                            <h2 className="subtitle">Grunt Grunt <br/>
                             You need to choose a deck to study
                             </h2>
                         }

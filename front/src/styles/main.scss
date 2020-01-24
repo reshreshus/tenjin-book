@@ -7,10 +7,15 @@
 @import 'components/buttons';
 
 @import 'components/sidebar';
-@import 'components/deck';
+@import 'components/decks';
 
 
 @import 'components/editor';
 @import 'components/editorjs';
 @import 'components/showDeck';
 @import 'components/home';
+
+
+.hide {
+    display: none;
+}
