@@ -13,7 +13,21 @@ class CollectionProvider extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-             card: {
+            decks: [
+                {
+                    "id": "1",
+                    "name": "English"
+                },
+                {
+                    "id": "2",
+                    "name": "Math"
+                },
+                {
+                    "id": "3",
+                    "name": "Programming"
+                },
+            ],
+            card: {
                 id: "database generated",
                 deck_id: "from db",
                 template_id: "from db",
@@ -53,7 +67,12 @@ class CollectionProvider extends React.Component {
         let newCard = this.state.card;
         newCard.entries = [...this.state.card.entries, {
             entry_id: this.state.card.entries.length,
-            content: "probably some editorJs stuff or html",
+            content: {
+                blocks: [{
+                    type: "paragraph",
+                    data: { text: "new entry" }
+                }]
+            },
             entry_type: "A",
             entry_name: "Back",
         }]
@@ -88,6 +107,7 @@ class CollectionProvider extends React.Component {
         return (
             <Collection.Provider value={{
                     card: this.state.card,
+                    decks: this.state.decks,
                     updateCardEntries,
                     addNewEntryContext: this.addNewEntryContext,
                     deleteEntryContext: this.deleteEntryContext,

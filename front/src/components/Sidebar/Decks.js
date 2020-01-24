@@ -1,16 +1,24 @@
 import React from 'react'
 import Deck from './Deck'
 import AddDeck from './AddDeck'
+import  {CollectionConsumer} from '../../context/CollectionContext';
 
-export default function Decks({decks}) {
+export default function Decks() {
     return (
-        <div>
-            {
-                decks ? decks.map(deck => (
-                    <Deck />
-                )) : "Decks"
+        <CollectionConsumer> 
+        {
+            ({decks}) => {
+                return (
+                    <div className="decks">
+                        {
+                            decks ? decks.map((d, i) => (
+                                <Deck key={i} deck={d} />
+                            )) : "NO DECKS"
+                        }
+                        <AddDeck />
+                    </div>
+                )
             }
-            <AddDeck />
-        </div>
-    )
+        }  
+        </CollectionConsumer>)
 }
