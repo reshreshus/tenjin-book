@@ -44,6 +44,17 @@
     // }
 }
 
+.btn-contrast {
+    @include btn;
+    background-color: $clr-text-blue-bright;
+    padding: 7px;
+    border-radius: 2px;
+    @include font-code;
+    color: $clr-text-light-primary;
+    font-style: italic;
+    font-size: 20px;
+}
+
 .btn-plus-minus {
     font-size: 25px;
 }

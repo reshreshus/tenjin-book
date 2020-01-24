@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import ContentEditable from 'react-contenteditable'
+import {Link} from 'react-router-dom';
 
 export default function Deck({deck, selectedDeckId, updateSelectedDeckId}) {
     // TODO: rename on F2
@@ -11,37 +12,39 @@ export default function Deck({deck, selectedDeckId, updateSelectedDeckId}) {
     })
 
     const handleChange = e => {
-        console.log(e.target.value);
         updateName(e.target.value);
     };
 
     const onKeyDown = e => {
-        console.log("onKeyDown")
+        // Finish editing when ENTER is pressed
+        // TODO: get back to the previous value if ESC is pressed
         if (e.keyCode == 13) {
             e.preventDefault();
             updateSelectedDeckId('');
-            
         }
-        
+    }
+
+    const onDeckClick = (e) => {
+        // e.preventDefault();
+        updateSelectedDeckId(deck.id)
+
     }
 
     return (
-        <div className={`deck ${deck.id !== selectedDeckId ? '': 'deck--active'}`} onClick={() => { 
-            console.log("CLICK, deck.id", deck.id)
-            console.log("selectedDeckId", selectedDeckId)
-            console.log((deck.id == selectedDeckId))
-            updateSelectedDeckId(deck.id)}
-        }
+        <div className={`deck ${deck.id !== selectedDeckId ? '': 'deck--active'}` } 
+        onClick={(e)  => onDeckClick(e)}
             > 
-            
-            <ContentEditable 
-                innerRef={contentEditable}
-                html={name}
-                disabled={ deck.id !== selectedDeckId }
-                onChange={handleChange}
-                tagName='div'  // div by default but still
-                onKeyDown={onKeyDown}
-            />
+            <Link className={`deck__link`}
+                to='/show-deck' >
+                <ContentEditable 
+                    innerRef={contentEditable}
+                    html={name}
+                    disabled={ deck.id !== selectedDeckId }
+                    onChange={handleChange}
+                    tagName='div'  // div by default but still
+                    onKeyDown={onKeyDown}
+                />
+            </Link>
         </div>
     )
 }

@@ -1,3 +1,21 @@
 .deck {
-  background-color: red;
+  cursor: pointer;
+}
+.deck--active {
+  border-radius: 2px;
+}
+.deck--active a {
+  color: white;
+}
+.deck--active a:active {
+  color: blue;
+}
+.deck--active a:active,
+.deck--active a:visited,
+.deck--active a:link,
+.deck--active a:focus {
+  background-color: red !important;
+}
+.deck__link {
+  text-decoration: none;
 }

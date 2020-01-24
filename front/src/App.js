@@ -3,6 +3,7 @@ import './styles/main.scss'
 import {Switch, Route} from 'react-router-dom';
 
 import Editor from './pages/Editor';
+import ShowDeck from './pages/ShowDeck';
 import RepeatCard from './pages/RepeatCard';
 import Sidebar from './components/Sidebar/Sidebar';
 
@@ -39,6 +40,7 @@ export default function App() {
             (<Editor card={{'deckTitle':'English', 'templateTitle': 'Basic'}}/>)}
             />
           <Route exact path="/repeat" component={RepeatCard}/>
+          <Route exact path="/show-deck" component={ShowDeck} />
         </Switch>
     </div>
   )

@@ -1,8 +1,26 @@
 .deck {
+    
     cursor: pointer;
+    &:active {
+        background-color: $clr-text-blue-bright;
+    }
     &--active {
         background-color: $clr-text-blue-bright;
-        color: white;
+        
         border-radius: 2px;
+
+        a:any-link {
+            color: white;
+        }
     }
+
+    &__link {
+        text-decoration: none;
+        &:active {
+            color: white;
+        }
+        
+    }
+
+    
 }
