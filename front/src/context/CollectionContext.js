@@ -1,99 +1,101 @@
-import React from 'react'
-
-const updateCardEntries = (cardId, changes) => {
-    console.log("card is updating (supposedly)", changes)
-}
+import React, {useState} from 'react'
 
 const Collection = React.createContext();
 
-class CollectionProvider extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            blocks: [
-                {
-                    "id": "1",
-                    "name": "English",
-                    "expanded": true,
-                    "type": "D",
-                    "children": [
-                        {
-                            "id": "4",
-                            "name": "Witcher 3",
-                            "type": "D",
-                            "expanded": false,
-                            "children": [
-                                {
-                                    "id": "5",
-                                    "name": "The Last Wish",
-                                    "type": "D",
-                                }
-                            ]
-                        }, 
-                        {
-                            "type": "f",
-                            "id": "_1",
-                            "name": "a flashcard"
-                        }
-                    ]
-                },
-                {
-                    "id": "2",
-                    "name": "Math",
-                    "type": "D",
-                },
-                {
-                    "id": "3",
-                    "name": "Programming",
-                    "type": "D",
-                },
-            ],
-            cards: [{
-                id: "_1",
-                block_id: "from db",
-                template_id: "from db",
-                block_title: "Enlish",
-                template_title: "Basic",
-                entries: [
+const blocks_import = [
+    {
+        "id": "1",
+        "name": "English",
+        "expanded": true,
+        "type": "D",
+        "children": [
+            {
+                "id": "4",
+                "name": "Witcher 3",
+                "type": "D",
+                "expanded": false,
+                "children": [
                     {
-                        entry_id: 0,
-                        entry_name: "Front",
-                        content: {
-                            blocks: [{
-                                type: "paragraph",
-                                data: { text: "probably some editorJs stuff or html" }
-                            }]
-                        },
-                        entry_type: "Q",
-                    },
-                    {
-                        entry_id: 1,
-                        entry_name: "Back",
-                        content: {
-                            blocks: [{
-                                type: "paragraph",
-                                data: { text: "probably some editorJs stuff or html" }
-                            }]
-                        },
-                        entry_type: "A",
-                    },
-                    
+                        "id": "5",
+                        "name": "The Last Wish",
+                        "type": "D",
+                    }
                 ]
-            }]
-        };
+            }, 
+            {
+                "type": "f",
+                "id": "_1",
+                "name": "a flashcard"
+            }
+        ]
+    },
+    {
+        "id": "2",
+        "name": "Math",
+        "type": "D",
+    },
+    {
+        "id": "3",
+        "name": "Programming",
+        "type": "D",
+    },
+]
+
+const cards_import = [{
+    id: "_1",
+    deck_id: "from db",
+    block_id: "from db",
+    template_id: "from db",
+    deck_title: "Enlish",
+    template_title: "Basic",
+    entries: [
+        {
+            entry_id: 0,
+            entry_name: "Front",
+            content: {
+                blocks: [{
+                    type: "paragraph",
+                    data: { text: "probably some editorJs stuff or html" }
+                }]
+            },
+            entry_type: "Q",
+        },
+        {
+            entry_id: 1,
+            entry_name: "Back",
+            content: {
+                blocks: [{
+                    type: "paragraph",
+                    data: { text: "probably some editorJs stuff or html" }
+                }]
+            },
+            entry_type: "A",
+        },
+        
+    ]
+}]
+
+function CollectionProvider({children}) {
+    const [blocks, updateBlocks] = useState(blocks_import)
+    const [cards, updateCards] = useState(cards_import);
+
+    const updateCardEntries = (cardId, changes) => {
+        console.log("card is updating (supposedly)", changes)
     }
 
-    getCard = (cardId) => {
-        return this.state.cards.filter((c) => 
+    const getCard = (cardId) => {
+        return cards.filter((c) => 
             c.id === cardId
             )[0]
     }
 
-    addNewEntryContext = (cardId) => {
+    const addNewEntryContext = (cardId) => {
         console.log("addNewEntryContext")
-        let newCard = this.state.card;
-        newCard.entries = [...this.state.card.entries, {
-            entry_id: this.state.card.entries.length,
+        let card = cards.filter(c => c.id === cardId)[0];
+        // TODO: might be slow?
+        let idx = cards.indexOf(card)
+        card.entries = [...card.entries, {
+            entry_id: card.entries.length,
             content: {
                 blocks: [{
                     type: "paragraph",
@@ -103,51 +105,48 @@ class CollectionProvider extends React.Component {
             entry_type: "A",
             entry_name: "Back",
         }]
-        this.setState({
-            card: newCard
-        }, () => {
-            console.log("state", this.state);
-        })
+        let newCards = cards
+        newCards[idx] = card;
+        updateCards([...newCards]);
     }
 
-    deleteEntryContext = (cardId, entryId) => {
-        let newCard = this.state.card;
-        newCard.entries = this.state.card.entries;
-        newCard.entries.splice(entryId, 1)
-        newCard.entries.map((e) => {
+    const deleteEntryContext = (cardId, entryId) => {
+        let card = cards.filter(c => c.id === cardId)[0];
+        let idx = cards.indexOf(card);
+        card.entries.splice(entryId, 1)
+        card.entries.map((e) => {
             if (e.entry_id > entryId) {
                 e.entry_id--;
             }
         })
-        this.setState({
-            card: newCard
-        }, () => {
-            console.log("state", this.state);
-        })
+        let newCards = cards;
+        newCards[idx] = card;
+        updateCards([...newCards]);
     }
 
-    chooseTypeC = (cardId, entryId, type) => {
+    const chooseTypeC = (cardId, entryId, type) => {
         console.log("chooseType Context")
     }
 
-    getBlock = (id) => {
-        return this.state.blocks.filter (d => d.id === id)[0]
+    const getBlock = (id) => {
+        return blocks.filter (d => d.id === id)[0]
     }
 
-    render () {
+    // render () {
         return (
             <Collection.Provider value={{
-                    getCard: this.getCard,
-                    blocks: this.state.blocks,
-                    getBlock: this.getBlock,
+                    cards: cards,
+                    getCard: getCard,
+                    blocks: blocks,
+                    getBlock: getBlock,
                     updateCardEntries,
-                    addNewEntryContext: this.addNewEntryContext,
-                    deleteEntryContext: this.deleteEntryContext,
-                    chooseTypeC: this.chooseTypeC,
+                    addNewEntryContext: addNewEntryContext,
+                    deleteEntryContext: deleteEntryContext,
+                    chooseTypeC: chooseTypeC,
             }}>
-                {this.props.children}
+                {children}
             </Collection.Provider>)
-    }
+    // }
     
 }
 
