@@ -31,7 +31,7 @@ export default function Block({block}) {
                         case 13:
                             console.log("Enter")
                             e.preventDefault();
-                            updateSelectedBlockIdAndCleanup('', node);
+                            updateSelectedBlockIdAndCleanup(block.id, node);
                             updateBlockName(name)
                             break;
                         case 27:
