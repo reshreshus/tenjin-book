@@ -1,6 +1,5 @@
-import React, {useState} from 'react'
-import Block from './Block'
-import AddBlock from './AddBlock'
+import React, {useState} from 'react';
+import Block from './Block';
 import  {CollectionConsumer} from '../../context/CollectionContext';
 
 export default function Blocks() {

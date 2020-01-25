@@ -92,24 +92,36 @@ const cards_import = [{
 
 function CollectionProvider({children}) {
     const [blocks, updateBlocks] = useState(blocks_import)
-    const [cards, updateCards] = useState(cards_import);
-    const [isBlockEditing, updateIsBlockEditing] = useState(false)
-    
+    const [cards, updateCards] = useState(cards_import);    
     // TODO
-    const [blocksNumber, updateBlocksNumber] = useState(5);
+    const [blocksNumber, updateBlocksNumber] = useState(6);
     const [selectedBlockId, updateSelectedBlockId] = useState('');
 
     const updateBlockName = (blockId) => {
         console.log("updateBlockName")
     }
 
+    const removeSelections = () => {
+        let sel = window.getSelection();
+        sel.removeAllRanges();
+    }
+
+    const enabeEditable = (el) => {
+        el.setAttribute('disabled', false);
+        el.setAttribute('contenteditable', true);
+    }
+
+    const disableEditable = (el) => {
+        el.setAttribute('disabled', true);
+        el.setAttribute('contenteditable', false);
+    }
+
     const updateSelectedBlockIdAndCleanup = (id, blockRef) => {
+        console.log("updateSelectedBlockIdAndCleanup", selectedBlockId, id);
         if (selectedBlockId !== id || id === '') {
-            let sel = window.getSelection();
-            sel.removeAllRanges();
+            removeSelections()
             let el = blockRef.current.querySelector('.content-editable')
-            el.setAttribute('disabled', true);
-            el.setAttribute('contenteditable', false);
+            disableEditable(el);
         } 
         updateSelectedBlockId(id);
     }
@@ -130,21 +142,20 @@ function CollectionProvider({children}) {
         }
     }
 
-    hotkeys('f2', function(event, handler){
+    
+
+
+    const handleF2 = (event, handler) => {
         // Prevent the default refresh event under WINDOWS system
         if (selectedBlockId !== '') {
             event.preventDefault();
-            let el = event.target.querySelector("div");
-            el.setAttribute('disabled', false);
-            el.setAttribute('contenteditable', true);
-            updateIsBlockEditing(true);
+            let el = document.querySelector(`.block-${selectedBlockId}`);
+            enabeEditable(el)
             selectElementContents(el);
         }
-    });
+    }
 
-    // hotkeys('enter, escape') {
-        
-    // }
+    hotkeys('f2', handleF2);
 
     const updateCardEntries = (cardId, changes) => {
         console.log("card is updating (supposedly)", changes)
@@ -200,16 +211,26 @@ function CollectionProvider({children}) {
     }
 
     const addNewBlock = (previousBlockId = -1, isParent=false) => {
+        let newBlocksNumber = String(blocksNumber + 1);
         if (previousBlockId < 0) {
             blocks.push({
-                "id": String(blocksNumber),
+                "id": String(newBlocksNumber),
                 "name": "New Deck",
                 "type": "D",
             })
+             // edit new block immediately upon creating it
             updateBlocks([...blocks]);
+            updateSelectedBlockId(newBlocksNumber)
+            // new Block isn't created immediately so I wait
+            setTimeout(() => {
+                let el = document.querySelector(`.block-${newBlocksNumber}`);
+                enabeEditable(el)
+                selectElementContents(el);
+            }, 100);
             updateBlocksNumber(blocksNumber + 1)
+            
         } else {
-            console.log("adding not implemented yet")
+            console.log("this kind of adding not implemented yet")
         }
 
     }
@@ -227,7 +248,6 @@ function CollectionProvider({children}) {
                 selectedBlockId,
                 updateSelectedBlockIdAndCleanup,
                 addNewBlock,
-                isBlockEditing,
                 getCard,
                 updateBlockName
         }}>

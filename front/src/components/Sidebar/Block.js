@@ -70,7 +70,7 @@ export default function Block({block}) {
                                     innerRef={contentEditable}
                                     html={name}
                                     disabled={ true }
-                                    className='content-editable'
+                                    className={`content-editable block-${block.id}`}
                                     // disabled={true}
                                     onChange={handleChange}
                                     tagName='div'  // div by default but still
