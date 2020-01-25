@@ -18,14 +18,7 @@ export default function Block({block}) {
         updateName(e.target.value);
     };
 
-    const onKeyDown = e => {
-        // Finish editing when ENTER is pressed
-        // TODO: get back to the previous value if ESC is pressed
-        if (e.keyCode == 13) {
-            e.preventDefault();
-            updateSelectedBlockId('');
-        }
-    }
+    
 
     const toggleCaret = () => {
         updateExpanded(!expanded);
@@ -35,7 +28,14 @@ export default function Block({block}) {
         <CollectionConsumer> 
         {
             ({selectedBlockId, updateSelectedBlockId}) => {
-
+                const onKeyDown = e => {
+                    // Finish editing when ENTER is pressed
+                    // TODO: get back to the previous value if ESC is pressed
+                    if (e.keyCode == 13) {
+                        e.preventDefault();
+                        updateSelectedBlockId('');
+                    }
+                }
                 return (
                     <div className={`block`} ref={node}>  
                         {
@@ -73,8 +73,7 @@ export default function Block({block}) {
                                 <div className={`block__children ${expanded ? 'active': ''}`}>
                                 {
                                     block.children.map( (c, i) => (
-                                    <Block block={c} key={i} selectedBlockId={selectedBlockId}
-                                            updateSelectedBlockId={updateSelectedBlockId}/>
+                                    <Block block={c} key={i}/>
                                 ))
                                 }
                                 </div>
