@@ -7,7 +7,7 @@ export default function Blocks() {
     return (
         <CollectionConsumer> 
         {
-            ({blocks}) => {
+            ({blocks, addNewBlock}) => {
                 return (
                     <div className="blocks">
                         {
@@ -15,7 +15,9 @@ export default function Blocks() {
                                 <Block block={d} key={i} block={d}/>
                             )) : "NO DECKS"
                         }
-                        <AddBlock />
+                        <div className="add-block btn-contrast--sm" onClick={() => {addNewBlock()}}>
+                            + new deck
+                        </div>
                     </div>
                 )
             }

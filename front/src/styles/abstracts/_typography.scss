@@ -1,5 +1,6 @@
 $font-code: 'Source Code Pro', 'Helvetica';
 $font-text: 'Roboto', 'Helvetica';
+$font-sidebar: monaco, Consolas, "Lucida Console", monospace;
 
 @mixin font-code {
     font-family: $font-code;

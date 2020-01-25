@@ -78,6 +78,8 @@ const cards_import = [{
 function CollectionProvider({children}) {
     const [blocks, updateBlocks] = useState(blocks_import)
     const [cards, updateCards] = useState(cards_import);
+    // TODO TODO TODO
+    const [blocksNumber, updateBlocksNumber] = useState(5);
     const [selectedBlockId, updateSelectedBlockId] = useState('');
 
     const updateCardEntries = (cardId, changes) => {
@@ -133,6 +135,21 @@ function CollectionProvider({children}) {
         return blocks.filter (d => d.id === id)[0]
     }
 
+    const addNewBlock = (previousBlockId = -1, isParent=false) => {
+        if (previousBlockId < 0) {
+            blocks.push({
+                "id": String(blocksNumber),
+                "name": "New Deck",
+                "type": "D",
+            })
+            updateBlocks([...blocks]);
+            updateBlocksNumber(blocksNumber + 1)
+        } else {
+            console.log("adding not implemented yet")
+        }
+
+    }
+
     return (
         <Collection.Provider value={{
                 cards: cards,
@@ -144,7 +161,8 @@ function CollectionProvider({children}) {
                 deleteEntryContext: deleteEntryContext,
                 chooseTypeC: chooseTypeC,
                 selectedBlockId,
-                updateSelectedBlockId
+                updateSelectedBlockId,
+                addNewBlock
         }}>
             {children}
         </Collection.Provider>)

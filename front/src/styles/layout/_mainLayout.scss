@@ -33,6 +33,11 @@ body {
     font-weight: 500;
 }
 
-.link:any-link {
+// .link:any-link {
+//     text-decoration: none;
+// }
+
+a:any-link {
     text-decoration: none;
+    color: $clr-text-soft;
 }

@@ -47,7 +47,7 @@ export default function Block({block}) {
                             :
                             ""
                         }
-                        <span className="block__type">[{ block.type }]</span>
+                        <span className={`block__type ${block.type === 'D' ? '' : 'block__type--ca'}`}>[{ block.type }]</span>
                         <div className={`block__name ${block.id !== selectedBlockId ? '': 'block__name--active'}` }
                         onClick={()  => updateSelectedBlockId(block.id)} >
                             <Link className={`block__link`}

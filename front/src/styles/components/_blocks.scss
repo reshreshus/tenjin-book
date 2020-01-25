@@ -5,17 +5,6 @@
     margin-left: 1rem;
     cursor: pointer;
     position: relative;
-    .caret {
-        position: absolute;
-        top: 0;;
-        left: -3rem;
-        color: black;
-        display: inline-block;
-        user-select: none;
-        // why the hell it works
-        transition: 0.2s;
-        // margin-right: 6px;
-    }
 
     &__type {
         font-size: 16px;
@@ -24,6 +13,15 @@
         left: -1.85rem;
         top: .2rem;
         color: $clr-text-blue-bright;
+
+        // card active
+        &--ca {
+            color: $clr-block-card-active
+        }
+        // card dissmissed
+        &--cd {
+            color: $clr-block-card-dismissed
+        }
     }
     
     
@@ -55,6 +53,17 @@
         display: none;
         margin-left: 1rem;
     }
+}
+
+.caret {
+    position: absolute;
+    top: 0;
+    left: -3rem;
+    color: black;
+    display: inline-block;
+    user-select: none;
+    // why the hell it works
+    transition: 0.2s;
 }
 
 .caret-down {
