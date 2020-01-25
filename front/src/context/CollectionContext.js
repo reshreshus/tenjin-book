@@ -78,6 +78,7 @@ const cards_import = [{
 function CollectionProvider({children}) {
     const [blocks, updateBlocks] = useState(blocks_import)
     const [cards, updateCards] = useState(cards_import);
+    const [selectedBlockId, updateSelectedBlockId] = useState('');
 
     const updateCardEntries = (cardId, changes) => {
         console.log("card is updating (supposedly)", changes)
@@ -132,21 +133,21 @@ function CollectionProvider({children}) {
         return blocks.filter (d => d.id === id)[0]
     }
 
-    // render () {
-        return (
-            <Collection.Provider value={{
-                    cards: cards,
-                    getCard: getCard,
-                    blocks: blocks,
-                    getBlock: getBlock,
-                    updateCardEntries,
-                    addNewEntryContext: addNewEntryContext,
-                    deleteEntryContext: deleteEntryContext,
-                    chooseTypeC: chooseTypeC,
-            }}>
-                {children}
-            </Collection.Provider>)
-    // }
+    return (
+        <Collection.Provider value={{
+                cards: cards,
+                getCard: getCard,
+                blocks: blocks,
+                getBlock: getBlock,
+                updateCardEntries,
+                addNewEntryContext: addNewEntryContext,
+                deleteEntryContext: deleteEntryContext,
+                chooseTypeC: chooseTypeC,
+                selectedBlockId,
+                updateSelectedBlockId
+        }}>
+            {children}
+        </Collection.Provider>)
     
 }
 

@@ -4,9 +4,6 @@ import AddBlock from './AddBlock'
 import  {CollectionConsumer} from '../../context/CollectionContext';
 
 export default function Blocks() {
-
-    const [selectedBlockId, updateSelectedBlockId] = useState('');
-
     return (
         <CollectionConsumer> 
         {
@@ -15,8 +12,7 @@ export default function Blocks() {
                     <div className="blocks">
                         {
                             blocks ? blocks.map((d, i) => (
-                                <Block block={d} key={i} selectedBlockId={selectedBlockId} block={d}
-                                 updateSelectedBlockId={updateSelectedBlockId}/>
+                                <Block block={d} key={i} block={d}/>
                             )) : "NO DECKS"
                         }
                         <AddBlock />
