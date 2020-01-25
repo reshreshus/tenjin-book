@@ -18,8 +18,6 @@ export default function Block({block}) {
         updateName(e.target.value);
     };
 
-    
-
     const toggleCaret = () => {
         updateExpanded(!expanded);
     }
@@ -27,15 +25,23 @@ export default function Block({block}) {
     return (
         <CollectionConsumer> 
         {
-            ({selectedBlockId, updateSelectedBlockId}) => {
-                const onKeyDown = e => {
-                    // Finish editing when ENTER is pressed
-                    // TODO: get back to the previous value if ESC is pressed
-                    if (e.keyCode == 13) {
-                        e.preventDefault();
-                        updateSelectedBlockId('');
+            ({selectedBlockId, updateSelectedBlockIdAndCleanup, updateBlockName}) => {
+                const onBlockKeyDown = e => {
+                    switch (e.keyCode) {
+                        case 13:
+                            console.log("Enter")
+                            e.preventDefault();
+                            updateSelectedBlockIdAndCleanup('', node);
+                            updateBlockName(name)
+                            break;
+                        case 27:
+                            console.log("escape")
+                            e.preventDefault();
+                            updateSelectedBlockIdAndCleanup('', node);
+                            break;
                     }
                 }
+
                 return (
                     <div className={`block`} ref={node}>  
                         {
@@ -49,11 +55,13 @@ export default function Block({block}) {
                         }
                         <span className={`block__type ${block.type === 'D' ? '' : 'block__type--ca'}`}>[{ block.type }]</span>
                         <div className={`block__name ${block.id !== selectedBlockId ? '': 'block__name--active'}` }
-                        onClick={()  => updateSelectedBlockId(block.id)} >
+                        onClick={()  => {
+                            updateSelectedBlockIdAndCleanup(block.id, node)
+                            }} >
                             <Link className={`block__link`}
                                 // to={`/show-deck/${block.id}`}
-                                to={{pathname: `${block.type === 'D' ? `/show-deck/${block.id}` 
-                                        : `/edit/${block.id}`}`, 
+                                to={{pathname: `${block.type === 'D' ? `/show-deck/` 
+                                        : `/edit/`}`, 
                                     state: {
                                     block: block
                                 }}}
@@ -61,10 +69,12 @@ export default function Block({block}) {
                                 <ContentEditable 
                                     innerRef={contentEditable}
                                     html={name}
-                                    disabled={ block.id !== selectedBlockId }
+                                    disabled={ true }
+                                    className='content-editable'
+                                    // disabled={true}
                                     onChange={handleChange}
                                     tagName='div'  // div by default but still
-                                    onKeyDown={onKeyDown}
+                                    onKeyDown={onBlockKeyDown}
                                 />
                             </Link>
                         </div>

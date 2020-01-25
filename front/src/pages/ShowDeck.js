@@ -1,12 +1,12 @@
 import React from 'react'
 import {useLocation} from 'react-router-dom';
-import {CollectionConsumer} from '../context/CollectionContext';
 
 export default function ShowDeck() {
-    let { block } = useLocation().state;
-    console.log("show deck" , block);
+    // TODO: react doesn't like it
+    let linkState = useLocation().state
+    let block = linkState ? linkState.block : null
     return (
-        <div className="show-deck">
+        <div className="info">
             <h1 className="title">( ･ิɷ･ิ)</h1>
             {
                 (block && block.name) ? <div>
@@ -21,5 +21,6 @@ export default function ShowDeck() {
                 You need to choose a deck to study
                 </h2>
             }
-        </div>)
+        </div>
+        )
 }

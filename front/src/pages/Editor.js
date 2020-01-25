@@ -1,17 +1,26 @@
 import React from 'react'
 import { CollectionConsumer } from '../context/CollectionContext';
-import {useParams} from 'react-router-dom';
+import {useLocation} from 'react-router-dom';
 
 import Entry from '../components/Editor/Entry';
 
 export default function Editor() {
-    const { id } = useParams();
+    let linkState = useLocation().state
+    let block = linkState ? linkState.block : null
+    if (!block || !block.card_id) {
+        return (<div className="info">
+                    <h1 className="title">( ･ิɷ･ิ)</h1>
+                    <h2 className="subtitle"> You have chosen a dark path. <br />
+                    No flashcard here..</h2>
+                </div>)
+    }
    
 return (<CollectionConsumer >
     { ({getCard, updateCardEntries, addNewEntryContext, deleteEntryContext,
         chooseTypeC
     }) => {
-    const card = getCard(id);
+    const card = getCard(block.card_id);
+    // no block sent
     const {deck_title, template_title, entries} = card;
     const entries_editors = new Array(entries.length)
     

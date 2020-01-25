@@ -1,28 +1,39 @@
 import React, {useState} from 'react'
+import hotkeys from 'hotkeys-js';
 
 const Collection = React.createContext();
 
 const blocks_import = [
     {
         "id": "1",
+        "idx": "1",
         "name": "English",
         "expanded": true,
         "type": "D",
+        "deck": "root",
+        "path": [],
         "children": [
             {
                 "id": "4",
+                "idx": "1",
+                "deck": "1",
+                "path": [1],
                 "name": "Witcher 3",
                 "type": "D",
                 "expanded": false,
                 "children": [
                     {
                         "id": "5",
+                        "deck": "1",
+                        "path": [1,1],
+                        "idx": "1",
                         "name": "The Last Wish",
                         "type": "D",
                     }
                 ]
             }, 
             {
+                "idx": "2",
                 "type": "f",
                 "id": "_1",
                 "name": "a flashcard"
@@ -31,22 +42,26 @@ const blocks_import = [
     },
     {
         "id": "2",
+        "idx": "2",
         "name": "Math",
         "type": "D",
+        "path": [],
     },
     {
         "id": "3",
+        "idx": "3",
         "name": "Programming",
         "type": "D",
+        "path": [],
     },
 ]
 
 const cards_import = [{
     id: "_1",
     deck_id: "from db",
-    block_id: "from db",
+    // block_id: "from db",
     template_id: "from db",
-    deck_title: "Enlish",
+    deck_title: "English",
     template_title: "Basic",
     entries: [
         {
@@ -78,9 +93,58 @@ const cards_import = [{
 function CollectionProvider({children}) {
     const [blocks, updateBlocks] = useState(blocks_import)
     const [cards, updateCards] = useState(cards_import);
-    // TODO TODO TODO
+    const [isBlockEditing, updateIsBlockEditing] = useState(false)
+    
+    // TODO
     const [blocksNumber, updateBlocksNumber] = useState(5);
     const [selectedBlockId, updateSelectedBlockId] = useState('');
+
+    const updateBlockName = (blockId) => {
+        console.log("updateBlockName")
+    }
+
+    const updateSelectedBlockIdAndCleanup = (id, blockRef) => {
+        if (selectedBlockId !== id || id === '') {
+            let sel = window.getSelection();
+            sel.removeAllRanges();
+            let el = blockRef.current.querySelector('.content-editable')
+            el.setAttribute('disabled', true);
+            el.setAttribute('contenteditable', false);
+        } 
+        updateSelectedBlockId(id);
+    }
+
+    const selectElementContents = (el) => {
+        let range;
+        if (window.getSelection && document.createRange) {
+            range = document.createRange();
+            let sel = window.getSelection();
+            range.selectNodeContents(el);
+            sel.removeAllRanges();
+            sel.addRange(range);
+            
+        } else if (document.body && document.body.createTextRange) {
+            range = document.body.createTextRange();
+            range.moveToElementText(el);
+            range.select();
+        }
+    }
+
+    hotkeys('f2', function(event, handler){
+        // Prevent the default refresh event under WINDOWS system
+        if (selectedBlockId !== '') {
+            event.preventDefault();
+            let el = event.target.querySelector("div");
+            el.setAttribute('disabled', false);
+            el.setAttribute('contenteditable', true);
+            updateIsBlockEditing(true);
+            selectElementContents(el);
+        }
+    });
+
+    // hotkeys('enter, escape') {
+        
+    // }
 
     const updateCardEntries = (cardId, changes) => {
         console.log("card is updating (supposedly)", changes)
@@ -161,8 +225,11 @@ function CollectionProvider({children}) {
                 deleteEntryContext: deleteEntryContext,
                 chooseTypeC: chooseTypeC,
                 selectedBlockId,
-                updateSelectedBlockId,
-                addNewBlock
+                updateSelectedBlockIdAndCleanup,
+                addNewBlock,
+                isBlockEditing,
+                getCard,
+                updateBlockName
         }}>
             {children}
         </Collection.Provider>)

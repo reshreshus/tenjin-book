@@ -39,12 +39,12 @@ export default function App() {
       <Sidebar />
       <div className="resizer"/>
         <Switch>
-          <Route exact path="/edit/:id" component={() =>
+          <Route exact path="/edit/" component={() =>
             (<Editor card={{'deckTitle':'English', 'templateTitle': 'Basic'}}/>)}
             />
           <Route exact path="/repeat" component={RepeatCard}/>
           // "?" after id means id is optional
-          <Route exact path="/show-deck/:id?" component={ShowDeck} />
+          <Route exact path="/show-deck/" component={ShowDeck} />
           <Route exact path="/" component={Home} />
         </Switch>
     </div>
