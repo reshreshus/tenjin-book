@@ -26,6 +26,10 @@ $clr-stroke-grey: rgb(236, 238, 240);
     border: 1px solid $clr-stroke-blue-sharp;
 }
 
+@mixin font-light-primary {
+    color: $clr-text-light-primary;
+}
+
 @mixin bg-light-primary {
     background-color: $clr-text-light-primary;
 }

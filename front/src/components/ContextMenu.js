@@ -3,44 +3,49 @@ import {CollectionConsumer} from '../context/CollectionContext';
 
 const ContextMenu = ({block}) => {
 
-    const menuItems = [
+    const menuItems = block ? [
         {
             "action": "New Topic",
             "shortcut": "Alt + N",
             "onClick": () => {
                 console.log("New Topic Click")
-            }
+            },
+            "usable": block.type !== 'f' ? true : false
         },
         {
             "action": "New Card",
             "shortcut": "A",
             "onClick": () => {
                 console.log("New Topic Click")
-            }
+            },
+            "usable": true
         },
         {
             "action": "Rename",
             "shortcut": "F2",
             "onClick": () => {
                 console.log("New Topic Click")
-            }
+            },
+            "usable": true
         },
         {
             "action": "Duplicate",
             "shortcut": "Ctrl + D",
             "onClick": () => {
                 console.log("New Topic Click")
-            }
+            },
+            "usable": true
         },
         {
             "action": "Delete",
             "shortcut": "delete",
             "onClick": () => {
                 console.log("New Topic Click")
-            }
+            },
+            "usable": true
         },
 
-    ]
+    ] : []
     
     
 
@@ -51,14 +56,19 @@ const ContextMenu = ({block}) => {
                 return (
                     // TODO doesn't leave the mouse if we didn't enter it first!
                     <div className="cmenu hide" onMouseLeave={(e) => hideContextMenu(e)}>
-                        <div className="cmenu__item" onClick={() => {}}>
-                            <div className="cmenu__action" onClick={() => {}}>
-                                New Topic
-                            </div>
-                            <div className="cmenu__shortcut" onClick={() => {}}>
-                                Alt + N
-                            </div>
-                        </div>
+                        {
+                            menuItems.map((it) => (
+                                <div className="cmenu__item" onClick={() => {it.onClick()}}>
+                                    <div className="cmenu__action" >
+                                        {it.action}
+                                    </div>
+                                    <div className="cmenu__shortcut" >
+                                        {it.shortcut}
+                                    </div>
+                                </div>
+                            ))
+                        }
+                        
                     </div>
                 )
             }
