@@ -1,10 +1,11 @@
 import React, {useState} from 'react'
 import hotkeys from 'hotkeys-js';
-const Collection = React.createContext();
 import ContextMenu from '../components/ContextMenu';
 import { selectElementContents, disableEditable,
     enabeEditable, removeSelections } from './helpers'
 import { blocks_import, cards_import } from './defaultData';
+
+const Collection = React.createContext();
 
 function CollectionProvider({children}) {
     const [blocks, updateBlocks] = useState(blocks_import)
