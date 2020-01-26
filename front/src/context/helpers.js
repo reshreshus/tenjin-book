@@ -28,13 +28,3 @@ export const selectElementContents = (el) => {
         range.select();
     }
 }
-
-export const openContextMenu = (e, block) => {
-    e.preventDefault();
-    let menu = document.querySelector('.cmenu')
-    updateContextBlock(block);
-    
-    menu.style.top = `${e.clientY + 10}px`;
-    menu.style.left = `${e.clientX - 30}px`;
-    menu.classList.remove('hide');
-}

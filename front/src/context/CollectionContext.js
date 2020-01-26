@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import hotkeys from 'hotkeys-js';
 const Collection = React.createContext();
 import ContextMenu from '../components/ContextMenu';
-import { openContextMenu, selectElementContents, disableEditable,
+import { selectElementContents, disableEditable,
     enabeEditable, removeSelections } from './helpers'
 import { blocks_import, cards_import } from './defaultData';
 
@@ -36,8 +36,9 @@ function CollectionProvider({children}) {
 
 
     const updateSelectedBlockIdAndCleanup = (id, blockRef) => {
-        removeSelections()
-        let el = blockRef.current.querySelector('.content-editable')
+        removeSelections();
+        hideContextMenu();
+        let el = blockRef.current.querySelector('.content-editable');
         disableEditable(el);
         updateSelectedBlockId(id);
     }
@@ -102,6 +103,7 @@ function CollectionProvider({children}) {
             })
              // edit new block immediately upon creating it
             updateBlocks([...blocks]);
+            hideContextMenu();
             updateSelectedBlockId(newBlocksNumber)
             // new Block isn't created immediately so I wait
             setTimeout(() => {
@@ -114,6 +116,23 @@ function CollectionProvider({children}) {
         } else {
             console.log("this kind of adding not implemented yet")
         }
+    }
+
+    const openContextMenu = (e, block) => {
+        e.preventDefault();
+        let menu = document.querySelector('.cmenu')
+        updateContextBlock(block);
+        
+        menu.style.top = `${e.clientY + 10}px`;
+        menu.style.left = `${e.clientX - 30}px`;
+        menu.classList.remove('hide');
+    }
+
+    const hideContextMenu = () => {
+        let menu = document.querySelector('.cmenu')
+        menu.classList.add('hide');
+        menu.style.top = '-200%';
+        menu.style.left = '-200%';
     }
 
     return (
@@ -132,7 +151,8 @@ function CollectionProvider({children}) {
                 addNewBlock,
                 getCard,
                 updateBlockName,
-                openContextMenu
+                openContextMenu,
+                hideContextMenu
         }}>
             {children}
             <ContextMenu block={contextBlock} />

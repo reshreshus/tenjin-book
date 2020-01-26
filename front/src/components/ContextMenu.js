@@ -42,17 +42,12 @@ const ContextMenu = ({block}) => {
 
     ]
     
-    const hideContextMenu = (e) => {
-        let menu = document.querySelector('.cmenu')
-        menu.classList.add('hide');
-        menu.style.top = '-200%';
-        menu.style.left = '-200%';
-    }
+    
 
     return (
         <CollectionConsumer> 
         {
-            (value) => {
+            ({hideContextMenu}) => {
                 return (
                     // TODO doesn't leave the mouse if we didn't enter it first!
                     <div className="cmenu hide" onMouseLeave={(e) => hideContextMenu(e)}>
