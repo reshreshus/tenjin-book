@@ -8,6 +8,7 @@ import Home from './pages/Home';
 import Editor from './pages/Editor';
 import ShowDeck from './pages/ShowDeck';
 import RepeatCard from './pages/RepeatCard';
+// import ContextMenu from './components/ContextMenu';
 
 
 
@@ -37,6 +38,7 @@ export default function App() {
   return (
     <div className="app">
       <Sidebar />
+      {/* <ContextMenu /> */}
       <div className="resizer"/>
         <Switch>
           <Route exact path="/edit/" component={() =>

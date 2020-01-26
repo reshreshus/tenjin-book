@@ -17,11 +17,7 @@
     &__type {
         font-size: 16px;
         line-height: 16px;
-        // position: absolute;
-        // left: -1.85rem;
-        // top: .2rem;
         color: $clr-text-blue-bright;
-
         // card active
         &--ca {
             color: $clr-block-card-active
@@ -36,31 +32,21 @@
     &__name {
         display: block;
         box-sizing: border-box;
+        // so that stroke-blue-sharp doesn't shake the element
         border: 1px solid transparent;
         padding: 1px;
         
         &:active {
-            // background-color: $clr-blue-soft;
             @include stroke-blue-sharp;
         }
         &--active {
             @include stroke-blue-sharp;
-            // background-color: $clr-blue-soft;
-            
             border-radius: 2px;
-
-            // a:any-link {
-            //     color: white;
-            // }
         }
        
     } 
     &__link {
         text-decoration: none;
-        
-        &:active {
-            color: white;
-        }
     }
 
     &__children {
@@ -86,6 +72,7 @@
     transition: 0.2s;
 }   
 
+//TODO
 .active {
   display: inline-block;
   margin-left: 1rem;

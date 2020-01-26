@@ -22,6 +22,17 @@ export default function Block({block}) {
         updateExpanded(!expanded);
     }
 
+    const openContextMenu = (e) => {
+        // document.querySelector('.cmenu').style['display'] = 'inline-block'
+        e.preventDefault();
+        let menu = document.querySelector('.cmenu')
+        
+        menu.style.top = `${e.clientY + 17}px`;
+        menu.style.left = `${e.clientX - 30}px`;
+        menu.classList.remove('hide');
+    }
+
+
     return (
         <CollectionConsumer> 
         {
@@ -44,8 +55,8 @@ export default function Block({block}) {
 
                 return (
                     <div className={`block`} ref={node}>  
-                        
-                        <div className="block__inline">
+                    
+                        <div className="block__inline" onContextMenu={(e) => openContextMenu(e)}>
                         {
                             block.children ? 
                             <span  className={`caret ${expanded ? 'caret-down': ''}`} onClick={() => {toggleCaret()}}>

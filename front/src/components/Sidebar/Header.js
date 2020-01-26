@@ -10,7 +10,7 @@ export default function Header() {
                 return (
                     <div className="header">
                         <Link to="/" className="link" onClick={() => updateSelectedBlockId('')}>
-                            <h1>Gora Gora <br/>⟅(☉ ⃢ ☉)⟆
+                            <h1>Gora Gora <br/>•ᴗ•
                             </h1>
                         </Link>
                     </div>

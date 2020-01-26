@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import hotkeys from 'hotkeys-js';
-
+import ContextMenu from '../components/ContextMenu'
 const Collection = React.createContext();
 
 const blocks_import = [
@@ -232,7 +232,6 @@ function CollectionProvider({children}) {
         } else {
             console.log("this kind of adding not implemented yet")
         }
-
     }
 
     return (
@@ -250,9 +249,12 @@ function CollectionProvider({children}) {
                 updateSelectedBlockId,
                 addNewBlock,
                 getCard,
-                updateBlockName
+                updateBlockName,
+                // hideContextMenu,    
+                // openContextMenu
         }}>
             {children}
+            <ContextMenu />
         </Collection.Provider>)
     
 }
