@@ -29,6 +29,10 @@ function CollectionProvider({children}) {
     }
     hotkeys('f2', handleF2);
 
+    hotkeys('esc', () => {
+        hideContextMenu();
+    })
+
 
     const updateBlockName = (blockId) => {
         console.log("updateBlockName")
