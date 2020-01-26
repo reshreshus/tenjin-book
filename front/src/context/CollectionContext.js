@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import hotkeys from 'hotkeys-js';
-import ContextMenu from '../components/ContextMenu'
 const Collection = React.createContext();
+import ContextMenu from '../components/ContextMenu';
 
 const blocks_import = [
     {
@@ -96,6 +96,8 @@ function CollectionProvider({children}) {
     // TODO
     const [blocksNumber, updateBlocksNumber] = useState(6);
     const [selectedBlockId, updateSelectedBlockId] = useState('');
+
+    const [contextBlock, updateContextBlock] = useState(null);
 
     const updateBlockName = (blockId) => {
         console.log("updateBlockName")
@@ -234,6 +236,16 @@ function CollectionProvider({children}) {
         }
     }
 
+    const openContextMenu = (e, block) => {
+        e.preventDefault();
+        let menu = document.querySelector('.cmenu')
+        updateContextBlock(block);
+        
+        menu.style.top = `${e.clientY + 10}px`;
+        menu.style.left = `${e.clientX - 30}px`;
+        menu.classList.remove('hide');
+    }
+
     return (
         <Collection.Provider value={{
                 cards: cards,
@@ -250,11 +262,11 @@ function CollectionProvider({children}) {
                 addNewBlock,
                 getCard,
                 updateBlockName,
-                // hideContextMenu,    
-                // openContextMenu
+                openContextMenu
         }}>
             {children}
-            <ContextMenu />
+            <ContextMenu block={contextBlock} />
+            
         </Collection.Provider>)
     
 }

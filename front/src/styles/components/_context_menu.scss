@@ -2,5 +2,20 @@
     @include bg-primary;
     position: absolute;
     padding: 5px;
-    background-color: red;
+    z-index: 100;
+    color: $clr-text-soft;
+    width: 200px;
+    &__item {
+        display: flex;
+        text-align: center;
+        justify-content: space-between;
+    }
+
+    &__action {
+
+    }
+
+    &__shortcut {
+        color: $clr-text-softer;
+    }
 }

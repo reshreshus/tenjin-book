@@ -2,6 +2,8 @@ import React, {useEffect, useState, useRef} from 'react'
 import ContentEditable from 'react-contenteditable'
 import {Link} from 'react-router-dom';
 import { CollectionConsumer } from '../../context/CollectionContext';
+import ContextMenu from '../ContextMenu';
+
 
 export default function Block({block}) {
     // TODO: rename on F2
@@ -22,21 +24,15 @@ export default function Block({block}) {
         updateExpanded(!expanded);
     }
 
-    const openContextMenu = (e) => {
-        // document.querySelector('.cmenu').style['display'] = 'inline-block'
-        e.preventDefault();
-        let menu = document.querySelector('.cmenu')
-        
-        menu.style.top = `${e.clientY + 17}px`;
-        menu.style.left = `${e.clientX - 30}px`;
-        menu.classList.remove('hide');
-    }
+    
 
 
     return (
         <CollectionConsumer> 
         {
-            ({selectedBlockId, updateSelectedBlockIdAndCleanup, updateBlockName}) => {
+            ({selectedBlockId, updateSelectedBlockIdAndCleanup, updateBlockName,
+                openContextMenu
+            }) => {
                 const onBlockKeyDown = e => {
                     switch (e.keyCode) {
                         case 13:
@@ -55,8 +51,7 @@ export default function Block({block}) {
 
                 return (
                     <div className={`block`} ref={node}>  
-                    
-                        <div className="block__inline" onContextMenu={(e) => openContextMenu(e)}>
+                        <div className="block__inline">
                         {
                             block.children ? 
                             <span  className={`caret ${expanded ? 'caret-down': ''}`} onClick={() => {toggleCaret()}}>
@@ -70,7 +65,12 @@ export default function Block({block}) {
                         <div className={`block__name ${block.id !== selectedBlockId ? '': 'block__name--active'}` }
                         onClick={()  => {
                             updateSelectedBlockIdAndCleanup(block.id, node)
-                            }} >
+                            }} 
+                            onContextMenu={(e) => {
+                                updateSelectedBlockIdAndCleanup(block.id, node)
+                                openContextMenu(e, block)
+                            }}
+                            >
                             <Link className={`block__link`}
                                 // to={`/show-deck/${block.id}`}
                                 to={{pathname: `${block.type === 'D' ? `/show-deck/` 
