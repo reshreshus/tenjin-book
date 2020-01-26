@@ -44,6 +44,8 @@ export default function Block({block}) {
 
                 return (
                     <div className={`block`} ref={node}>  
+                        
+                        <div className="block__inline">
                         {
                             block.children ? 
                             <span  className={`caret ${expanded ? 'caret-down': ''}`} onClick={() => {toggleCaret()}}>
@@ -71,13 +73,14 @@ export default function Block({block}) {
                                     html={name}
                                     disabled={ true }
                                     className={`content-editable block-${block.id}`}
-                                    // disabled={true}
                                     onChange={handleChange}
                                     tagName='div'  // div by default but still
                                     onKeyDown={onBlockKeyDown}
                                 />
                             </Link>
                         </div>
+                        </div>
+                        
                         {
                             block.children ? 
                                 <div className={`block__children ${expanded ? 'active': ''}`}>

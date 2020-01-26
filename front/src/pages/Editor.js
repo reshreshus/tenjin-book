@@ -7,7 +7,7 @@ import Entry from '../components/Editor/Entry';
 export default function Editor() {
     let linkState = useLocation().state
     let block = linkState ? linkState.block : null
-    if (!block || !block.card_id) {
+    if (!block || !block.id) {
         return (<div className="info">
                     <h1 className="title">( ･ิɷ･ิ)</h1>
                     <h2 className="subtitle"> You have chosen a dark path. <br />
@@ -19,7 +19,7 @@ return (<CollectionConsumer >
     { ({getCard, updateCardEntries, addNewEntryContext, deleteEntryContext,
         chooseTypeC
     }) => {
-    const card = getCard(block.card_id);
+    const card = getCard(block.id);
     // no block sent
     const {deck_title, template_title, entries} = card;
     const entries_editors = new Array(entries.length)

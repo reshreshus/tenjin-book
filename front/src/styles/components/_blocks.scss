@@ -2,16 +2,24 @@
     margin-left: 1.5rem;
 }
 .block {
-    margin-left: 1rem;
     cursor: pointer;
     position: relative;
-
+    
+    * {
+        text-overflow: ellipsis;
+    }
+   
+    &__inline {
+        margin: 5px;
+        display: flex;
+        align-items: center;
+    }
     &__type {
         font-size: 16px;
         line-height: 16px;
-        position: absolute;
-        left: -1.85rem;
-        top: .2rem;
+        // position: absolute;
+        // left: -1.85rem;
+        // top: .2rem;
         color: $clr-text-blue-bright;
 
         // card active
@@ -51,14 +59,15 @@
 
     &__children {
         display: none;
-        margin-left: 1rem;
+        padding-left: 1rem;
+        border-left: 1px solid rgb(236, 238, 240);;
     }
 }
 
 .caret {
     position: absolute;
+    left: -1rem;
     top: 0;
-    left: -3rem;
     color: black;
     display: inline-block;
     user-select: none;
@@ -72,7 +81,8 @@
 }   
 
 .active {
-  display: block;
+  display: inline-block;
+  margin-left: 1rem;
 }
 
 .add-block {

@@ -117,12 +117,12 @@ function CollectionProvider({children}) {
     }
 
     const updateSelectedBlockIdAndCleanup = (id, blockRef) => {
-        console.log("updateSelectedBlockIdAndCleanup", selectedBlockId, id);
-        if (selectedBlockId !== id || id === '') {
+        // console.log("updateSelectedBlockIdAndCleanup", selectedBlockId, id);
+        // if (selectedBlockId !== id || id === '') {
             removeSelections()
             let el = blockRef.current.querySelector('.content-editable')
             disableEditable(el);
-        } 
+        // } 
         updateSelectedBlockId(id);
     }
 
@@ -247,6 +247,7 @@ function CollectionProvider({children}) {
                 chooseTypeC: chooseTypeC,
                 selectedBlockId,
                 updateSelectedBlockIdAndCleanup,
+                updateSelectedBlockId,
                 addNewBlock,
                 getCard,
                 updateBlockName
