@@ -2,7 +2,6 @@
     margin-left: 1.5rem;
 }
 .block {
-    cursor: pointer;
     position: relative;
     
     * {
@@ -10,6 +9,7 @@
     }
    
     &__inline {
+        cursor: pointer;
         margin: 5px;
         display: flex;
         align-items: center;
@@ -35,17 +35,23 @@
     
     &__name {
         display: block;
+        box-sizing: border-box;
+        border: 1px solid transparent;
+        padding: 1px;
+        
         &:active {
-            background-color: $clr-blue-soft;
+            // background-color: $clr-blue-soft;
+            @include stroke-blue-sharp;
         }
         &--active {
-            background-color: $clr-blue-soft;
+            @include stroke-blue-sharp;
+            // background-color: $clr-blue-soft;
             
             border-radius: 2px;
 
-            a:any-link {
-                color: white;
-            }
+            // a:any-link {
+            //     color: white;
+            // }
         }
        
     } 
@@ -60,7 +66,7 @@
     &__children {
         display: none;
         padding-left: 1rem;
-        border-left: 1px solid rgb(236, 238, 240);;
+        border-left: 1px solid $clr-stroke-grey;
     }
 }
 

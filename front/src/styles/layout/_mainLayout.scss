@@ -19,8 +19,6 @@ body {
     z-index: 1;
 }
 
-
-
 .title {
     font-size: 5rem;
     font-weight: 500;
@@ -33,9 +31,9 @@ body {
     font-weight: 500;
 }
 
-// .link:any-link {
-//     text-decoration: none;
-// }
+[contenteditable]:focus {
+    outline: 0px solid transparent;
+}
 
 a:any-link {
     text-decoration: none;
