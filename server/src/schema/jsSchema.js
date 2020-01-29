@@ -133,6 +133,7 @@ const typeDefs = `
             content: JSON
             entry_type: String
             card_id: ID
+            id: ID
         ): [CardEntry],
         card(id: ID): Card
     }
@@ -146,13 +147,13 @@ const resolvers = {
         blocks: () => blocks
     },
     Mutation: {
-        addCardEntry: (parent, { name, content, entry_type, card_id}) => {
+        addCardEntry: (parent, { id, name, content, entry_type, card_id}) => {
             const card = _.find(cards, {id: card_id})
             card.entries.push({
                 name,
                 content,
                 entry_type,
-                id: card.entries.length
+                id
             })
             return card.entries;
         },

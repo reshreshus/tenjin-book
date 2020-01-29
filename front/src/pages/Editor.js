@@ -4,10 +4,7 @@ import {useLocation} from 'react-router-dom';
 
 import Entry from '../components/Editor/Entry';
 
-export default function Editor() {
-    
-    // const [getCardQuery, { loading, error, data }] = useLazyQuery(GET_CARD);
-    
+export default function Editor() {    
 
     let linkState = useLocation().state
     let block = linkState ? linkState.block : null
@@ -23,8 +20,6 @@ return (<CollectionConsumer >
     { ({updateCardEntries, addNewEntryContext, deleteEntryContext,
         chooseTypeC, getCard, card, isCardUpdating
     }) => {
-    // const card = getCard(block.id);
-    // updateCardId(block.id);
     console.log("getCard Editor", card);
     if(!card) {
         if (!isCardUpdating) {
@@ -60,9 +55,9 @@ return (<CollectionConsumer >
         updateCardEntries(card.id, changes);
     }
 
-    const addNewEntry = () => {
+    const addNewEntry = (cardId) => {
         console.log("adding new entry")
-        addNewEntryContext(card.id)
+        addNewEntryContext(cardId)
     }
 
     const saveEditorInstance = (instance, idx) => {
@@ -107,7 +102,7 @@ return (<CollectionConsumer >
                 }
             </div>
             <div className="editor__actions">
-                <div onClick={() => addNewEntry()}className="btn btn-circ btn-plus-minus">+</div>
+                <div onClick={() => addNewEntry(card.id)}className="btn btn-circ btn-plus-minus">+</div>
                 <div onClick={() => saveCardEntries()} className="btn btn-text">Save</div>
             </div>
         </div>

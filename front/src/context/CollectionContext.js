@@ -68,6 +68,8 @@ function CollectionProvider({children}) {
     
 
     const addNewEntryContext = (cardId) => {
+        
+        console.log("cardId", cardId);
         let newEntry = {
             name:"loh", 
             content: {
@@ -76,18 +78,19 @@ function CollectionProvider({children}) {
                     data: { text: "new entry stuff" }
                 }]
             }, 
-            entry_type:"Q"
+            entry_type:"Q",
+            // TODO doing the same thing in server. Need to duplicate?
+            id: card.entries.length
         }
-        cards.filter((c) => c.id === cardId)[0].entries.push({
-            newEntry
-        })
+        // let card = cards.filter((c) => c.id === cardId)[0]
+        card.entries.push(newEntry)
         newEntry['card_id'] = cardId;
         addCardEntryQuery({
             variables: newEntry
         }).then((data) => {
-            console.log("promised data", data);
+            updateCard(card)
         });
-        updateCards(cards);
+        // updateCards(cards);
     }
 
     const deleteEntryContext = (cardId, entryId) => {
