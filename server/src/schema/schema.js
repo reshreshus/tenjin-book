@@ -3,6 +3,7 @@ const _ = require('lodash');
 
 const {
     GraphQLObjectType,
+    GraphQLScalarType,
     GraphQLString,
     GraphQLSchema,
     GraphQLID,
@@ -12,7 +13,8 @@ const {
     GraphQLNonNull
 } = graphql;
 
-export const blocks = [
+
+const blocks = [
     {
         "id": "1",
         "idx": "1",
@@ -65,7 +67,7 @@ export const blocks = [
     },
 ]
 
-export const cards = [{
+const cards = [{
     id: "_1",
     deck_id: "from db",
     // block_id: "from db",
@@ -74,37 +76,52 @@ export const cards = [{
     template_title: "Basic",
     entries: [
         {
-            entry_id: 0,
-            entry_name: "Front",
+            id: 0,
+            name: "Front",
             content: {
                 blocks: [{
                     type: "paragraph",
                     data: { text: "probably some editorJs stuff or html" }
                 }]
             },
-            entry_type: "Q",
+            type: "Q",
         },
         {
-            entry_id: 1,
-            entry_name: "Back",
+            id: 1,
+            name: "Back",
             content: {
                 blocks: [{
                     type: "paragraph",
                     data: { text: "probably some editorJs stuff or html" }
                 }]
             },
-            entry_type: "A",
+            type: "A",
         },
         
     ]
 }]
+
+const ObjectType = new GraphQLScalarType({
+    name: 'ObjectType',
+    serialize: value => value,
+    parseValue: value => value,
+    parseLiteral: (ast) => {
+      if (ast.kind !== Kind.OBJECT) {
+        throw new GraphQLError(
+          `Query error: Can only parse object but got a: ${ast.kind}`, 
+          [ast],
+        );
+      }
+      return ast.value;
+    },
+});
 
 const CardEntryType = new GraphQLObjectType({
     name: 'CardEntry',
     fields: () => ({
         id: {type: GraphQLInt},
         name: {type: GraphQLString},
-        content: { type: GraphQLString} // TODO: ha?
+        content: { type: ObjectType} // TODO: ha?
     })
 })
 
