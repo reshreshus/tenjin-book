@@ -2,11 +2,10 @@ import React, {useEffect, useState, useRef} from 'react'
 import ContentEditable from 'react-contenteditable'
 import {Link} from 'react-router-dom';
 import { CollectionConsumer } from '../../context/CollectionContext';
-import ContextMenu from '../ContextMenu';
+
 
 
 export default function Block({block}) {
-    // TODO: rename on F2
     let contentEditable;
     const [name, updateName] = useState(block.name)
     const [expanded, updateExpanded] = useState(block.expanded ? block.expanded : false)
@@ -24,7 +23,6 @@ export default function Block({block}) {
         updateExpanded(!expanded);
     }
 
-    
 
 
     return (
@@ -33,6 +31,7 @@ export default function Block({block}) {
             ({selectedBlockId, updateSelectedBlockIdAndCleanup, updateBlockName,
                 openContextMenu
             }) => {
+                
                 const onBlockKeyDown = e => {
                     switch (e.keyCode) {
                         case 13:

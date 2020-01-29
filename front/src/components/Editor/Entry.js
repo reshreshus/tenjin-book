@@ -35,7 +35,7 @@ export default function Entry({e, saveEditorInstance, idx, deleteEntry, chooseTy
                                     onClick={()=> 
                                         {
                                             closeChoosingType();
-                                            chooseType(e.entry_id, type);
+                                            chooseType(e.id, type);
                                             
                                         }}
                                     >
@@ -46,7 +46,7 @@ export default function Entry({e, saveEditorInstance, idx, deleteEntry, chooseTy
                     </div>
                     
                     <div onClick={() => {
-                        openChoosingType(e.entryId)
+                        openChoosingType(e.id)
                     }}
                     className={`card-entry__qa btn-circ ${isChoosingType ? "hide": ""}`}> { e.entry_type }
                     </div>
@@ -57,22 +57,22 @@ export default function Entry({e, saveEditorInstance, idx, deleteEntry, chooseTy
                 
                 <div className="card-entry__name">
                     {
-                        e.entry_name
+                        e.name
                     }
                 </div>
             </div>
 
             <div className="card-entry__field">
                 <div className="card-entry__text-field" 
-                    id={"editor-js-" + e.entry_id}>
+                    id={"editor-js-" + e.id}>
                     <EditorJs 
                         instanceRef={instance => saveEditorInstance(instance, idx)}
                         tools={EDITOR_JS_TOOLS}
-                        holder={"editor-js-" + e.entry_id}
+                        holder={"editor-js-" + e.id}
                         data={e.content}
                     />
                 </div>
-                <div onClick={() => deleteEntry(e.entry_id)} className="btn-circ btn-plus-minus">-</div>
+                <div onClick={() => deleteEntry(e.id)} className="btn-circ btn-plus-minus">-</div>
             </div>
         </div>
     )

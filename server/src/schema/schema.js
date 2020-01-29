@@ -84,7 +84,7 @@ const cards = [{
                     data: { text: "probably some editorJs stuff or html" }
                 }]
             },
-            type: "Q",
+            entry_type: "Q",
         },
         {
             id: 1,
@@ -95,7 +95,7 @@ const cards = [{
                     data: { text: "probably some editorJs stuff or html" }
                 }]
             },
-            type: "A",
+            entry_type: "A",
         },
         
     ]
@@ -121,7 +121,8 @@ const CardEntryType = new GraphQLObjectType({
     fields: () => ({
         id: {type: GraphQLInt},
         name: {type: GraphQLString},
-        content: { type: ObjectType} // TODO: ha?
+        content: { type: ObjectType}, // TODO: ha?
+        entry_type: {type: GraphQLString}
     })
 })
 

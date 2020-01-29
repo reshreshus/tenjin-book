@@ -1,10 +1,22 @@
-import React from 'react'
+import React, {useState} from 'react'
 import { CollectionConsumer } from '../context/CollectionContext';
 import {useLocation} from 'react-router-dom';
 
 import Entry from '../components/Editor/Entry';
 
+import { GET_CARD } from '../context/queries';
+import { useLazyQuery, useQuery } from '@apollo/react-hooks';
+
 export default function Editor() {
+    const [cardId, updateCardId] = useState(null)
+    // const [getCardQuery, { loading, error, data }] = useLazyQuery(GET_CARD);
+    const {data, error, loading} = useQuery(GET_CARD, 
+        {
+            variables: {id: cardId},
+            skip: !cardId
+        }
+        )
+
     let linkState = useLocation().state
     let block = linkState ? linkState.block : null
     if (!block || !block.id) {
@@ -14,12 +26,27 @@ export default function Editor() {
                     No flashcard here..</h2>
                 </div>)
     }
+
+    const getCard = (id) => {
+        // return cards.filter((c) => c.id === cardId)[0]
+        // getCardQuery({ variables: { id: id } })
+        // console.log("id", id);
+        // // console.log("useQuery", loading, error, data);
+        // return data;
+    }
    
 return (<CollectionConsumer >
-    { ({getCard, updateCardEntries, addNewEntryContext, deleteEntryContext,
+    { ({updateCardEntries, addNewEntryContext, deleteEntryContext,
         chooseTypeC
     }) => {
-    const card = getCard(block.id);
+    // const card = getCard(block.id);
+    updateCardId(block.id);
+    if (!cardId || loading) {
+        return <div>loading</div>
+    } 
+    console.log("useQuery ", loading, data, error);
+    const { card } = data;
+    
     // no block sent
     const {deck_title, template_title, entries} = card;
     const entries_editors = new Array(entries.length)
@@ -47,8 +74,8 @@ return (<CollectionConsumer >
         entries_editors[idx] = instance
     }
 
-    const deleteEntry = (entryId) => {
-        deleteEntryContext(card.id, entryId)
+    const deleteEntry = (id) => {
+        deleteEntryContext(card.id, id)
     }
 
     const chooseType = (entryId, type) => {

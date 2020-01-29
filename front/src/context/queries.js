@@ -1,12 +1,16 @@
 import { gql } from 'apollo-boost';
 
-const getCardQuery = gql`
-    query Card($id: String!)
-    {
+export const GET_CARD = gql`
+    query Card($id: ID!) {
         card (id: $id) {
             deck_title
             template_title
-            entries
+            entries {
+                id
+                name
+                content
+                entry_type
+            }
         }
     }
 `;

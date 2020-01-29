@@ -5,6 +5,9 @@ import { selectElementContents, disableEditable,
     enabeEditable, removeSelections } from './helpers'
 import { blocks_import, cards_import } from './defaultData';
 
+import { GET_CARD } from './queries';
+import { useLazyQuery } from '@apollo/react-hooks';
+
 const Collection = React.createContext();
 
 function CollectionProvider({children}) {
@@ -15,6 +18,8 @@ function CollectionProvider({children}) {
     const [selectedBlockId, updateSelectedBlockId] = useState('');
 
     const [contextBlock, updateContextBlock] = useState(null);
+
+    
 
     /**
      * Hotkeys
@@ -52,9 +57,7 @@ function CollectionProvider({children}) {
         console.log("card is updating (supposedly)", changes)
     }
 
-    const getCard = (cardId) => {
-        return cards.filter((c) => c.id === cardId)[0]
-    }
+    
 
     const addNewEntryContext = (cardId) => {
         let card = cards.filter(c => c.id === cardId)[0];
@@ -139,17 +142,19 @@ function CollectionProvider({children}) {
         menu.style.top = '-200%';
         menu.style.left = '-200%';
     }
+    const getCard = () => {
+        console.log("getCard")
+    }
 
     return (
         <Collection.Provider value={{
-                cards: cards,
-                getCard: getCard,
-                blocks: blocks,
-                getBlock: getBlock,
+                cards,
+                blocks,
+                getBlock,
                 updateCardEntries,
-                addNewEntryContext: addNewEntryContext,
-                deleteEntryContext: deleteEntryContext,
-                chooseTypeC: chooseTypeC,
+                addNewEntryContext,
+                deleteEntryContext,
+                chooseTypeC,
                 selectedBlockId,
                 updateSelectedBlockIdAndCleanup,
                 updateSelectedBlockId,
