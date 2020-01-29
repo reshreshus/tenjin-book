@@ -2,8 +2,10 @@ import React, {useState} from 'react'
 import hotkeys from 'hotkeys-js';
 import ContextMenu from '../components/ContextMenu';
 import { selectElementContents, disableEditable,
-    enabeEditable, removeSelections } from './helpers'
+    enabeEditable, removeSelections, hideContextMenu } from './helpers'
 import { blocks_import, cards_import } from './defaultData';
+
+import { handleHotkeysExternal } from './hotkeys.js';
 
 import { GET_CARD } from './queries';
 import { useLazyQuery } from '@apollo/react-hooks';
@@ -19,21 +21,14 @@ function CollectionProvider({children}) {
 
     const [contextBlock, updateContextBlock] = useState(null);
 
-    
 
-    /**
-     * Hotkeys
-     */
-    const handleF2 = (event, handler) => {
-        // Prevent the default refresh event under WINDOWS system
-        if (selectedBlockId !== '') {
-            event.preventDefault();
-            let el = document.querySelector(`.block-${selectedBlockId}`);
-            enabeEditable(el)
-            selectElementContents(el);
-        }
+    const handleHotkeys = (event, handler) => {
+        handleHotkeysExternal(event, handler, selectedBlockId);
     }
-    hotkeys('f2', handleF2);
+
+    // TODO the more your rename the more it is being exectued
+    // Strange
+    hotkeys('f2', handleHotkeys);
 
     hotkeys('esc', () => {
         hideContextMenu();
@@ -136,12 +131,8 @@ function CollectionProvider({children}) {
         menu.classList.remove('hide');
     }
 
-    const hideContextMenu = () => {
-        let menu = document.querySelector('.cmenu')
-        menu.classList.add('hide');
-        menu.style.top = '-200%';
-        menu.style.left = '-200%';
-    }
+    
+
     const getCard = () => {
         console.log("getCard")
     }

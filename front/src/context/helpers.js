@@ -1,3 +1,10 @@
+export const hideContextMenu = () => {
+    let menu = document.querySelector('.cmenu')
+    menu.classList.add('hide');
+    menu.style.top = '-200%';
+    menu.style.left = '-200%';
+}
+
 export const removeSelections = () => {
     let sel = window.getSelection();
     sel.removeAllRanges();

@@ -5,7 +5,7 @@ import {useLocation} from 'react-router-dom';
 import Entry from '../components/Editor/Entry';
 
 import { GET_CARD } from '../context/queries';
-import { useLazyQuery, useQuery } from '@apollo/react-hooks';
+import { useQuery } from '@apollo/react-hooks';
 
 export default function Editor() {
     const [cardId, updateCardId] = useState(null)
@@ -14,8 +14,7 @@ export default function Editor() {
         {
             variables: {id: cardId},
             skip: !cardId
-        }
-        )
+        })
 
     let linkState = useLocation().state
     let block = linkState ? linkState.block : null
@@ -25,14 +24,6 @@ export default function Editor() {
                     <h2 className="subtitle"> You have chosen a dark path. <br />
                     No flashcard here..</h2>
                 </div>)
-    }
-
-    const getCard = (id) => {
-        // return cards.filter((c) => c.id === cardId)[0]
-        // getCardQuery({ variables: { id: id } })
-        // console.log("id", id);
-        // // console.log("useQuery", loading, error, data);
-        // return data;
     }
    
 return (<CollectionConsumer >
