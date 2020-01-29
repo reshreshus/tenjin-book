@@ -28,11 +28,7 @@ function CollectionProvider({children}) {
 
     // TODO the more your rename the more it is being exectued
     // Strange
-    hotkeys('f2', handleHotkeys);
-
-    hotkeys('esc', () => {
-        hideContextMenu();
-    })
+    hotkeys('f2,esc', handleHotkeys);
 
 
     const updateBlockName = (blockId) => {

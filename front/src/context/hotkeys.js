@@ -1,9 +1,12 @@
-import { enabeEditable, selectElementContents} from './helpers';
+import { enabeEditable, selectElementContents, hideContextMenu} from './helpers';
 
 export const handleHotkeysExternal = (event, handler, selectedBlockId) => {
     switch (handler.key) {
         case 'f2':
             handleF2(event, handler, selectedBlockId);
+            break;
+        case 'esc':
+            hideContextMenu();
             break;
         default:
             console.log("")
