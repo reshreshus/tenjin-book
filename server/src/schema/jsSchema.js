@@ -133,7 +133,8 @@ const typeDefs = `
             content: JSON
             entry_type: String
             card_id: ID
-        ): [CardEntry]
+        ): [CardEntry],
+        card(id: ID): Card
     }
 `;
 
@@ -154,9 +155,13 @@ const resolvers = {
                 id: card.entries.length
             })
             return card.entries;
-        }
+        },
+        card: (parent, { id }) => _.find(cards, {id: id})
     }
 };
 
 // export const jsSchema = makeExecutableSchema({ typeDefs, resolvers });
-export const server = new ApolloServer({ typeDefs, resolvers });
+export const server = new ApolloServer({ cors: {
+            origin: '*'}			// <- allow request from all domains
+            // credentials: true}		// <- enable CORS response for requests with credentials (cookies, http authentication)
+    , typeDefs, resolvers });

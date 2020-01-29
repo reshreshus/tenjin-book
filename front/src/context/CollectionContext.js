@@ -23,15 +23,15 @@ function CollectionProvider({children}) {
 
     const [contextBlock, updateContextBlock] = useState(null);
     const [cardId, updateCardId] = useState(null)
+    
+
+    const [getCardQuery, {data : cardData}] = useMutation(GET_CARD);
+    const [isCardUpdating, updateIsCardUpdating] = useState(false);
+        
+
+    // console.log("getCardResponse", getCardResponse)
     const [card, updateCard] = useState(null);
-
-    // const getCardResponse = useQuery(GET_CARD, 
-    //     {
-    //         variables: {id: cardId},
-    //         skip: !cardId
-    //     })
-
-
+    
     const [addCardEntryQuery, {data}] = useMutation(ADD_CARD_ENTRY)
     
     // if (getCardResponse.data && getCardResponse.data.card)
@@ -68,16 +68,26 @@ function CollectionProvider({children}) {
     
 
     const addNewEntryContext = (cardId) => {
+        let newEntry = {
+            name:"loh", 
+            content: {
+                blocks: [{
+                    type: "paragraph",
+                    data: { text: "new entry stuff" }
+                }]
+            }, 
+            entry_type:"Q"
+        }
+        cards.filter((c) => c.id === cardId)[0].entries.push({
+            newEntry
+        })
+        newEntry['card_id'] = cardId;
         addCardEntryQuery({
-            variables: { 
-                name:"loh", 
-                content: {block:"loh block"}, 
-                entry_type:"Q", 
-                card_id:"_1"
-            }
+            variables: newEntry
         }).then((data) => {
             console.log("promised data", data);
         });
+        updateCards(cards);
     }
 
     const deleteEntryContext = (cardId, entryId) => {
@@ -140,7 +150,15 @@ function CollectionProvider({children}) {
     
 
     const getCard = (id) => {
-        console.log("getCard")
+        updateIsCardUpdating(true);
+        getCardQuery({
+            variables: {id: id}
+        }).then((data) => {
+            console.log("cardData", data)
+            updateCard(data.data.card);
+            updateIsCardUpdating(false);
+        });
+        
         return cards.filter((c) => c.id === id )[0]
     }
 
@@ -162,7 +180,8 @@ function CollectionProvider({children}) {
                 openContextMenu,
                 hideContextMenu,
                 updateCardId,
-                card
+                card,
+                isCardUpdating
         }}>
             {children}
             <ContextMenu block={contextBlock} />

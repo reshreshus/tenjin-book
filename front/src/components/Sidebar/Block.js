@@ -29,9 +29,9 @@ export default function Block({block}) {
             ({selectedBlockId, updateSelectedBlockIdAndCleanup, updateBlockName,
                 openContextMenu, updateCardId
             }) => {
-                if (block.type === 'f') {
-                    updateCardId(block.id)
-                }
+                // if (block.type === 'f') {
+                //     updateCardId(block.id)
+                // }
                 const onBlockKeyDown = e => {
                     switch (e.keyCode) {
                         case 13:

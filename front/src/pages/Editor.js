@@ -21,15 +21,21 @@ export default function Editor() {
    
 return (<CollectionConsumer >
     { ({updateCardEntries, addNewEntryContext, deleteEntryContext,
-        chooseTypeC, getCard
+        chooseTypeC, getCard, card, isCardUpdating
     }) => {
     // const card = getCard(block.id);
     // updateCardId(block.id);
-    let card = getCard(block.id)
-    console.log("card", card);
-    if (!card) {
+    console.log("getCard Editor", card);
+    if(!card) {
+        if (!isCardUpdating) {
+            getCard(block.id)
+        }
         return <div>loading</div>
     }
+    
+    // if (!card) {
+    //     return <div>loading</div>
+    // }
     // if (!cardId || loading) {
     //     return <div>loading</div>
     // } 
