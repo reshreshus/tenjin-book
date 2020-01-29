@@ -13,6 +13,9 @@ const {
     GraphQLNonNull
 } = graphql;
 
+import { makeExecutableSchema } from 'graphql-tools';
+import GraphQLJSON from 'graphql-type-json';
+
 
 const blocks = [
     {
@@ -121,7 +124,7 @@ const CardEntryType = new GraphQLObjectType({
     fields: () => ({
         id: {type: GraphQLInt},
         name: {type: GraphQLString},
-        content: { type: ObjectType}, // TODO: ha?
+        content: { type: GraphQLJSON}, 
         entry_type: {type: GraphQLString}
     })
 })
@@ -190,6 +193,35 @@ const RootQuery = new GraphQLObjectType({
     }
 })
 
+
+const Mutation = new GraphQLObjectType({
+    name: 'Mutation',
+    fields: {
+        addCardEntry: {
+            type: CardEntryType,
+            args: {
+                name: {type: GraphQLString},
+                content: { type: GraphQLJSON}, 
+                entry_type: {type: GraphQLString},
+                card_id: {type: GraphQLString}
+            },
+            resolve(parent, args) {
+                let card = _.find(cards, {id: args.card_id})
+                
+                card.entries.push({
+                    name: args.name,
+                    entry_type: args.entry_type,
+                    id: card.entries.length
+                })
+                console.log("card", card)
+                console.log("card content", card.content)
+                return card.entries;    
+            }
+        }
+    }
+});
+
 module.exports = new GraphQLSchema({
-    query: RootQuery
+    query: RootQuery,
+    mutation: Mutation
 });

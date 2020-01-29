@@ -2,13 +2,15 @@ import React, {useState} from 'react'
 import hotkeys from 'hotkeys-js';
 import ContextMenu from '../components/ContextMenu';
 import { selectElementContents, disableEditable,
-    enabeEditable, removeSelections, hideContextMenu } from './helpers'
+    enabeEditable, removeSelections, hideContextMenu } from './domHelpers'
 import { blocks_import, cards_import } from './defaultData';
 
 import { handleHotkeysExternal } from './hotkeys.js';
 
+import {addNewEntryApi} from './api';
+
 import { GET_CARD } from './queries';
-import { useLazyQuery } from '@apollo/react-hooks';
+import { useQuery } from '@apollo/react-hooks';
 
 const Collection = React.createContext();
 
@@ -20,12 +22,24 @@ function CollectionProvider({children}) {
     const [selectedBlockId, updateSelectedBlockId] = useState('');
 
     const [contextBlock, updateContextBlock] = useState(null);
+    const [cardId, updateCardId] = useState(null)
+    const [card, updateCard] = useState(null);
+
+    const getCardResponse = useQuery(GET_CARD, 
+        {
+            variables: {id: cardId},
+            skip: !cardId
+        })
+    
+    if (getCardResponse.data && getCardResponse.data.card)
+        updateCard(getCardResponse.data.card)
+
+    
 
 
     const handleHotkeys = (event, handler) => {
         handleHotkeysExternal(event, handler, selectedBlockId);
     }
-
     // TODO the more your rename the more it is being exectued
     // Strange
     hotkeys('f2,esc', handleHotkeys);
@@ -51,23 +65,7 @@ function CollectionProvider({children}) {
     
 
     const addNewEntryContext = (cardId) => {
-        let card = cards.filter(c => c.id === cardId)[0];
-        // TODO: might be slow?
-        let idx = cards.indexOf(card)
-        card.entries = [...card.entries, {
-            entry_id: card.entries.length,
-            content: {
-                blocks: [{
-                    type: "paragraph",
-                    data: { text: "new entry" }
-                }]
-            },
-            entry_type: "A",
-            entry_name: "Back",
-        }]
-        let newCards = cards
-        newCards[idx] = card;
-        updateCards([...newCards]);
+        addNewEntryApi(cardId, )
     }
 
     const deleteEntryContext = (cardId, entryId) => {
@@ -149,7 +147,9 @@ function CollectionProvider({children}) {
                 getCard,
                 updateBlockName,
                 openContextMenu,
-                hideContextMenu
+                hideContextMenu,
+                updateCardId,
+                card
         }}>
             {children}
             <ContextMenu block={contextBlock} />

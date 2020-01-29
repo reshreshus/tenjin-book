@@ -23,15 +23,15 @@ export default function Block({block}) {
         updateExpanded(!expanded);
     }
 
-
-
     return (
         <CollectionConsumer> 
         {
             ({selectedBlockId, updateSelectedBlockIdAndCleanup, updateBlockName,
-                openContextMenu
+                openContextMenu, updateCardId
             }) => {
-                
+                if (block.type === 'f') {
+                    updateCardId(block.id)
+                }
                 const onBlockKeyDown = e => {
                     switch (e.keyCode) {
                         case 13:

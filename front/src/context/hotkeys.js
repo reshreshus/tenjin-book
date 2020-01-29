@@ -1,4 +1,4 @@
-import { enabeEditable, selectElementContents, hideContextMenu} from './helpers';
+import { enabeEditable, selectElementContents, hideContextMenu} from './domHelpers';
 
 export const handleHotkeysExternal = (event, handler, selectedBlockId) => {
     switch (handler.key) {

@@ -4,17 +4,10 @@ import {useLocation} from 'react-router-dom';
 
 import Entry from '../components/Editor/Entry';
 
-import { GET_CARD } from '../context/queries';
-import { useQuery } from '@apollo/react-hooks';
-
 export default function Editor() {
-    const [cardId, updateCardId] = useState(null)
+    
     // const [getCardQuery, { loading, error, data }] = useLazyQuery(GET_CARD);
-    const {data, error, loading} = useQuery(GET_CARD, 
-        {
-            variables: {id: cardId},
-            skip: !cardId
-        })
+    
 
     let linkState = useLocation().state
     let block = linkState ? linkState.block : null
@@ -28,15 +21,18 @@ export default function Editor() {
    
 return (<CollectionConsumer >
     { ({updateCardEntries, addNewEntryContext, deleteEntryContext,
-        chooseTypeC
+        chooseTypeC, card
     }) => {
     // const card = getCard(block.id);
-    updateCardId(block.id);
-    if (!cardId || loading) {
+    // updateCardId(block.id);
+    if (!card) {
         return <div>loading</div>
-    } 
-    console.log("useQuery ", loading, data, error);
-    const { card } = data;
+    }
+    // if (!cardId || loading) {
+    //     return <div>loading</div>
+    // } 
+    // console.log("useQuery ", loading, data, error);
+    // const { card } = data;
     
     // no block sent
     const {deck_title, template_title, entries} = card;
