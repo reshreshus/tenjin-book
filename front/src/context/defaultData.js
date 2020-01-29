@@ -60,8 +60,8 @@ export const cards_import = [{
     template_title: "Basic",
     entries: [
         {
-            entry_id: 0,
-            entry_name: "Front",
+            id: 0,
+            name: "Front",
             content: {
                 blocks: [{
                     type: "paragraph",
@@ -71,8 +71,8 @@ export const cards_import = [{
             entry_type: "Q",
         },
         {
-            entry_id: 1,
-            entry_name: "Back",
+            id: 1,
+            name: "Back",
             content: {
                 blocks: [{
                     type: "paragraph",

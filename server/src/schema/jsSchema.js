@@ -137,6 +137,7 @@ const typeDefs = `
     }
 `;
 
+// TODO: no error checking here
 const resolvers = {
     JSON: GraphQLJSON,
     Query: {

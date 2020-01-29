@@ -21,10 +21,12 @@ export default function Editor() {
    
 return (<CollectionConsumer >
     { ({updateCardEntries, addNewEntryContext, deleteEntryContext,
-        chooseTypeC, card
+        chooseTypeC, getCard
     }) => {
     // const card = getCard(block.id);
     // updateCardId(block.id);
+    let card = getCard(block.id)
+    console.log("card", card);
     if (!card) {
         return <div>loading</div>
     }

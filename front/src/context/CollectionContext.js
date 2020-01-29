@@ -9,8 +9,8 @@ import { handleHotkeysExternal } from './hotkeys.js';
 
 import {addNewEntryApi} from './api';
 
-import { GET_CARD } from './queries';
-import { useQuery } from '@apollo/react-hooks';
+import { GET_CARD, ADD_CARD_ENTRY } from './queries';
+import { useQuery, useMutation } from '@apollo/react-hooks';
 
 const Collection = React.createContext();
 
@@ -25,14 +25,17 @@ function CollectionProvider({children}) {
     const [cardId, updateCardId] = useState(null)
     const [card, updateCard] = useState(null);
 
-    const getCardResponse = useQuery(GET_CARD, 
-        {
-            variables: {id: cardId},
-            skip: !cardId
-        })
+    // const getCardResponse = useQuery(GET_CARD, 
+    //     {
+    //         variables: {id: cardId},
+    //         skip: !cardId
+    //     })
+
+
+    const [addCardEntryQuery, {data}] = useMutation(ADD_CARD_ENTRY)
     
-    if (getCardResponse.data && getCardResponse.data.card)
-        updateCard(getCardResponse.data.card)
+    // if (getCardResponse.data && getCardResponse.data.card)
+    //     updateCard(getCardResponse.data.card)
 
     
 
@@ -65,7 +68,16 @@ function CollectionProvider({children}) {
     
 
     const addNewEntryContext = (cardId) => {
-        addNewEntryApi(cardId, )
+        addCardEntryQuery({
+            variables: { 
+                name:"loh", 
+                content: {block:"loh block"}, 
+                entry_type:"Q", 
+                card_id:"_1"
+            }
+        }).then((data) => {
+            console.log("promised data", data);
+        });
     }
 
     const deleteEntryContext = (cardId, entryId) => {
@@ -127,8 +139,9 @@ function CollectionProvider({children}) {
 
     
 
-    const getCard = () => {
+    const getCard = (id) => {
         console.log("getCard")
+        return cards.filter((c) => c.id === id )[0]
     }
 
     return (
