@@ -54,7 +54,7 @@ const blocks = [
         "name": "Programming",
         "type": "D",
         "path": [],
-    },
+    }
 ]
 
 const cards = [{
@@ -135,7 +135,14 @@ const typeDefs = `
             card_id: ID
             id: ID
         ): [CardEntry],
-        card(id: ID): Card
+        card(id: ID): Card,
+        saveCard (
+            id: ID
+            template_id: String
+            deck_title: String
+            template_title: String
+            entries: [JSON]
+        ): Card
     }
 `;
 
@@ -157,7 +164,20 @@ const resolvers = {
             })
             return card.entries;
         },
-        card: (parent, { id }) => _.find(cards, {id: id})
+        card: (parent, { id }) => _.find(cards, {id: id}),
+        saveCard: (parent, {id, template_id, template_title, deck_title, entries}) => {
+            let card = _.find(cards, {id: id});
+            let idx = cards.indexOf(card);
+            card = {
+                id,
+                template_id, 
+                template_title,
+                deck_title,
+                entries
+            }
+            cards[idx] = card;
+            return card;
+        }
     }
 };
 

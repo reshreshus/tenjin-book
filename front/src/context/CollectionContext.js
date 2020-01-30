@@ -9,7 +9,7 @@ import { handleHotkeysExternal } from './hotkeys.js';
 
 import {addNewEntryApi} from './api';
 
-import { GET_CARD, ADD_CARD_ENTRY } from './queries';
+import { GET_CARD, ADD_CARD_ENTRY, SAVE_CARD } from './queries';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 
 const Collection = React.createContext();
@@ -27,6 +27,9 @@ function CollectionProvider({children}) {
 
     const [getCardQuery, {data : cardData}] = useMutation(GET_CARD);
     const [isCardUpdating, updateIsCardUpdating] = useState(false);
+
+    const [saveCardQuery, {data : savedCardData}] = useMutation(SAVE_CARD);
+
         
 
     // console.log("getCardResponse", getCardResponse)
@@ -70,7 +73,13 @@ function CollectionProvider({children}) {
 
     }
 
-    
+    const saveCardServer = () => {
+        saveCardQuery({
+            variables: card
+        }).then((data) => {
+            console.log("savecard data", data)
+        })
+    }
 
     const addNewEntryContext = (cardId) => {
         console.log("cardId", cardId);
@@ -86,16 +95,18 @@ function CollectionProvider({children}) {
             // TODO doing the same thing in server. Need to duplicate?
             id: card.entries.length
         }
-        // let card = cards.filter((c) => c.id === cardId)[0]
+
         card.entries.push(newEntry)
-        updateCard(card)
-        newEntry['card_id'] = cardId;
-        addCardEntryQuery({
-            variables: newEntry
-        }).then((data) => {
-            updateCard(card)
-        });
-        // updateCards([...cards]);
+        // updateCard(card)
+        // newEntry['card_id'] = cardId;
+        // addCardEntryQuery({
+        //     variables: newEntry
+        // }).then((data) => {
+        //     updateCard(card)
+        // });
+        // TODO
+        updateCards([...cards]);
+
     }
 
     const deleteEntryContext = (cardId, entryId) => {
@@ -189,7 +200,8 @@ function CollectionProvider({children}) {
                 hideContextMenu,
                 updateCardId,
                 card,
-                isCardUpdating
+                isCardUpdating,
+                saveCardServer
         }}>
             {children}
             <ContextMenu block={contextBlock} />

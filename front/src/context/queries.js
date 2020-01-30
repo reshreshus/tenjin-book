@@ -24,3 +24,14 @@ export const ADD_CARD_ENTRY = gql`
         }
     }
 `
+
+
+export const SAVE_CARD = gql`
+    mutation SaveCard($id: ID, $template_id: String, $template_title:String, 
+        $deck_title: String, $entries: JSON) {
+            saveCard(id: $id, template_id: $template_id, template_title: $template_title, 
+            deck_title: $deck_title, entries: $entries) {
+            id
+        }
+    }
+`

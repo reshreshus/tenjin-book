@@ -31,7 +31,7 @@ return (<CollectionConsumer >
     }
     
     // no block sent
-    const {deck_title, template_title, entries, loh} = card;
+    const {deck_title, template_title, entries} = card;
     const entries_editors = new Array(entries.length);
     
     const saveCard = async () => { 
