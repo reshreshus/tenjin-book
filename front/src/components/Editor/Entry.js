@@ -1,12 +1,29 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 
 import EditorJs from 'react-editor-js';
 import { EDITOR_JS_TOOLS } from './editorJsTools' 
 
-export default function Entry({e, saveEditorInstance, idx, deleteEntry, chooseType}) {
+export default function Entry({e, saveEditorInstance, idx, deleteEntry, chooseType,
+    editorChanged, updateEditorChanged
+}) {
+    // const [unsaved, updateUnsaved] = useState(false);
     const [isChoosingType, updateChoosingType] = useState(false);
+    const [isChanged, updateIsChanged] = useState(false);
+    useEffect(() => {
+        if (!editorChanged) {
+            updateIsChanged(false);
+        }
+        
+    }, [editorChanged])
+    const updateAreChanged = () => {
+        console.log("updateIsChanged")
+        updateIsChanged(true);
+        updateEditorChanged(true);
+        // if (areChanged) {
+        //     areChanged[e.id] = true;
+        // }
+    }
     
-
     const openChoosingType = () => {
         console.log("openChoosingType")
         updateChoosingType(true)
@@ -24,42 +41,38 @@ export default function Entry({e, saveEditorInstance, idx, deleteEntry, chooseTy
     return (
         <div className="card-entry" >
             <div className="card-entry__header">
-                {/* { */}
-                   
-                    <div className={`card-entry__choose-type ${isChoosingType ? "": "hide"}`}>
-                        {
-                            ['A', 'Q', 'C'].map((type, i) => (
-                                <div key={i} 
-                                    className={`btn ${type===e.entry_type ? 
-                                        'btn-circ' : ''}`}
-                                    onClick={()=> 
-                                        {
-                                            closeChoosingType();
-                                            chooseType(e.id, type);
-                                            
-                                        }}
-                                    >
-                                    { type }
-                                </div>
-                        ))
-                        }
-                    </div>
-                    
-                    <div onClick={() => {
-                        openChoosingType(e.id)
-                    }}
-                    className={`card-entry__qa btn-circ ${isChoosingType ? "hide": ""}`}> { e.entry_type }
-                    </div>
+                {console.log("editorChanged", editorChanged)}
+                <div className={`card-entry__choose-type ${isChoosingType ? "": "hide"}`}>
                     {
-                        
+                        ['A', 'Q', 'C'].map((type, i) => (
+                            <div key={i} 
+                                className={`btn ${type===e.entry_type ? 
+                                    'btn-circ' : ''}`}
+                                onClick={()=> 
+                                    {
+                                        closeChoosingType();
+                                        chooseType(e.id, type);
+                                        
+                                    }}
+                                >
+                                { type }
+                            </div>
+                    ))
                     }
-                {/* } */}
+                </div>
+                
+                <div onClick={() => {
+                    openChoosingType(e.id)
+                }}
+                className={`card-entry__qa btn-circ ${isChoosingType ? "hide": ""}`}> { e.entry_type }
+                </div>
                 
                 <div className="card-entry__name">
                     {
                         e.name
                     }
                 </div>
+                {isChanged ? "*" : ""}
             </div>
 
             <div className="card-entry__field">
@@ -70,6 +83,9 @@ export default function Entry({e, saveEditorInstance, idx, deleteEntry, chooseTy
                         tools={EDITOR_JS_TOOLS}
                         holder={"editor-js-" + e.id}
                         data={e.content}
+                        onChange={() => {
+                            updateAreChanged();
+                        }}
                     />
                 </div>
                 <div onClick={() => deleteEntry(e.id)} className="btn-circ btn-plus-minus">-</div>

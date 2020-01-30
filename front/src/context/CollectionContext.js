@@ -62,13 +62,17 @@ function CollectionProvider({children}) {
     }
 
     const updateCardEntries = (cardId, changes) => {
-        console.log("card is updating (supposedly)", changes)
+        console.log("updateCardEntries")
+       
+        let newCard = Object.assign({}, card);
+        newCard['test'] = 'test'
+        updateCard(newCard);
+
     }
 
     
 
     const addNewEntryContext = (cardId) => {
-        
         console.log("cardId", cardId);
         let newEntry = {
             name:"loh", 
@@ -84,13 +88,14 @@ function CollectionProvider({children}) {
         }
         // let card = cards.filter((c) => c.id === cardId)[0]
         card.entries.push(newEntry)
+        updateCard(card)
         newEntry['card_id'] = cardId;
         addCardEntryQuery({
             variables: newEntry
         }).then((data) => {
             updateCard(card)
         });
-        // updateCards(cards);
+        // updateCards([...cards]);
     }
 
     const deleteEntryContext = (cardId, entryId) => {

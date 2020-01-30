@@ -5,6 +5,7 @@ import {useLocation} from 'react-router-dom';
 import Entry from '../components/Editor/Entry';
 
 export default function Editor() {    
+    const [editorChanged, updateEditorChanged] = useState(false);
 
     let linkState = useLocation().state
     let block = linkState ? linkState.block : null
@@ -20,6 +21,7 @@ return (<CollectionConsumer >
     { ({updateCardEntries, addNewEntryContext, deleteEntryContext,
         chooseTypeC, getCard, card, isCardUpdating
     }) => {
+        
     console.log("getCard Editor", card);
     if(!card) {
         if (!isCardUpdating) {
@@ -28,21 +30,12 @@ return (<CollectionConsumer >
         return <div>loading</div>
     }
     
-    // if (!card) {
-    //     return <div>loading</div>
-    // }
-    // if (!cardId || loading) {
-    //     return <div>loading</div>
-    // } 
-    // console.log("useQuery ", loading, data, error);
-    // const { card } = data;
-    
     // no block sent
-    const {deck_title, template_title, entries} = card;
-    const entries_editors = new Array(entries.length)
+    const {deck_title, template_title, entries, loh} = card;
+    const entries_editors = new Array(entries.length);
     
-    const saveCardEntries = async () => { 
-        // TODO: You can utilize smart way of changing stuff like github
+    const saveCard = async () => { 
+        updateEditorChanged(false);
         const newCardEntries = []
         entries_editors.map(async (editor) => {
             const savedData = await editor.save();
@@ -72,8 +65,6 @@ return (<CollectionConsumer >
         chooseTypeC(card.id, entryId, type);
     }
 
-
-
     return (
         <div className="editor">
             <div className="editor__header">
@@ -81,6 +72,7 @@ return (<CollectionConsumer >
                     <div className="editor__subtitle text-blue-bright"> Deck </div>
                     <div className="editor__title text-dark">
                         {deck_title}
+                        {console.log("card Editor", card)}
                     </div>
                 </div>
                 <div className="editor__header-right">
@@ -97,13 +89,16 @@ return (<CollectionConsumer >
                         saveEditorInstance={saveEditorInstance}
                         deleteEntry={deleteEntry}
                         chooseType={chooseType}
+                        editorChanged={editorChanged}
+                        updateEditorChanged={updateEditorChanged}
                         />
                     )) : "Hmm, a card is empty. Strange..."
                 }
             </div>
             <div className="editor__actions">
                 <div onClick={() => addNewEntry(card.id)}className="btn btn-circ btn-plus-minus">+</div>
-                <div onClick={() => saveCardEntries()} className="btn btn-text">Save</div>
+                <div onClick={() => saveCard(card.id)} className="btn btn-text">Save{editorChanged ? "*": ""}</div>
+                
             </div>
         </div>
     )
