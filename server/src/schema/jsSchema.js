@@ -20,18 +20,18 @@ const blocks = [
                 "deck": "1",
                 "path": [1],
                 "name": "Witcher 3",
-                "type": "D",
+                "type": "D", 
                 "expanded": false,
                 "children": [
                     {
                         "id": "5",
                         "deck": "1",
-                        "path": [1,1],
+                        "path": [1,1],  
                         "idx": "1",
                         "name": "The Last Wish",
-                        "type": "D",
-                    }
-                ]
+                        "type": "D",   
+                    } 
+                ]    
             }, 
             {
                 "idx": "2",
@@ -103,7 +103,7 @@ const typeDefs = `
         type: String
         deck: String
         path: [String]
-        children: [Block]
+        children: [Block] 
     }
 
     type Card {
@@ -118,6 +118,7 @@ const typeDefs = `
         id: ID,
         name: String,
         content: JSON, 
+        template_title: String,
         entry_type: String
     }
 
@@ -138,7 +139,6 @@ const typeDefs = `
         card(id: ID): Card,
         saveCard (
             id: ID
-            template_id: String
             deck_title: String
             template_title: String
             entries: [JSON]
@@ -147,8 +147,8 @@ const typeDefs = `
 `;
 
 // TODO: no error checking here
-const resolvers = {
-    JSON: GraphQLJSON,
+const resolvers = {  
+    JSON: GraphQLJSON, 
     Query: {
         cards: () => cards,
         blocks: () => blocks
@@ -156,7 +156,7 @@ const resolvers = {
     Mutation: {
         addCardEntry: (parent, { id, name, content, entry_type, card_id}) => {
             const card = _.find(cards, {id: card_id})
-            card.entries.push({
+            card.entries.push({    
                 name,
                 content,
                 entry_type,
@@ -165,16 +165,18 @@ const resolvers = {
             return card.entries;
         },
         card: (parent, { id }) => _.find(cards, {id: id}),
-        saveCard: (parent, {id, template_id, template_title, deck_title, entries}) => {
+        saveCard: (parent, {id, template_title, deck_title, entries}) => {
             let card = _.find(cards, {id: id});
             let idx = cards.indexOf(card);
             card = {
-                id,
-                template_id, 
-                template_title,
-                deck_title,
+                id, 
+                template_title, 
+                deck_title,   
                 entries
             }
+            
+            // console.log("saveCard card", card)
+            // console.log("entries[0]", entries[0]);
             cards[idx] = card;
             return card;
         }

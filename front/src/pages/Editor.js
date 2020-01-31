@@ -6,6 +6,7 @@ import Entry from '../components/Editor/Entry';
 
 export default function Editor() {    
     const [editorChanged, updateEditorChanged] = useState(false);
+    const [entriesEditors, updateEntriesEditors] = useState(new Array());
 
     let linkState = useLocation().state
     let block = linkState ? linkState.block : null
@@ -16,36 +17,30 @@ export default function Editor() {
                     No flashcard here..</h2>
                 </div>)
     }
+    
    
 return (<CollectionConsumer >
-    { ({updateCardEntries, addNewEntryContext, deleteEntryContext,
-        chooseTypeC, getCard, card, isCardUpdating
+    { ({addNewEntryContext, deleteEntryContext,
+        chooseTypeC, getCard, card, isCardUpdating, saveCardServer
     }) => {
         
-    console.log("getCard Editor", card);
     if(!card) {
         if (!isCardUpdating) {
             getCard(block.id)
         }
         return <div>loading</div>
     }
-    
-    // no block sent
     const {deck_title, template_title, entries} = card;
-    const entries_editors = new Array(entries.length);
     
     const saveCard = async () => { 
+        console.log("entriesEditors", entriesEditors)
         updateEditorChanged(false);
-        const newCardEntries = []
-        entries_editors.map(async (editor) => {
-            const savedData = await editor.save();
-            newCardEntries.push([...savedData.blocks])
+        entriesEditors.map( async ({entry, instance}) => {
+            const { blocks } = await instance.save();
+            entry.content.blocks = blocks;
         })
-        const changes = {
-            "newCardEntries": newCardEntries
-        }
-        console.log("newCardEntries", newCardEntries);
-        updateCardEntries(card.id, changes);
+        // this line probably doesn't make sense
+        saveCardServer(await Object.assign({}, card))
     }
 
     const addNewEntry = (cardId) => {
@@ -53,8 +48,15 @@ return (<CollectionConsumer >
         addNewEntryContext(cardId)
     }
 
-    const saveEditorInstance = (instance, idx) => {
-        entries_editors[idx] = instance
+    const saveEditorInstance = (instance, entry) => {
+        if (card.entries.length !== entriesEditors.length) {
+            entriesEditors.push({
+                "entry": entry,
+                "instance": instance
+            })
+            
+        }
+        // console.log("S!!! entries_editors", entriesEditors);
     }
 
     const deleteEntry = (id) => {
@@ -72,7 +74,6 @@ return (<CollectionConsumer >
                     <div className="editor__subtitle text-blue-bright"> Deck </div>
                     <div className="editor__title text-dark">
                         {deck_title}
-                        {console.log("card Editor", card)}
                     </div>
                 </div>
                 <div className="editor__header-right">
@@ -83,10 +84,10 @@ return (<CollectionConsumer >
                 </div>
             </div>
             <div className="editor__entries">
-                {   entries ?
+                {   entries && entriesEditors ?
                     entries.map((e, i) => (
                         <Entry e={e} key={i} idx={i} 
-                        saveEditorInstance={saveEditorInstance}
+                        saveEditorInstance={(saveEditorInstance)}
                         deleteEntry={deleteEntry}
                         chooseType={chooseType}
                         editorChanged={editorChanged}
@@ -97,7 +98,7 @@ return (<CollectionConsumer >
             </div>
             <div className="editor__actions">
                 <div onClick={() => addNewEntry(card.id)}className="btn btn-circ btn-plus-minus">+</div>
-                <div onClick={() => saveCard(card.id)} className="btn btn-text">Save{editorChanged ? "*": ""}</div>
+                <div onClick={() => saveCard()} className="btn btn-text">Save{editorChanged ? "*": ""}</div>
                 
             </div>
         </div>

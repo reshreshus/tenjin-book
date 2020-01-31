@@ -16,6 +16,19 @@ export const GET_CARD = gql`
     }
 `;
 
+export const SAVE_CARD = gql`
+    mutation SaveCard($id: ID, $template_title:String, 
+        $deck_title: String, $entries: [JSON]) { 
+            saveCard(id: $id template_title: $template_title, 
+            deck_title: $deck_title, entries: $entries) {
+            id
+            entries {
+                content
+            }
+        }
+    }
+`;
+
 export const ADD_CARD_ENTRY = gql`
     mutation AddCardEntry($id: ID, $name: String, $content: JSON, $entry_type: String, $card_id: ID) {
         addCardEntry(id: $id, name: $name, content: $content, entry_type: $entry_type, card_id: $card_id) {
@@ -23,15 +36,4 @@ export const ADD_CARD_ENTRY = gql`
             content
         }
     }
-`
-
-
-export const SAVE_CARD = gql`
-    mutation SaveCard($id: ID, $template_id: String, $template_title:String, 
-        $deck_title: String, $entries: JSON) {
-            saveCard(id: $id, template_id: $template_id, template_title: $template_title, 
-            deck_title: $deck_title, entries: $entries) {
-            id
-        }
-    }
-`
+`;

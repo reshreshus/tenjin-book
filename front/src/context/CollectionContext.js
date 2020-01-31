@@ -25,10 +25,10 @@ function CollectionProvider({children}) {
     const [cardId, updateCardId] = useState(null)
     
 
-    const [getCardQuery, {data : cardData}] = useMutation(GET_CARD);
+    const [getCardQuery] = useMutation(GET_CARD);
     const [isCardUpdating, updateIsCardUpdating] = useState(false);
 
-    const [saveCardQuery, {data : savedCardData}] = useMutation(SAVE_CARD);
+    const [saveCardQuery] = useMutation(SAVE_CARD)
 
         
 
@@ -73,40 +73,45 @@ function CollectionProvider({children}) {
 
     }
 
-    const saveCardServer = () => {
-        saveCardQuery({
-            variables: card
-        }).then((data) => {
-            console.log("savecard data", data)
-        })
+    const saveCardServer = (savedCard) => {
+        updateCard(savedCard);
+        console.log("saveCardServer entries", card.entries);
+        // TODO: WTF I need to understand why this works
+        // looks like saveCardQuery works with an old version of savedCard (or card in state)
+        setTimeout(() => {
+            saveCardQuery({
+                variables: savedCard
+            }).then((data) => {
+                console.log("savecard data", data)
+            })
+        }, 100)
+        
+        
     }
 
     const addNewEntryContext = (cardId) => {
         console.log("cardId", cardId);
         let newEntry = {
-            name:"loh", 
+            name:"New Entry", 
             content: {
                 blocks: [{
                     type: "paragraph",
-                    data: { text: "new entry stuff" }
+                    data: { text: "" }
                 }]
             }, 
-            entry_type:"Q",
-            // TODO doing the same thing in server. Need to duplicate?
+            entry_type:"C",
             id: card.entries.length
         }
-
-        card.entries.push(newEntry)
-        // updateCard(card)
+        let newCard = Object.assign({}, card)
+        newCard.entries.push(newEntry)
+        updateCard(newCard)
+        // used to save it to collection immediately
         // newEntry['card_id'] = cardId;
         // addCardEntryQuery({
         //     variables: newEntry
         // }).then((data) => {
         //     updateCard(card)
         // });
-        // TODO
-        updateCards([...cards]);
-
     }
 
     const deleteEntryContext = (cardId, entryId) => {
@@ -129,7 +134,7 @@ function CollectionProvider({children}) {
 
     const getBlock = (id) => {
         return blocks.filter (d => d.id === id)[0]
-    }
+    } 
 
     const addNewBlock = (previousBlockId = -1, isParent=false) => {
         let newBlocksNumber = String(blocksNumber + 1);
@@ -174,11 +179,14 @@ function CollectionProvider({children}) {
             variables: {id: id}
         }).then((data) => {
             console.log("cardData", data)
-            updateCard(data.data.card);
+            let newCard = data.data.card;
+            console.log("type of newCard.entries", typeof newCard.entries)
+            updateCard(newCard);
             updateIsCardUpdating(false);
+            return newCard;
         });
         
-        return cards.filter((c) => c.id === id )[0]
+        // return cards.filter((c) => c.id === id )[0]
     }
 
     return (

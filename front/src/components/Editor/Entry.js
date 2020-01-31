@@ -3,10 +3,9 @@ import React, {useState, useEffect} from 'react'
 import EditorJs from 'react-editor-js';
 import { EDITOR_JS_TOOLS } from './editorJsTools' 
 
-export default function Entry({e, saveEditorInstance, idx, deleteEntry, chooseType,
+export default function Entry({e, saveEditorInstance, deleteEntry, chooseType,
     editorChanged, updateEditorChanged
 }) {
-    // const [unsaved, updateUnsaved] = useState(false);
     const [isChoosingType, updateChoosingType] = useState(false);
     const [isChanged, updateIsChanged] = useState(false);
     useEffect(() => {
@@ -19,23 +18,16 @@ export default function Entry({e, saveEditorInstance, idx, deleteEntry, chooseTy
         console.log("updateIsChanged")
         updateIsChanged(true);
         updateEditorChanged(true);
-        // if (areChanged) {
-        //     areChanged[e.id] = true;
-        // }
     }
     
     const openChoosingType = () => {
         console.log("openChoosingType")
         updateChoosingType(true)
-        // $('.card-entry__choose-type').slideToggle()
-        // $('.card-entry__qa').slideToggle()
     }
 
     const closeChoosingType = () => {
         console.log("closeChoosingType")
         updateChoosingType(false)
-        // $('.card-entry__choose-type').slideToggle()
-        // $('.card-entry__qa').slideToggle()
     }
 
     return (
@@ -79,7 +71,9 @@ export default function Entry({e, saveEditorInstance, idx, deleteEntry, chooseTy
                 <div className="card-entry__text-field" 
                     id={"editor-js-" + e.id}>
                     <EditorJs 
-                        instanceRef={instance => saveEditorInstance(instance, idx)}
+                        instanceRef={instance => {
+                            saveEditorInstance(instance, e);
+                        }}
                         tools={EDITOR_JS_TOOLS}
                         holder={"editor-js-" + e.id}
                         data={e.content}
