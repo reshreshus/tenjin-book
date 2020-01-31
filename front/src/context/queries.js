@@ -1,5 +1,11 @@
 import { gql } from 'apollo-boost';
 
+export const GET_BLOCKS = gql`
+    {
+        blocks
+    }
+`;
+
 export const GET_CARD = gql`
     mutation Card($id: ID!) {
         card (id: $id) {

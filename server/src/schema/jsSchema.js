@@ -124,7 +124,7 @@ const typeDefs = `
 
     type Query {
         cards: [Card],
-        blocks: [Block],
+        blocks: [JSON],
         cardEntry(id: ID): CardEntry
     }
 
