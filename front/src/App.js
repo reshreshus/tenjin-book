@@ -17,9 +17,10 @@ export default function App() {
   useEffect(() => {
     document.querySelectorAll('.resizer').forEach(e=>{
       // setting default widths
-      // e.previousElementSibling.style.width=
+      e.previousElementSibling.style.width=
       // e.nextElementSibling.style.width=
-      // e.parentNode.offsetWidth/2-e.offsetWidth/2+'px';
+      // e.parentNode.offsetWidth/3-e.offsetWidth/3+'px';
+      '400px';
 
       e.onmousedown=()=>{
         e.parentNode.onmousemove=ev=>{
@@ -32,7 +33,7 @@ export default function App() {
       e.parentNode.onmouseup=
       ()=>{e.parentNode.onmousemove=undefined};
     });
-  }, [])
+  })
   
   
   return (
