@@ -23,6 +23,7 @@ export default function App() {
       '400px';
 
       e.onmousedown=()=>{
+        console.log("resizer moving?")
         e.parentNode.onmousemove=ev=>{
           e.previousElementSibling.style.width=
           ev.clientX-e.offsetWidth/2+'px';
@@ -41,6 +42,7 @@ export default function App() {
       <Sidebar />
       {/* <ContextMenu /> */}
       <div className="resizer"/>
+      <div className="right-sidebar">
         <Switch>
           <Route exact path="/edit/" component={() =>
             (<Editor card={{'deckTitle':'English', 'templateTitle': 'Basic'}}/>)}
@@ -50,6 +52,7 @@ export default function App() {
           <Route exact path="/show-deck/" component={ShowDeck} />
           <Route exact path="/" component={Home} />
         </Switch>
+      </div>
     </div>
   )
 }
