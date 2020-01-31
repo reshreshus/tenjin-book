@@ -28,7 +28,7 @@ function CollectionProvider({children}) {
 
     const {data: blocksData, loading: blocksLoading, error: blocksError} = useQuery(GET_BLOCKS,
         {
-            onCompleted:  () => { console.log("blocksData", blocksData); updateBlocks(blocksData.blocks) }
+            onCompleted:  () => { updateBlocks(blocksData.blocks) }
         });
 
     const [card, updateCard] = useState(null);
@@ -77,18 +77,22 @@ function CollectionProvider({children}) {
         updateCard(newCard)
     }
 
-    const deleteEntryContext = (cardId, entryId) => {
-        let card = cards.filter(c => c.id === cardId)[0];
-        let idx = cards.indexOf(card);
-        card.entries.splice(entryId, 1)
-        card.entries.map((e) => {
-            if (e.entry_id > entryId) {
-                e.entry_id--;
-            }
-        })
-        let newCards = cards;
-        newCards[idx] = card;
-        updateCards([...newCards]);
+    const deleteEntryContext = (entryId) => {
+        // let card = cards.filter(c => c.id === cardId)[0];
+        // let idx = cards.indexOf(card);
+        // card.entries.splice(entryId, 1)
+        // card.entries.map((e) => {
+        //     if (e.entry_id > entryId) {
+        //         e.entry_id--;
+        //     }
+        // })
+        // let newCards = cards;
+        // newCards[idx] = card;
+        // updateCards([...newCards]);
+        let newCard = Object.assign({}, card);
+        newCard.entries = card.entries.filter((e => entryId !== e.id));
+        console.log("newCard", newCard);
+        updateCard(newCard);
     }
 
     const chooseTypeC = (cardId, entryId, type) => {

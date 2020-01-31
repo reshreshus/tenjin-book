@@ -63,8 +63,14 @@ return (<CollectionConsumer >
         // console.log("S!!! entries_editors", entriesEditors);
     }
 
-    const deleteEntry = (id) => {
-        deleteEntryContext(card.id, id)
+    // it works for some reason
+    const deleteEntryEditor = (id) => {
+        deleteEntryContext(id);
+        updateEntriesEditors(entriesEditors.filter(eE => eE.entry.id != id));
+        setTimeout(() => {
+            console.log("entries editors", entriesEditors);
+        }, 300);
+        
     }
 
     const chooseType = (entryId, type) => {
@@ -93,7 +99,7 @@ return (<CollectionConsumer >
                     entries.map((e, i) => (
                         <Entry e={e} key={i} idx={i} 
                         saveEditorInstance={(saveEditorInstance)}
-                        deleteEntry={deleteEntry}
+                        deleteEntryEditor={deleteEntryEditor}
                         chooseType={chooseType}
                         editorChanged={editorChanged}
                         updateEditorChanged={updateEditorChanged}

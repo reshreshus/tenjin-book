@@ -3,8 +3,8 @@ import React, {useState, useEffect} from 'react'
 import EditorJs from 'react-editor-js';
 import { EDITOR_JS_TOOLS } from './editorJsTools' 
 
-export default function Entry({e, saveEditorInstance, deleteEntry, chooseType,
-    editorChanged, updateEditorChanged
+export default function Entry({e, saveEditorInstance, chooseType,
+    editorChanged, updateEditorChanged, deleteEntryEditor
 }) {
     const [isChoosingType, updateChoosingType] = useState(false);
     const [isChanged, updateIsChanged] = useState(false);
@@ -28,6 +28,11 @@ export default function Entry({e, saveEditorInstance, deleteEntry, chooseType,
     const closeChoosingType = () => {
         console.log("closeChoosingType")
         updateChoosingType(false)
+    }
+
+    const deleteEntry = () => {
+        updateAreChanged();
+        deleteEntryEditor(e.id);
     }
 
     return (
@@ -82,7 +87,7 @@ export default function Entry({e, saveEditorInstance, deleteEntry, chooseType,
                         }}
                     />
                 </div>
-                <div onClick={() => deleteEntry(e.id)} className="btn-circ btn-plus-minus">-</div>
+                <div onClick={() => deleteEntry()} className="btn-circ btn-plus-minus">-</div>
             </div>
         </div>
     )
