@@ -1,11 +1,9 @@
 import React, {useState} from 'react'
-import hotkeys from 'hotkeys-js';
+import HotkeyApp from './Hotkeys';
 import ContextMenu from '../components/ContextMenu';
 import { selectElementContents, disableEditable,
     enabeEditable, removeSelections, hideContextMenu } from './domHelpers'
 import { blocks_import, cards_import } from './defaultData';
-
-import { handleHotkeysExternal } from './hotkeys.js';
 
 import {addNewEntryApi} from './api';
 
@@ -39,16 +37,6 @@ function CollectionProvider({children}) {
     
     // if (getCardResponse.data && getCardResponse.data.card)
     //     updateCard(getCardResponse.data.card)
-
-    
-
-
-    const handleHotkeys = (event, handler) => {
-        handleHotkeysExternal(event, handler, selectedBlockId);
-    }
-    // TODO the more your rename the more it is being exectued
-    // Strange
-    hotkeys('f2,esc', handleHotkeys);
 
 
     const updateBlockName = (blockId) => {
@@ -213,6 +201,7 @@ function CollectionProvider({children}) {
         }}>
             {children}
             <ContextMenu block={contextBlock} />
+            <HotkeyApp selectedBlockId={selectedBlockId} />
         </Collection.Provider>)
     
 }

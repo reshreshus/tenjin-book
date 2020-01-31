@@ -1,8 +1,10 @@
 import React, {useState} from 'react'
 import { CollectionConsumer } from '../context/CollectionContext';
 import {useLocation} from 'react-router-dom';
+import hotkeys from 'hotkeys-js';
 
 import Entry from '../components/Editor/Entry';
+import HotkeysEditor from '../components/Editor/HotkeysEditor';
 
 export default function Editor() {    
     const [editorChanged, updateEditorChanged] = useState(false);
@@ -17,6 +19,8 @@ export default function Editor() {
                     No flashcard here..</h2>
                 </div>)
     }
+
+    
     
    
 return (<CollectionConsumer >
@@ -69,6 +73,7 @@ return (<CollectionConsumer >
 
     return (
         <div className="editor">
+            < HotkeysEditor saveCard={saveCard} />
             <div className="editor__header">
                 <div className="editor__header-left">
                     <div className="editor__subtitle text-blue-bright"> Deck </div>
