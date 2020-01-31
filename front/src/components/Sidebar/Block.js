@@ -27,11 +27,8 @@ export default function Block({block}) {
         <CollectionConsumer> 
         {
             ({selectedBlockId, updateSelectedBlockIdAndCleanup, updateBlockName,
-                openContextMenu, updateCardId
+                openContextMenu
             }) => {
-                // if (block.type === 'f') {
-                //     updateCardId(block.id)
-                // }
                 const onBlockKeyDown = e => {
                     switch (e.keyCode) {
                         case 13:

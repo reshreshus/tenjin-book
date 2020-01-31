@@ -2,13 +2,15 @@ import React, {useEffect} from 'react'
 import './styles/main.scss'
 import {Switch, Route} from 'react-router-dom';
 
+import {CollectionConsumer} from './context/CollectionContext';
+
 import Sidebar from './components/Sidebar/Sidebar';
 
 import Home from './pages/Home';
 import Editor from './pages/Editor';
 import ShowDeck from './pages/ShowDeck';
 import RepeatCard from './pages/RepeatCard';
-// import ContextMenu from './components/ContextMenu';
+
 
 
 
@@ -39,8 +41,8 @@ export default function App() {
   
   return (
     <div className="app">
+      <div className={`${'hide'}`}></div>
       <Sidebar />
-      {/* <ContextMenu /> */}
       <div className="resizer"/>
       <div className="right-sidebar">
         <Switch>

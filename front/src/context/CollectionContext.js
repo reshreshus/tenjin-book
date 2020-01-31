@@ -1,14 +1,11 @@
 import React, {useState} from 'react'
-import HotkeyApp from './Hotkeys';
+import HotkeyApp from './HotkeyApp';
 import ContextMenu from '../components/ContextMenu';
 import { selectElementContents, disableEditable,
     enabeEditable, removeSelections, hideContextMenu } from './domHelpers'
 import { blocks_import, cards_import } from './defaultData';
-
-import {addNewEntryApi} from './api';
-
 import { GET_CARD, ADD_CARD_ENTRY, SAVE_CARD } from './queries';
-import { useQuery, useMutation } from '@apollo/react-hooks';
+import { useMutation } from '@apollo/react-hooks';
 
 const Collection = React.createContext();
 
@@ -20,23 +17,16 @@ function CollectionProvider({children}) {
     const [selectedBlockId, updateSelectedBlockId] = useState('');
 
     const [contextBlock, updateContextBlock] = useState(null);
-    const [cardId, updateCardId] = useState(null)
-    
+    const [showSidebars, updateShowSidebars] = useState([true, true])
 
     const [getCardQuery] = useMutation(GET_CARD);
     const [isCardUpdating, updateIsCardUpdating] = useState(false);
 
     const [saveCardQuery] = useMutation(SAVE_CARD)
 
-        
-
-    // console.log("getCardResponse", getCardResponse)
     const [card, updateCard] = useState(null);
     
     const [addCardEntryQuery, {data}] = useMutation(ADD_CARD_ENTRY)
-    
-    // if (getCardResponse.data && getCardResponse.data.card)
-    //     updateCard(getCardResponse.data.card)
 
 
     const updateBlockName = (blockId) => {
@@ -194,14 +184,14 @@ function CollectionProvider({children}) {
                 updateBlockName,
                 openContextMenu,
                 hideContextMenu,
-                updateCardId,
                 card,
                 isCardUpdating,
                 saveCardServer
         }}>
             {children}
             <ContextMenu block={contextBlock} />
-            <HotkeyApp selectedBlockId={selectedBlockId} />
+            <HotkeyApp selectedBlockId={selectedBlockId} showSidebars={showSidebars}
+             updateShowSidebars={updateShowSidebars}/>
         </Collection.Provider>)
     
 }
