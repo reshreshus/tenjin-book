@@ -27,7 +27,7 @@ export default function Block({block}) {
         <CollectionConsumer> 
         {
             ({selectedBlockId, updateSelectedBlockIdAndCleanup, updateBlockName,
-                openContextMenu
+                openContextMenu, updateContextBlock
             }) => {
                 const onBlockKeyDown = e => {
                     switch (e.keyCode) {
@@ -64,7 +64,7 @@ export default function Block({block}) {
                             }} 
                             onContextMenu={(e) => {
                                 updateSelectedBlockIdAndCleanup(block.id, node)
-                                openContextMenu(e, block)
+                                openContextMenu(e, block, updateContextBlock)
                             }}
                             >
                             <Link className={`block__link`}

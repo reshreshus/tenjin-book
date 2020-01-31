@@ -1,3 +1,12 @@
+export const openContextMenu = (e, block, updateContextBlock) => {
+    e.preventDefault();
+    let menu = document.querySelector('.cmenu')
+    updateContextBlock(block);
+    
+    menu.style.top = `${e.clientY + 10}px`;
+    menu.style.left = `${e.clientX - 30}px`;
+    menu.classList.remove('hide');
+}
 export const hideContextMenu = () => {
     let menu = document.querySelector('.cmenu')
     menu.classList.add('hide');

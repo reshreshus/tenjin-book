@@ -2,7 +2,8 @@ import React, {useState} from 'react'
 import HotkeyApp from './HotkeyApp';
 import ContextMenu from '../components/ContextMenu';
 import { selectElementContents, disableEditable,
-    enabeEditable, removeSelections, hideContextMenu } from './domHelpers'
+         enabeEditable, removeSelections, 
+         openContextMenu, hideContextMenu } from './domHelpers'
 import { blocks_import, cards_import } from './defaultData';
 import { GET_CARD, ADD_CARD_ENTRY, SAVE_CARD } from './queries';
 import { useMutation } from '@apollo/react-hooks';
@@ -25,14 +26,10 @@ function CollectionProvider({children}) {
     const [saveCardQuery] = useMutation(SAVE_CARD)
 
     const [card, updateCard] = useState(null);
-    
-    const [addCardEntryQuery, {data}] = useMutation(ADD_CARD_ENTRY)
-
 
     const updateBlockName = (blockId) => {
         console.log("updateBlockName")
     }
-
 
     const updateSelectedBlockIdAndCleanup = (id, blockRef) => {
         removeSelections();
@@ -40,15 +37,6 @@ function CollectionProvider({children}) {
         let el = blockRef.current.querySelector('.content-editable');
         disableEditable(el);
         updateSelectedBlockId(id);
-    }
-
-    const updateCardEntries = (cardId, changes) => {
-        console.log("updateCardEntries")
-       
-        let newCard = Object.assign({}, card);
-        newCard['test'] = 'test'
-        updateCard(newCard);
-
     }
 
     const saveCardServer = (savedCard) => {
@@ -63,8 +51,6 @@ function CollectionProvider({children}) {
                 console.log("savecard data", data)
             })
         }, 100)
-        
-        
     }
 
     const addNewEntryContext = (cardId) => {
@@ -83,13 +69,6 @@ function CollectionProvider({children}) {
         let newCard = Object.assign({}, card)
         newCard.entries.push(newEntry)
         updateCard(newCard)
-        // used to save it to collection immediately
-        // newEntry['card_id'] = cardId;
-        // addCardEntryQuery({
-        //     variables: newEntry
-        // }).then((data) => {
-        //     updateCard(card)
-        // });
     }
 
     const deleteEntryContext = (cardId, entryId) => {
@@ -139,16 +118,6 @@ function CollectionProvider({children}) {
         }
     }
 
-    const openContextMenu = (e, block) => {
-        e.preventDefault();
-        let menu = document.querySelector('.cmenu')
-        updateContextBlock(block);
-        
-        menu.style.top = `${e.clientY + 10}px`;
-        menu.style.left = `${e.clientX - 30}px`;
-        menu.classList.remove('hide');
-    }
-
     
 
     const getCard = (id) => {
@@ -162,9 +131,7 @@ function CollectionProvider({children}) {
             updateCard(newCard);
             updateIsCardUpdating(false);
             return newCard;
-        });
-        
-        // return cards.filter((c) => c.id === id )[0]
+        });        
     }
 
     return (
@@ -172,7 +139,6 @@ function CollectionProvider({children}) {
                 cards,
                 blocks,
                 getBlock,
-                updateCardEntries,
                 addNewEntryContext,
                 deleteEntryContext,
                 chooseTypeC,
@@ -186,7 +152,8 @@ function CollectionProvider({children}) {
                 hideContextMenu,
                 card,
                 isCardUpdating,
-                saveCardServer
+                saveCardServer,
+                updateContextBlock
         }}>
             {children}
             <ContextMenu block={contextBlock} />
