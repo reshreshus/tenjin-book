@@ -1,6 +1,6 @@
 ROI Notebook
 === 
-The name draws inpisration from ROI... and Notebook.
+The name draws inspiration from ROI(return on investment)... and Notebook.
 The app draws inspiration from 
 * [Anki](https://apps.ankiweb.net/)
 * Supermemo
