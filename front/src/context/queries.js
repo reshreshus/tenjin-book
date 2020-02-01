@@ -1,5 +1,11 @@
 import { gql } from 'apollo-boost';
 
+export const SAVE_BLOCKS = gql`
+    mutation Blocks($blocks: [JSON]) {
+        blocks (blocks: $blocks)
+    }
+`;
+
 export const GET_BLOCKS = gql`
     {
         blocks

@@ -142,7 +142,10 @@ const typeDefs = `
             deck_title: String
             template_title: String
             entries: [JSON]
-        ): Card
+        ): Card,
+        saveBlocks (
+            blocks: [JSON]
+        ): [JSON]
     }
 `;
 
@@ -174,11 +177,13 @@ const resolvers = {
                 deck_title,   
                 entries
             }
-            
-            // console.log("saveCard card", card)
-            // console.log("entries[0]", entries[0]);
             cards[idx] = card;
             return card;
+        },
+        saveBlocks: (parent, {blocks : newBlocks}) => {
+            console.log("blocks", block);
+            blocks = newBlocks;
+            return newBlocks;
         }
     }
 };

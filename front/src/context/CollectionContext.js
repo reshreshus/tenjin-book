@@ -5,7 +5,7 @@ import { selectElementContents, disableEditable,
          enabeEditable, removeSelections, 
          openContextMenu, hideContextMenu } from './domHelpers'
 import { blocks_import, cards_import } from './defaultData';
-import { GET_CARD, ADD_CARD_ENTRY, SAVE_CARD, GET_BLOCKS } from './queries';
+import { GET_CARD, ADD_CARD_ENTRY, SAVE_CARD, GET_BLOCKS, SAVE_BLOCKS } from './queries';
 import { useMutation, useQuery } from '@apollo/react-hooks';
 
 const Collection = React.createContext();
@@ -25,6 +25,7 @@ function CollectionProvider({children}) {
     const [isCardUpdating, updateIsCardUpdating] = useState(false);
 
     const [saveCardQuery] = useMutation(SAVE_CARD)
+    const [saveBlocksQuery] = useMutation(SAVE_BLOCKS);
 
     const {data: blocksData, loading: blocksLoading, error: blocksError} = useQuery(GET_BLOCKS,
         {
