@@ -61,7 +61,9 @@ function CollectionProvider({children}) {
     }
 
     const addNewEntryContext = (cardId) => {
-        console.log("cardId", cardId);
+        let newCard = Object.assign({}, card)
+        let newId = Math.max.apply(Math, card.entries.map(e => e.id)) + 1;
+        console.log("addNewEntryContext");
         let newEntry = {
             name:"New Entry", 
             content: {
@@ -71,28 +73,18 @@ function CollectionProvider({children}) {
                 }]
             }, 
             entry_type:"C",
-            id: card.entries.length
+            id: newId
         }
-        let newCard = Object.assign({}, card)
+        
         newCard.entries.push(newEntry)
+        console.log("newCard (add new entry)", newCard);
         updateCard(newCard)
     }
 
-    const deleteEntryContext = (entryId) => {
-        // let card = cards.filter(c => c.id === cardId)[0];
-        // let idx = cards.indexOf(card);
-        // card.entries.splice(entryId, 1)
-        // card.entries.map((e) => {
-        //     if (e.entry_id > entryId) {
-        //         e.entry_id--;
-        //     }
-        // })
-        // let newCards = cards;
-        // newCards[idx] = card;
-        // updateCards([...newCards]);
+    const deleteEntryContext = (entryID) => {
         let newCard = Object.assign({}, card);
-        newCard.entries = card.entries.filter((e => entryId !== e.id));
-        console.log("newCard", newCard);
+        let newEntries = [...newCard.entries.filter((e => entryID !== e.id))];
+        newCard.entries = newEntries;        
         updateCard(newCard);
     }
 

@@ -84,7 +84,7 @@ const cards = [{
                     type: "paragraph",
                     data: { text: "probably some editorJs stuff or html" }
                 }]
-            },
+            },  
             entry_type: "A",
         },
         
@@ -115,7 +115,7 @@ const typeDefs = `
     }
 
     type CardEntry {
-        id: ID,
+        id: Int,
         name: String,
         content: JSON, 
         template_title: String,

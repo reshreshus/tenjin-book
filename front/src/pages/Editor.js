@@ -1,7 +1,6 @@
 import React, {useState} from 'react'
 import { CollectionConsumer } from '../context/CollectionContext';
 import {useLocation} from 'react-router-dom';
-import hotkeys from 'hotkeys-js';
 
 import Entry from '../components/Editor/Entry';
 import HotkeysEditor from '../components/Editor/HotkeysEditor';
@@ -19,9 +18,6 @@ export default function Editor() {
                     No flashcard here..</h2>
                 </div>)
     }
-
-    
-    
    
 return (<CollectionConsumer >
     { ({addNewEntryContext, deleteEntryContext,
@@ -35,7 +31,7 @@ return (<CollectionConsumer >
         return <div>loading</div>
     }
     const {deck_title, template_title, entries} = card;
-    
+    console.log("Editor card", card);
     const saveCard = async () => { 
         console.log("entriesEditors", entriesEditors)
         updateEditorChanged(false);
@@ -97,8 +93,8 @@ return (<CollectionConsumer >
             <div className="editor__entries">
                 {   entries && entriesEditors ?
                     entries.map((e, i) => (
-                        <Entry e={e} key={i} idx={i} 
-                        saveEditorInstance={(saveEditorInstance)}
+                        <Entry e={e} key={e.id}
+                        saveEditorInstance={saveEditorInstance}
                         deleteEntryEditor={deleteEntryEditor}
                         chooseType={chooseType}
                         editorChanged={editorChanged}
