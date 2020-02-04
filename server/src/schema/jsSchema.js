@@ -1,59 +1,69 @@
 const { ApolloServer, gql } = require('apollo-server');
 const GraphQLJSON = require('graphql-type-json');
-import { makeExecutableSchema } from 'graphql-tools';
+// import { makeExecutableSchema } from 'graphql-tools';
 
 import _ from 'lodash';
 
 const blocks = [
     {
-        "id": "1",
-        "idx": "1",
-        "name": "English",
+        "id": 0,
+        "idx": 0,
+        "name": "root",
+        "count": 6,
         "expanded": true,
-        "type": "D",
-        "deck": "root",
+        "type": "R",
         "path": [],
-        "children": [
+        children: [
             {
-                "id": "4",
-                "idx": "1",
-                "deck": "1",
+                "id": "1",
+                "idx": 1,
+                "name": "English",
+                "expanded": true,
+                "type": "D",
                 "path": [1],
-                "name": "Witcher 3",
-                "type": "D", 
-                "expanded": false,
                 "children": [
                     {
-                        "id": "5",
-                        "deck": "1",
-                        "path": [1,1],  
-                        "idx": "1",
-                        "name": "The Last Wish",
-                        "type": "D",   
-                    } 
-                ]    
-            }, 
+                        "id": "4",
+                        "idx": 1,
+                        "deck": 1,
+                        "path": [1, 1],
+                        "name": "Witcher 3",
+                        "type": "D", 
+                        "expanded": false,
+                        "children": [
+                            {
+                                "id": "5",
+                                "deck": 1,
+                                "path": [1, 1,1],  
+                                "idx": 1,
+                                "name": "The Last Wish",
+                                "type": "D",   
+                            } 
+                        ]    
+                    }, 
+                    {
+                        "idx": 2,
+                        "type": "f",
+                        "id": "_1",
+                        "name": "a flashcard"
+                    }
+                ]
+            },
             {
-                "idx": "2",
-                "type": "f",
-                "id": "_1",
-                "name": "a flashcard"
+                "id": "2",
+                "idx": 2,
+                "name": "Math",
+                "type": "D",
+                "path": [1],
+            },
+            {
+                "id": "3",
+                "idx": 3,
+                "name": "Programming",
+                "type": "D",
+                "path": [1],
             }
         ]
-    },
-    {
-        "id": "2",
-        "idx": "2",
-        "name": "Math",
-        "type": "D",
-        "path": [],
-    },
-    {
-        "id": "3",
-        "idx": "3",
-        "name": "Programming",
-        "type": "D",
-        "path": [],
     }
 ]
 
@@ -84,7 +94,7 @@ const cards = [{
                     type: "paragraph",
                     data: { text: "probably some editorJs stuff or html" }
                 }]
-            },  
+            },   
             entry_type: "A",
         },
         
@@ -97,7 +107,7 @@ const typeDefs = `
 
     type Block {
         id: String
-        idx: String
+        idx: Int
         name: String
         expanded: Boolean
         type: String

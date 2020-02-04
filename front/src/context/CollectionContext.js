@@ -4,15 +4,13 @@ import ContextMenu from '../components/ContextMenu';
 import { selectElementContents, disableEditable,
          enabeEditable, removeSelections, 
          openContextMenu, hideContextMenu } from './domHelpers'
-import { blocks_import, cards_import } from './defaultData';
-import { GET_CARD, ADD_CARD_ENTRY, SAVE_CARD, GET_BLOCKS, SAVE_BLOCKS } from './queries';
+import { GET_CARD, SAVE_CARD, GET_BLOCKS, SAVE_BLOCKS } from './queries';
 import { useMutation, useQuery } from '@apollo/react-hooks';
 
 const Collection = React.createContext();
 
 function CollectionProvider({children}) {
-    const [blocks, updateBlocks] = useState(null)
-    const [cards, updateCards] = useState(cards_import);    
+    const [blocks, updateBlocks] = useState(null) 
     // TODO
     const [blocksNumber, updateBlocksNumber] = useState(6);
     const [selectedBlockId, updateSelectedBlockId] = useState('');
@@ -29,13 +27,27 @@ function CollectionProvider({children}) {
 
     const {data: blocksData, loading: blocksLoading, error: blocksError} = useQuery(GET_BLOCKS,
         {
-            onCompleted:  () => { updateBlocks(blocksData.blocks) }
+            onCompleted:  () => { console.log(blocksData.blocks); updateBlocks(blocksData.blocks) }
         });
 
     const [card, updateCard] = useState(null);
 
     const updateBlockName = (blockId) => {
         console.log("updateBlockName")
+    }
+
+    const addNewTopic = (block) => {
+        const newTopic = {
+            "id": String(blocks[0].count),
+            idx: block.children.length,
+            "name": "New Topic",
+            "type": "T",
+            "path": [...block.path, block.idx],
+        }
+        block.children.push(newTopic);
+        blocks[0].count+=1;
+        console.log(blocks);
+        updateBlocks([...blocks]);
     }
 
     const updateSelectedBlockIdAndCleanup = (id, blockRef) => {
@@ -121,8 +133,6 @@ function CollectionProvider({children}) {
         }
     }
 
-    
-
     const getCard = (id) => {
         updateIsCardUpdating(true);
         getCardQuery({
@@ -139,7 +149,6 @@ function CollectionProvider({children}) {
 
     return (
         <Collection.Provider value={{
-                cards,
                 blocks,
                 getBlock,
                 addNewEntryContext,
@@ -156,7 +165,9 @@ function CollectionProvider({children}) {
                 card,
                 isCardUpdating,
                 saveCardServer,
-                updateContextBlock
+                updateContextBlock,
+
+                addNewTopic
         }}>
             {children}
             <ContextMenu block={contextBlock} />
