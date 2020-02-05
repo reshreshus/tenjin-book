@@ -8,14 +8,14 @@ export const ADD_CARD = gql`
     }
 `
 export const SAVE_BLOCKS = gql`
-    mutation Blocks($blocks: [JSON]) {
-        blocks (blocks: $blocks)
+    mutation Blocks($newBlocks: [JSON]) {
+        saveBlocks (newBlocks: $newBlocks)
     }
 `;
 
 export const GET_BLOCKS = gql`
     {
-        blocks
+        blocks 
     }
 `;
 

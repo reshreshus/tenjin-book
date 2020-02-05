@@ -4,7 +4,7 @@ const GraphQLJSON = require('graphql-type-json');
 
 import _ from 'lodash';
 
-const blocks = [
+let blocks = [
     {
         "id": 0,
         "idx": 0,
@@ -182,7 +182,7 @@ const typeDefs = `
         ): Card,
         addCard: Card,
         saveBlocks (
-            blocks: [JSON]
+            newBlocks: [JSON]
         ): [JSON]
     }
 `;
@@ -223,9 +223,9 @@ const resolvers = {
             cards[idx] = card;
             return card;
         },
-        saveBlocks: (parent, {blocks : newBlocks}) => {
-            console.log("blocks", block);
-            blocks = newBlocks;
+        saveBlocks: (parent, {newBlocks}) => {
+            console.log("newBlocks", newBlocks);
+            blocks = [...newBlocks];
             return newBlocks;
         }
     }

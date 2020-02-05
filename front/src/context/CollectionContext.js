@@ -73,6 +73,11 @@ function CollectionProvider({children}) {
             newCardBlock.id = cardId;
             block.children.push(newCardBlock);
             blocks[0].count+=1;
+            saveBlocksQuery({
+                variables: {"newBlocks": blocks}
+            }).then((data) => {
+                console.log("saveBlocks data", data)
+            })
             updateBlocks([...blocks]);
         })
         
