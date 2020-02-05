@@ -227,7 +227,7 @@ const resolvers = {
         },
         addCard: (parent, args) => {
             let card = newCard;
-            card.id = `_${cards.length}`;
+            card.id = `_${blocks[0].count}`;
             cards.push(card);  
             return card;
         },
@@ -244,7 +244,7 @@ const resolvers = {
             return card;
         },
         saveBlocks: (parent, {newBlocks}) => {
-            console.log("newBlocks", newBlocks);
+            // console.log("newBlocks", newBlocks);
             blocks = [...newBlocks];
             return newBlocks;
         },
@@ -279,7 +279,10 @@ const resolvers = {
             }
             // TODO: what about other types?
             if (child.type === 'f') {
+                console.log("child", child)
+                console.log("cards.length", cards)
                 cards = cards.filter(c => c.id !== child.id)
+                console.log("cards.length", cards.length)
             }
             blocks[0].count--;
             return blocks;
