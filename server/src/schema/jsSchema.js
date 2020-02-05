@@ -16,17 +16,17 @@ let blocks = [
         children: [
             {
                 "id": "1",
-                "idx": 1,
+                "idx": 0,
                 "name": "English",
                 "expanded": true,
                 "type": "D",
-                "path": [1],
+                "path": [0],
                 "children": [
                     {
                         "id": "4",
-                        "idx": 1,
+                        "idx": 0,
                         "deck": 1,
-                        "path": [1, 1],
+                        "path": [0, 0],
                         "name": "Witcher 3",
                         "type": "D", 
                         "expanded": false,
@@ -34,35 +34,35 @@ let blocks = [
                             {
                                 "id": "5",
                                 "deck": 1,
-                                "path": [1, 1, 1],  
-                                "idx": 1,
+                                "path": [0, 0, 0],  
+                                "idx": 0,
                                 "name": "The Last Wish",
                                 "type": "D",   
                             } 
                         ]    
                     }, 
                     {
-                        "idx": 2,
+                        "idx": 1,
                         "type": "f",
                         "id": "_0",
                         "name": "a flashcard", 
-                        "path": [1, 2]
+                        "path": [0, 1]
                     }
                 ]
             },
             {
                 "id": "2",
-                "idx": 2,
+                "idx": 1,
                 "name": "Math",
                 "type": "D",
-                "path": [1],
+                "path": [0],
             },
             {
                 "id": "3",
-                "idx": 3,
+                "idx": 2,
                 "name": "Programming",
                 "type": "D",
-                "path": [1],
+                "path": [0],
             }
         ]
     }
@@ -183,9 +183,28 @@ const typeDefs = `
         addCard: Card,
         saveBlocks (
             newBlocks: [JSON]
-        ): [JSON]
+        ): [JSON],
+        renameBlock (
+            path: [Int]
+            newName: String
+        ): Block
     }
+
 `;
+
+const findBlock = (path) => {
+    let currentBlock = blocks[0]
+    for (let i = 1; i < path.length; i++) {
+        // console.log("current block", currentBlock);
+        if (currentBlock.children) {
+            currentBlock = currentBlock.children.filter(c => c.idx === path[i])[0]
+        } else {
+            console.error("Couldn't find a block");
+            return {}
+        }
+    }
+    return currentBlock;
+}
 
 // TODO: no error checking here
 const resolvers = {  
@@ -227,6 +246,12 @@ const resolvers = {
             console.log("newBlocks", newBlocks);
             blocks = [...newBlocks];
             return newBlocks;
+        },
+        renameBlock: (parent, {path, newName}) => {
+            console.log("renameBlock newName", newName);
+            let block = findBlock(path);
+            block.name = newName;
+            console.log("renameBlock block", block);
         }
     }
 };

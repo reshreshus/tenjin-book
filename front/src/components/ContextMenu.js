@@ -6,7 +6,7 @@ const ContextMenu = ({block}) => {
     return (
         <CollectionConsumer> 
         {
-            ({hideContextMenu, addNewTopic, addCard}) => {
+            ({hideContextMenu, addNewTopic, addCard, selectBlockToRename}) => {
                 const menuItems = block ? [
                     {
                         "action": "New Topic",
@@ -31,6 +31,8 @@ const ContextMenu = ({block}) => {
                         "shortcut": "F2",
                         "onClick": () => {
                             console.log("Rename")
+                            // TODO rename after hitting enter
+                            selectBlockToRename(block.id);
                         },
                         "usable": true
                     },

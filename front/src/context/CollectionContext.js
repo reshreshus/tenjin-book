@@ -4,7 +4,7 @@ import ContextMenu from '../components/ContextMenu';
 import { selectElementContents, disableEditable,
          enabeEditable, removeSelections, 
          openContextMenu, hideContextMenu } from './domHelpers'
-import { GET_CARD, SAVE_CARD, GET_BLOCKS, SAVE_BLOCKS, ADD_CARD } from './queries';
+import { GET_CARD, SAVE_CARD, GET_BLOCKS, SAVE_BLOCKS, ADD_CARD, RENAME_BLOCK } from './queries';
 import { useMutation, useQuery } from '@apollo/react-hooks';
 
 const Collection = React.createContext();
@@ -27,6 +27,8 @@ function CollectionProvider({children}) {
 
     const [addCardQuery] = useMutation(ADD_CARD);
 
+    const [renameCardQuery] = useMutation(RENAME_BLOCK);
+
     const {data: blocksData, loading: blocksLoading, error: blocksError} = useQuery(GET_BLOCKS,
         {
             onCompleted:  () => { console.log(blocksData.blocks); updateBlocks(blocksData.blocks) }
@@ -38,6 +40,16 @@ function CollectionProvider({children}) {
         console.log("updateBlockName")
     }
 
+    const renameBlock = (newName, blockPath) => {
+        console.log("renameBlock", newName);
+        renameCardQuery({variables: {
+            path: blockPath,
+            newName: newName
+        }}).then(data => {
+            console.log("renameCard data", data)
+        })
+    }
+
     const findLastDeck = (block) => {
         // base case
         if (block.type === 'D') {
@@ -46,8 +58,9 @@ function CollectionProvider({children}) {
         // go from root to card to find the last block which is deck
         let currentBlock = blocks[0]
         let lastDeck = blocks[0]
-        for (let i = 0; i < block.path.length; i++) {
+        for (let i = 1; i < block.path.length; i++) {
             if (currentBlock.children) {
+                // console.log("currentBlock", currentBlock, "block.path[i]", block.path[i] );
                 let newBlock = currentBlock.children.filter(c => c.idx === block.path[i] )[0]
                 if (newBlock.type === 'D'){
                     lastDeck = newBlock;
@@ -60,7 +73,7 @@ function CollectionProvider({children}) {
 
     const addCard = (block) => {
         const newCardBlock = {
-            idx: block.children.length,
+            idx: block.children ? block.children.length : 0,
             "name": "New Card",
             "type": "f",
             "path": [...block.path, block.idx],
@@ -69,7 +82,14 @@ function CollectionProvider({children}) {
         addCardQuery().then((data) => {
             let cardId = data.data.addCard.id;
             newCardBlock.id = cardId;
-            block.children.push(newCardBlock);
+            if (block.children) {
+                block.children.push(newCardBlock);
+            } else {
+                block.children = [newCardBlock];
+            }
+            block.expanded =  true;
+            
+            
             blocks[0].count+=1;
             saveBlocksQuery({
                 variables: {"newBlocks": blocks}
@@ -83,12 +103,17 @@ function CollectionProvider({children}) {
     const addNewTopic = (block) => {
         const newTopic = {
             "id": String(blocks[0].count),
-            idx: block.children.length,
+            idx: block.children ? block.children.length : 0,
             "name": "New Topic",
             "type": "T",
             "path": [...block.path, block.idx],
         }
-        block.children.push(newTopic);
+        if (block.children) {
+            block.children.push(newTopic)
+        } else {
+            block.children = [newTopic];
+        }
+        block.expanded =  true;
         blocks[0].count+=1;
         console.log(blocks);
         updateBlocks([...blocks]);
@@ -152,6 +177,17 @@ function CollectionProvider({children}) {
         return blocks.filter (d => d.id === id)[0]
     } 
 
+    const selectBlockToRename = (blockId) => {
+        hideContextMenu();
+        updateSelectedBlockId(blockId)
+        // new Block isn't created immediately so I wait
+        setTimeout(() => {
+            let el = document.querySelector(`.block-${blockId}`);
+            enabeEditable(el)
+            selectElementContents(el);
+        }, 100);
+    }
+
     const addNewBlock = (previousBlockId = -1, isParent=false) => {
         let newBlocksNumber = String(blocksNumber + 1);
         if (previousBlockId < 0) {
@@ -162,14 +198,7 @@ function CollectionProvider({children}) {
             })
              // edit new block immediately upon creating it
             updateBlocks([...blocks]);
-            hideContextMenu();
-            updateSelectedBlockId(newBlocksNumber)
-            // new Block isn't created immediately so I wait
-            setTimeout(() => {
-                let el = document.querySelector(`.block-${newBlocksNumber}`);
-                enabeEditable(el)
-                selectElementContents(el);
-            }, 100);
+            selectBlockToRename(newBlocksNumber);
             updateBlocksNumber(blocksNumber + 1)
             
         } else {
@@ -212,7 +241,9 @@ function CollectionProvider({children}) {
 
                 addNewTopic,
                 findLastDeck,
-                addCard
+                addCard,
+                renameBlock,
+                selectBlockToRename
         }}>
             {children}
             <ContextMenu block={contextBlock} />

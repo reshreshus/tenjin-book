@@ -1,5 +1,13 @@
 import { gql } from 'apollo-boost';
 
+export const RENAME_BLOCK = gql`
+    mutation renameBlock($path: [Int], $newName: String) {
+        renameBlock(path: $path, newName: $newName) {
+            name
+        }
+    }
+`
+
 export const ADD_CARD = gql`
     mutation {
         addCard {

@@ -14,9 +14,7 @@ export default function Block({block}) {
         contentEditable = React.createRef();
     })
 
-    const handleChange = e => {
-        updateName(e.target.value);
-    };
+    
 
     const toggleCaret = () => {
         updateExpanded(!expanded);
@@ -26,23 +24,31 @@ export default function Block({block}) {
         <CollectionConsumer> 
         {
             ({selectedBlockId, updateSelectedBlockIdAndCleanup, updateBlockName,
-                openContextMenu, updateContextBlock
+                openContextMenu, updateContextBlock, renameBlock
             }) => {
-                const onBlockKeyDown = e => {
-                    switch (e.keyCode) {
-                        case 13:
+                const onBlockKeyDown = (e) => {
+                    switch (e.key) {
+                        case "Enter":
                             console.log("Enter")
                             e.preventDefault();
+                            
                             updateSelectedBlockIdAndCleanup(block.id, node);
+                            updateName(name);
                             updateBlockName(name)
+                            renameBlock(name, [...block.path, block.idx]);
                             break;
-                        case 27:
+                        case "esc":
                             console.log("escape")
                             e.preventDefault();
                             updateSelectedBlockIdAndCleanup('', node);
                             break;
+                        default:
                     }
                 }
+
+                const handleChange = e => {
+                    updateName(e.target.value);
+                };
 
                 return (
                     <div className={`block`} ref={node}>  
@@ -65,9 +71,12 @@ export default function Block({block}) {
                                 updateSelectedBlockIdAndCleanup(block.id, node)
                                 openContextMenu(e, block, updateContextBlock)
                             }}
+                            // onKeyDown doesn't work on react-contenteditable ¯\_(ツ)_/¯
+                            onKeyDown={(e) => {
+                                onBlockKeyDown(e)
+                            }}
                             >
                             <Link className={`block__link`}
-                                // to={`/show-deck/${block.id}`}
                                 to={{pathname: `${block.type === 'D' ? `/show-deck/` 
                                         : `/edit/`}`, 
                                     state: {
@@ -75,13 +84,13 @@ export default function Block({block}) {
                                 }}}
                                 >
                                 <ContentEditable 
+                                    key={block.id}
                                     innerRef={contentEditable}
                                     html={name}
-                                    disabled={ true }
+                                    disabled={ false }
+                                    // TODO: make unique blocks IDs, not classes
                                     className={`content-editable block-${block.id}`}
-                                    onChange={handleChange}
-                                    tagName='div'  // div by default but still
-                                    onKeyDown={onBlockKeyDown}
+                                    onChange={(e)=>handleChange(e)}
                                 />
                             </Link>
                         </div>
