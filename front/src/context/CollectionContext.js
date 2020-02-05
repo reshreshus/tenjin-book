@@ -4,7 +4,7 @@ import ContextMenu from '../components/ContextMenu';
 import { selectElementContents, disableEditable,
          enabeEditable, removeSelections, 
          openContextMenu, hideContextMenu } from './domHelpers'
-import { GET_CARD, SAVE_CARD, GET_BLOCKS, SAVE_BLOCKS } from './queries';
+import { GET_CARD, SAVE_CARD, GET_BLOCKS, SAVE_BLOCKS, ADD_CARD } from './queries';
 import { useMutation, useQuery } from '@apollo/react-hooks';
 
 const Collection = React.createContext();
@@ -24,6 +24,8 @@ function CollectionProvider({children}) {
 
     const [saveCardQuery] = useMutation(SAVE_CARD)
     const [saveBlocksQuery] = useMutation(SAVE_BLOCKS);
+
+    const [addCardQuery] = useMutation(ADD_CARD);
 
     const {data: blocksData, loading: blocksLoading, error: blocksError} = useQuery(GET_BLOCKS,
         {
@@ -56,18 +58,24 @@ function CollectionProvider({children}) {
         return lastDeck;
     }
 
-    const addNewCard = (block) => {
+    const addCard = (block) => {
+        //TODO: right id, haha
         const newCardBlock = {
             idx: block.children.length,
             "name": "New Card",
             "type": "f",
             "path": [...block.path, block.idx],
         }
-        block.children.push(newCardBlock);
-        blocks[0].count+=1;
-
-
-        updateBlocks([...blocks]);
+        
+        addCardQuery().then((data) => {
+            console.log("addCard data", data);  
+            let cardId = data.data.addCard.id;
+            newCardBlock.id = cardId;
+            block.children.push(newCardBlock);
+            blocks[0].count+=1;
+            updateBlocks([...blocks]);
+        })
+        
     }
 
     const addNewTopic = (block) => {
@@ -201,7 +209,8 @@ function CollectionProvider({children}) {
                 updateContextBlock,
 
                 addNewTopic,
-                findLastDeck
+                findLastDeck,
+                addCard
         }}>
             {children}
             <ContextMenu block={contextBlock} />

@@ -6,7 +6,7 @@ const ContextMenu = ({block}) => {
     return (
         <CollectionConsumer> 
         {
-            ({hideContextMenu, addNewTopic}) => {
+            ({hideContextMenu, addNewTopic, addCard}) => {
                 const menuItems = block ? [
                     {
                         "action": "New Topic",
@@ -22,6 +22,7 @@ const ContextMenu = ({block}) => {
                         "shortcut": "A",
                         "onClick": () => {
                             console.log("New New Card")
+                            addCard(block);
                         },
                         "usable": true
                     },
