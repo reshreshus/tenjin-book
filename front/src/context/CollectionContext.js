@@ -59,7 +59,6 @@ function CollectionProvider({children}) {
     }
 
     const addCard = (block) => {
-        //TODO: right id, haha
         const newCardBlock = {
             idx: block.children.length,
             "name": "New Card",
@@ -68,7 +67,6 @@ function CollectionProvider({children}) {
         }
         
         addCardQuery().then((data) => {
-            console.log("addCard data", data);  
             let cardId = data.data.addCard.id;
             newCardBlock.id = cardId;
             block.children.push(newCardBlock);
@@ -80,7 +78,6 @@ function CollectionProvider({children}) {
             })
             updateBlocks([...blocks]);
         })
-        
     }
 
     const addNewTopic = (block) => {

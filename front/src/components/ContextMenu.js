@@ -58,7 +58,7 @@ const ContextMenu = ({block}) => {
                     <div className="cmenu hide" onMouseLeave={(e) => hideContextMenu(e)}>
                         {
                             menuItems.map((it, i) => (
-                                <div key={i} className="cmenu__item" onClick={() => {it.onClick()}}>
+                                <div key={i} className="cmenu__item" onClick={() => {it.onClick(); hideContextMenu()}}>
                                     <div className="cmenu__action" >
                                         {it.action}
                                     </div>
