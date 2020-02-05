@@ -7,7 +7,7 @@ import _ from 'lodash';
 let blocks = [
     {
         "id": 0,
-        "idx": 0,
+        "idx": 0, 
         "name": "root",
         "count": 6,
         "expanded": true,
@@ -228,7 +228,7 @@ const resolvers = {
         addCard: (parent, args) => {
             let card = newCard;
             card.id = `_${cards.length}`;
-            cards.push(card);
+            cards.push(card);  
             return card;
         },
         card: (parent, { id }) => _.find(cards, {id: id}),
@@ -254,18 +254,15 @@ const resolvers = {
             block.name = newName;
             console.log("renameBlock block", block);
         },
-        deleteBlock: (_, {path}) => {
-            console.log("path", path);
-           
+        deleteBlock: (_, {path}) => {           
             let parent = findBlock(path.slice(0, -1));
             if (!parent) {
                 console.error("Didn't find a parent!")
+                return;
             }
-            console.log("parent", parent);
             let child;
             // delete child
             parent.children = parent.children.filter(c => { 
-                console.log(c.idx, path[path.length - 1])
                 if (c.idx !== path[path.length - 1]) return true;
                 // get deleted child
                 else {
@@ -278,6 +275,7 @@ const resolvers = {
             }
             if (!child) {
                 console.error("Didn't find a child")
+                return;
             }
             // TODO: what about other types?
             if (child.type === 'f') {

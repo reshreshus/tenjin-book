@@ -100,8 +100,8 @@ export default function Block({block}) {
                             block.children ? 
                                 <div className={`block__children ${expanded ? 'active': ''}`}>
                                 {
-                                    block.children.map( (c, i) => (
-                                    <Block block={c} key={i}/>
+                                    block.children.map( c => (
+                                    <Block block={c} key={c.id}/>
                                 ))
                                 }
                                 </div>

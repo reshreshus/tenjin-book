@@ -50,12 +50,18 @@ function CollectionProvider({children}) {
     }
 
     const deleteBlock = (blockPath) => {
-        console.log("deleteBlock");
-        deleteBlockQuery({
-            variables: {path: blockPath}
-        }).then((data) => {
-            updateBlocks(data.data.deleteBlock);
-        })
+        console.log("deleteBlock", blockPath);
+        if (blockPath && blockPath.length > 1) {
+            console.log("deleteBlock");
+            deleteBlockQuery({
+                variables: {path: blockPath}
+            }).then((data) => {
+                updateBlocks(data.data.deleteBlock);
+            })
+        } else {
+            alert("Something is wrong. Probably can't delete root element");
+        }
+        
     }
 
     const renameBlock = (newName, blockPath) => {
