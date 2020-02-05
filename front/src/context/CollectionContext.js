@@ -4,7 +4,7 @@ import ContextMenu from '../components/ContextMenu';
 import { selectElementContents, disableEditable,
          enabeEditable, removeSelections, 
          openContextMenu, hideContextMenu } from './domHelpers'
-import { GET_CARD, SAVE_CARD, GET_BLOCKS, SAVE_BLOCKS, ADD_CARD, RENAME_BLOCK } from './queries';
+import { GET_CARD, SAVE_CARD, GET_BLOCKS, SAVE_BLOCKS, ADD_CARD, RENAME_BLOCK, DELETE_BLOCK } from './queries';
 import { useMutation, useQuery } from '@apollo/react-hooks';
 
 const Collection = React.createContext();
@@ -17,7 +17,12 @@ function CollectionProvider({children}) {
     
 
     const [contextBlock, updateContextBlock] = useState(null);
-    const [showSidebars, updateShowSidebars] = useState([true, true])
+    const [showSidebars, updateShowSidebars] = useState([true, true]);
+
+    const {data: blocksData, loading: blocksLoading, error: blocksError} = useQuery(GET_BLOCKS,
+        {
+            onCompleted:  () => { console.log(blocksData.blocks); updateBlocks(blocksData.blocks) }
+        });
 
     const [getCardQuery] = useMutation(GET_CARD);
     const [isCardUpdating, updateIsCardUpdating] = useState(false);
@@ -27,12 +32,16 @@ function CollectionProvider({children}) {
 
     const [addCardQuery] = useMutation(ADD_CARD);
 
-    const [renameCardQuery] = useMutation(RENAME_BLOCK);
+    const [renameBlockQuery] = useMutation(RENAME_BLOCK);
+    const [deleteBlockQuery] = useMutation(DELETE_BLOCK);
+    //     , 
+    //     {
+    //     refetchQueries: [{
+    //         query: GET_BLOCKS
+    //     }]
+    // });
 
-    const {data: blocksData, loading: blocksLoading, error: blocksError} = useQuery(GET_BLOCKS,
-        {
-            onCompleted:  () => { console.log(blocksData.blocks); updateBlocks(blocksData.blocks) }
-        });
+    
 
     const [card, updateCard] = useState(null);
 
@@ -40,9 +49,18 @@ function CollectionProvider({children}) {
         console.log("updateBlockName")
     }
 
+    const deleteBlock = (blockPath) => {
+        console.log("deleteBlock");
+        deleteBlockQuery({
+            variables: {path: blockPath}
+        }).then((data) => {
+            updateBlocks(data.data.deleteBlock);
+        })
+    }
+
     const renameBlock = (newName, blockPath) => {
         console.log("renameBlock", newName);
-        renameCardQuery({variables: {
+        renameBlockQuery({variables: {
             path: blockPath,
             newName: newName
         }}).then(data => {
@@ -91,6 +109,7 @@ function CollectionProvider({children}) {
             
             
             blocks[0].count+=1;
+            // TODO: can optimize
             saveBlocksQuery({
                 variables: {"newBlocks": blocks}
             }).then((data) => {
@@ -243,7 +262,8 @@ function CollectionProvider({children}) {
                 findLastDeck,
                 addCard,
                 renameBlock,
-                selectBlockToRename
+                selectBlockToRename,
+                deleteBlock
         }}>
             {children}
             <ContextMenu block={contextBlock} />

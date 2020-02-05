@@ -6,7 +6,7 @@ const ContextMenu = ({block}) => {
     return (
         <CollectionConsumer> 
         {
-            ({hideContextMenu, addNewTopic, addCard, selectBlockToRename}) => {
+            ({hideContextMenu, addNewTopic, addCard, selectBlockToRename, deleteBlock}) => {
                 const menuItems = block ? [
                     {
                         "action": "New Topic",
@@ -49,6 +49,7 @@ const ContextMenu = ({block}) => {
                         "shortcut": "delete",
                         "onClick": () => {
                             console.log("Delete")
+                            deleteBlock([...block.path, block.idx]);
                         },
                         "usable": true
                     },

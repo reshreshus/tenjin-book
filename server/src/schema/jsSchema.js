@@ -46,7 +46,7 @@ let blocks = [
                         "type": "f",
                         "id": "_0",
                         "name": "a flashcard", 
-                        "path": [0, 1]
+                        "path": [0, 0]
                     }
                 ]
             },
@@ -98,7 +98,7 @@ const newCard = {
     ]
 }
 
-const cards = [{
+let cards = [{
     id: "_0",
     template_id: "from db",
     deck_title: "English",
@@ -187,7 +187,8 @@ const typeDefs = `
         renameBlock (
             path: [Int]
             newName: String
-        ): Block
+        ): Block,
+        deleteBlock (path: [Int]): [JSON]
     }
 
 `;
@@ -252,6 +253,38 @@ const resolvers = {
             let block = findBlock(path);
             block.name = newName;
             console.log("renameBlock block", block);
+        },
+        deleteBlock: (_, {path}) => {
+            console.log("path", path);
+           
+            let parent = findBlock(path.slice(0, -1));
+            if (!parent) {
+                console.error("Didn't find a parent!")
+            }
+            console.log("parent", parent);
+            let child;
+            // delete child
+            parent.children = parent.children.filter(c => { 
+                console.log(c.idx, path[path.length - 1])
+                if (c.idx !== path[path.length - 1]) return true;
+                // get deleted child
+                else {
+                    child = c;
+                    return false;
+                }
+            });
+            if (parent.children.length === 0) {
+                delete parent.children; 
+            }
+            if (!child) {
+                console.error("Didn't find a child")
+            }
+            // TODO: what about other types?
+            if (child.type === 'f') {
+                cards = cards.filter(c => c.id !== child.id)
+            }
+            blocks[0].count--;
+            return blocks;
         }
     }
 };

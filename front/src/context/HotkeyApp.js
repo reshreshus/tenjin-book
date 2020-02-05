@@ -7,7 +7,7 @@ import { enabeEditable, selectElementContents, hideContextMenu} from './domHelpe
 const HotkeyApp = ({selectedBlockId, showSidebars, updateShowSidebars}) => {
     const [sidebarLength, updateSidebarLength] = useState(null);
 
-    const handleF2 = (event, handler, selectedBlockId) => {
+    const handleF2 = (event, selectedBlockId) => {
         // Prevent the default refresh event under WINDOWS system
         console.log("handleF2");
         if (selectedBlockId !== '') {
@@ -54,9 +54,17 @@ const HotkeyApp = ({selectedBlockId, showSidebars, updateShowSidebars}) => {
             console.log("sidebarLength", sidebarLength);
             sidebar.style.width = `${sidebarLength}px`;
             rightSidebar.style.display = 'inline';
-            updateShowSidebars([true, true])
+            updateShowSidebars([true, true]);
         } else {
             // don't react
+        }
+    }
+
+    const handleDel = (event, selectedBlockId) => {
+        console.log("handleDel");
+        if (selectedBlockId !== '') {
+            event.preventDefault();
+            // TODO;
         }
     }
 
@@ -65,7 +73,7 @@ const HotkeyApp = ({selectedBlockId, showSidebars, updateShowSidebars}) => {
         e.preventDefault();
         switch (keyName) {
             case 'f2':
-                handleF2(e, handle, selectedBlockId);
+                handleF2(e, selectedBlockId);
                 break;
             case 'esc':
                 hideContextMenu();
@@ -75,6 +83,9 @@ const HotkeyApp = ({selectedBlockId, showSidebars, updateShowSidebars}) => {
                 break;
             case 'alt+v':
                 handleAltV();
+                break;
+            case 'del':
+                handleDel(e, selectedBlockId);
                 break;
             default:
                 console.log("")
