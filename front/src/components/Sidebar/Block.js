@@ -8,7 +8,7 @@ import { CollectionConsumer } from '../../context/CollectionContext';
 export default function Block({block}) {
     let contentEditable;
     const [name, updateName] = useState(block.name)
-    const [expanded, updateExpanded] = useState(block.expanded ? block.expanded : false)
+    // const [expanded, updateExpanded] = useState(block.expanded ? block.expanded : false)
     let node = useRef(null);
     useEffect(() => {
         contentEditable = React.createRef();
@@ -16,15 +16,15 @@ export default function Block({block}) {
 
     
 
-    const toggleCaret = () => {
-        updateExpanded(!expanded);
-    }
+    // const toggleCaret = () => {
+    //     updateExpanded(!expanded);
+    // }
 
     return (
         <CollectionConsumer> 
         {
             ({selectedBlockId, updateSelectedBlockIdAndCleanup, updateBlockName,
-                openContextMenu, updateContextBlock, renameBlock
+                openContextMenu, updateContextBlock, renameBlock, toggleExpanded
             }) => {
                 const onBlockKeyDown = (e) => {
                     switch (e.key) {
@@ -55,14 +55,17 @@ export default function Block({block}) {
                         <div className="block__inline">
                         {
                             block.children ? 
-                            <span  className={`caret ${expanded ? 'caret-down': ''}`} onClick={() => {toggleCaret()}}>
+                            <span  className={`caret ${block.expanded ? 'caret-down': ''}`} 
+                            onClick={() => {toggleExpanded(block)}}>
                                 {/* &#9654; */}
                                 <svg width="20" height="20" viewBox="0 0 20 20"><path d="M13.75 9.56879C14.0833 9.76124 14.0833 10.2424 13.75 10.4348L8.5 13.4659C8.16667 13.6584 7.75 13.4178 7.75 13.0329L7.75 6.97072C7.75 6.58582 8.16667 6.34525 8.5 6.5377L13.75 9.56879Z" stroke="none" fill="currentColor"></path></svg>
                                 </span>
                             :
                             ""
                         }
-                        <span className={`block__type ${block.type === 'D' ? '' : 'block__type--ca'}`}>[{ block.type }]</span>
+                        <span className={`block__type ${block.type === 'D' ? '' : 'block__type--ca'}`}>
+                            [{ block.type }]
+                        </span>
                         <div className={`block__name ${block.id !== selectedBlockId ? '': 'block__name--active'}` }
                         onClick={()  => {
                             updateSelectedBlockIdAndCleanup(block.id, node)
@@ -98,7 +101,7 @@ export default function Block({block}) {
                         
                         {
                             block.children ? 
-                                <div className={`block__children ${expanded ? 'active': ''}`}>
+                                <div className={`block__children ${block.expanded ? 'active': ''}`}>
                                 {
                                     block.children.map( c => (
                                     <Block block={c} key={c.id}/>

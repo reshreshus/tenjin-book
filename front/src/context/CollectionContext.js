@@ -111,10 +111,10 @@ function CollectionProvider({children}) {
             } else {
                 block.children = [newCardBlock];
             }
-            block.expanded =  true;
+            block.expanded = true;
             
             
-            blocks[0].count+=1;
+            blocks[0].count++;
             // TODO: can optimize
             saveBlocksQuery({
                 variables: {"newBlocks": blocks}
@@ -123,6 +123,11 @@ function CollectionProvider({children}) {
             })
             updateBlocks([...blocks]);
         })
+    }
+
+    const toggleExpanded = (block) => {
+        block.expanded = !block.expanded;
+        updateBlocks([...blocks])
     }
 
     const addNewTopic = (block) => {
@@ -269,7 +274,8 @@ function CollectionProvider({children}) {
                 addCard,
                 renameBlock,
                 selectBlockToRename,
-                deleteBlock
+                deleteBlock,
+                toggleExpanded
         }}>
             {children}
             <ContextMenu block={contextBlock} />
