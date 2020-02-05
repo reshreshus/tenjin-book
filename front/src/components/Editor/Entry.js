@@ -12,22 +12,18 @@ export default function Entry({e, saveEditorInstance, chooseType,
         if (!editorChanged) {
             updateIsChanged(false);
         }
-        console.log("aaaaaaaaaa")
     }, [editorChanged])
 
     const updateAreChanged = () => {
-        console.log("updateIsChanged")
         updateIsChanged(true);
         updateEditorChanged(true);
     }
     
     const openChoosingType = () => {
-        console.log("openChoosingType")
         updateChoosingType(true)
     }
 
     const closeChoosingType = () => {
-        console.log("closeChoosingType")
         updateChoosingType(false)
     }
 
@@ -76,9 +72,6 @@ export default function Entry({e, saveEditorInstance, chooseType,
             <div className="card-entry__field">
                 <div className="card-entry__text-field" 
                     id={"editor-js-" + e.id}>
-                        {
-                            console.log("e.content", e.content)
-                        }
                     <EditorJs 
                         instanceRef={instance => {
                             saveEditorInstance(instance, e);

@@ -36,6 +36,40 @@ function CollectionProvider({children}) {
         console.log("updateBlockName")
     }
 
+    const findLastDeck = (block) => {
+        // base case
+        if (block.type === 'D') {
+            return block;
+        }
+        // go from root to card to find the last block which is deck
+        let currentBlock = blocks[0]
+        let lastDeck = blocks[0]
+        for (let i = 0; i < block.path.length; i++) {
+            if (currentBlock.children) {
+                let newBlock = currentBlock.children.filter(c => c.idx === block.path[i] )[0]
+                if (newBlock.type === 'D'){
+                    lastDeck = newBlock;
+                }
+                currentBlock = newBlock;
+            } else break;
+        }
+        return lastDeck;
+    }
+
+    const addNewCard = (block) => {
+        const newCardBlock = {
+            idx: block.children.length,
+            "name": "New Card",
+            "type": "f",
+            "path": [...block.path, block.idx],
+        }
+        block.children.push(newCardBlock);
+        blocks[0].count+=1;
+
+
+        updateBlocks([...blocks]);
+    }
+
     const addNewTopic = (block) => {
         const newTopic = {
             "id": String(blocks[0].count),
@@ -138,9 +172,8 @@ function CollectionProvider({children}) {
         getCardQuery({
             variables: {id: id}
         }).then((data) => {
-            console.log("cardData", data)
+            // console.log("cardData", data)
             let newCard = data.data.card;
-            console.log("type of newCard.entries", typeof newCard.entries)
             updateCard(newCard);
             updateIsCardUpdating(false);
             return newCard;
@@ -167,7 +200,8 @@ function CollectionProvider({children}) {
                 saveCardServer,
                 updateContextBlock,
 
-                addNewTopic
+                addNewTopic,
+                findLastDeck
         }}>
             {children}
             <ContextMenu block={contextBlock} />

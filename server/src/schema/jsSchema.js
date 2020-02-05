@@ -34,7 +34,7 @@ const blocks = [
                             {
                                 "id": "5",
                                 "deck": 1,
-                                "path": [1, 1,1],  
+                                "path": [1, 1, 1],  
                                 "idx": 1,
                                 "name": "The Last Wish",
                                 "type": "D",   
@@ -45,7 +45,8 @@ const blocks = [
                         "idx": 2,
                         "type": "f",
                         "id": "_1",
-                        "name": "a flashcard"
+                        "name": "a flashcard", 
+                        "path": [1, 2]
                     }
                 ]
             },
@@ -67,10 +68,38 @@ const blocks = [
     }
 ]
 
+const newCard = {
+    template_id: "from db",
+    template_title: "Basic",
+    entries: [
+        {
+            id: 0,
+            name: "Front",
+            content: {
+                blocks: [{
+                    type: "paragraph",
+                    data: { text: "" }
+                }]
+            },
+            entry_type: "Q",
+        },
+        {
+            id: 1,
+            name: "Back",
+            content: {
+                blocks: [{
+                    type: "paragraph",
+                    data: { text: "" }
+                }]
+            },   
+            entry_type: "A",
+        },
+        
+    ]
+}
+
 const cards = [{
     id: "_1",
-    deck_id: "from db",
-    // block_id: "from db",
     template_id: "from db",
     deck_title: "English",
     template_title: "Basic",
@@ -112,14 +141,14 @@ const typeDefs = `
         expanded: Boolean
         type: String
         deck: String
-        path: [String]
+        path: [Int]
         children: [Block] 
     }
 
     type Card {
         id: ID,
         template_id: String,
-        deck_title: String,
+        deck_id: String,
         template_title: String,
         entries: [CardEntry]
     }
@@ -149,10 +178,11 @@ const typeDefs = `
         card(id: ID): Card,
         saveCard (
             id: ID
-            deck_title: String
+            deck_id: ID
             template_title: String
             entries: [JSON]
         ): Card,
+        addCard (deck_id: ID): Card,
         saveBlocks (
             blocks: [JSON]
         ): [JSON]
@@ -177,14 +207,22 @@ const resolvers = {
             })
             return card.entries;
         },
+        addCard: (parent, {deck_id}) => {
+            let card = newCard;
+            let id = cards.length;
+            card.id = id;
+            card.deck_id = deck_id;
+            cards.push(card);
+            return card;
+        },
         card: (parent, { id }) => _.find(cards, {id: id}),
-        saveCard: (parent, {id, template_title, deck_title, entries}) => {
+        saveCard: (parent, {id, template_title, deck_id, entries}) => {
             let card = _.find(cards, {id: id});
             let idx = cards.indexOf(card);
             card = {
                 id, 
                 template_title, 
-                deck_title,   
+                deck_id,   
                 entries
             }
             cards[idx] = card;

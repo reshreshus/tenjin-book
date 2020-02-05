@@ -9,7 +9,6 @@ export default function Block({block}) {
     let contentEditable;
     const [name, updateName] = useState(block.name)
     const [expanded, updateExpanded] = useState(block.expanded ? block.expanded : false)
-    
     let node = useRef(null);
     useEffect(() => {
         contentEditable = React.createRef();

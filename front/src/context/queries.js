@@ -16,7 +16,7 @@ export const GET_CARD = gql`
     mutation Card($id: ID!) {
         card (id: $id) {
             id
-            deck_title
+            deck_id
             template_title
             entries {
                 id

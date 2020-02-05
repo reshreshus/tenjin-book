@@ -21,7 +21,8 @@ export default function Editor() {
    
 return (<CollectionConsumer >
     { ({addNewEntryContext, deleteEntryContext,
-        chooseTypeC, getCard, card, isCardUpdating, saveCardServer
+        chooseTypeC, getCard, card, isCardUpdating, saveCardServer,
+        findLastDeck
     }) => {
         
     if(!card) {
@@ -30,10 +31,11 @@ return (<CollectionConsumer >
         }
         return <div>loading</div>
     }
-    const {deck_title, template_title, entries} = card;
-    console.log("Editor card", card);
+    const {deck_id, template_title, entries} = card;
+    const deckParent = findLastDeck(block);
+    const deck_title = deckParent.name;
+    
     const saveCard = async () => { 
-        console.log("entriesEditors", entriesEditors)
         updateEditorChanged(false);
         entriesEditors.map( async ({entry, instance}) => {
             const { blocks } = await instance.save();
@@ -44,7 +46,6 @@ return (<CollectionConsumer >
     }
 
     const addNewEntry = (cardId) => {
-        console.log("adding new entry")
         addNewEntryContext(cardId)
     }
 
