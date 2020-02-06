@@ -55,6 +55,23 @@ const ContextMenu = ({block}) => {
                         },
                         "usable": true
                     },
+                    {
+                        "action": "Toggle Collapsedness",
+                        "shortcut": "Z",
+                        "onClick": () => {
+                            console.log("Toggle Collapsedness")
+                        },
+                        "usable": true
+                    },
+                    {
+                        "action": "Collapse All",
+                        "shortcut": "Ctrl+Z",
+                        "onClick": () => {
+                            console.log("Toggle Collapsedness")
+                        },
+                        "usable": true
+                    },
+
             
                 ] : []
 
