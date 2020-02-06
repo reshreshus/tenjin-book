@@ -46,6 +46,11 @@ function CollectionProvider({children}) {
         console.log("updateBlockName")
     }
 
+    const toggleCollapse = (block) => {
+        block.expanded = !block.expanded;
+        updateBlocks([...blocks]);
+    }
+
     const duplicateBlock = (blockPath) => {
         duplicateBlockQuery({
             variables: {path: blockPath}
@@ -283,7 +288,8 @@ function CollectionProvider({children}) {
                 selectBlockToRename,
                 deleteBlock,
                 toggleExpanded,
-                duplicateBlock
+                duplicateBlock,
+                toggleCollapse
         }}>
             {children}
             <ContextMenu block={contextBlock} />

@@ -7,7 +7,7 @@ const ContextMenu = ({block}) => {
         <CollectionConsumer> 
         {
             ({hideContextMenu, addNewTopic, addCard, selectBlockToRename, 
-                deleteBlock, duplicateBlock}) => {
+                deleteBlock, duplicateBlock, toggleCollapse}) => {
                 const menuItems = block ? [
                     {
                         "action": "New Topic",
@@ -59,7 +59,8 @@ const ContextMenu = ({block}) => {
                         "action": "Toggle Collapsedness",
                         "shortcut": "Z",
                         "onClick": () => {
-                            console.log("Toggle Collapsedness")
+                            console.log("Toggle Collapsedness");
+                            toggleCollapse(block);
                         },
                         "usable": true
                     },
