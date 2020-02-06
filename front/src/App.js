@@ -41,7 +41,7 @@ export default function App() {
   
   return (
     <div className="app">
-      <div className={`${'hide'}`}></div>
+      {/* <div className={`${'hide'}`}></div> */}
       <Sidebar />
       <div className="resizer"/>
       <div className="right-sidebar">
