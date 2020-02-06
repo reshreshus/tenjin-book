@@ -5,7 +5,7 @@ import { enabeEditable, selectElementContents, hideContextMenu} from './domHelpe
 
 
 const HotkeyApp = ({selectedBlockId, showSidebars, updateShowSidebars, 
-    block, deleteBlock, addCard}) => {
+    block, deleteBlock, addCard, duplicateBlock}) => {
     const [sidebarLength, updateSidebarLength] = useState(null);
 
     const addCardHot = () => {
@@ -76,6 +76,10 @@ const HotkeyApp = ({selectedBlockId, showSidebars, updateShowSidebars,
         }
     }
 
+    const duplicateBlockHot = () => {
+        duplicateBlock([...block.path, block.idx]);
+    }
+
     const onKeyDown = (keyName, e, handle) => {
         console.log("test:onKeyDown", keyName);
         e.preventDefault();
@@ -98,6 +102,9 @@ const HotkeyApp = ({selectedBlockId, showSidebars, updateShowSidebars,
             case 'a':
                 addCardHot();
                 break;
+            case 'ctrl+shift+d':
+                duplicateBlockHot();
+                break;
             default:
                 console.log("")
         }
@@ -106,7 +113,7 @@ const HotkeyApp = ({selectedBlockId, showSidebars, updateShowSidebars,
 
     return (
         <Hotkeys 
-            keyName="a,ctrl+s,f2,esc,alt+c,alt+v,del,alt+n" 
+            keyName="a,ctrl+s,f2,esc,alt+c,alt+v,del,alt+n,ctrl+shift+d" 
             onKeyDown={(keyName, e, handle) => onKeyDown(keyName, e, handle)}
         >
       </Hotkeys>

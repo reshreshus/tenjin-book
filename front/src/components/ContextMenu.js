@@ -39,7 +39,7 @@ const ContextMenu = ({block}) => {
                     },
                     {
                         "action": "Duplicate",
-                        "shortcut": "Ctrl + D",
+                        "shortcut": "Ctrl + Shift + D",
                         "onClick": () => {
                             console.log("Duplicate");
                             duplicateBlock([...block.path, block.idx])

@@ -289,7 +289,7 @@ function CollectionProvider({children}) {
             <ContextMenu block={contextBlock} />
             <HotkeyApp selectedBlockId={selectedBlockId} showSidebars={showSidebars}
              updateShowSidebars={updateShowSidebars} block={contextBlock} deleteBlock={deleteBlock}
-             addCard={addCard} />
+             addCard={addCard} duplicateBlock={duplicateBlock} />
         </Collection.Provider>)
     
 }
