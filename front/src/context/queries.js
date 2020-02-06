@@ -1,20 +1,20 @@
 import { gql } from 'apollo-boost';
 
 export const DUPLICATE_BLOCK = gql`
-    mutation duplicateBlock($path: [Int]) {
-        duplicateBlock(path: $path)
+    mutation duplicateBlock($id: String) {
+        duplicateBlock(id: $id)
     }
 `
 
 export const DELETE_BLOCK = gql`
-    mutation deleteBlock($path: [Int]) {
-        deleteBlock(path: $path)
+    mutation deleteBlock($id: String) {
+        deleteBlock(id: $id)
     }
 `
 
 export const RENAME_BLOCK = gql`
-    mutation renameBlock($path: [Int], $newName: String) {
-        renameBlock(path: $path, newName: $newName) {
+    mutation renameBlock($id: String, $newName: String) {
+        renameBlock(id: $id, newName: $newName) {
             name
         }
     }
@@ -28,7 +28,7 @@ export const ADD_CARD = gql`
     }
 `
 export const SAVE_BLOCKS = gql`
-    mutation Blocks($newBlocks: [JSON]) {
+    mutation Blocks($newBlocks: JSON) {
         saveBlocks (newBlocks: $newBlocks)
     }
 `;
