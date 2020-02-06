@@ -23,7 +23,7 @@ function CollectionProvider({children}) {
         {
             // TODO: query executes an unusual number of times
             onCompleted:  () => { 
-                // console.log(blocksData.blocks); 
+                console.log(blocksData.blocks); 
                 updateBlocks(blocksData.blocks) }
         });
 
@@ -46,7 +46,7 @@ function CollectionProvider({children}) {
     }
 
     const toggleCollapse = (block) => {
-        block.isCollapsed = !block.isCollapsed;
+        block.isExpanded = !block.isExpanded;
         updateBlocks(Object.assign({}, blocks));
     }
 
@@ -85,6 +85,7 @@ function CollectionProvider({children}) {
     }
 
     const findLastDeck = (block) => {
+        console.log("findLastDeck id", block.id);
         // base case
         if (block.data.type === 'D') {
             return block;
@@ -95,23 +96,26 @@ function CollectionProvider({children}) {
             console.error("couldn't find a parent");
             return;
         }
-        if (parent.data.type === 'D') return parent
-        findLastDeck(parent);
+        // if (parent.data.type === 'D') return parent
+        return findLastDeck(parent);
     }
 
     const addCard = (block) => {
         addCardQuery().then((data) => {
+            console.log("add card data", data);
             let cardId = data.data.addCard.id;
             blocks.items[cardId] = {
                 hasChildren: false,
                 children: [],
-                isCollapsed: false,
+                isExpanded: false,
+                parentID: block.id,
                 data: {
-                    name: `New Card ${blocks.items.lenght}`,
+                    name: `New Card ${Object.keys(blocks.items).length}`,
                     type: "f",
                 }                
             }
             block.children.push(cardId);
+            block.hasChildren = true;
             block.isExpanded = true;
             saveBlocksQuery({
                 variables: {"newBlocks": blocks}
@@ -123,7 +127,7 @@ function CollectionProvider({children}) {
     }
 
     const toggleExpanded = (block) => {
-        block.isCollapsed = !block.isCollapsed;
+        block.isExpanded = !block.isExpanded;
         updateBlocks(Object.assign({}, blocks))
     }
 
@@ -234,7 +238,6 @@ function CollectionProvider({children}) {
                 selectedBlockId,
                 updateSelectedBlockIdAndCleanup,
                 updateSelectedBlockId,
-                addNewBlock,
                 getCard,
                 updateBlockName,
                 openContextMenu,

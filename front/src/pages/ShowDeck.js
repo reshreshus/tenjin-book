@@ -9,8 +9,8 @@ export default function ShowDeck() {
         <div className="info">
             <h1 className="title">( ･ิɷ･ิ)</h1>
             {
-                (block && block.name) ? <div>
-                <h2 className="subtitle">This is a chosen deck. "{block.name}"<br />
+                (block && block.data.name) ? <div>
+                <h2 className="subtitle">This is a chosen deck. "{block.data.name}"<br />
                 What will you do with it?</h2>
                 <div className="btn-contrast">
                     study 

@@ -28,7 +28,7 @@ let blocks = {
                 type: "D",
             }
         },
-        "4": {
+        "4": { 
             hasChildren: true,
             children: ["5"],
             isExpanded: false,
@@ -148,8 +148,8 @@ const typeDefs = `
     scalar JSON
 
     type BlockData {
-        name: "Math"
-        type: "D"
+        name: String
+        type: String
     }
 
     type Block {
@@ -177,7 +177,7 @@ const typeDefs = `
 
     type Query {
         cards: [Card],
-        blocks: [JSON],
+        blocks: JSON,
         cardEntry(id: ID): CardEntry
     }
 
@@ -267,20 +267,33 @@ const resolvers = {
             blocks.items[id].data.name = newName;
         },
         deleteBlock: (_, {id}) => {           
-            let block = delete blocks.items[id];
+            let block = blocks.items[id];
+            delete blocks.items[id];
+            console.log("deleted block", block);
             let parent = blocks.items[block.parentID]
             let idx = parent.children.indexOf(id);
             parent.children.splice(idx, 1);
+            if (parent.children.length === 0) {
+                parent.hasChildren = false;
+            }
             return blocks;
         },
         duplicateBlock: (_, {id}) => {
             let block = blocks.items[id];
             let newBlock = Object.assign({}, block);
-            newBlock.id = ID();
+            let newId = ID();
+            newBlock.children = []
+            newBlock.data.name = `${newBlock.data.name} (dupl)`
             let parent = blocks.items[newBlock.parentID]
-            let idx = parent.children.indexOf(block);
-            parent.children.splice(idx + 1, 0, newBlock);)
-
+            let idx = parent.children.indexOf(id);
+            parent.children.splice(idx + 1, 0, newId);
+            blocks.items[newId] = newBlock;
+            // duplicate flashcard as well
+            if (newBlock.data.type === 'f'){
+                let card = Object.assign({}, cards.filter(c => id === c.id)[0]);
+                card.id = newId;
+                cards.push(card);
+            }
             return blocks;
         }
     }

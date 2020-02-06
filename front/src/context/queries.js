@@ -15,7 +15,9 @@ export const DELETE_BLOCK = gql`
 export const RENAME_BLOCK = gql`
     mutation renameBlock($id: String, $newName: String) {
         renameBlock(id: $id, newName: $newName) {
-            name
+            data {
+                name
+            }
         }
     }
 `

@@ -37,7 +37,8 @@ return (<CollectionConsumer >
     }
     const {template_title, entries} = card;
     const deckParent = findLastDeck(block);
-    const deck_title = deckParent.name;
+    
+    const deck_title = deckParent.data.name;
     
     const saveCard = async () => { 
         updateEditorChanged(false);
