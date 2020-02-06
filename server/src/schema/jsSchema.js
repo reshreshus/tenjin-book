@@ -236,11 +236,15 @@ const duplicateBlockRec = (parent, childIdx) => {
     let duplicate = Object.assign({}, child);
     
     duplicate.name = `${duplicate.name} (duplicate)`
-    duplicate.id = blocks[0].count;
+    duplicate.id = String(blocks[0].count); 
     duplicate.idx = child.idx + 1;
+    // shift other objects' (not array's) indexes
+    parent.children.map(c => {
+        if (c.idx >= duplicate.idx) {
+            c.idx++;
+        }
+    })
     delete duplicate.children
-    // TODO: shift all other indexes, heh
-    // TODO: unless of cource you ignore that idx is supposed to sort stuff
     blocks[0].count++;
     
     parent.children.splice(idx + 1, 0, duplicate); 
@@ -262,7 +266,7 @@ const duplicateBlockRec = (parent, childIdx) => {
 // TODO: no error checking here
 const resolvers = {  
     JSON: GraphQLJSON, 
-    Query: {
+    Query: {   
         cards: () => cards,
         blocks: () => blocks
     },
@@ -323,7 +327,7 @@ const resolvers = {
                 else {
                     child = c;
                     return false;
-                }
+                } 
             });
             if (parent.children.length === 0) {
                 delete parent.children; 
