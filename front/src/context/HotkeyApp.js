@@ -5,10 +5,17 @@ import { enabeEditable, selectElementContents, hideContextMenu} from './domHelpe
 
 
 const HotkeyApp = ({selectedBlockId, showSidebars, updateShowSidebars, 
-    block, deleteBlock}) => {
+    block, deleteBlock, addCard}) => {
     const [sidebarLength, updateSidebarLength] = useState(null);
 
-    const handleF2 = (event, selectedBlockId) => {
+    const addCardHot = () => {
+        console.log("addCardHot");
+        if (selectedBlockId) {
+            addCard(block);
+        }
+    }
+
+    const chooseBlockToRename = (event, selectedBlockId) => {
         // Prevent the default refresh event under WINDOWS system
         console.log("handleF2");
         if (selectedBlockId !== '') {
@@ -19,7 +26,7 @@ const HotkeyApp = ({selectedBlockId, showSidebars, updateShowSidebars,
         }
     }
 
-    const handleAltC = () => {
+    const toggleLeftSidebar = () => {
         let sidebar = document.querySelector('.sidebar');
         console.log("handleAltC", sidebar);
         // both sidebars are on
@@ -38,7 +45,7 @@ const HotkeyApp = ({selectedBlockId, showSidebars, updateShowSidebars,
         }
     }
 
-    const handleAltV = () => {
+    const toggleRightSidebar = () => {
         console.log("hadnleAltV")
         let sidebar = document.querySelector('.sidebar');
         let rightSidebar = document.querySelector('.right-sidebar');
@@ -61,7 +68,7 @@ const HotkeyApp = ({selectedBlockId, showSidebars, updateShowSidebars,
         }
     }
 
-    const handleDel = (event, selectedBlockId) => {
+    const deleteBlockHot = (event, selectedBlockId) => {
         console.log("handleDel");
         if (selectedBlockId) {
             event.preventDefault();
@@ -74,19 +81,22 @@ const HotkeyApp = ({selectedBlockId, showSidebars, updateShowSidebars,
         e.preventDefault();
         switch (keyName) {
             case 'f2':
-                handleF2(e, selectedBlockId);
+                chooseBlockToRename(e, selectedBlockId);
                 break;
             case 'esc':
                 hideContextMenu();
                 break;
             case 'alt+c':
-                handleAltC();
+                toggleLeftSidebar();
                 break;
             case 'alt+v':
-                handleAltV();
+                toggleRightSidebar();
                 break;
             case 'del':
-                handleDel(e, selectedBlockId);
+                deleteBlockHot(e, selectedBlockId);
+                break;
+            case 'a':
+                addCardHot();
                 break;
             default:
                 console.log("")
@@ -96,7 +106,7 @@ const HotkeyApp = ({selectedBlockId, showSidebars, updateShowSidebars,
 
     return (
         <Hotkeys 
-            keyName="ctrl+s,f2,esc,alt+c,alt+v,del" 
+            keyName="a,ctrl+s,f2,esc,alt+c,alt+v,del,alt+n" 
             onKeyDown={(keyName, e, handle) => onKeyDown(keyName, e, handle)}
         >
       </Hotkeys>

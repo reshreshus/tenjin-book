@@ -337,11 +337,8 @@ const resolvers = {
                 return;
             }
             // TODO: what about other types?
-            if (child.type === 'f') {
-                console.log("child", child) 
-                console.log("cards.length", cards)
+            if (child.type === 'f') { 
                 cards = cards.filter(c => c.id !== child.id)
-                console.log("cards.length", cards.length)
             }  
             return blocks;
         },
