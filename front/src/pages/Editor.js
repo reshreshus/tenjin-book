@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import { CollectionConsumer } from '../context/CollectionContext';
 import {useLocation} from 'react-router-dom';
 
@@ -7,10 +7,15 @@ import HotkeysEditor from '../components/Editor/HotkeysEditor';
 
 export default function Editor() {    
     const [editorChanged, updateEditorChanged] = useState(false);
-    const [entriesEditors, updateEntriesEditors] = useState(new Array());
-
+    const [entriesEditors, updateEntriesEditors] = useState(null);
     let linkState = useLocation().state
     let block = linkState ? linkState.block : null
+    
+    useEffect(() => {
+        updateEntriesEditors(new Array())
+    }, [block]);
+
+    
     if (!block || !block.id) {
         return (<div className="info">
                     <h1 className="title">( ･ิɷ･ิ)</h1>
@@ -18,26 +23,27 @@ export default function Editor() {
                     No flashcard here..</h2>
                 </div>)
     }
+
+    
    
 return (<CollectionConsumer >
     { ({addNewEntryContext, deleteEntryContext,
-        chooseTypeC, getCard, card, isCardUpdating, saveCardServer,
+        chooseTypeC, card, isCardUpdating, saveCardServer,
         findLastDeck
     }) => {
         
-    if(!card) {
-        if (!isCardUpdating) {
-            getCard(block.id)
-        }
+    if(!card || isCardUpdating) {
         return <div>loading</div>
     }
-    const {deck_id, template_title, entries} = card;
+    const {template_title, entries} = card;
     const deckParent = findLastDeck(block);
     const deck_title = deckParent.name;
     
     const saveCard = async () => { 
         updateEditorChanged(false);
+        console.log("those editors!!", entriesEditors)
         entriesEditors.map( async ({entry, instance}) => {
+            console.log("instance", instance);
             const { blocks } = await instance.save();
             entry.content.blocks = blocks;
         })
@@ -57,7 +63,7 @@ return (<CollectionConsumer >
             })
             
         }
-        // console.log("S!!! entries_editors", entriesEditors);
+        console.log("S!!! entries_editors", entriesEditors);
     }
 
     // it works for some reason
@@ -75,7 +81,7 @@ return (<CollectionConsumer >
     }
 
     return (
-        <div className="editor">
+        <div className="editor" >
             < HotkeysEditor saveCard={saveCard} />
             <div className="editor__header">
                 <div className="editor__header-left">
@@ -93,8 +99,9 @@ return (<CollectionConsumer >
             </div>
             <div className="editor__entries">
                 {   entries && entriesEditors ?
-                    entries.map((e, i) => (
-                        <Entry e={e} key={e.id}
+                    entries.map(e => (
+                        <Entry e={e} key={`${block.id}${e.id}`}
+                        blockId={block.id}
                         saveEditorInstance={saveEditorInstance}
                         deleteEntryEditor={deleteEntryEditor}
                         chooseType={chooseType}

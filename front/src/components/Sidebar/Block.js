@@ -24,7 +24,7 @@ export default function Block({block}) {
         <CollectionConsumer> 
         {
             ({selectedBlockId, updateSelectedBlockIdAndCleanup, updateBlockName,
-                openContextMenu, updateContextBlock, renameBlock, toggleExpanded
+                openContextMenu, updateContextBlock, renameBlock, toggleExpanded, getCard
             }) => {
                 const onBlockKeyDown = (e) => {
                     switch (e.key) {
@@ -67,7 +67,7 @@ export default function Block({block}) {
                             [{ block.type }]
                         </span>
                         <div className={`block__name ${block.id !== selectedBlockId ? '': 'block__name--active'}` }
-                        onClick={()  => {
+                        onClick={() => {
                             updateSelectedBlockIdAndCleanup(block.id, node)
                             }} 
                             onContextMenu={(e) => {
@@ -85,6 +85,12 @@ export default function Block({block}) {
                                     state: {
                                     block: block
                                 }}}
+                                onClick={() => {
+                                    if (block.type === 'f') {
+                                        getCard(block.id);
+                                        console.log("block", block);
+                                    }
+                                }}
                                 >
                                 <ContentEditable 
                                     key={block.id}

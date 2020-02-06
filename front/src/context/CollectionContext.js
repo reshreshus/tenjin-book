@@ -21,7 +21,10 @@ function CollectionProvider({children}) {
 
     const {data: blocksData, loading: blocksLoading, error: blocksError} = useQuery(GET_BLOCKS,
         {
-            onCompleted:  () => { console.log(blocksData.blocks); updateBlocks(blocksData.blocks) }
+            // TODO: query executes an unusual number of times
+            onCompleted:  () => { 
+                // console.log(blocksData.blocks); 
+                updateBlocks(blocksData.blocks) }
         });
 
     const [getCardQuery] = useMutation(GET_CARD);
@@ -96,14 +99,14 @@ function CollectionProvider({children}) {
     }
 
     const addCard = (block) => {
-        const newCardBlock = {
-            idx: block.children ? block.children.length : 0,
-            "name": "New Card",
-            "type": "f",
-            "path": [...block.path, block.idx],
-        }
-        
         addCardQuery().then((data) => {
+            const newCardBlock = {
+                idx: block.children ? block.children.length : 0,
+                "name": `New Card ${blocks[0].count}`,
+                "type": "f",
+                "path": [...block.path, block.idx],
+            }
+            // console.log("addCard data", data.data.addCard); 
             let cardId = data.data.addCard.id;
             newCardBlock.id = cardId;
             if (block.children) {
@@ -114,7 +117,7 @@ function CollectionProvider({children}) {
             block.expanded = true;
             
             
-            blocks[0].count++;
+            blocks[0].count++;  
             // TODO: can optimize
             saveBlocksQuery({
                 variables: {"newBlocks": blocks}
@@ -218,6 +221,7 @@ function CollectionProvider({children}) {
         }, 100);
     }
 
+    // deprecated
     const addNewBlock = (previousBlockId = -1, isParent=false) => {
         let newBlocksNumber = String(blocksNumber + 1);
         if (previousBlockId < 0) {
@@ -241,7 +245,7 @@ function CollectionProvider({children}) {
         getCardQuery({
             variables: {id: id}
         }).then((data) => {
-            // console.log("cardData", data)
+            console.log("cardData", data)
             let newCard = data.data.card;
             updateCard(newCard);
             updateIsCardUpdating(false);

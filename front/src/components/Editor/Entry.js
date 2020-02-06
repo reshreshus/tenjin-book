@@ -4,7 +4,7 @@ import EditorJs from 'react-editor-js';
 import { EDITOR_JS_TOOLS } from './editorJsTools' 
 
 export default function Entry({e, saveEditorInstance, chooseType,
-    editorChanged, updateEditorChanged, deleteEntryEditor
+    editorChanged, updateEditorChanged, deleteEntryEditor, blockId
 }) {
     const [isChoosingType, updateChoosingType] = useState(false);
     const [isChanged, updateIsChanged] = useState(false);
@@ -73,6 +73,7 @@ export default function Entry({e, saveEditorInstance, chooseType,
                 <div className="card-entry__text-field" 
                     id={"editor-js-" + e.id}>
                     <EditorJs 
+                        key={e.id}
                         instanceRef={instance => {
                             saveEditorInstance(instance, e);
                         }}

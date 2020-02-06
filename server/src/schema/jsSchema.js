@@ -72,7 +72,7 @@ const newCard = {
     template_id: "from db",
     template_title: "Basic",
     entries: [
-        {
+        {  
             id: 0,
             name: "Front",
             content: {
@@ -93,7 +93,18 @@ const newCard = {
                 }]
             },   
             entry_type: "A",
-        },
+        }, 
+        // {
+        //     id: 2,
+        //     name: "Custom",
+        //     content: {
+        //         blocks: [{
+        //             type: "paragraph",
+        //             data: { text: "" }
+        //         }]
+        //     },   
+        //     entry_type: "C",
+        // },
         
     ]
 }
@@ -206,6 +217,13 @@ const findBlock = (path) => {
     }
     return currentBlock;
 }
+const ID = () => {
+    // Math.random should be unique because of its seeding algorithm.
+    // Convert it to base 36 (numbers + letters), and grab the first 9 characters
+    // after the decimal.
+    return '_' + Math.random().toString(36).substr(2, 9);
+  };
+
 
 // TODO: no error checking here
 const resolvers = {  
@@ -226,12 +244,14 @@ const resolvers = {
             return card.entries;
         },
         addCard: (parent, args) => {
-            let card = newCard;
-            card.id = `_${blocks[0].count}`;
-            cards.push(card);  
+            let card = Object.assign({}, newCard);
+            card.id = `_${ID()}`; 
+            cards = [...cards, card]  
             return card;
         },
-        card: (parent, { id }) => _.find(cards, {id: id}),
+        card: (parent, { id }) => {
+                return _.find(cards, {id: id})
+        },
         saveCard: (parent, {id, template_title, entries}) => {
             let card = _.find(cards, {id: id});
             let idx = cards.indexOf(card);
