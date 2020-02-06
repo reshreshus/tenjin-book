@@ -343,7 +343,6 @@ const resolvers = {
                 cards = cards.filter(c => c.id !== child.id)
                 console.log("cards.length", cards.length)
             }
-            blocks[0].count--;
             return blocks;
         },
         duplicateBlock: (_, {path}) => {
