@@ -324,9 +324,22 @@ const resolvers = {
             
             duplicate.name = `${duplicate.name} (duplicate)`
             duplicate.id = blocks[0].count;
+            duplicate.idx = child.idx + 1;
+            // TODO: shift all other indexes, heh
+            // TODO: unless of cource you ignore that idx is supposed to sort stuff
             blocks[0].count++;
             
             parent.children.splice(idx + 1, 0, duplicate); 
+            // duplicate card
+            if (duplicate.type === 'f') {
+                let card = cards.filter(c => c.id === child.id)[0];
+                let newCard = Object.assign({}, card);
+                newCard.id = `_${ID()}`
+                duplicate.id = newCard.id;
+                idx = cards.indexOf(card);
+                cards.splice(idx + 1, 0, newCard)
+            }
+
             return blocks;
         }
     }
