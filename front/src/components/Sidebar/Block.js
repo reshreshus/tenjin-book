@@ -27,6 +27,7 @@ export default function Block({block}) {
                 openContextMenu, updateContextBlock, renameBlock, toggleExpanded, getCard,
                 deleteBlock
             }) => {
+                console.log("selectedBlockId", selectedBlockId);
                 if (selectedBlockId === block.id) {
                     updateContextBlock(block);
                 }
@@ -54,6 +55,16 @@ export default function Block({block}) {
                 const handleChange = e => {
                     updateName(e.target.value);
                 };
+
+                let link;
+                if (block.type === 'D') {
+                    link = 'show-deck'
+                } else if (block.type === 'f') {
+                    link = 'edit'
+                // if root, show main page
+                } else if (block.type === 'R') {
+                    link = '/'
+                }
 
                 return (
                     <div className={`block`} ref={node}>  
@@ -85,8 +96,8 @@ export default function Block({block}) {
                             }}
                             >
                             <Link className={`block__link`}
-                                to={{pathname: `${block.type === 'D' ? `/show-deck/` 
-                                        : `/edit/`}`, 
+                                to={{pathname: link
+                                        , 
                                     state: {
                                     block: block
                                 }}}

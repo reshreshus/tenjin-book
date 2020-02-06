@@ -6,7 +6,7 @@ import _ from 'lodash';
 
 let blocks = [
     {
-        "id": 0,
+        "id": "0",
         "idx": 0, 
         "name": "root",
         "count": 6,
