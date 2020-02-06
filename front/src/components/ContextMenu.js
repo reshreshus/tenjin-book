@@ -42,7 +42,7 @@ const ContextMenu = ({block}) => {
                         "shortcut": "Ctrl + Shift + D",
                         "onClick": () => {
                             console.log("Duplicate");
-                            duplicateBlock([...block.path, block.idx])
+                            duplicateBlock(block.id)
                         },
                         "usable": true
                     },
@@ -51,7 +51,7 @@ const ContextMenu = ({block}) => {
                         "shortcut": "delete",
                         "onClick": () => {
                             console.log("Delete")
-                            deleteBlock([...block.path, block.idx]);
+                            deleteBlock(block.id);
                         },
                         "usable": true
                     },

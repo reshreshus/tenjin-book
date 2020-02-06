@@ -13,7 +13,6 @@ const Collection = React.createContext();
 function CollectionProvider({children}) {
     const [blocks, updateBlocks] = useState(null) 
     // TODO
-    const [blocksNumber, updateBlocksNumber] = useState(6);
     const [selectedBlockId, updateSelectedBlockId] = useState('');
     
 
@@ -47,38 +46,38 @@ function CollectionProvider({children}) {
     }
 
     const toggleCollapse = (block) => {
-        block.expanded = !block.expanded;
-        updateBlocks([...blocks]);
+        block.isCollapsed = !block.isCollapsed;
+        updateBlocks(Object.assign({}, blocks));
     }
 
-    const duplicateBlock = (blockPath) => {
+    const duplicateBlock = (blockId) => {
         duplicateBlockQuery({
-            variables: {path: blockPath}
+            variables: {id: blockId}
         }).then(data => {
             console.log("duplicateBlockQuery", data.data.duplicateBlock);
             updateBlocks(data.data.duplicateBlock);
         })
     }
 
-    const deleteBlock = (blockPath) => {
-        console.log("deleteBlock", blockPath);
-        if (blockPath && blockPath.length > 1) {
-            console.log("deleteBlock");
-            deleteBlockQuery({
-                variables: {path: blockPath}
-            }).then((data) => {
-                updateBlocks(data.data.deleteBlock);
-            })
-        } else {
-            alert("Something is wrong. Probably can't delete root element");
-        }
+    const deleteBlock = (blockId) => {
+        console.log("deleteBlock blockId", blockId);
+        // if (blockPath && blockPath.length > 1) {
+        console.log("deleteBlock");
+        deleteBlockQuery({
+            variables: {id: blockId}
+        }).then((data) => {
+            updateBlocks(data.data.deleteBlock);
+        })
+        // } else {
+            // alert("Something is wrong. Probably can't delete root element");
+        // }
         
     }
 
-    const renameBlock = (newName, blockPath) => {
+    const renameBlock = (newName, blockId) => {
         console.log("renameBlock", newName);
         renameBlockQuery({variables: {
-            path: blockPath,
+            id: blockId,
             newName: newName
         }}).then(data => {
             console.log("renameCard data", data)
@@ -87,60 +86,48 @@ function CollectionProvider({children}) {
 
     const findLastDeck = (block) => {
         // base case
-        if (block.type === 'D') {
+        if (block.data.type === 'D') {
             return block;
         }
-        // go from root to card to find the last block which is deck
-        let currentBlock = blocks[0]
-        let lastDeck = blocks[0]
-        for (let i = 1; i < block.path.length; i++) {
-            if (currentBlock.children) {
-                // console.log("currentBlock", currentBlock, "block.path[i]", block.path[i] );
-                let newBlock = currentBlock.children.filter(c => c.idx === block.path[i] )[0]
-                if (newBlock.type === 'D'){
-                    lastDeck = newBlock;
-                }
-                currentBlock = newBlock;
-            } else break;
+
+        let parent = blocks.items[block.parentID];
+        if (!parent) {
+            console.error("couldn't find a parent");
+            return;
         }
-        return lastDeck;
+        if (parent.data.type === 'D') return parent
+        findLastDeck(parent);
     }
 
     const addCard = (block) => {
         addCardQuery().then((data) => {
-            const newCardBlock = {
-                idx: blocks[0].count,
-                "name": `New Card ${blocks[0].count}`,
-                "type": "f",
-                "path": [...block.path, block.idx],
-            }
-            // console.log("addCard data", data.data.addCard); 
             let cardId = data.data.addCard.id;
-            newCardBlock.id = cardId;
-            if (block.children) {
-                block.children.push(newCardBlock);
-            } else {
-                block.children = [newCardBlock];
+            blocks.items[cardId] = {
+                hasChildren: false,
+                children: [],
+                isCollapsed: false,
+                data: {
+                    name: `New Card ${blocks.items.lenght}`,
+                    type: "f",
+                }                
             }
-            block.expanded = true;
-            
-            
-            blocks[0].count++;  
-            // TODO: can optimize
+            block.children.push(cardId);
+            block.isExpanded = true;
             saveBlocksQuery({
                 variables: {"newBlocks": blocks}
             }).then((data) => {
                 console.log("saveBlocks data", data)
             })
-            updateBlocks([...blocks]);
+            updateBlocks(Object.assign({}, blocks));
         })
     }
 
     const toggleExpanded = (block) => {
-        block.expanded = !block.expanded;
-        updateBlocks([...blocks])
+        block.isCollapsed = !block.isCollapsed;
+        updateBlocks(Object.assign({}, blocks))
     }
 
+    // not maintainer
     const addNewTopic = (block) => {
         const newTopic = {
             "id": String(blocks[0].count),
@@ -214,10 +201,6 @@ function CollectionProvider({children}) {
         console.log("chooseType Context")
     }
 
-    const getBlock = (id) => {
-        return blocks.filter (d => d.id === id)[0]
-    } 
-
     const selectBlockToRename = (blockId) => {
         hideContextMenu();
         updateSelectedBlockId(blockId)
@@ -227,25 +210,6 @@ function CollectionProvider({children}) {
             enabeEditable(el)
             selectElementContents(el);
         }, 100);
-    }
-
-    // deprecated
-    const addNewBlock = (previousBlockId = -1, isParent=false) => {
-        let newBlocksNumber = String(blocksNumber + 1);
-        if (previousBlockId < 0) {
-            blocks.push({
-                "id": String(newBlocksNumber),
-                "name": "New Deck",
-                "type": "D",
-            })
-             // edit new block immediately upon creating it
-            updateBlocks([...blocks]);
-            selectBlockToRename(newBlocksNumber);
-            updateBlocksNumber(blocksNumber + 1)
-            
-        } else {
-            console.log("this kind of adding not implemented yet")
-        }
     }
 
     const getCard = (id) => {
@@ -264,7 +228,6 @@ function CollectionProvider({children}) {
     return (
         <Collection.Provider value={{
                 blocks,
-                getBlock,
                 addNewEntryContext,
                 deleteEntryContext,
                 chooseTypeC,
@@ -281,6 +244,7 @@ function CollectionProvider({children}) {
                 saveCardServer,
                 updateContextBlock,
 
+                blocks,
                 addNewTopic,
                 findLastDeck,
                 addCard,

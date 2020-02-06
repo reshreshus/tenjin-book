@@ -7,25 +7,19 @@ import { CollectionConsumer } from '../../context/CollectionContext';
 
 export default function Block({block}) {
     let contentEditable;
-    const [name, updateName] = useState(block.name)
+    const [name, updateName] = useState(block.data.name)
     // const [expanded, updateExpanded] = useState(block.expanded ? block.expanded : false)
     let node = useRef(null);
     useEffect(() => {
         contentEditable = React.createRef();
     })
 
-    
-
-    // const toggleCaret = () => {
-    //     updateExpanded(!expanded);
-    // }
-
     return (
         <CollectionConsumer> 
         {
             ({selectedBlockId, updateSelectedBlockIdAndCleanup, updateBlockName,
                 openContextMenu, updateContextBlock, renameBlock, toggleExpanded, getCard,
-                deleteBlock
+                blocks
             }) => {
                 if (selectedBlockId === block.id) {
                     updateContextBlock(block);
@@ -40,7 +34,7 @@ export default function Block({block}) {
                             updateSelectedBlockIdAndCleanup(block.id, node);
                             updateName(name);
                             updateBlockName(name)
-                            renameBlock(name, [...block.path, block.idx]);
+                            renameBlock(name, block.id);
                             break;
                         case "Esc":
                             console.log("escape")
@@ -56,12 +50,12 @@ export default function Block({block}) {
                 };
 
                 let link;
-                if (block.type === 'D') {
+                if (block.data.type === 'D') {
                     link = 'show-deck'
-                } else if (block.type === 'f') {
+                } else if (block.data.type === 'f') {
                     link = 'edit'
                 // if root, show main page
-                } else if (block.type === 'R') {
+                } else if (block.data.type === 'R') {
                     link = '/'
                 }
 
@@ -69,8 +63,8 @@ export default function Block({block}) {
                     <div className={`block`} ref={node}>  
                         <div className="block__inline">
                         {
-                            block.children ? 
-                            <span  className={`caret ${block.expanded ? 'caret-down': ''}`} 
+                            block.hasChildren ? 
+                            <span  className={`caret ${block.isCollapsed ? 'caret-down': ''}`} 
                             onClick={() => {toggleExpanded(block)}}>
                                 {/* &#9654; */}
                                 <svg width="20" height="20" viewBox="0 0 20 20"><path d="M13.75 9.56879C14.0833 9.76124 14.0833 10.2424 13.75 10.4348L8.5 13.4659C8.16667 13.6584 7.75 13.4178 7.75 13.0329L7.75 6.97072C7.75 6.58582 8.16667 6.34525 8.5 6.5377L13.75 9.56879Z" stroke="none" fill="currentColor"></path></svg>
@@ -78,10 +72,11 @@ export default function Block({block}) {
                             :
                             ""
                         }
-                        <span className={`block__type ${block.type === 'D' ? '' : 'block__type--ca'}`}>
-                            [{ block.type }]
+                        <span className={`block__type ${block.data.type === 'D' ? '' : 'block__type--ca'}`}>
+                            [{ block.data.type }]
                         </span>
-                        <div className={`block__name ${block.id !== selectedBlockId ? '': 'block__name--active'}` }
+                        <div className={`block__name ${block.id !== selectedBlockId ? '': 
+                        'block__name--active'}` }
                         onClick={() => {
                             updateSelectedBlockIdAndCleanup(block.id, node)
                             }} 
@@ -101,7 +96,7 @@ export default function Block({block}) {
                                     block: block
                                 }}}
                                 onClick={() => {
-                                    if (block.type === 'f') {
+                                    if (block.data.type === 'f') {
                                         getCard(block.id);
                                         console.log("block", block);
                                     }
@@ -121,11 +116,11 @@ export default function Block({block}) {
                         </div>
                         
                         {
-                            block.children ? 
-                                <div className={`block__children ${block.expanded ? 'active': ''}`}>
+                            block.hasChildren ? 
+                                <div className={`block__children ${block.isCollapsed ? 'active': ''}`}>
                                 {
-                                    block.children.map( c => (
-                                    <Block block={c} key={c.id}/>
+                                    block.children.map( childId => (
+                                    <Block block={blocks.items[childId]} key={childId}/>
                                 ))
                                 }
                                 </div>

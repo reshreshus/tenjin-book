@@ -83,12 +83,12 @@ const HotkeyApp = () => {
                     console.log("handleDel");
                     if (selectedBlockId) {
                         event.preventDefault();
-                        deleteBlock([...contextBlock.path, contextBlock.idx]);
+                        deleteBlock(block.id);
                     }
                 }
             
                 const duplicateBlockHot = () => {
-                    duplicateBlock([...contextBlock.path, contextBlock.idx]);
+                    duplicateBlock(block.id);
                 }
             
                 const onKeyDown = (keyName, e, handle) => {
