@@ -6,7 +6,8 @@ const ContextMenu = ({block}) => {
     return (
         <CollectionConsumer> 
         {
-            ({hideContextMenu, addNewTopic, addCard, selectBlockToRename, deleteBlock}) => {
+            ({hideContextMenu, addNewTopic, addCard, selectBlockToRename, 
+                deleteBlock, duplicateBlock}) => {
                 const menuItems = block ? [
                     {
                         "action": "New Topic",
@@ -40,7 +41,8 @@ const ContextMenu = ({block}) => {
                         "action": "Duplicate",
                         "shortcut": "Ctrl + D",
                         "onClick": () => {
-                            console.log("Duplicate")
+                            console.log("Duplicate");
+                            duplicateBlock([...block.path, block.idx])
                         },
                         "usable": true
                     },

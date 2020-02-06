@@ -4,7 +4,8 @@ import ContextMenu from '../components/ContextMenu';
 import { selectElementContents, disableEditable,
          enabeEditable, removeSelections, 
          openContextMenu, hideContextMenu } from './domHelpers'
-import { GET_CARD, SAVE_CARD, GET_BLOCKS, SAVE_BLOCKS, ADD_CARD, RENAME_BLOCK, DELETE_BLOCK } from './queries';
+import { GET_CARD, SAVE_CARD, GET_BLOCKS, SAVE_BLOCKS, ADD_CARD, 
+    RENAME_BLOCK, DELETE_BLOCK, DUPLICATE_BLOCK } from './queries';
 import { useMutation, useQuery } from '@apollo/react-hooks';
 
 const Collection = React.createContext();
@@ -37,19 +38,21 @@ function CollectionProvider({children}) {
 
     const [renameBlockQuery] = useMutation(RENAME_BLOCK);
     const [deleteBlockQuery] = useMutation(DELETE_BLOCK);
-    //     , 
-    //     {
-    //     refetchQueries: [{
-    //         query: GET_BLOCKS
-    //     }]
-    // });
-
-    
+    const [duplicateBlockQuery] = useMutation(DUPLICATE_BLOCK);
 
     const [card, updateCard] = useState(null);
 
     const updateBlockName = (blockId) => {
         console.log("updateBlockName")
+    }
+
+    const duplicateBlock = (blockPath) => {
+        duplicateBlockQuery({
+            variables: {path: blockPath}
+        }).then(data => {
+            console.log("duplicateBlockQuery", data.data.duplicateBlock);
+            updateBlocks(data.data.duplicateBlock);
+        })
     }
 
     const deleteBlock = (blockPath) => {
@@ -279,7 +282,8 @@ function CollectionProvider({children}) {
                 renameBlock,
                 selectBlockToRename,
                 deleteBlock,
-                toggleExpanded
+                toggleExpanded,
+                duplicateBlock
         }}>
             {children}
             <ContextMenu block={contextBlock} />

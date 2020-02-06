@@ -199,7 +199,8 @@ const typeDefs = `
             path: [Int]
             newName: String
         ): Block,
-        deleteBlock (path: [Int]): [JSON]
+        deleteBlock (path: [Int]): [JSON],
+        duplicateBlock (path: [Int]): [JSON]
     }
 
 `;
@@ -305,6 +306,27 @@ const resolvers = {
                 console.log("cards.length", cards.length)
             }
             blocks[0].count--;
+            return blocks;
+        },
+        duplicateBlock: (_, {path}) => {
+            let parent = findBlock(path.slice(0, -1));
+            if (!parent) {
+                console.error("Didn't find a parent!")
+                return;
+            }
+            let child = parent.children.filter(c => c.idx === path[path.length - 1])[0];
+            if (!child) {
+                console.error("Didn't find a child")
+                return;
+            }
+            let idx = parent.children.indexOf(child);
+            let duplicate = Object.assign({}, child);
+            
+            duplicate.name = `${duplicate.name} (duplicate)`
+            duplicate.id = blocks[0].count;
+            blocks[0].count++;
+            
+            parent.children.splice(idx + 1, 0, duplicate); 
             return blocks;
         }
     }

@@ -1,5 +1,11 @@
 import { gql } from 'apollo-boost';
 
+export const DUPLICATE_BLOCK = gql`
+    mutation duplicateBlock($path: [Int]) {
+        duplicateBlock(path: $path)
+    }
+`
+
 export const DELETE_BLOCK = gql`
     mutation deleteBlock($path: [Int]) {
         deleteBlock(path: $path)
