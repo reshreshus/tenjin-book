@@ -12,7 +12,13 @@ const HotkeyApp = () => {
         <CollectionConsumer> 
         {
             ({selectedBlockId, showSidebars, updateShowSidebars, 
-                contextBlock, deleteBlock, addCard, duplicateBlock}) => {
+                contextBlock, deleteBlock, addCard, duplicateBlock,
+                toggleCollapse}) => {
+
+                const toggleCollapseHot = () => {
+                    toggleCollapse(contextBlock);
+                }
+
                 const addCardHot = () => {
                     console.log("addCardHot");
                     if (selectedBlockId) {
@@ -110,6 +116,8 @@ const HotkeyApp = () => {
                         case 'ctrl+shift+d':
                             duplicateBlockHot();
                             break;
+                        case 'z':
+                            toggleCollapseHot();
                         default:
                             console.log("")
                     }
@@ -118,7 +126,7 @@ const HotkeyApp = () => {
                 
                 return (
                     <Hotkeys 
-                        keyName="a,ctrl+s,f2,esc,alt+c,alt+v,del,alt+n,ctrl+shift+d" 
+                        keyName="a,z,ctrl+s,f2,esc,alt+c,alt+v,del,alt+n,ctrl+shift+d" 
                         onKeyDown={(keyName, e, handle) => onKeyDown(keyName, e, handle)}
                     >
                     </Hotkeys>
