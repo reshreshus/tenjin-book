@@ -104,7 +104,7 @@ function CollectionProvider({children}) {
     const addCard = (block) => {
         addCardQuery().then((data) => {
             const newCardBlock = {
-                idx: block.children ? block.children.length : 0,
+                idx: blocks[0].count,
                 "name": `New Card ${blocks[0].count}`,
                 "type": "f",
                 "path": [...block.path, block.idx],

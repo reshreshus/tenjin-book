@@ -27,7 +27,6 @@ export default function Block({block}) {
                 openContextMenu, updateContextBlock, renameBlock, toggleExpanded, getCard,
                 deleteBlock
             }) => {
-                console.log("selectedBlockId", selectedBlockId);
                 if (selectedBlockId === block.id) {
                     updateContextBlock(block);
                 }

@@ -237,15 +237,16 @@ const duplicateBlockRec = (parent, childIdx) => {
     
     duplicate.name = `${duplicate.name} (duplicate)`
     duplicate.id = String(blocks[0].count); 
-    duplicate.idx = child.idx + 1;
-    // shift other objects' (not array's) indexes
-    parent.children.map(c => {
-        if (c.idx >= duplicate.idx) {
-            c.idx++;
-        }
-    })
-    delete duplicate.children
+    duplicate.idx = count;
     blocks[0].count++;
+    // shift other objects' (not array's) indexes
+    // parent.children.map(c => {
+    //     if (c.idx >= duplicate.idx) {
+    //         c.idx++;
+    //     }
+    // })
+    delete duplicate.children
+    
     
     parent.children.splice(idx + 1, 0, duplicate); 
     // duplicate card
