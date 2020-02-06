@@ -237,7 +237,7 @@ const duplicateBlockRec = (parent, childIdx) => {
     
     duplicate.name = `${duplicate.name} (duplicate)`
     duplicate.id = String(blocks[0].count); 
-    duplicate.idx = count;
+    duplicate.idx = blocks[0].count;
     blocks[0].count++;
     // shift other objects' (not array's) indexes
     // parent.children.map(c => {

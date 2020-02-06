@@ -289,13 +289,12 @@ function CollectionProvider({children}) {
                 deleteBlock,
                 toggleExpanded,
                 duplicateBlock,
-                toggleCollapse
+                toggleCollapse,
+                contextBlock
         }}>
             {children}
             <ContextMenu block={contextBlock} />
-            <HotkeyApp selectedBlockId={selectedBlockId} showSidebars={showSidebars}
-             updateShowSidebars={updateShowSidebars} block={contextBlock} deleteBlock={deleteBlock}
-             addCard={addCard} duplicateBlock={duplicateBlock} />
+            <HotkeyApp />
         </Collection.Provider>)
     
 }
