@@ -17,9 +17,9 @@ export default function Blocks() {
                                 <Block block={d} key={i} block={d}/>
                             )) : "NO DECKS"
                         }
-                        <div className="add-block btn-contrast--sm" onClick={() => {addNewBlock()}}>
+                        {/* <div className="add-block btn-contrast--sm" onClick={() => {addNewBlock()}}>
                             + new deck
-                        </div>
+                        </div> */}
                     </div>
                 )
             }
