@@ -2,8 +2,7 @@
     position: relative;
     @include bg-light-primary;
     @include stroke-blue-sharp;
-    height: 100vh;
     padding: 1rem;
-    overflow: hidden;
+    overflow: scroll;
 }
 

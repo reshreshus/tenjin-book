@@ -23,6 +23,7 @@ export default function App() {
       // e.nextElementSibling.style.width=
       // e.parentNode.offsetWidth/3-e.offsetWidth/3+'px';
       '400px';
+      e.style.height = e.previousElementSibling.style.height;
 
       e.onmousedown=()=>{
         console.log("resizer moving?")

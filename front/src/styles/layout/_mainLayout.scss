@@ -1,4 +1,4 @@
-html {
+html, body {
     height: 100%;
 }
 
@@ -7,13 +7,12 @@ body {
     background-color:  $clr-bg-primary;
     margin: 0;
     padding: 0;
-    height: 100%;
 }
 
 .app {
-    height: 100%;
     display: flex;
     flex-direction: row;
+    height: 100%;
 }
 
 .resizer {
@@ -22,6 +21,7 @@ body {
     box-sizing: border-box;
     cursor: col-resize;
     z-index: 1;
+    height: 100%;
 }
 
 #root {
