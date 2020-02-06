@@ -198,3 +198,56 @@ const typeDefs = `
     }
 
 `;
+
+
+const findBlock = (path) => {
+    let currentBlock = blocks[0]
+    for (let i = 1; i < path.length; i++) {
+        // console.log("current block", currentBlock);
+        if (currentBlock.children) {
+            currentBlock = currentBlock.children.filter(c => c.idx === path[i])[0]
+        } else {
+            console.error("Couldn't find a block");
+            return {}
+        }
+    }
+    return currentBlock;
+}
+
+const duplicateBlockRec = (parent, childIdx) => {
+    let child = parent.children.filter(c => c.idx === childIdx)[0];
+    if (!child) {
+        console.error("Didn't find a child")
+        return;
+    }
+    // TODO child's array's idx != childIdx ~ ambigious
+    let idx = parent.children.indexOf(child);
+    let duplicate = Object.assign({}, child);
+    
+    duplicate.name = `${duplicate.name} (duplicate)`
+    duplicate.id = String(blocks[0].count); 
+    duplicate.idx = blocks[0].count;
+    blocks[0].count++;
+    // shift other objects' (not array's) indexes
+    // parent.children.map(c => {
+    //     if (c.idx >= duplicate.idx) {
+    //         c.idx++;
+    //     }
+    // })
+    delete duplicate.children
+    
+    
+    parent.children.splice(idx + 1, 0, duplicate); 
+    // duplicate card
+    if (duplicate.type === 'f') {
+        let card = cards.filter(c => c.id === child.id)[0];
+        let newCard = Object.assign({}, card);
+        newCard.id = `_${ID()}`
+        duplicate.id = newCard.id;
+        idx = cards.indexOf(card);
+        cards.splice(idx + 1, 0, newCard)
+    }
+    // TODO option to duplicate children
+    // OMG
+    // it has to be recursive now
+}
