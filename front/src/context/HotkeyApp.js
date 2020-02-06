@@ -4,7 +4,8 @@ import Hotkeys from 'react-hot-keys';
 import { enabeEditable, selectElementContents, hideContextMenu} from './domHelpers';
 
 
-const HotkeyApp = ({selectedBlockId, showSidebars, updateShowSidebars}) => {
+const HotkeyApp = ({selectedBlockId, showSidebars, updateShowSidebars, 
+    block, deleteBlock}) => {
     const [sidebarLength, updateSidebarLength] = useState(null);
 
     const handleF2 = (event, selectedBlockId) => {
@@ -62,9 +63,9 @@ const HotkeyApp = ({selectedBlockId, showSidebars, updateShowSidebars}) => {
 
     const handleDel = (event, selectedBlockId) => {
         console.log("handleDel");
-        if (selectedBlockId !== '') {
+        if (selectedBlockId) {
             event.preventDefault();
-            // TODO;
+            deleteBlock([...block.path, block.idx]);
         }
     }
 
@@ -95,7 +96,7 @@ const HotkeyApp = ({selectedBlockId, showSidebars, updateShowSidebars}) => {
 
     return (
         <Hotkeys 
-            keyName="ctrl+s,f2,esc,alt+c,alt+v" 
+            keyName="ctrl+s,f2,esc,alt+c,alt+v,del" 
             onKeyDown={(keyName, e, handle) => onKeyDown(keyName, e, handle)}
         >
       </Hotkeys>

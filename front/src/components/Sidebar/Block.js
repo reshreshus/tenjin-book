@@ -24,8 +24,13 @@ export default function Block({block}) {
         <CollectionConsumer> 
         {
             ({selectedBlockId, updateSelectedBlockIdAndCleanup, updateBlockName,
-                openContextMenu, updateContextBlock, renameBlock, toggleExpanded, getCard
+                openContextMenu, updateContextBlock, renameBlock, toggleExpanded, getCard,
+                deleteBlock
             }) => {
+                if (selectedBlockId === block.id) {
+                    updateContextBlock(block);
+                }
+                
                 const onBlockKeyDown = (e) => {
                     switch (e.key) {
                         case "Enter":
@@ -37,7 +42,7 @@ export default function Block({block}) {
                             updateBlockName(name)
                             renameBlock(name, [...block.path, block.idx]);
                             break;
-                        case "esc":
+                        case "Esc":
                             console.log("escape")
                             e.preventDefault();
                             updateSelectedBlockIdAndCleanup('', node);

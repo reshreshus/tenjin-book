@@ -338,11 +338,11 @@ const resolvers = {
             }
             // TODO: what about other types?
             if (child.type === 'f') {
-                console.log("child", child)
+                console.log("child", child) 
                 console.log("cards.length", cards)
                 cards = cards.filter(c => c.id !== child.id)
                 console.log("cards.length", cards.length)
-            }
+            }  
             return blocks;
         },
         duplicateBlock: (_, {path}) => {
