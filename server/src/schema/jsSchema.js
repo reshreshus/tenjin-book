@@ -4,69 +4,83 @@ const GraphQLJSON = require('graphql-type-json');
 
 import _ from 'lodash';
 
-let blocks = [
-    {
-        "id": "0",
-        "idx": 0, 
-        "name": "root",
-        "count": 6,
-        "expanded": true,
-        "type": "R",
-        "path": [],
-        children: [
-            {
-                "id": "1",
-                "idx": 0,
-                "name": "English",
-                "expanded": true,
-                "type": "D",
-                "path": [0],
-                "children": [
-                    {
-                        "id": "4",
-                        "idx": 0,
-                        "deck": 1,
-                        "path": [0, 0],
-                        "name": "Witcher 3",
-                        "type": "D", 
-                        "expanded": false,
-                        "children": [
-                            {
-                                "id": "5",
-                                "deck": 1,
-                                "path": [0, 0, 0],  
-                                "idx": 0,
-                                "name": "The Last Wish",
-                                "type": "D",   
-                            } 
-                        ]    
-                    }, 
-                    {
-                        "idx": 1,
-                        "type": "f",
-                        "id": "_0",
-                        "name": "a flashcard", 
-                        "path": [0, 0]
-                    }
-                ]
-            },
-            {
-                "id": "2",
-                "idx": 1,
-                "name": "Math",
-                "type": "D",
-                "path": [0],
-            },
-            {
-                "id": "3",
-                "idx": 2,
-                "name": "Programming",
-                "type": "D",
-                "path": [0],
+let blocks = {
+    rootId: "0",
+    items: {
+        "0": {
+            hasChildren: true,
+            children: ["1", "2", "3"],
+            isExpanded: true,
+            parentID:  null,
+            data: {
+                name: "root",
+                count: 6,
+                type: "R",
             }
-        ]
+        },
+        "1": {
+            hasChildren: true,
+            children: ["4", "_0"],
+            isExpanded: true,
+            parentID:  "0",
+            data: {
+                name: "English",
+                type: "D",
+            }
+        },
+        "4": {
+            hasChildren: true,
+            children: ["5"],
+            isExpanded: false,
+            parentID:  "1",
+            data: {
+                name: "Witcher 3",
+                type: "D", 
+            }
+        },
+        "5": {
+            hasChildren: false,
+            children: [],
+            isExpanded: false,
+            parentID:  "4",
+            data: {
+                name: "The Last Wish",
+                type: "D"
+            }
+        },
+        "_0": {
+            hasChildren: false,
+            children: [],
+            isExpanded: false,
+            parentID:  "1",
+            data: {
+                name: "a flashcard",
+                type: "f"
+            }
+
+        },
+        "2": {
+            hasChildren: false,
+            children: [],
+            isExpanded: false,
+            parentID:  "0",
+            data: {
+                name: "Math",
+                type: "D",
+            }
+        },
+        "3": {
+            hasChildren: false,
+            children: [],
+            isExpanded: false,
+            parentID:  "0",
+            data: {
+                name: "Programming",
+                type: "D",
+            }
+        }
     }
-]
+}
 
 const newCard = {
     template_id: "from db",
@@ -93,19 +107,7 @@ const newCard = {
                 }]
             },   
             entry_type: "A",
-        }, 
-        // {
-        //     id: 2,
-        //     name: "Custom",
-        //     content: {
-        //         blocks: [{
-        //             type: "paragraph",
-        //             data: { text: "" }
-        //         }]
-        //     },   
-        //     entry_type: "C",
-        // },
-        
+        }
     ]
 }
 
@@ -145,15 +147,17 @@ let cards = [{
 const typeDefs = `
     scalar JSON
 
+    type BlockData {
+        name: "Math"
+        type: "D"
+    }
+
     type Block {
-        id: String
-        idx: Int
-        name: String
-        expanded: Boolean
-        type: String
-        deck: String
-        path: [Int]
-        children: [Block] 
+        hasChildren: Boolean
+        children: [String]
+        isExpanded: Boolean
+        parentID: String
+        data: BlockData
     }
 
     type Card {
@@ -193,14 +197,14 @@ const typeDefs = `
         ): Card,
         addCard: Card,
         saveBlocks (
-            newBlocks: [JSON]
-        ): [JSON],
+            newBlocks: JSON
+        ): JSON,
         renameBlock (
-            path: [Int]
+            id: String
             newName: String
         ): Block,
-        deleteBlock (path: [Int]): [JSON],
-        duplicateBlock (path: [Int]): [JSON]
+        deleteBlock (id: String): JSON,
+        duplicateBlock (id: String): JSON
     }
 
 `;
@@ -304,54 +308,27 @@ const resolvers = {
         },
         saveBlocks: (parent, {newBlocks}) => {
             // console.log("newBlocks", newBlocks);
-            blocks = [...newBlocks];
-            return newBlocks;
-        },
-        renameBlock: (parent, {path, newName}) => {
-            console.log("renameBlock newName", newName);
-            let block = findBlock(path);
-            block.name = newName;
-            console.log("renameBlock block", block);
-        },
-        deleteBlock: (_, {path}) => {           
-            let parent = findBlock(path.slice(0, -1));
-            if (!parent) {
-                console.error("Didn't find a parent!")
-                return;
-            }
-            let child;
-            
-            // delete child
-            parent.children = parent.children.filter(c => { 
-                if (c.idx !== path[path.length - 1]) return true;
-                // get deleted child
-                else {
-                    child = c;
-                    return false;
-                } 
-            });
-            if (parent.children.length === 0) {
-                delete parent.children; 
-            }
-            if (!child) {
-                console.error("Didn't find a child")
-                return;
-            }
-            // TODO: what about other types?
-            if (child.type === 'f') { 
-                cards = cards.filter(c => c.id !== child.id)
-            }  
+            blocks = newBlocks;
             return blocks;
         },
-        duplicateBlock: (_, {path}) => {
-            let parent = findBlock(path.slice(0, -1));
-            if (!parent) {
-                console.error("Didn't find a parent!")
-                return;
-            }
-            duplicateBlockRec(parent, path[path.length - 1]);
-            
-
+        renameBlock: (parent, {id, newName}) => {
+            // console.log("renameBlock newName", newName);
+            blocks.items[id].data.name = newName;
+        },
+        deleteBlock: (_, {id}) => {           
+            let block = delete blocks.items[id];
+            let parent = blocks.items[block.parentID]
+            let idx = parent.children.indexOf(id);
+            parent.children.splice(idx, 1);
+            return blocks;
+        },
+        duplicateBlock: (_, {id}) => {
+            let block = blocks.items[id];
+            let newBlock = Object.assign({}, block);
+            newBlock.id = ID();
+            let parent = blocks.items[newBlock.parentID]
+            let idx = parent.children.indexOf(block);
+            parent.children.splice(idx + 1, 0, newBlock);
             return blocks;
         }
     }
