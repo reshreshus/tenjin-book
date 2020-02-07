@@ -31,6 +31,7 @@
     
     &__name {
         display: block;
+        
         box-sizing: border-box;
         // so that stroke-blue-sharp doesn't shake the element
         border: 1px solid transparent;
@@ -47,6 +48,7 @@
     } 
     &__link {
         text-decoration: none;
+        user-select: none;
     }
 
     &__children {

@@ -29,9 +29,9 @@ const HotkeyApp = () => {
                 const chooseBlockToRename = (event, selectedBlockId) => {
                     // Prevent the default refresh event under WINDOWS system
                     console.log("handleF2");
-                    if (selectedBlockId !== '') {
+                    if (selectedBlockId) {
                         event.preventDefault();
-                        let el = document.querySelector(`.block-${selectedBlockId}`);
+                        let el = document.querySelector(`#block-${selectedBlockId}`);
                         enabeEditable(el)
                         selectElementContents(el);
                     }

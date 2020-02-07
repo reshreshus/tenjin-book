@@ -20,12 +20,11 @@ const renderItem = ({
     // console.log("render item", block);
     return (
         <div ref={provided.innerRef} 
-        {...provided.draggableProps}
-        {...provided.dragHandleProps}>
+            {...provided.draggableProps}
+            {...provided.dragHandleProps}>
             <Item block={block} onExpand={onExpand} onCollapse={onCollapse} 
                 provided={provided} snapshot={snapshot}/>
         </div>
-    
     );
 }
 
@@ -35,7 +34,7 @@ const Items = () => {
     return (
         <CollectionConsumer> 
         {
-            ({blocks, updateBlocks}) => {
+            ({blocks, updateBlocks, saveBlocks}) => {
 
                 const onExpand = (itemId) => {
                     console.log("onCollapse");
@@ -58,9 +57,21 @@ const Items = () => {
                 
                     const newTree = moveItemOnTree(blocks, source, destination);
                     updateBlocks(newTree);
+                    saveBlocks(newTree);
                 };
 
                 if (blocks) {
+                    blocks.rootId = '-1';
+                    blocks.items["-1"] = {
+                        id: "-1",
+                        hasChildren: true,
+                        children: ["0"],
+                        isExpanded: true,
+                        data: {
+                            name: 'Root Tree (for atlaskit)'
+                        }
+                    }
+                    console.log("tree", blocks);
                     return (
                         
                         <div className="blocks">

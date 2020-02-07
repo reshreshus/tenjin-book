@@ -20,13 +20,14 @@ const Item = ({
   provided,
   snapshot
 }) => {
-  console.log("ITEM", block);
+  // console.log("ITEM", block);
   let contentEditable;
   const [name, updateName] = useState(null);
   // const [expanded, updateExpanded] = useState(block.expanded ? block.expanded : false)
   let node = useRef(null);
   useEffect(() => {
       contentEditable = React.createRef();
+      
   })
   if (!name) {
     if (block) {
@@ -34,18 +35,21 @@ const Item = ({
     }
     return <div> Taram taram </div>
   }
+  // return <div> param param</div>
 
   return (
     <CollectionConsumer> 
         {
             ({selectedBlockId, updateSelectedBlockIdAndCleanup, updateBlockName,
                 openContextMenu, updateContextBlock, renameBlock, toggleExpanded, getCard,
-                blocks
+                blocks, contextBlock
             }) => {
 
-              if (selectedBlockId === block.id) {
+            if (selectedBlockId === block.id) {
+              if (!(contextBlock && selectedBlockId === contextBlock.id))
                 updateContextBlock(block);
             }
+              
             
             const onBlockKeyDown = (e) => {
                 switch (e.key) {
@@ -82,13 +86,14 @@ const Item = ({
             }
 
             return (
-              <div>
+              <div className={`block`} ref={node}>
                 {/* <Draggable
                 isDragging={snapshot.isDragging}
                 text={block.data ? block.data.title : ""}
                 // icon={}
                 dnd={{ dragHandleProps: provided.dragHandleProps }}
                 > */}
+                <div className="block__inline">
                   {getIcon(block, onExpand, onCollapse)}
                   <span className={`block__type ${block.data.type === 'D' ? '' : 'block__type--ca'}`}>
                       [{ block.data.type }]
@@ -126,12 +131,13 @@ const Item = ({
                               html={name}
                               disabled={ false }
                               // TODO: make unique blocks IDs, not classes
-                              className={`content-editable block-${block.id}`}
+                              className="content-editable"
+                              id={`block-${block.id}`}
                               onChange={(e)=>handleChange(e)}
                           />
                       </Link>
                   </div>
-                {/* </Draggable> */}
+                </div>
               </div>
             );
           }

@@ -105,6 +105,7 @@ function CollectionProvider({children}) {
             console.log("add card data", data);
             let cardId = data.data.addCard.id;
             blocks.items[cardId] = {
+                id: cardId,
                 hasChildren: false,
                 children: [],
                 isExpanded: false,
@@ -117,13 +118,17 @@ function CollectionProvider({children}) {
             block.children.push(cardId);
             block.hasChildren = true;
             block.isExpanded = true;
-            saveBlocksQuery({
-                variables: {"newBlocks": blocks}
-            }).then((data) => {
-                console.log("saveBlocks data", data)
-            })
-            updateBlocks(Object.assign({}, blocks));
+            saveBlocks(blocks);
         })
+    }
+
+    const saveBlocks = (newBlocks) => {
+        saveBlocksQuery({
+            variables: {"newBlocks": newBlocks}
+        }).then((data) => {
+            console.log("saveBlocks data", data)
+        })
+        updateBlocks(Object.assign({}, newBlocks));
     }
 
     const toggleExpanded = (block) => {
@@ -248,6 +253,7 @@ function CollectionProvider({children}) {
                 updateContextBlock,
 
                 blocks,
+                updateBlocks,
                 addNewTopic,
                 findLastDeck,
                 addCard,
@@ -257,7 +263,8 @@ function CollectionProvider({children}) {
                 toggleExpanded,
                 duplicateBlock,
                 toggleCollapse,
-                contextBlock
+                contextBlock,
+                saveBlocks
         }}>
             {children}
             <ContextMenu block={contextBlock} />
