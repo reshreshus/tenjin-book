@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@apollo/react-hooks": "^3.1.3",
+    "@atlaskit/tree": "^7.1.0",
     "@babel/core": "7.7.4",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
@@ -47,6 +48,7 @@
     "postcss-safe-parser": "4.0.1",
     "react": "^16.12.0",
     "react-app-polyfill": "^1.0.5",
+    "react-beautiful-dnd": "^12.2.0",
     "react-contenteditable": "^3.3.3",
     "react-dev-utils": "^10.0.0",
     "react-dom": "^16.12.0",
@@ -56,6 +58,7 @@
     "sass-loader": "8.0.0",
     "semver": "6.3.0",
     "style-loader": "1.0.0",
+    "styled-components": "^5.0.1",
     "ts-pnp": "1.1.5",
     "url-loader": "2.3.0"
   },
@@ -152,17 +155,17 @@
     "@editorjs/simple-image": "^1.3.3",
     "@editorjs/table": "^1.2.1",
     "@editorjs/warning": "^1.1.1",
+    "@svgr/webpack": "4.3.3",
+    "case-sensitive-paths-webpack-plugin": "2.2.0",
+    "html-webpack-plugin": "4.0.0-beta.5",
+    "optimize-css-assets-webpack-plugin": "5.0.3",
+    "pnp-webpack-plugin": "1.5.0",
     "react-editor-js": "^1.4.2",
+    "terser-webpack-plugin": "2.2.1",
     "webpack": "^4.41.5",
     "webpack-cli": "^3.3.10",
     "webpack-dev-server": "3.9.0",
     "webpack-manifest-plugin": "2.2.0",
-    "workbox-webpack-plugin": "4.3.1",
-    "terser-webpack-plugin": "2.2.1",
-    "pnp-webpack-plugin": "1.5.0",
-    "optimize-css-assets-webpack-plugin": "5.0.3",
-    "html-webpack-plugin": "4.0.0-beta.5",
-    "case-sensitive-paths-webpack-plugin": "2.2.0",
-    "@svgr/webpack": "4.3.3"
+    "workbox-webpack-plugin": "4.3.1"
   }
 }
