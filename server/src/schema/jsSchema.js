@@ -8,6 +8,7 @@ let blocks = {
     rootId: "0",
     items: {
         "0": {
+            id: "0",
             hasChildren: true,
             children: ["1", "2", "3"],
             isExpanded: true,
@@ -19,6 +20,7 @@ let blocks = {
             }
         },
         "1": {
+            id: "1",
             hasChildren: true,
             children: ["4", "_0"],
             isExpanded: true,
@@ -29,6 +31,7 @@ let blocks = {
             }
         },
         "4": { 
+            id: "4",
             hasChildren: true,
             children: ["5"],
             isExpanded: false,
@@ -39,6 +42,7 @@ let blocks = {
             }
         },
         "5": {
+            id: "5",
             hasChildren: false,
             children: [],
             isExpanded: false,
@@ -49,6 +53,7 @@ let blocks = {
             }
         },
         "_0": {
+            id: "_0",
             hasChildren: false,
             children: [],
             isExpanded: false,
@@ -60,6 +65,7 @@ let blocks = {
 
         },
         "2": {
+            id: "2",
             hasChildren: false,
             children: [],
             isExpanded: false,
@@ -70,6 +76,7 @@ let blocks = {
             }
         },
         "3": {
+            id: "3",
             hasChildren: false,
             children: [],
             isExpanded: false,
@@ -243,7 +250,7 @@ const resolvers = {
             cards = [...cards, card]  
             return card;
         },
-        card: (parent, { id }) => {
+        card: (parent, { id }) => { 
                 return _.find(cards, {id: id})
         },
         saveCard: (parent, {id, template_title, entries}) => {
@@ -272,7 +279,7 @@ const resolvers = {
             console.log("deleted block", block);
             let parent = blocks.items[block.parentID]
             let idx = parent.children.indexOf(id);
-            parent.children.splice(idx, 1);
+            parent.children.splice(idx, 1); 
             if (parent.children.length === 0) {
                 parent.hasChildren = false;
             }
@@ -283,6 +290,8 @@ const resolvers = {
             let newBlock = Object.assign({}, block);
             let newId = ID();
             newBlock.children = []
+            newBlock.id = newId;
+            newBlock.hasChildren = false;
             newBlock.data.name = `${newBlock.data.name} (dupl)`
             let parent = blocks.items[newBlock.parentID]
             let idx = parent.children.indexOf(id);
