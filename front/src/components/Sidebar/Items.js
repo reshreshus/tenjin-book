@@ -19,9 +19,8 @@ const renderItem = ({
     }) => {
     // console.log("render item", block);
     return (
-        <div ref={provided.innerRef} 
-            {...provided.draggableProps}
-            {...provided.dragHandleProps}>
+        <div
+            >
             <Item block={block} onExpand={onExpand} onCollapse={onCollapse} 
                 provided={provided} snapshot={snapshot}/>
         </div>
@@ -75,7 +74,7 @@ const Items = () => {
                     return (
                         
                         <div className="blocks">
-                            <DragDropContext>
+                            {/* <DragDropContext> */}
                                 <Tree
                                     tree={blocks}
                                     renderItem={renderItem}
@@ -85,7 +84,7 @@ const Items = () => {
                                     isDragEnabled
                                     isNestingEnabled
                                 />
-                            </DragDropContext>
+                            {/* </DragDropContext> */}
                         </div>
                     )
                 }

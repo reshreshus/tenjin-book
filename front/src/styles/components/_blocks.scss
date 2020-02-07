@@ -9,12 +9,16 @@
     }
    
     &__inline {
-        cursor: pointer;
+        cursor: pointer !important;
         margin: 5px;
         display: flex;
         align-items: center;
     }
     &__type {
+        // &--with-children {
+        //     padding-left: -50px;
+        // }
+        position: relative;
         font-size: 16px;
         line-height: 16px;
         color: $clr-text-blue-bright;
@@ -31,7 +35,7 @@
     
     &__name {
         display: block;
-        
+        position: relative;
         box-sizing: border-box;
         // so that stroke-blue-sharp doesn't shake the element
         border: 1px solid transparent;
@@ -51,17 +55,21 @@
         user-select: none;
     }
 
-    &__children {
-        display: none;
-        padding-left: 1rem;
-        border-left: 1px solid $clr-stroke-grey;
-    }
+    // &__children {
+    //     display: none;
+    //     padding-left: 1rem;
+    //     border-left: 1px solid $clr-stroke-grey;
+    // }
+}
+
+.caret-container {
+    position: relative;
 }
 
 .caret {
     position: absolute;
-    left: -1rem;
-    top: 0;
+    left: -1.5rem;
+    top: -12px;
     color: black;
     display: inline-block;
     user-select: none;

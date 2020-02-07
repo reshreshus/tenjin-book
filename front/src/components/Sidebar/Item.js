@@ -86,16 +86,29 @@ const Item = ({
             }
 
             return (
-              <div className={`block`} ref={node}>
-                {/* <Draggable
-                isDragging={snapshot.isDragging}
-                text={block.data ? block.data.title : ""}
-                // icon={}
-                dnd={{ dragHandleProps: provided.dragHandleProps }}
-                > */}
-                <div className="block__inline">
-                  {getIcon(block, onExpand, onCollapse)}
-                  <span className={`block__type ${block.data.type === 'D' ? '' : 'block__type--ca'}`}>
+              <div className={`block`} 
+              ref={node}>
+                <div className="block__inline"
+                 ref={provided.innerRef} 
+                 {...provided.draggableProps}>
+                  
+                 <div className="caret-container">
+                    {
+                        block.hasChildren ? 
+                        <span  className={`caret ${block.isExpanded ? 'caret-down': ''}`} 
+                          onClick={() => block.isExpanded ? onCollapse(block.id) : onExpand(block.id)}>
+                          {/* &#9654; */}
+                          <svg width="20" height="20" viewBox="0 0 20 20"><path d="M13.75 9.56879C14.0833 9.76124 14.0833 10.2424 13.75 10.4348L8.5 13.4659C8.16667 13.6584 7.75 13.4178 7.75 13.0329L7.75 6.97072C7.75 6.58582 8.16667 6.34525 8.5 6.5377L13.75 9.56879Z" stroke="none" fill="currentColor"></path></svg>
+                        </span>
+                        :
+                        ""
+                    }
+                 </div>
+                  {/* drag by block type */}
+                  <span className={`block__type ${block.data.type === 'D' ? '' : 'block__type--ca'}`
+                  }
+                   {...provided.dragHandleProps}
+                   >
                       [{ block.data.type }]
                   </span>
                   <div className={`block__name ${block.id !== selectedBlockId ? '': 
@@ -143,29 +156,6 @@ const Item = ({
           }
         }
   </CollectionConsumer> )
-}
-
-
-const getIcon = (
-    item,
-    onExpand,
-    onCollapse
-  ) => {
-    if (item.children && item.children.length > 0) {
-      return (
-        // <Button
-        //   spacing="none"
-        //   appearance="subtle-link"
-        //   onClick={() => item.isExpanded ? onCollapse(item.id) : onExpand(item.id)}
-        // >
-          <span  className={`caret ${item.isExpanded ? 'caret-down': ''}`} 
-            onClick={() => item.isExpanded ? onCollapse(item.id) : onExpand(item.id)}>
-                {/* &#9654; */}
-                <svg width="20" height="20" viewBox="0 0 20 20"><path d="M13.75 9.56879C14.0833 9.76124 14.0833 10.2424 13.75 10.4348L8.5 13.4659C8.16667 13.6584 7.75 13.4178 7.75 13.0329L7.75 6.97072C7.75 6.58582 8.16667 6.34525 8.5 6.5377L13.75 9.56879Z" stroke="none" fill="currentColor"></path></svg>
-            </span>
-        // {/* </Button> */}
-      )
-  }
 }
 
 export default Item;
