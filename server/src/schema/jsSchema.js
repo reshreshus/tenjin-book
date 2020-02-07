@@ -16,7 +16,7 @@ let blocks = {
             data: {
                 name: "root",
                 count: 6,
-                type: "R",
+                type: "D",
             }
         },
         "1": {
