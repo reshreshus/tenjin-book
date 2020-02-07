@@ -251,6 +251,8 @@ function CollectionProvider({children}) {
                 isCardUpdating,
                 saveCardServer,
                 updateContextBlock,
+                showSidebars, 
+                updateShowSidebars,
 
                 blocks,
                 updateBlocks,
