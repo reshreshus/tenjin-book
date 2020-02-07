@@ -260,7 +260,7 @@ const resolvers = {
                 id, 
                 template_title, 
                 entries
-            }
+            } 
             cards[idx] = card;
             return card;
         },

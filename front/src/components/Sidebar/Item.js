@@ -88,6 +88,7 @@ const Item = ({
             return (
               <div className={`block`} 
               ref={node}>
+                {provided.placeholder}
                 <div className="block__inline"
                  ref={provided.innerRef} 
                  {...provided.draggableProps}>

@@ -53,9 +53,13 @@ const Items = () => {
                     if (!destination) {
                       return;
                     }
-                
+                    // source and destination contain only parent id 
+                    // and index in parent's children array
+                    let parentOfDragged = blocks.items[source.parentId];
+                    let draggedId = parentOfDragged.children[source.index];
                     const newTree = moveItemOnTree(blocks, source, destination);
-                    updateBlocks(newTree);
+                    newTree.items[draggedId].parentID = destination.parentId;
+
                     saveBlocks(newTree);
                 };
 
