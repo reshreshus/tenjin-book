@@ -19,10 +19,10 @@ const HotkeyApp = () => {
                     toggleCollapse(contextBlock);
                 }
 
-                const addCardHot = () => {
-                    console.log("addCardHot");
+                const addItemHot = (type) => {
+                    console.log("addItemHot");
                     if (selectedBlockId) {
-                        addItem(contextBlock, 'f');
+                        addItem(contextBlock, type);
                     }
                 }
             
@@ -111,7 +111,10 @@ const HotkeyApp = () => {
                             deleteBlockHot(e, selectedBlockId);
                             break;
                         case 'a':
-                            addCardHot();
+                            addItemHot('f');
+                            break;
+                        case 'n':
+                            addItemHot('T');
                             break;
                         case 'ctrl+shift+d':
                             duplicateBlockHot();
@@ -126,7 +129,7 @@ const HotkeyApp = () => {
                 
                 return (
                     <Hotkeys 
-                        keyName="a,z,ctrl+s,f2,esc,alt+c,alt+v,del,alt+n,ctrl+shift+d" 
+                        keyName="a,z,ctrl+s,f2,esc,alt+c,alt+v,del,n,ctrl+shift+d" 
                         onKeyDown={(keyName, e, handle) => onKeyDown(keyName, e, handle)}
                     >
                     </Hotkeys>
