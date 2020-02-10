@@ -190,7 +190,7 @@ function CollectionProvider({children}) {
                     data: { text: "" }
                 }]
             }, 
-            entry_type:"C",
+            type:"C",
             id: newId
         }
         
@@ -206,8 +206,12 @@ function CollectionProvider({children}) {
         updateCard(newCard);
     }
 
-    const chooseTypeC = (cardId, entryId, type) => {
-        console.log("chooseType Context")
+    const chooseTypeC = (entryId, type) => {
+        console.log("chooseType");
+        let newCard = Object.assign({}, card);
+        let entry = newCard.entries.filter(e => e.id === entryId)[0]
+        entry.type = type;
+        updateCard(newCard);
     }
 
     const selectBlockToRename = (blockId) => {

@@ -78,7 +78,7 @@ return (<CollectionConsumer >
     }
 
     const chooseType = (entryId, type) => {
-        chooseTypeC(card.id, entryId, type);
+        chooseTypeC(entryId, type);
     }
 
     return (

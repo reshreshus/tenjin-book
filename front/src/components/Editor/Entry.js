@@ -40,13 +40,15 @@ export default function Entry({e, saveEditorInstance, chooseType,
                     {
                         ['A', 'Q', 'C'].map((type, i) => (
                             <div key={i} 
-                                className={`btn ${type===e.entry_type ? 
+                                className={`btn ${type===e.type ? 
                                     'btn-circ' : ''}`}
                                 onClick={()=> 
                                     {
                                         closeChoosingType();
-                                        chooseType(e.id, type);
-                                        
+                                        if (e.type !== type) {
+                                            updateAreChanged();
+                                            chooseType(e.id, type);
+                                        }
                                     }}
                                 >
                                 { type }
@@ -58,7 +60,7 @@ export default function Entry({e, saveEditorInstance, chooseType,
                 <div onClick={() => {
                     openChoosingType(e.id)
                 }}
-                className={`card-entry__qa btn-circ ${isChoosingType ? "hide": ""}`}> { e.entry_type }
+                className={`card-entry__qa btn-circ ${isChoosingType ? "hide": ""}`}> { e.type }
                 </div>
                 
                 <div className="card-entry__name">

@@ -50,7 +50,7 @@ export const GET_CARD = gql`
                 id
                 name
                 content
-                entry_type
+                type
             }
         }
     }
@@ -68,8 +68,8 @@ export const SAVE_CARD = gql`
 `;
 
 export const ADD_CARD_ENTRY = gql`
-    mutation AddCardEntry($id: Int, $name: String, $content: JSON, $entry_type: String, $card_id: ID) {
-        addCardEntry(id: $id, name: $name, content: $content, entry_type: $entry_type, card_id: $card_id) {
+    mutation AddCardEntry($id: Int, $name: String, $content: JSON, $type: String, $card_id: ID) {
+        addCardEntry(id: $id, name: $name, content: $content, type: $type, card_id: $card_id) {
             id
             content
         }

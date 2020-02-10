@@ -102,7 +102,7 @@ const newCard = {
                     data: { text: "" }
                 }]
             },
-            entry_type: "Q",
+            type: "Q",
         },
         {
             id: 1,
@@ -113,7 +113,7 @@ const newCard = {
                     data: { text: "" }
                 }]
             },   
-            entry_type: "A",
+            type: "A",
         }
     ]
 }
@@ -133,7 +133,7 @@ let cards = [{
                     data: { text: "probably some editorJs stuff or html" }
                 }]
             },
-            entry_type: "Q",
+            type: "Q",
         },
         {
             id: 1,
@@ -144,7 +144,7 @@ let cards = [{
                     data: { text: "probably some editorJs stuff or html" }
                 }]
             },   
-            entry_type: "A",
+            type: "A",
         },
         
     ]
@@ -179,7 +179,7 @@ const typeDefs = `
         name: String,
         content: JSON, 
         template_title: String,
-        entry_type: String
+        type: String
     }
 
     type Query {
@@ -192,7 +192,7 @@ const typeDefs = `
         addCardEntry (
             name: String
             content: JSON
-            entry_type: String
+            type: String
             card_id: ID
             id: ID
         ): [CardEntry],
@@ -234,12 +234,12 @@ const resolvers = {
         blocks: () => blocks
     },
     Mutation: {
-        addCardEntry: (parent, { id, name, content, entry_type, card_id}) => {
+        addCardEntry: (parent, { id, name, content, type, card_id}) => {
             const card = _.find(cards, {id: card_id})
             card.entries.push({    
                 name,
                 content,
-                entry_type,
+                type,
                 id
             })
             return card.entries;
