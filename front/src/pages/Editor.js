@@ -78,7 +78,7 @@ return (<CollectionConsumer >
     }
 
     const chooseType = (entryId, type) => {
-        chooseTypeC(entryId, type);
+        chooseTypeC(block.id, entryId, type);
     }
 
     return (

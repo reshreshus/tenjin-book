@@ -206,12 +206,20 @@ function CollectionProvider({children}) {
         updateCard(newCard);
     }
 
-    const chooseTypeC = (entryId, type) => {
+    const chooseTypeC = (cardId, entryId, type) => {
         console.log("chooseType");
         let newCard = Object.assign({}, card);
         let entry = newCard.entries.filter(e => e.id === entryId)[0]
         entry.type = type;
+        blocks.items[cardId].data.type = 'T'
+        newCard.entries.map(e => {
+            if (e.type === 'Q') {
+                blocks.items[cardId].data.type = 'f';
+            }
+        })
+        updateBlocks(Object.assign({}, blocks));
         updateCard(newCard);
+        
     }
 
     const selectBlockToRename = (blockId) => {
