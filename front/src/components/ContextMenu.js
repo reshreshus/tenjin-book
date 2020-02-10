@@ -6,7 +6,7 @@ const ContextMenu = ({block}) => {
     return (
         <CollectionConsumer> 
         {
-            ({hideContextMenu, addNewTopic, addCard, selectBlockToRename, 
+            ({hideContextMenu, addNewTopic, addItem, selectBlockToRename, 
                 deleteBlock, duplicateBlock, toggleCollapse}) => {
                 const menuItems = block ? [
                     {
@@ -14,7 +14,7 @@ const ContextMenu = ({block}) => {
                         "shortcut": "Alt + N",
                         "onClick": () => {
                             console.log("New Topic");
-                            addNewTopic(block);
+                            addItem(block, 'T');
                         },
                         "usable": block.type !== 'f' ? true : false
                     },
@@ -23,9 +23,9 @@ const ContextMenu = ({block}) => {
                         "shortcut": "A",
                         "onClick": () => {
                             console.log("New New Card")
-                            addCard(block);
+                            addItem(block, 'f');
                         },
-                        "usable": true
+                        "usable": block.type !== 'f' ? true : false
                     },
                     {
                         "action": "Rename",

@@ -118,7 +118,25 @@ const newCard = {
     ]
 }
 
-let cards = [{
+const newTopic = {
+    template_id: "from db",
+    template_title: "Basic Topic",
+    entries: [
+        {  
+            id: 0,
+            name: "Custom field",
+            type: "C",
+            content: {
+                blocks: [{
+                    type: "paragraph",
+                    data: { text: "" }
+                }]
+            } 
+        }
+    ]
+}
+
+let items = [{
     id: "_0",
     template_id: "from db",
     deck_title: "English",
@@ -183,7 +201,7 @@ const typeDefs = `
     }
 
     type Query {
-        cards: [Card],
+        items: [Card],
         blocks: JSON,
         cardEntry(id: ID): CardEntry
     }
@@ -202,7 +220,7 @@ const typeDefs = `
             template_title: String
             entries: [JSON]
         ): Card,
-        addCard: Card,
+        addItem(type: String): Card,
         saveBlocks (
             newBlocks: JSON
         ): JSON,
@@ -230,12 +248,12 @@ const ID = () => {
 const resolvers = {  
     JSON: GraphQLJSON, 
     Query: {   
-        cards: () => cards,
+        items: () => items,
         blocks: () => blocks
     },
     Mutation: {
         addCardEntry: (parent, { id, name, content, type, card_id}) => {
-            const card = _.find(cards, {id: card_id})
+            const card = _.find(items, {id: card_id})
             card.entries.push({    
                 name,
                 content,
@@ -244,24 +262,24 @@ const resolvers = {
             })
             return card.entries;
         },
-        addCard: () => {
-            let card = Object.assign({}, newCard);
-            card.id = `_${ID()}`; 
-            cards = [...cards, card]  
-            return card;
+        addItem: (parent, {type}) => { 
+            let item = type === 'f' ? Object.assign({}, newCard) : Object.assign({}, newTopic);
+            item.id = `_${ID()}`; 
+            items = [...items, item]  
+            return item;
         },
         card: (parent, { id }) => { 
-                return _.find(cards, {id: id})
+                return _.find(items, {id: id})
         },
         saveCard: (parent, {id, template_title, entries}) => {
-            let card = _.find(cards, {id: id});
-            let idx = cards.indexOf(card);
+            let card = _.find(items, {id: id});
+            let idx = items.indexOf(card);
             card = {
                 id, 
                 template_title, 
                 entries
             } 
-            cards[idx] = card;
+            items[idx] = card;
             return card;
         },
         saveBlocks: (parent, {newBlocks}) => {
@@ -299,9 +317,9 @@ const resolvers = {
             blocks.items[newId] = newBlock;
             // duplicate flashcard as well
             if (newBlock.data.type === 'f'){
-                let card = Object.assign({}, cards.filter(c => id === c.id)[0]);
+                let card = Object.assign({}, items.filter(c => id === c.id)[0]);
                 card.id = newId;
-                cards.push(card);
+                items.push(card);
             }
             return blocks;
         }

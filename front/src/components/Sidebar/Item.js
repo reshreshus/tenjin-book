@@ -2,17 +2,7 @@ import React, {useState, useEffect, useRef} from 'react';
 import { CollectionConsumer } from '../../context/CollectionContext';
 import {Link } from 'react-router-dom';
 import ContentEditable from 'react-contenteditable';
-import {Draggable} from 'react-beautiful-dnd';
-// import Button from "@atlaskit/button";
-// import { AkNavigationItem } from "@atlaskit/navigation";
-// import {
-//     RenderItemParams,
-//     TreeItem,
-//     TreeData,
-//     ItemId,
-//     TreeSourcePosition,
-//     TreeDestinationPosition
-// } from "@atlaskit/tree";
+
 const Item = ({
   block,
   onExpand,
@@ -78,7 +68,7 @@ const Item = ({
             let link;
             if (block.data.type === 'D') {
                 link = 'show-deck'
-            } else if (block.data.type === 'f') {
+            } else if (block.data.type === 'f' || block.data.type === 'T') {
                 link = 'edit'
             // if root, show main page
             } else if (block.data.type === 'R') {
@@ -133,7 +123,7 @@ const Item = ({
                               block: block
                           }}}
                           onClick={() => {
-                              if (block.data.type === 'f') {
+                              if (block.data.type === 'f' || block.data.type === 'T') {
                                   getCard(block.id);
                                   console.log("block", block);
                               }

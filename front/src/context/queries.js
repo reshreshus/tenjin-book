@@ -22,9 +22,9 @@ export const RENAME_BLOCK = gql`
     }
 `
 
-export const ADD_CARD = gql`
-    mutation {
-        addCard {
+export const ADD_ITEM = gql`
+    mutation addItem($type: String){
+        addItem(type: $type) {
             id
         }
     }

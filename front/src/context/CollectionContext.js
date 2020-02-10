@@ -4,7 +4,7 @@ import ContextMenu from '../components/ContextMenu';
 import { selectElementContents, disableEditable,
          enabeEditable, removeSelections, 
          openContextMenu, hideContextMenu } from './domHelpers'
-import { GET_CARD, SAVE_CARD, GET_BLOCKS, SAVE_BLOCKS, ADD_CARD, 
+import { GET_CARD, SAVE_CARD, GET_BLOCKS, SAVE_BLOCKS, ADD_ITEM, 
     RENAME_BLOCK, DELETE_BLOCK, DUPLICATE_BLOCK } from './queries';
 import { useMutation, useQuery } from '@apollo/react-hooks';
 
@@ -33,7 +33,7 @@ function CollectionProvider({children}) {
     const [saveCardQuery] = useMutation(SAVE_CARD)
     const [saveBlocksQuery] = useMutation(SAVE_BLOCKS);
 
-    const [addCardQuery] = useMutation(ADD_CARD);
+    const [addItemQuery] = useMutation(ADD_ITEM);
 
     const [renameBlockQuery] = useMutation(RENAME_BLOCK);
     const [deleteBlockQuery] = useMutation(DELETE_BLOCK);
@@ -100,22 +100,24 @@ function CollectionProvider({children}) {
         return findLastDeck(parent);
     }
 
-    const addCard = (block) => {
-        addCardQuery().then((data) => {
-            console.log("add card data", data);
-            let cardId = data.data.addCard.id;
-            blocks.items[cardId] = {
-                id: cardId,
+    const addItem = (block, type) => {
+        addItemQuery({
+            variables: {type: type}
+        }).then((data) => {
+            console.log("add item data", data);
+            let itemId = data.data.addItem.id;
+            blocks.items[itemId] = {
+                id: itemId,
                 hasChildren: false,
                 children: [],
                 isExpanded: false,
                 parentID: block.id,
                 data: {
-                    name: `New Card ${Object.keys(blocks.items).length}`,
-                    type: "f",
+                    name: `New ${type} ${Object.keys(blocks.items).length}`,
+                    type: type,
                 }                
             }
-            block.children.push(cardId);
+            block.children.push(itemId);
             block.hasChildren = true;
             block.isExpanded = true;
             saveBlocks(blocks);
@@ -134,26 +136,6 @@ function CollectionProvider({children}) {
     const toggleExpanded = (block) => {
         block.isExpanded = !block.isExpanded;
         updateBlocks(Object.assign({}, blocks))
-    }
-
-    // not maintainer
-    const addNewTopic = (block) => {
-        const newTopic = {
-            "id": String(blocks[0].count),
-            idx: block.children ? block.children.length : 0,
-            "name": "New Topic",
-            "type": "T",
-            "path": [...block.path, block.idx],
-        }
-        if (block.children) {
-            block.children.push(newTopic)
-        } else {
-            block.children = [newTopic];
-        }
-        block.expanded =  true;
-        blocks[0].count+=1;
-        console.log(blocks);
-        updateBlocks([...blocks]);
     }
 
     const updateSelectedBlockIdAndCleanup = (id, blockRef) => {
@@ -207,7 +189,6 @@ function CollectionProvider({children}) {
     }
 
     const chooseTypeC = (cardId, entryId, type) => {
-        console.log("chooseType");
         let newCard = Object.assign({}, card);
         let entry = newCard.entries.filter(e => e.id === entryId)[0]
         entry.type = type;
@@ -268,9 +249,8 @@ function CollectionProvider({children}) {
 
                 blocks,
                 updateBlocks,
-                addNewTopic,
                 findLastDeck,
-                addCard,
+                addItem,
                 renameBlock,
                 selectBlockToRename,
                 deleteBlock,

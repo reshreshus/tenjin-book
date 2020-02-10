@@ -52,7 +52,7 @@ export default function Block({block}) {
                 let link;
                 if (block.data.type === 'D') {
                     link = 'show-deck'
-                } else if (block.data.type === 'f') {
+                } else if (block.data.type === 'f' || block.data.type === 'T') {
                     link = 'edit'
                 // if root, show main page
                 } else if (block.data.type === 'R') {
@@ -96,9 +96,10 @@ export default function Block({block}) {
                                     block: block
                                 }}}
                                 onClick={() => {
-                                    if (block.data.type === 'f') {
+                                    if (block.data.type === 'f' || block.data.type === 'T') {
+                                        console.log("link clicked, block", block);
                                         getCard(block.id);
-                                        console.log("block", block);
+                                        
                                     }
                                 }}
                                 >

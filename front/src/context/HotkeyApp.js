@@ -12,7 +12,7 @@ const HotkeyApp = () => {
         <CollectionConsumer> 
         {
             ({selectedBlockId, showSidebars, updateShowSidebars, 
-                contextBlock, deleteBlock, addCard, duplicateBlock,
+                contextBlock, deleteBlock, addItem, duplicateBlock,
                 toggleCollapse}) => {
 
                 const toggleCollapseHot = () => {
@@ -22,7 +22,7 @@ const HotkeyApp = () => {
                 const addCardHot = () => {
                     console.log("addCardHot");
                     if (selectedBlockId) {
-                        addCard(contextBlock);
+                        addItem(contextBlock, 'f');
                     }
                 }
             
