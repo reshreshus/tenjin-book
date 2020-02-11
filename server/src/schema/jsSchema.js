@@ -218,38 +218,38 @@ const typeDefs = `
     type Query {
         items: [Card],
         blocks: JSON,
-        cardEntry(id: ID): CardEntry
+        cardEntry(id: ID!): CardEntry
     }
 
     type Mutation {
         addCardEntry (
-            name: String
-            content: JSON
-            type: String
-            card_id: ID
-            id: ID
+            name: String!
+            content: JSON!
+            type: String!
+            card_id: ID!
+            id: ID!
         ): [CardEntry],
-        card(id: ID): Card,
+        card(id: ID!): Card,
         saveCard (
-            id: ID
-            template_title: String
-            entries: [JSON]
+            id: ID!
+            template_title: String!
+            entries: [JSON]!
         ): Card,
         addItem(
-            type: String
-            parentID: String
+            type: String!
+            parentID: String!
             ): JSON,
         saveBlocks (
-            newBlocks: JSON
+            newBlocks: JSON!
         ): JSON,
         renameBlock (
-            id: String
-            newName: String
+            id: String!
+            newName: String!
         ): Block,
-        deleteBlock (id: String): JSON,
-        duplicateBlock (id: String): JSON,
+        deleteBlock (id: String!): JSON,
+        duplicateBlock (id: String!): JSON,
         addDeck (
-            parentID: String
+            parentID: String!
         ): JSON
     }
 
