@@ -309,7 +309,7 @@ const resolvers = {
         saveBlocks: (parent, {newBlocks}) => {
             // console.log("newBlocks", newBlocks);
             blocks = newBlocks;
-            return blocks;
+            return blocks; 
         },
         renameBlock: (parent, {id, newName}) => {
             // console.log("renameBlock newName", newName);

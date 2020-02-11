@@ -13,6 +13,7 @@ const HotkeyApp = () => {
         {
             ({selectedBlockId, showSidebars, updateShowSidebars, 
                 contextBlock, deleteBlock, addItem, duplicateBlock,
+                addDeck,
                 toggleCollapse}) => {
 
                 const toggleCollapseHot = () => {
@@ -24,6 +25,11 @@ const HotkeyApp = () => {
                     if (selectedBlockId) {
                         addItem(contextBlock, type);
                     }
+                }
+
+                const addDeckHot = () => {
+                    console.log("addDeckHot");
+                    addDeck(contextBlock.id);
                 }
             
                 const chooseBlockToRename = (event, selectedBlockId) => {
@@ -116,6 +122,9 @@ const HotkeyApp = () => {
                         case 'n':
                             addItemHot('T');
                             break;
+                        case 'alt+shift+d':
+                            addDeckHot();
+                            break;
                         case 'ctrl+shift+d':
                             duplicateBlockHot();
                             break;
@@ -129,7 +138,7 @@ const HotkeyApp = () => {
                 
                 return (
                     <Hotkeys 
-                        keyName="a,z,ctrl+s,f2,esc,alt+c,alt+v,del,n,ctrl+shift+d" 
+                        keyName="a,z,ctrl+s,f2,esc,alt+shift+d,alt+c,alt+v,del,n,ctrl+shift+d" 
                         onKeyDown={(keyName, e, handle) => onKeyDown(keyName, e, handle)}
                     >
                     </Hotkeys>
