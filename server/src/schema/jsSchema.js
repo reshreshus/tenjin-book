@@ -314,6 +314,7 @@ const resolvers = {
         renameBlock: (parent, {id, newName}) => {
             // console.log("renameBlock newName", newName);
             blocks.items[id].data.name = newName;
+            return blocks.items[id];
         },
         deleteBlock: (_, {id}) => {           
             let block = blocks.items[id];

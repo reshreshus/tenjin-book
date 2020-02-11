@@ -84,6 +84,11 @@ function CollectionProvider({children}) {
             newName: newName
         }}).then(data => {
             console.log("renameCard data", data)
+            updateCard(null);
+            // TODO: not normolized
+            blocks.items[blockId].data.name = newName;
+            // blocks.items[blockId] = data.data.renameBlock;
+            updateBlocks(Object.assign({}, blocks))
         })
     }
 
