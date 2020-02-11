@@ -5,7 +5,7 @@ import { selectElementContents, disableEditable,
          enabeEditable, removeSelections, 
          openContextMenu, hideContextMenu } from '../helpers/domHelpers'
 import { GET_CARD, SAVE_CARD, GET_BLOCKS, SAVE_BLOCKS, ADD_ITEM, 
-    RENAME_BLOCK, DELETE_BLOCK, DUPLICATE_BLOCK } from '../api/queries';
+    RENAME_BLOCK, DELETE_BLOCK, DUPLICATE_BLOCK, ADD_DECK } from '../api/queries';
 import { useMutation, useQuery } from '@apollo/react-hooks';
 
 const Collection = React.createContext();
@@ -38,12 +38,15 @@ function CollectionProvider({children}) {
     const [renameBlockQuery] = useMutation(RENAME_BLOCK);
     const [deleteBlockQuery] = useMutation(DELETE_BLOCK);
     const [duplicateBlockQuery] = useMutation(DUPLICATE_BLOCK);
+    const [addDeckQuery] = useMutation(ADD_DECK);
 
     const [card, updateCard] = useState(null);
 
     const updateBlockName = (blockId) => {
         console.log("updateBlockName")
     }
+
+    
 
     const toggleCollapse = (block) => {
         block.isExpanded = !block.isExpanded;
@@ -98,6 +101,18 @@ function CollectionProvider({children}) {
         }
         // if (parent.data.type === 'D') return parent
         return findLastDeck(parent);
+    }
+
+    const addDeck = (parentID) => {
+        console.log("addDeck");
+        addDeckQuery({
+            variables: {
+                parentID
+            }
+        }).then(data => {
+            console.log("addDeckQuery data", data);
+            updateBlocks(data.data.addDeck);
+        })
     }
 
     const addItem = (block, type) => {
@@ -258,7 +273,8 @@ function CollectionProvider({children}) {
                 duplicateBlock,
                 toggleCollapse,
                 contextBlock,
-                saveBlocks
+                saveBlocks,
+                addDeck
         }}>
             {children}
             <ContextMenu block={contextBlock} />

@@ -1,17 +1,26 @@
 import React from 'react';
 import {CollectionConsumer} from '../context/CollectionContext';
+import { ADD_DECK } from '../api/queries';
 
 const ContextMenu = ({block}) => {
 
     return (
         <CollectionConsumer> 
         {
-            ({hideContextMenu, addNewTopic, addItem, selectBlockToRename, 
-                deleteBlock, duplicateBlock, toggleCollapse}) => {
+            ({hideContextMenu, addItem, selectBlockToRename, 
+                deleteBlock, duplicateBlock, toggleCollapse, addDeck}) => {
                 const menuItems = block ? [
                     {
+                        "action": "New Deck",
+                        "shortcut": "Alt + D",
+                        "onClick": () => {
+                            console.log("New Deck");
+                            addDeck(block.id);
+                        }
+                    },
+                    {
                         "action": "New Topic",
-                        "shortcut": "Alt + N",
+                        "shortcut": "N",
                         "onClick": () => {
                             console.log("New Topic");
                             addItem(block, 'T');

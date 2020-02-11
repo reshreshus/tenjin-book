@@ -1,5 +1,12 @@
 import { gql } from 'apollo-boost';
 
+
+export const ADD_DECK = gql`
+    mutation addDeck($parentID: String!) {
+        addDeck(parentID: $parentID)
+    }
+`
+
 export const DUPLICATE_BLOCK = gql`
     mutation duplicateBlock($id: String) {
         duplicateBlock(id: $id)

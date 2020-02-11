@@ -136,6 +136,12 @@ const newTopic = {
     ]
 }
 
+const newDeckBlock = {
+    hasChildren: false,
+    children: [],
+    isExpanded: false
+}
+
 let items = [{
     id: "_0",
     template_id: "from db",
@@ -229,7 +235,10 @@ const typeDefs = `
             newName: String
         ): Block,
         deleteBlock (id: String): JSON,
-        duplicateBlock (id: String): JSON
+        duplicateBlock (id: String): JSON,
+        addDeck (
+            parentID: String
+        ): JSON
     }
 
 `;
@@ -252,6 +261,21 @@ const resolvers = {
         blocks: () => blocks
     },
     Mutation: {
+        addDeck: (parent, {parentID}) => {
+            let block = Object.assign({}, newDeckBlock);
+            let id = ID();
+            block.id = id;
+            block.parentID = parentID;
+            block.data = {
+                type: 'D',
+                name: `deck ${id}`
+            }
+            blocks.items[parentID].children.push(id);
+            blocks.items[parentID].hasChildren = true;
+            blocks.items[parentID].isExpanded = true;
+            blocks.items[id] = block;
+            return blocks;
+        },
         addCardEntry: (parent, { id, name, content, type, card_id}) => {
             const card = _.find(items, {id: card_id})
             card.entries.push({    
