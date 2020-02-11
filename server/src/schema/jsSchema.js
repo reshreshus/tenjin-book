@@ -224,7 +224,7 @@ const typeDefs = `
     type Mutation {
         addCardEntry (
             name: String!
-            content: JSON!
+            content: JSON
             type: String!
             card_id: ID!
             id: ID!
@@ -233,14 +233,14 @@ const typeDefs = `
         saveCard (
             id: ID!
             template_title: String!
-            entries: [JSON]!
+            entries: [JSON]
         ): Card,
         addItem(
             type: String!
             parentID: String!
             ): JSON,
         saveBlocks (
-            newBlocks: JSON!
+            newBlocks: JSON
         ): JSON,
         renameBlock (
             id: String!
