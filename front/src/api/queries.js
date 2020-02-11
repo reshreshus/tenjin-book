@@ -30,10 +30,8 @@ export const RENAME_BLOCK = gql`
 `
 
 export const ADD_ITEM = gql`
-    mutation addItem($type: String){
-        addItem(type: $type) {
-            id
-        }
+    mutation addItem($type: String!, $parentID: String!){
+        addItem(type: $type, parentID: $parentID)
     }
 `
 export const SAVE_BLOCKS = gql`

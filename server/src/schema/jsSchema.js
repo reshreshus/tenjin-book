@@ -5,8 +5,17 @@ const GraphQLJSON = require('graphql-type-json');
 import _ from 'lodash';
 
 let blocks = {
-    rootId: "0",
+    rootId: "-1",
     items: {
+        "-1": {
+            id: "-1",
+            hasChildren: true,
+            children: ["0"],
+            isExpanded: true,
+            data: {
+                name: 'Root Tree (for atlaskit)'
+            }
+        },
         "0": {
             id: "0",
             hasChildren: true,
@@ -226,7 +235,10 @@ const typeDefs = `
             template_title: String
             entries: [JSON]
         ): Card,
-        addItem(type: String): Card,
+        addItem(
+            type: String
+            parentID: String
+            ): JSON,
         saveBlocks (
             newBlocks: JSON
         ): JSON,
@@ -251,6 +263,17 @@ const ID = () => {
   };
 
 
+const addBlock = (parentID, id) => {
+    let block = Object.assign({}, newDeckBlock);
+    block.parentID = parentID;
+    block.id = id;
+    blocks.items[parentID].children.push(id);
+    blocks.items[parentID].hasChildren = true;
+    blocks.items[parentID].isExpanded = true;
+    blocks.items[id] = block;
+    return block;
+}
+
 
 
 // TODO: no error checking here
@@ -262,18 +285,24 @@ const resolvers = {
     },
     Mutation: {
         addDeck: (parent, {parentID}) => {
-            let block = Object.assign({}, newDeckBlock);
             let id = ID();
-            block.id = id;
-            block.parentID = parentID;
+            let block = addBlock(parentID, id);
             block.data = {
                 type: 'D',
                 name: `deck ${id}`
             }
-            blocks.items[parentID].children.push(id);
-            blocks.items[parentID].hasChildren = true;
-            blocks.items[parentID].isExpanded = true;
-            blocks.items[id] = block;
+            return blocks;
+        },
+        addItem: (parent, {type, parentID}) => { 
+            let item = type === 'f' ? Object.assign({}, newCard) : Object.assign({}, newTopic);
+            item.id = `_${ID()}`; 
+            items = [...items, item];
+            
+            let block = addBlock(parentID, item.id);
+            block.data = {
+                type,
+                name: `${type} ${item.id}`
+            }
             return blocks;
         },
         addCardEntry: (parent, { id, name, content, type, card_id}) => {
@@ -285,12 +314,6 @@ const resolvers = {
                 id
             })
             return card.entries;
-        },
-        addItem: (parent, {type}) => { 
-            let item = type === 'f' ? Object.assign({}, newCard) : Object.assign({}, newTopic);
-            item.id = `_${ID()}`; 
-            items = [...items, item]  
-            return item;
         },
         card: (parent, { id }) => { 
                 return _.find(items, {id: id})

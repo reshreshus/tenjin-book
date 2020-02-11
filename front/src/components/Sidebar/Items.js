@@ -64,16 +64,6 @@ const Items = () => {
                 };
 
                 if (blocks) {
-                    blocks.rootId = '-1';
-                    blocks.items["-1"] = {
-                        id: "-1",
-                        hasChildren: true,
-                        children: ["0"],
-                        isExpanded: true,
-                        data: {
-                            name: 'Root Tree (for atlaskit)'
-                        }
-                    }
                     console.log("tree", blocks);
                     return (
                         

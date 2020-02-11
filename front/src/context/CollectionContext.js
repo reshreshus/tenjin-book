@@ -130,25 +130,28 @@ function CollectionProvider({children}) {
             return;
         }
         addItemQuery({
-            variables: {type: type}
+            variables: {
+                type,
+                parentID: block.id
+            }
         }).then((data) => {
             console.log("add item data", data);
-            let itemId = data.data.addItem.id;
-            blocks.items[itemId] = {
-                id: itemId,
-                hasChildren: false,
-                children: [],
-                isExpanded: false,
-                parentID: block.id,
-                data: {
-                    name: `New ${type} ${Object.keys(blocks.items).length}`,
-                    type: type,
-                }                
-            }
-            block.children.push(itemId);
-            block.hasChildren = true;
-            block.isExpanded = true;
-            saveBlocks(blocks);
+            // let itemId = data.data.addItem.id;
+            // blocks.items[itemId] = {
+            //     id: itemId,
+            //     hasChildren: false,
+            //     children: [],
+            //     isExpanded: false,
+            //     parentID: block.id,
+            //     data: {
+            //         name: `New ${type} ${Object.keys(blocks.items).length}`,
+            //         type: type,
+            //     }                
+            // }
+            // block.children.push(itemId);
+            // block.hasChildren = true;
+            // block.isExpanded = true;
+            saveBlocks(data.data.addItem);
         })
     }
 
