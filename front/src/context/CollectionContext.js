@@ -85,7 +85,7 @@ function CollectionProvider({children}) {
         }}).then(data => {
             console.log("renameCard data", data)
             updateCard(null);
-            // TODO: not normolized
+            // TODO: not normalized
             blocks.items[blockId].data.name = newName;
             // blocks.items[blockId] = data.data.renameBlock;
             updateBlocks(Object.assign({}, blocks))
@@ -109,6 +109,10 @@ function CollectionProvider({children}) {
     }
 
     const addDeck = (parentID) => {
+        if (blocks.items[parentID].data.type !== 'D') {
+            alert('Cannot make a deck from this type of item');
+            return;
+        }
         console.log("addDeck");
         addDeckQuery({
             variables: {
@@ -121,6 +125,10 @@ function CollectionProvider({children}) {
     }
 
     const addItem = (block, type) => {
+        if (block.data.type !== 'D') {
+            alert('Cannot make an item from this type of item');
+            return;
+        }
         addItemQuery({
             variables: {type: type}
         }).then((data) => {
