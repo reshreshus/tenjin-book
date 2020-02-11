@@ -8,19 +8,19 @@ export const ADD_DECK = gql`
 `
 
 export const DUPLICATE_BLOCK = gql`
-    mutation duplicateBlock($id: String) {
+    mutation duplicateBlock($id: String!) {
         duplicateBlock(id: $id)
     }
 `
 
 export const DELETE_BLOCK = gql`
-    mutation deleteBlock($id: String) {
+    mutation deleteBlock($id: String!) {
         deleteBlock(id: $id)
     }
 `
 
 export const RENAME_BLOCK = gql`
-    mutation renameBlock($id: String, $newName: String) {
+    mutation renameBlock($id: String!, $newName: String!) {
         renameBlock(id: $id, newName: $newName) {
             data {
                 name
@@ -62,7 +62,7 @@ export const GET_CARD = gql`
 `;
 
 export const SAVE_CARD = gql`
-    mutation SaveCard($id: ID, $template_title:String, $entries: [JSON]) { 
+    mutation SaveCard($id: ID!, $template_title:String!, $entries: [JSON]) { 
             saveCard(id: $id, template_title: $template_title, entries: $entries) {
             id
             entries {
@@ -73,7 +73,7 @@ export const SAVE_CARD = gql`
 `;
 
 export const ADD_CARD_ENTRY = gql`
-    mutation AddCardEntry($id: Int, $name: String, $content: JSON, $type: String, $card_id: ID) {
+    mutation AddCardEntry($id: Int!, $name: String!, $content: JSON!, $type: String!, $card_id: ID!) {
         addCardEntry(id: $id, name: $name, content: $content, type: $type, card_id: $card_id) {
             id
             content
