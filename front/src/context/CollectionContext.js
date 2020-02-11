@@ -3,9 +3,9 @@ import HotkeyApp from './HotkeyApp';
 import ContextMenu from '../components/ContextMenu';
 import { selectElementContents, disableEditable,
          enabeEditable, removeSelections, 
-         openContextMenu, hideContextMenu } from './domHelpers'
+         openContextMenu, hideContextMenu } from '../helpers/domHelpers'
 import { GET_CARD, SAVE_CARD, GET_BLOCKS, SAVE_BLOCKS, ADD_ITEM, 
-    RENAME_BLOCK, DELETE_BLOCK, DUPLICATE_BLOCK } from './queries';
+    RENAME_BLOCK, DELETE_BLOCK, DUPLICATE_BLOCK } from '../api/queries';
 import { useMutation, useQuery } from '@apollo/react-hooks';
 
 const Collection = React.createContext();

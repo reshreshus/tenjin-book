@@ -3,7 +3,7 @@ import Hotkeys from 'react-hot-keys';
 import {CollectionConsumer} from '../context/CollectionContext';
 
 
-import { enabeEditable, selectElementContents, hideContextMenu} from './domHelpers';
+import { enabeEditable, selectElementContents, hideContextMenu} from '../helpers/domHelpers';
 
 
 const HotkeyApp = () => {
