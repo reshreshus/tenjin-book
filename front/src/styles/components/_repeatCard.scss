@@ -1,3 +1,12 @@
+.repeat-entries {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    &__show-answer {
+        
+    }
+}
+
 .card-entry-repeat {
     width: 100%;
     display: flex;
@@ -9,5 +18,25 @@
         width: 100%;
         border-radius: 10px;
         margin-bottom: 0.4rem;
+    }
+}
+
+.card-eval {
+    display: flex;
+    justify-content: space-around;
+    @include bg-primary; 
+    // @include bg-light-primary;
+    padding: 2px;
+    border-radius: 7px;
+    &__option{
+        @include font-code;
+        padding: 10px 5px;
+        border-radius: 5px;
+        font-size: 18px;
+        width: 100px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
     }
 }

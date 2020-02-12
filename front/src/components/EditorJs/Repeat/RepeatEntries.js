@@ -1,5 +1,6 @@
 import React from 'react'
 import Entry from './Entry';
+import CardEvaluation from './CardEvaluation';
 
 export default function RepeatEntires({entries, saveEditorInstance, updateEditorChanged, 
     entriesEditors, blockId,
@@ -23,9 +24,9 @@ export default function RepeatEntires({entries, saveEditorInstance, updateEditor
     }
     
     return (
-        <div className="repeat-entries">
+        <div>
                 {   entries && entriesEditors ?
-                    <div>  
+                    <div className="repeat-entries">  
                         {
                             questions.map(e => (
                             repeatEntry(e)
@@ -36,9 +37,14 @@ export default function RepeatEntires({entries, saveEditorInstance, updateEditor
                             <div onClick={() => updateIsQuestioning(false)}
                             className="repeat-entries__show-answer btn-contrast"> Show answer </div>
                             :
-                            answers.map(e => (
-                            repeatEntry(e)
-                            ))
+                            <div style={{width: '100%'}}> 
+                                {
+                                    answers.map(e => (
+                                    repeatEntry(e)
+                                    ))
+                                }
+                                <CardEvaluation />
+                            </div>
                         }
                         
 

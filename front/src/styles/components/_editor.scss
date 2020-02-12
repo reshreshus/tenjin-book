@@ -21,6 +21,12 @@
         align-items: center;
         margin-right: 3.75rem;
     }
+    &__save {
+        margin-top: 2rem;
+    }
+    &__preview-button{
+        margin-top: 2rem;
+    }
 }
 
 .card-entry {
@@ -67,28 +73,3 @@
         border-radius: 10px;
     }
 }
-
-
-
-// @supports (display: grid) {
-//     .editor {
-//         &__header {
-//             display: grid;
-//             grid-template-columns: 1fr 1fr;
-//             grid-template-rows: repeat(3, 1fr);
-//             grid-template-areas: 
-//                 "subtitle subtitle"
-//                 "title title"
-//                 "title title";
-            
-//         }
-//         &__title {
-//             grid-area: title;
-//             width: 100px;
-//         }
-//         &__subtitle {
-//             grid-area: subtitle;
-//             width: 100px;
-//         }
-//     }
-// }

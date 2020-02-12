@@ -20,6 +20,7 @@ const Editor = ({block, repeat=false}) => {
 
     useEffect(() => {
         updateEntriesEditors(new Array())
+        updateIsRepeatMode(false);
     }, [block]);
     return (
 <CollectionConsumer >
@@ -86,12 +87,7 @@ const Editor = ({block, repeat=false}) => {
                     />
                     <EditorActions addNewEntry={addNewEntryContext} saveCard={saveCard} 
                     editorChanged={editorChanged} card={card}
-                    
                     />
-                    <div onClick={()=> {
-                        updateIsRepeatMode(true);
-                        updateEntriesEditors(new Array());
-                    }} className="btn-contrast"> Preview </div>
                 </div>
                 ) : 
                 <div> 
@@ -102,9 +98,22 @@ const Editor = ({block, repeat=false}) => {
                         blockId={block.id} entriesEditors={entriesEditors}
                         isQuestioning={isQuestioning} updateIsQuestioning={updateIsQuestioning}
                     />
-                    <div onClick={() => saveCard()} className="btn btn-text">Save{editorChanged ? "*": ""}</div>                   
+                    <div onClick={() => saveCard()} className="btn btn-text editor__save">Save{editorChanged ? "*": ""}</div>
                 </div>
             }
+            
+
+            <div onClick={()=> {
+                updateIsRepeatMode(!isRepeatMode);
+                updateIsQuestioning(true);
+                updateEntriesEditors(new Array());
+            }} className="btn-contrast editor__preview-button"> 
+            {
+                isRepeatMode ? 'Edit' : 'Preview'
+            }
+            </div>
+
+            
             
         </div>
     )
