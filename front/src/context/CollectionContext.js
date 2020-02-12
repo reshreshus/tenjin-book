@@ -212,10 +212,16 @@ function CollectionProvider({children}) {
         updateCard(newCard)
     }
 
-    const deleteEntryContext = (entryID) => {
+    const deleteEntryC = (entryID) => {
         let newCard = Object.assign({}, card);
         let newEntries = [...newCard.entries.filter((e => entryID !== e.id))];
-        newCard.entries = newEntries;        
+        blocks.items[newCard.id].data.type =  'T';
+        newEntries.map(e => {
+            if (e.type === 'Q') {
+                blocks.items[newCard.id].data.type = 'f';
+            }
+        });
+        newCard.entries = newEntries;
         updateCard(newCard);
     }
 
@@ -262,7 +268,7 @@ function CollectionProvider({children}) {
         <Collection.Provider value={{
                 blocks,
                 addNewEntryContext,
-                deleteEntryContext,
+                deleteEntryC,
                 chooseTypeC,
                 selectedBlockId,
                 updateSelectedBlockIdAndCleanup,

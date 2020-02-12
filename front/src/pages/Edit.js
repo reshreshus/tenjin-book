@@ -1,6 +1,6 @@
 import React from 'react'
 import {useLocation} from 'react-router-dom';
-import EditorJs from '../components/Editor/EditorJs';
+import Editor from '../components/EditorJs/Editor';
 
 export default function Edit() {    
     let linkState = useLocation().state
@@ -15,7 +15,7 @@ export default function Edit() {
     }
     return (
         <div>
-            <EditorJs block={block} />
+            <Editor block={block} />
         </div>
     )
 }

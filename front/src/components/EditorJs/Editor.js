@@ -3,7 +3,7 @@ import { CollectionConsumer } from '../../context/CollectionContext';
 import Entry from './Entry';
 import HotkeysEditor from './HotkeysEditor';
 
-const EditorJs = ({block}) => {
+const Editor = ({block}) => {
     const [editorChanged, updateEditorChanged] = useState(false);
     const [entriesEditors, updateEntriesEditors] = useState(null);
 
@@ -12,7 +12,7 @@ const EditorJs = ({block}) => {
     }, [block]);
     return (
 <CollectionConsumer >
-    { ({addNewEntryContext, deleteEntryContext,
+    { ({addNewEntryContext, deleteEntryC,
         chooseTypeC, card, isCardUpdating, saveCardServer,
         findLastDeck
     }) => {
@@ -54,7 +54,7 @@ const EditorJs = ({block}) => {
 
     // it works for some reason
     const deleteEntryEditor = (id) => {
-        deleteEntryContext(id);
+        deleteEntryC(id);
         updateEntriesEditors(entriesEditors.filter(eE => eE.entry.id != id));
         setTimeout(() => {
             console.log("entries editors", entriesEditors);
@@ -110,4 +110,4 @@ const EditorJs = ({block}) => {
     );
 }
 
-export default EditorJs;
+export default Editor;
