@@ -1,32 +1,17 @@
-import React, {useState, useEffect} from 'react'
-import { CollectionConsumer } from '../context/CollectionContext';
-import {useLocation} from 'react-router-dom';
+import React, {useEffect, useState} from 'react';
+import { CollectionConsumer } from '../../context/CollectionContext';
+import Entry from './Entry';
+import HotkeysEditor from './HotkeysEditor';
 
-import Entry from '../components/Editor/Entry';
-import HotkeysEditor from '../components/Editor/HotkeysEditor';
-
-export default function Editor() {    
+const EditorJs = ({block}) => {
     const [editorChanged, updateEditorChanged] = useState(false);
     const [entriesEditors, updateEntriesEditors] = useState(null);
-    let linkState = useLocation().state
-    let block = linkState ? linkState.block : null
-    
+
     useEffect(() => {
         updateEntriesEditors(new Array())
     }, [block]);
-
-    
-    if (!block || !block.id) {
-        return (<div className="info">
-                    <h1 className="title">( ･ิɷ･ิ)</h1>
-                    <h2 className="subtitle"> You have chosen a dark path. <br />
-                    No flashcard here..</h2>
-                </div>)
-    }
-
-    
-   
-return (<CollectionConsumer >
+    return (
+<CollectionConsumer >
     { ({addNewEntryContext, deleteEntryContext,
         chooseTypeC, card, isCardUpdating, saveCardServer,
         findLastDeck
@@ -121,5 +106,8 @@ return (<CollectionConsumer >
     )
     }
     }
-</CollectionConsumer>)
+</CollectionConsumer>
+    );
 }
+
+export default EditorJs;

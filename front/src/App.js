@@ -7,9 +7,9 @@ import {CollectionConsumer} from './context/CollectionContext';
 import Sidebar from './components/Sidebar/Sidebar';
 
 import Home from './pages/Home';
-import Editor from './pages/Editor';
+import Edit from './pages/Edit';
 import ShowDeck from './pages/ShowDeck';
-import RepeatCard from './pages/RepeatCard';
+import Repeat from './pages/Repeat';
 
 
 
@@ -48,9 +48,9 @@ export default function App() {
       <div className="right-sidebar">
         <Switch>
           <Route exact path="/edit/" component={() =>
-            (<Editor card={{'deckTitle':'English', 'templateTitle': 'Basic'}}/>)}
+            (<Edit card={{'deckTitle':'English', 'templateTitle': 'Basic'}}/>)}
             />
-          <Route exact path="/repeat" component={RepeatCard}/>
+          <Route exact path="/repeat" component={Repeat}/>
           // "?" after id means id is optional
           <Route exact path="/show-deck/" component={ShowDeck} />
           <Route exact path="/" component={Home} />
