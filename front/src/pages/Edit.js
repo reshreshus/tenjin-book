@@ -15,7 +15,7 @@ export default function Edit() {
     }
     return (
         <div>
-            <Editor block={block} />
+            <Editor block={block}/>
         </div>
     )
 }

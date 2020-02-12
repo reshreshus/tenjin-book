@@ -12,8 +12,9 @@ export default function RepeatEntires({entries, saveEditorInstance, updateEditor
             answers.push(e);
         }
     })
+    
     return (
-        <div className="editor__entries">
+        <div className="editor__repeat-entries">
                 {   entries && entriesEditors ?
                     entries.map(e => (
                         <Entry e={e} key={`${blockId}${e.id}`}

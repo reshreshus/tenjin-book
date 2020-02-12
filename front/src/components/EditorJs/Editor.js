@@ -12,6 +12,10 @@ const Editor = ({block, repeat=false}) => {
     const [editorChanged, updateEditorChanged] = useState(false);
     const [entriesEditors, updateEntriesEditors] = useState(null);
 
+    // useEffect(() => {
+    //     updateIsRepeatMode(repeat);
+    // }, [repeat])
+
     useEffect(() => {
         updateEntriesEditors(new Array())
     }, [block]);
@@ -81,7 +85,10 @@ const Editor = ({block, repeat=false}) => {
                     editorChanged={editorChanged} card={card}
                     
                     />
-                    <div onClick={()=> updateIsRepeatMode(true)} className="btn-contrast"> Preview </div>
+                    <div onClick={()=> {
+                        updateIsRepeatMode(true);
+                        updateEntriesEditors(new Array());
+                    }} className="btn-contrast"> Preview </div>
                 </div>
                 ) : 
                 <div> 
@@ -91,7 +98,7 @@ const Editor = ({block, repeat=false}) => {
                         updateEditorChanged={updateEditorChanged}
                         blockId={block.id} entriesEditors={entriesEditors}
                     />
-                    
+                    <div onClick={() => saveCard()} className="btn btn-text">Save{editorChanged ? "*": ""}</div>                   
                 </div>
             }
             

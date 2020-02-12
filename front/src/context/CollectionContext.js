@@ -93,7 +93,6 @@ function CollectionProvider({children}) {
     }
 
     const findLastDeck = (block) => {
-        console.log("findLastDeck id", block.id);
         // base case
         if (block.data.type === 'D') {
             return block;

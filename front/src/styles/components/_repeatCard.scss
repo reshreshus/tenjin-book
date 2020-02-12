@@ -1,8 +1,6 @@
 .card-entry-repeat {
     width: 100%;
     display: flex;
-    margin-top: 2rem;
-
     &__text-field {
         @include bg-primary; 
         padding: 5px;
@@ -10,6 +8,6 @@
         flex: 5;
         width: 100%;
         border-radius: 10px;
-        margin-bottom: 1rem;
+        margin-bottom: 0.4rem;
     }
 }
