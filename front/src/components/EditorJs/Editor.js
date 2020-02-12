@@ -1,7 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import { CollectionConsumer } from '../../context/CollectionContext';
-import Entry from './Entry';
 import HotkeysEditor from './HotkeysEditor';
+import EditorActions from './EditorActions';
+import EditorEntries from './EditorEntries';
+import EditorHeader from './EditorHeader';
 
 const Editor = ({block}) => {
     const [editorChanged, updateEditorChanged] = useState(false);
@@ -67,41 +69,14 @@ const Editor = ({block}) => {
     }
 
     return (
-        <div className="editor" >
-            < HotkeysEditor saveCard={saveCard} />
-            <div className="editor__header">
-                <div className="editor__header-left">
-                    <div className="editor__subtitle text-blue-bright"> Deck </div>
-                    <div className="editor__title text-dark">
-                        {deck_title}
-                    </div>
-                </div>
-                <div className="editor__header-right">
-                    <div className="editor__subtitle text-blue-bright"> Template </div>
-                    <div className="editor__title text-dark">
-                        {template_title}
-                    </div>
-                </div>
-            </div>
-            <div className="editor__entries">
-                {   entries && entriesEditors ?
-                    entries.map(e => (
-                        <Entry e={e} key={`${block.id}${e.id}`}
-                        blockId={block.id}
-                        saveEditorInstance={saveEditorInstance}
-                        deleteEntryEditor={deleteEntryEditor}
-                        chooseType={chooseType}
-                        editorChanged={editorChanged}
-                        updateEditorChanged={updateEditorChanged}
-                        />
-                    )) : "Hmm, a card is empty. Strange..."
-                }
-            </div>
-            <div className="editor__actions">
-                <div onClick={() => addNewEntry(card.id)}className="btn btn-circ btn-plus-minus">+</div>
-                <div onClick={() => saveCard()} className="btn btn-text">Save{editorChanged ? "*": ""}</div>
-                
-            </div>
+        <div className="editor">
+            <HotkeysEditor saveCard={saveCard} />
+            <EditorHeader template_title={template_title} deck_title={deck_title} />
+            <EditorEntries entries={entries} entriesEditors={entriesEditors} block={block} 
+            saveEditorInstance={saveEditorInstance} deleteEntryEditor={deleteEntryEditor} 
+            chooseType={chooseType} updateEditorChanged={updateEditorChanged} editorChanged={editorChanged}
+            />
+            <EditorActions addNewEntry={addNewEntryContext} saveCard={saveCard} editorChanged={editorChanged} card={card}/>
         </div>
     )
     }
