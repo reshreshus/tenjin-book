@@ -5,7 +5,10 @@ import EditorActions from './EditorActions';
 import EditorEntries from './EditorEntries';
 import EditorHeader from './EditorHeader';
 
-const Editor = ({block}) => {
+import RepeatEntries from './Repeat/RepeatEntries';
+
+const Editor = ({block, repeat=false}) => {
+    const [isRepeatMode, updateIsRepeatMode] = useState(repeat);
     const [editorChanged, updateEditorChanged] = useState(false);
     const [entriesEditors, updateEntriesEditors] = useState(null);
 
@@ -39,10 +42,6 @@ const Editor = ({block}) => {
         saveCardServer(await Object.assign({}, card))
     }
 
-    const addNewEntry = (cardId) => {
-        addNewEntryContext(cardId)
-    }
-
     const saveEditorInstance = (instance, entry) => {
         if (card.entries.length !== entriesEditors.length) {
             entriesEditors.push({
@@ -51,7 +50,6 @@ const Editor = ({block}) => {
             })
             
         }
-        console.log("S!!! entries_editors", entriesEditors);
     }
 
     // it works for some reason
@@ -71,12 +69,32 @@ const Editor = ({block}) => {
     return (
         <div className="editor">
             <HotkeysEditor saveCard={saveCard} />
-            <EditorHeader template_title={template_title} deck_title={deck_title} />
-            <EditorEntries entries={entries} entriesEditors={entriesEditors} block={block} 
-            saveEditorInstance={saveEditorInstance} deleteEntryEditor={deleteEntryEditor} 
-            chooseType={chooseType} updateEditorChanged={updateEditorChanged} editorChanged={editorChanged}
-            />
-            <EditorActions addNewEntry={addNewEntryContext} saveCard={saveCard} editorChanged={editorChanged} card={card}/>
+            {
+                !isRepeatMode ? (
+                <div> 
+                    <EditorHeader template_title={template_title} deck_title={deck_title} />
+                    <EditorEntries entries={entries} entriesEditors={entriesEditors} blockId={block.id} 
+                    saveEditorInstance={saveEditorInstance} deleteEntryEditor={deleteEntryEditor} 
+                    chooseType={chooseType} updateEditorChanged={updateEditorChanged} editorChanged={editorChanged}
+                    />
+                    <EditorActions addNewEntry={addNewEntryContext} saveCard={saveCard} 
+                    editorChanged={editorChanged} card={card}
+                    
+                    />
+                    <div onClick={()=> updateIsRepeatMode(true)} className="btn-contrast"> Preview </div>
+                </div>
+                ) : 
+                <div> 
+                    <RepeatEntries 
+                        entries={entries} 
+                        saveEditorInstance={saveEditorInstance}
+                        updateEditorChanged={updateEditorChanged}
+                        blockId={block.id} entriesEditors={entriesEditors}
+                    />
+                    
+                </div>
+            }
+            
         </div>
     )
     }

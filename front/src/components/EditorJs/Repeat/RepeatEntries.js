@@ -1,19 +1,23 @@
 import React from 'react'
 import Entry from './Entry';
 
-export default function EditorEntries({entries, entriesEditors, blockId, 
-    saveEditorInstance, deleteEntryEditor, 
-    chooseType, updateEditorChanged, editorChanged}) {
+export default function RepeatEntires({entries, saveEditorInstance, updateEditorChanged, 
+    entriesEditors, blockId}) {
+    let questions = []
+    let answers = []
+    entries.map(e => {
+        if (e.type === 'Q') {
+            questions.push(e)
+        } else if (e.type === 'A') {
+            answers.push(e);
+        }
+    })
     return (
         <div className="editor__entries">
                 {   entries && entriesEditors ?
                     entries.map(e => (
                         <Entry e={e} key={`${blockId}${e.id}`}
-                        blockId={blockId}
                         saveEditorInstance={saveEditorInstance}
-                        deleteEntryEditor={deleteEntryEditor}
-                        chooseType={chooseType}
-                        editorChanged={editorChanged}
                         updateEditorChanged={updateEditorChanged}
                         />
                     )) : "Hmm, a card is empty. Strange..."

@@ -43,20 +43,13 @@
         margin-right: 0.2rem;
         border-radius: 20px;
         padding: 2px 10px;
-
-        // *:hover {
-        //     @include btn-circ;
-        // }
-    }
-
-    &__qa {
-        
     }
 
     &__name {
         display: inline-block;
     }
     &__field {
+        width: 100%;
         display: flex;
         align-items: center;
         justify-content: center;

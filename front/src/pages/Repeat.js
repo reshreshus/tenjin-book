@@ -1,6 +1,7 @@
-import React, {useState, useEffect} from 'react'
+import React from 'react'
 import {useLocation} from 'react-router-dom'
 import { CollectionConsumer } from '../context/CollectionContext'
+import Editor from '../components/EditorJs/Editor';
 
 export default function Repeat() {
     let linkState = useLocation().state;
@@ -20,9 +21,11 @@ export default function Repeat() {
             }) => {
 
                 return (
-                <div className="repeat-card">
+                // <div className="repeat-card">
                     
-                </div>)
+                // </div>)
+                <Editor block={block} repeat={true} />
+                )
             }
         }
         </CollectionConsumer>)
