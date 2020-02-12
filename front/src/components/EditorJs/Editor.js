@@ -8,9 +8,11 @@ import EditorHeader from './EditorHeader';
 import RepeatEntries from './Repeat/RepeatEntries';
 
 const Editor = ({block, repeat=false}) => {
-    const [isRepeatMode, updateIsRepeatMode] = useState(repeat);
     const [editorChanged, updateEditorChanged] = useState(false);
     const [entriesEditors, updateEntriesEditors] = useState(null);
+
+    const [isRepeatMode, updateIsRepeatMode] = useState(repeat);
+    const [isQuestioning, updateIsQuestioning] = useState(true);
 
     // useEffect(() => {
     //     updateIsRepeatMode(repeat);
@@ -73,10 +75,11 @@ const Editor = ({block, repeat=false}) => {
     return (
         <div className="editor">
             <HotkeysEditor saveCard={saveCard} />
+            <EditorHeader template_title={template_title} deck_title={deck_title} />
             {
                 !isRepeatMode ? (
                 <div> 
-                    <EditorHeader template_title={template_title} deck_title={deck_title} />
+                    
                     <EditorEntries entries={entries} entriesEditors={entriesEditors} blockId={block.id} 
                     saveEditorInstance={saveEditorInstance} deleteEntryEditor={deleteEntryEditor} 
                     chooseType={chooseType} updateEditorChanged={updateEditorChanged} editorChanged={editorChanged}
@@ -97,6 +100,7 @@ const Editor = ({block, repeat=false}) => {
                         saveEditorInstance={saveEditorInstance}
                         updateEditorChanged={updateEditorChanged}
                         blockId={block.id} entriesEditors={entriesEditors}
+                        isQuestioning={isQuestioning} updateIsQuestioning={updateIsQuestioning}
                     />
                     <div onClick={() => saveCard()} className="btn btn-text">Save{editorChanged ? "*": ""}</div>                   
                 </div>
