@@ -11,7 +11,7 @@ const HotkeyApp = () => {
     return (
         <CollectionConsumer> 
         {
-            ({selectedBlockId, showSidebars, updateShowSidebars, 
+            ({showSidebars, updateShowSidebars, 
                 contextBlock, deleteBlock, addItem, duplicateBlock,
                 addDeck,
                 toggleCollapse}) => {
@@ -22,7 +22,7 @@ const HotkeyApp = () => {
 
                 const addItemHot = (type) => {
                     console.log("addItemHot");
-                    if (selectedBlockId) {
+                    if (contextBlock) {
                         addItem(contextBlock, type);
                     }
                 }
@@ -32,12 +32,12 @@ const HotkeyApp = () => {
                     addDeck(contextBlock.id);
                 }
             
-                const chooseBlockToRename = (event, selectedBlockId) => {
+                const chooseBlockToRename = (event) => {
                     // Prevent the default refresh event under WINDOWS system
                     console.log("handleF2");
-                    if (selectedBlockId) {
+                    if (contextBlock) {
                         event.preventDefault();
-                        let el = document.querySelector(`#block-${selectedBlockId}`);
+                        let el = document.querySelector(`#block-${contextBlock.id}`);
                         enabeEditable(el)
                         selectElementContents(el);
                     }
@@ -85,9 +85,9 @@ const HotkeyApp = () => {
                     }
                 }
             
-                const deleteBlockHot = (event, selectedBlockId) => {
+                const deleteBlockHot = (event) => {
                     console.log("handleDel");
-                    if (selectedBlockId) {
+                    if (contextBlock) {
                         event.preventDefault();
                         deleteBlock(contextBlock.id);
                     }
@@ -102,7 +102,7 @@ const HotkeyApp = () => {
                     e.preventDefault();
                     switch (keyName) {
                         case 'f2':
-                            chooseBlockToRename(e, selectedBlockId);
+                            chooseBlockToRename(e);
                             break;
                         case 'esc':
                             hideContextMenu();
@@ -114,7 +114,7 @@ const HotkeyApp = () => {
                             toggleRightSidebar();
                             break;
                         case 'del':
-                            deleteBlockHot(e, selectedBlockId);
+                            deleteBlockHot(e);
                             break;
                         case 'a':
                             addItemHot('f');

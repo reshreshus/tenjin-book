@@ -18,8 +18,8 @@ const Item = ({
   let draggable = useRef(null);
   useEffect(() => {
       contentEditable = React.createRef();
-    //   console.log("draggable", draggable);
       draggable.current.removeAttribute("tabIndex");
+    //   node.current.setAttribute('tabIndex', 0)
   })
   if (!name) {
     if (block) {
@@ -27,29 +27,21 @@ const Item = ({
     }
     return <div> Taram taram </div>
   }
-  // return <div> param param</div>
 
   return (
     <CollectionConsumer> 
         {
-            ({selectedBlockId, updateSelectedBlockIdAndCleanup, updateBlockName,
+            ({updateContextBlockAndCleanup, updateBlockName,
                 openContextMenu, updateContextBlock, renameBlock, getCard,
                 contextBlock
             }) => {
-
-            if (selectedBlockId === block.id) {
-              if (!(contextBlock && selectedBlockId === contextBlock.id))
-                updateContextBlock(block);
-            }
-              
-            
             const onBlockKeyDown = (e) => {
                 switch (e.key) {
                     case "Enter":
                         console.log("Enter")
                         e.preventDefault();
                         
-                        updateSelectedBlockIdAndCleanup(block.id, node);
+                        updateContextBlockAndCleanup(block, node);
                         updateName(name);
                         updateBlockName(name)
                         renameBlock(name, block.id);
@@ -57,7 +49,7 @@ const Item = ({
                     case "Esc":
                         console.log("escape")
                         e.preventDefault();
-                        updateSelectedBlockIdAndCleanup('', node);
+                        updateContextBlockAndCleanup(null, node);
                         break;
                     default:
                 }
@@ -104,13 +96,14 @@ const Item = ({
                    >
                       [{ block.data.type }]
                   </span>
-                  <div className={`block__name ${block.id !== selectedBlockId ? '': 
+                  <div className={`block__name ${(!contextBlock || block.id !== contextBlock.id) ? '': 
                   'block__name--active'}` }
                   onClick={() => {
-                      updateSelectedBlockIdAndCleanup(block.id, node)
+                      console.log("block__name onclick")
+                      updateContextBlockAndCleanup(block, node);
                       }} 
                       onContextMenu={(e) => {
-                          updateSelectedBlockIdAndCleanup(block.id, node)
+                        updateContextBlockAndCleanup(block, node);
                           openContextMenu(e, block, updateContextBlock)
                       }}
                       // onKeyDown doesn't work on react-contenteditable ¯\_(ツ)_/¯

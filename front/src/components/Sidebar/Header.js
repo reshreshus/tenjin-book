@@ -6,10 +6,10 @@ export default function Header() {
     return (
         <CollectionConsumer>
         {
-            ({updateSelectedBlockId}) => {
+            ({updateContextBlock}) => {
                 return (
                     <div className="header">
-                        <Link to="/" className="link" onClick={() => updateSelectedBlockId('')}>
+                        <Link to="/" className="link" onClick={() => updateContextBlock(null)}>
                             <h1>ROI Notebook<br/>
                             </h1>
                         </Link>

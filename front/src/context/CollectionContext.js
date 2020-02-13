@@ -12,10 +12,6 @@ const Collection = React.createContext();
 
 function CollectionProvider({children}) {
     const [blocks, updateBlocks] = useState(null) 
-    // TODO
-    const [selectedBlockId, updateSelectedBlockId] = useState('');
-    
-
     const [contextBlock, updateContextBlock] = useState(null);
     const [showSidebars, updateShowSidebars] = useState([true, true]);
 
@@ -168,12 +164,12 @@ function CollectionProvider({children}) {
         updateBlocks(Object.assign({}, blocks))
     }
 
-    const updateSelectedBlockIdAndCleanup = (id, blockRef) => {
+    const updateContextBlockAndCleanup = (block, blockRef) => {
         removeSelections();
         hideContextMenu();
         let el = blockRef.current.querySelector('.content-editable');
         disableEditable(el);
-        updateSelectedBlockId(id);
+        updateContextBlock(block);
     }
 
     const saveCardServer = (savedCard) => {
@@ -239,12 +235,12 @@ function CollectionProvider({children}) {
         
     }
 
-    const selectBlockToRename = (blockId) => {
+    const selectBlockToRename = (block) => {
         hideContextMenu();
-        updateSelectedBlockId(blockId)
+        updateContextBlock(block)
         // new Block isn't created immediately so I wait
         setTimeout(() => {
-            let el = document.querySelector(`.block-${blockId}`);
+            let el = document.querySelector(`.block-${block.id}`);
             enabeEditable(el)
             selectElementContents(el);
         }, 100);
@@ -269,9 +265,7 @@ function CollectionProvider({children}) {
                 addNewEntryContext,
                 deleteEntryC,
                 chooseTypeC,
-                selectedBlockId,
-                updateSelectedBlockIdAndCleanup,
-                updateSelectedBlockId,
+                updateContextBlockAndCleanup,
                 getCard,
                 updateBlockName,
                 openContextMenu,

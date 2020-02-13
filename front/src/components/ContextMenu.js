@@ -42,7 +42,7 @@ const ContextMenu = ({block}) => {
                         "onClick": () => {
                             console.log("Rename")
                             // TODO rename after hitting enter
-                            selectBlockToRename(block.id);
+                            selectBlockToRename(block);
                         },
                         "usable": true
                     },

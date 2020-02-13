@@ -204,7 +204,7 @@ const typeDefs = `
         id: ID,
         template_id: String,
         template_title: String,
-        entries: [CardEntry]
+        entries: [CardEntry]  
     }
 
     type CardEntry {
