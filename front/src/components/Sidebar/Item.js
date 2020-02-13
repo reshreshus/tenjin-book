@@ -15,9 +15,11 @@ const Item = ({
   const [name, updateName] = useState(null);
   // const [expanded, updateExpanded] = useState(block.expanded ? block.expanded : false)
   let node = useRef(null);
+  let draggable = useRef(null);
   useEffect(() => {
       contentEditable = React.createRef();
-      
+    //   console.log("draggable", draggable);
+      draggable.current.removeAttribute("tabIndex");
   })
   if (!name) {
     if (block) {
@@ -31,8 +33,8 @@ const Item = ({
     <CollectionConsumer> 
         {
             ({selectedBlockId, updateSelectedBlockIdAndCleanup, updateBlockName,
-                openContextMenu, updateContextBlock, renameBlock, toggleExpanded, getCard,
-                blocks, contextBlock
+                openContextMenu, updateContextBlock, renameBlock, getCard,
+                contextBlock
             }) => {
 
             if (selectedBlockId === block.id) {
@@ -96,7 +98,7 @@ const Item = ({
                     }
                  </div>
                   {/* drag by block type */}
-                  <span className={`block__type ${block.data.type === 'D' ? '' : 'block__type--ca'}`
+                  <span ref={draggable} className={`block__type ${block.data.type === 'D' ? '' : 'block__type--ca'}`
                   }
                    {...provided.dragHandleProps}
                    >
@@ -133,7 +135,7 @@ const Item = ({
                               key={block.id}
                               innerRef={contentEditable}
                               html={name}
-                              disabled={ false }
+                              disabled={ true }
                               // TODO: make unique blocks IDs, not classes
                               className="content-editable"
                               id={`block-${block.id}`}
