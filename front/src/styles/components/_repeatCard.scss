@@ -23,19 +23,21 @@
 
 .card-eval {
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
     @include bg-primary; 
     // @include bg-light-primary;
     padding: 2px;
     border-radius: 7px;
     &__option{
         @include font-code;
+        margin-right: 10px;
         padding: 10px 5px;
         border-radius: 5px;
         font-size: 18px;
-        width: 100px;
+        width: 120px;
         display: flex;
         align-items: center;
+        text-align: center;
         justify-content: center;
         cursor: pointer;
     }

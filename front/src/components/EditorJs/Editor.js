@@ -7,7 +7,7 @@ import EditorHeader from './EditorHeader';
 
 import RepeatEntries from './Repeat/RepeatEntries';
 
-const Editor = ({block, repeat=false}) => {
+const Editor = ({block, repeat=false, isPreview=true}) => {
     const [editorChanged, updateEditorChanged] = useState(false);
     const [entriesEditors, updateEntriesEditors] = useState(null);
 
@@ -97,6 +97,7 @@ const Editor = ({block, repeat=false}) => {
                         updateEditorChanged={updateEditorChanged}
                         blockId={block.id} entriesEditors={entriesEditors}
                         isQuestioning={isQuestioning} updateIsQuestioning={updateIsQuestioning}
+                        isPreview={isPreview}
                     />
                     <div onClick={() => saveCard()} className="btn btn-text editor__save">Save{editorChanged ? "*": ""}</div>
                 </div>

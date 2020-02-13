@@ -1,9 +1,4 @@
-import express from 'express';
-import graphqlHTTP from 'express-graphql';
-import schema from './schema/schema';
-import jsSchema from './schema/jsSchema';
 import { server } from './schema/jsSchema';
-import cors from 'cors';
 require('dotenv').config();
 
 console.log('server working..');

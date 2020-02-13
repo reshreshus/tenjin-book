@@ -1,6 +1,6 @@
 import React from 'react';
 
-const CardEvaluation = () => {
+const CardEvaluation = ({isPreview, updateIsQuestioning}) => {
 
     const evaluationSm15 = [
         {
@@ -35,9 +35,9 @@ const CardEvaluation = () => {
             {
                 evaluationSm15.map(v => (
                     <div className="card-eval__option" 
+                    onClick={() => isPreview ? updateIsQuestioning(true) : v.onClick()}
                     style={{backgroundColor: v.color, color: 'white'}}> 
-                        {/* {v.value} */}
-                        {v.desc}
+                        {v.desc} <br/> ( {v.value} )
                     </div>
                 ))
             }
