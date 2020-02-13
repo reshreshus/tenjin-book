@@ -1,8 +1,8 @@
 import React, {useState} from 'react'
 import HotkeyApp from './HotkeyApp';
 import ContextMenu from '../components/ContextMenu';
-import { selectElementContents, disableEditable,
-         enabeEditable, removeSelections, 
+import { selectElementContents,
+    enableEditable, removeSelections, 
          openContextMenu, hideContextMenu } from '../helpers/domHelpers'
 import { GET_CARD, SAVE_CARD, GET_BLOCKS, SAVE_BLOCKS, ADD_ITEM, 
     RENAME_BLOCK, DELETE_BLOCK, DUPLICATE_BLOCK, ADD_DECK } from '../api/queries';
@@ -14,6 +14,7 @@ function CollectionProvider({children}) {
     const [blocks, updateBlocks] = useState(null) 
     const [contextBlock, updateContextBlock] = useState(null);
     const [showSidebars, updateShowSidebars] = useState([true, true]);
+    const [isEditing, updateIsEditing] = useState(false);
 
     const {data: blocksData, loading: blocksLoading, error: blocksError} = useQuery(GET_BLOCKS,
         {
@@ -37,12 +38,6 @@ function CollectionProvider({children}) {
     const [addDeckQuery] = useMutation(ADD_DECK);
 
     const [card, updateCard] = useState(null);
-
-    const updateBlockName = (blockId) => {
-        console.log("updateBlockName")
-    }
-
-    
 
     const toggleCollapse = (block) => {
         block.isExpanded = !block.isExpanded;
@@ -131,21 +126,6 @@ function CollectionProvider({children}) {
             }
         }).then((data) => {
             console.log("add item data", data);
-            // let itemId = data.data.addItem.id;
-            // blocks.items[itemId] = {
-            //     id: itemId,
-            //     hasChildren: false,
-            //     children: [],
-            //     isExpanded: false,
-            //     parentID: block.id,
-            //     data: {
-            //         name: `New ${type} ${Object.keys(blocks.items).length}`,
-            //         type: type,
-            //     }                
-            // }
-            // block.children.push(itemId);
-            // block.hasChildren = true;
-            // block.isExpanded = true;
             saveBlocks(data.data.addItem);
         })
     }
@@ -168,8 +148,8 @@ function CollectionProvider({children}) {
         removeSelections();
         hideContextMenu();
         let el = blockRef.current.querySelector('.content-editable');
-        disableEditable(el);
-        updateContextBlock(block);
+        // disableEditable(el);
+        updateContextBlock(Object.assign({}, block));
     }
 
     const saveCardServer = (savedCard) => {
@@ -234,15 +214,21 @@ function CollectionProvider({children}) {
         updateCard(newCard);
         
     }
+    const selectBlockToRenameContext = () => {
+        updateIsEditing(true);
+        if (contextBlock) {
+            let el = document.querySelector(`#block-${contextBlock.id}`);
+            selectElementContents(el);
+        }
+    }
 
-    const selectBlockToRename = (block) => {
-        hideContextMenu();
+    //TODO: not tested
+    const selectBlockToRenameAfterCreation = (block) => {
+        updateIsEditing(true);
         updateContextBlock(block)
         // new Block isn't created immediately so I wait
         setTimeout(() => {
-            let el = document.querySelector(`.block-${block.id}`);
-            enabeEditable(el)
-            selectElementContents(el);
+            selectBlockToRenameContext();
         }, 100);
     }
 
@@ -267,7 +253,6 @@ function CollectionProvider({children}) {
                 chooseTypeC,
                 updateContextBlockAndCleanup,
                 getCard,
-                updateBlockName,
                 openContextMenu,
                 hideContextMenu,
                 card,
@@ -282,14 +267,16 @@ function CollectionProvider({children}) {
                 findLastDeck,
                 addItem,
                 renameBlock,
-                selectBlockToRename,
                 deleteBlock,
                 toggleExpanded,
                 duplicateBlock,
                 toggleCollapse,
                 contextBlock,
                 saveBlocks,
-                addDeck
+                addDeck,
+                isEditing, 
+                updateIsEditing,
+                selectBlockToRenameContext
         }}>
             {children}
             <ContextMenu block={contextBlock} />

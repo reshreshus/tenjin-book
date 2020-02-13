@@ -10,7 +10,6 @@ const Item = ({
   provided,
   snapshot
 }) => {
-  // console.log("ITEM", block);
   let contentEditable;
   const [name, updateName] = useState(null);
   // const [expanded, updateExpanded] = useState(block.expanded ? block.expanded : false)
@@ -31,23 +30,34 @@ const Item = ({
   return (
     <CollectionConsumer> 
         {
-            ({updateContextBlockAndCleanup, updateBlockName,
-                openContextMenu, updateContextBlock, renameBlock, getCard,
-                contextBlock
+            ({updateContextBlockAndCleanup,
+                openContextMenu, renameBlock, getCard,
+                contextBlock, isEditing, updateIsEditing
             }) => {
+            const triggerBlockName = () => {
+              console.error("BLOCK NAME TRIGGER")
+              // in case we navigate with tab
+              if (!contextBlock || block.id !== contextBlock.id) {
+                updateContextBlockAndCleanup(block, node);
+              }
+              if (block.data.type === 'f' || block.data.type === 'T') {
+                getCard(block.id);
+              }
+            }
             const onBlockKeyDown = (e) => {
                 switch (e.key) {
                     case "Enter":
-                        console.log("Enter")
-                        e.preventDefault();
-                        
-                        updateContextBlockAndCleanup(block, node);
-                        updateName(name);
-                        updateBlockName(name)
-                        renameBlock(name, block.id);
+                        if (isEditing) {
+                          console.warn("isEditing")
+                          e.preventDefault();
+                          renameBlock(name, block.id);
+                          updateIsEditing(false);
+                        } else {
+                          console.warn("not editing")
+                          triggerBlockName();
+                        }
                         break;
                     case "Esc":
-                        console.log("escape")
                         e.preventDefault();
                         updateContextBlockAndCleanup(null, node);
                         break;
@@ -82,7 +92,6 @@ const Item = ({
                         block.hasChildren ? 
                         <span  className={`caret ${block.isExpanded ? 'caret-down': ''}`} 
                           onClick={() => block.isExpanded ? onCollapse(block.id) : onExpand(block.id)}>
-                          {/* &#9654; */}
                           <svg width="20" height="20" viewBox="0 0 20 20"><path d="M13.75 9.56879C14.0833 9.76124 14.0833 10.2424 13.75 10.4348L8.5 13.4659C8.16667 13.6584 7.75 13.4178 7.75 13.0329L7.75 6.97072C7.75 6.58582 8.16667 6.34525 8.5 6.5377L13.75 9.56879Z" stroke="none" fill="currentColor"></path></svg>
                         </span>
                         :
@@ -90,25 +99,18 @@ const Item = ({
                     }
                  </div>
                   {/* drag by block type */}
-                  <span ref={draggable} className={`block__type ${block.data.type === 'D' ? '' : 'block__type--ca'}`
+                  <span className={`block__type ${block.data.type === 'D' ? '' : 'block__type--ca'}`
                   }
+                  ref={draggable}
                    {...provided.dragHandleProps}
+                   // onKeyDown doesn't work on react-contenteditable ¯\_(ツ)_/¯
                    >
                       [{ block.data.type }]
                   </span>
                   <div className={`block__name ${(!contextBlock || block.id !== contextBlock.id) ? '': 
                   'block__name--active'}` }
-                  onClick={() => {
-                      console.log("block__name onclick")
-                      updateContextBlockAndCleanup(block, node);
-                      }} 
-                      onContextMenu={(e) => {
-                        updateContextBlockAndCleanup(block, node);
-                          openContextMenu(e, block, updateContextBlock)
-                      }}
-                      // onKeyDown doesn't work on react-contenteditable ¯\_(ツ)_/¯
                       onKeyDown={(e) => {
-                          onBlockKeyDown(e)
+                        onBlockKeyDown(e)
                       }}
                       >
                       <Link className={`block__link`}
@@ -117,19 +119,17 @@ const Item = ({
                               state: {
                               block: block
                           }}}
-                          onClick={() => {
-                              if (block.data.type === 'f' || block.data.type === 'T') {
-                                  getCard(block.id);
-                                  console.log("block", block);
-                              }
+                          onClick={() => triggerBlockName()}
+                          onContextMenu={(e) => {
+                            updateContextBlockAndCleanup(block, node);
+                            openContextMenu(e)
                           }}
                           >
                           <ContentEditable 
                               key={block.id}
                               innerRef={contentEditable}
                               html={name}
-                              disabled={ true }
-                              // TODO: make unique blocks IDs, not classes
+                              disabled={ !(isEditing && contextBlock.id === block.id) }
                               className="content-editable"
                               id={`block-${block.id}`}
                               onChange={(e)=>handleChange(e)}

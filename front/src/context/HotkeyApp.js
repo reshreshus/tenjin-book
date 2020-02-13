@@ -3,7 +3,7 @@ import Hotkeys from 'react-hot-keys';
 import {CollectionConsumer} from '../context/CollectionContext';
 
 
-import { enabeEditable, selectElementContents, hideContextMenu} from '../helpers/domHelpers';
+import { enableEditable, selectElementContents, hideContextMenu} from '../helpers/domHelpers';
 
 
 const HotkeyApp = () => {
@@ -14,7 +14,8 @@ const HotkeyApp = () => {
             ({showSidebars, updateShowSidebars, 
                 contextBlock, deleteBlock, addItem, duplicateBlock,
                 addDeck,
-                toggleCollapse}) => {
+                toggleCollapse, 
+                selectBlockToRenameContext}) => {
 
                 const toggleCollapseHot = () => {
                     toggleCollapse(contextBlock);
@@ -32,15 +33,9 @@ const HotkeyApp = () => {
                     addDeck(contextBlock.id);
                 }
             
-                const chooseBlockToRename = (event) => {
-                    // Prevent the default refresh event under WINDOWS system
-                    console.log("handleF2");
-                    if (contextBlock) {
-                        event.preventDefault();
-                        let el = document.querySelector(`#block-${contextBlock.id}`);
-                        enabeEditable(el)
-                        selectElementContents(el);
-                    }
+                const selectBlockToRename = () => {
+                    console.log("F2 HANDLE RENAME");
+                    selectBlockToRenameContext();
                 }
             
                 const toggleLeftSidebar = () => {
@@ -102,7 +97,7 @@ const HotkeyApp = () => {
                     e.preventDefault();
                     switch (keyName) {
                         case 'f2':
-                            chooseBlockToRename(e);
+                            selectBlockToRename();
                             break;
                         case 'esc':
                             hideContextMenu();

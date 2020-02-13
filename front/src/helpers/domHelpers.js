@@ -1,7 +1,6 @@
-export const openContextMenu = (e, block, updateContextBlock) => {
+export const openContextMenu = (e) => {
     e.preventDefault();
     let menu = document.querySelector('.cmenu')
-    updateContextBlock(block);
     
     menu.style.top = `${e.clientY + 10}px`;
     menu.style.left = `${e.clientX - 30}px`;
@@ -19,7 +18,7 @@ export const removeSelections = () => {
     sel.removeAllRanges();
 }
 
-export const enabeEditable = (el) => {
+export const enableEditable = (el) => {
     el.setAttribute('disabled', false);
     el.setAttribute('contenteditable', true);
 }

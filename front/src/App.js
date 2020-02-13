@@ -9,9 +9,6 @@ import Sidebar from './components/Sidebar/Sidebar';
 import Home from './pages/Home';
 import Edit from './pages/Edit';
 import ShowDeck from './pages/ShowDeck';
-import Repeat from './pages/Repeat';
-
-
 
 
 export default function App() {
@@ -22,7 +19,7 @@ export default function App() {
       e.previousElementSibling.style.width=
       // e.nextElementSibling.style.width=
       // e.parentNode.offsetWidth/3-e.offsetWidth/3+'px';
-      '400px';
+      '600px';
       e.style.height = e.previousElementSibling.style.height;
 
       e.onmousedown=()=>{
@@ -50,7 +47,6 @@ export default function App() {
           <Route exact path="/edit/" component={() =>
             (<Edit card={{'deckTitle':'English', 'templateTitle': 'Basic'}}/>)}
             />
-          <Route exact path="/repeat" component={Repeat}/>
           // "?" after id means id is optional
           <Route exact path="/show-deck/" component={ShowDeck} />
           <Route exact path="/" component={Home} />

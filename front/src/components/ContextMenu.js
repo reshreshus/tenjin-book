@@ -7,7 +7,7 @@ const ContextMenu = ({block}) => {
     return (
         <CollectionConsumer> 
         {
-            ({hideContextMenu, addItem, selectBlockToRename, 
+            ({hideContextMenu, addItem, selectBlockToRenameContext, 
                 deleteBlock, duplicateBlock, toggleCollapse, addDeck}) => {
                 const menuItems = block ? [
                     {
@@ -42,7 +42,7 @@ const ContextMenu = ({block}) => {
                         "onClick": () => {
                             console.log("Rename")
                             // TODO rename after hitting enter
-                            selectBlockToRename(block);
+                            selectBlockToRenameContext();
                         },
                         "usable": true
                     },
