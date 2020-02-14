@@ -78,11 +78,17 @@ const Item = ({
 
             return (
               <div className={`block`} 
-              ref={node}>
-                {provided.placeholder}
+              ref={node}
+              
+              >
+                
+                
                 <div className="block__inline"
                  ref={provided.innerRef} 
-                 {...provided.draggableProps}>
+                 {...provided.draggableProps}
+                
+                 >
+                  
                   
                  <div className="caret-container">
                     {
@@ -111,6 +117,12 @@ const Item = ({
                       onKeyDown={(e) => {
                         onBlockKeyDown(e)
                       }}
+                      style={snapshot.isDragging ? {
+                        background:  "lightblue" }: {}}
+                        // onDragOver={() => {
+                        //   console.log("onDragOver")
+                        //   node.style.background = 'red'
+                        // }}
                       >
                       <Link className={`block__link ${(contextBlock && block.id === contextBlock.id) ? 
                       'block__link--active':''}`}

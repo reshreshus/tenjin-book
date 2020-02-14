@@ -8,7 +8,6 @@ import Tree, {
     moveItemOnTree
   } from "@atlaskit/tree";
 
-import { DragDropContext } from 'react-beautiful-dnd';
 
 const renderItem = ({
     item: block,
@@ -19,8 +18,7 @@ const renderItem = ({
     }) => {
     // console.log("render item", block);
     return (
-        <div
-            >
+        <div>
             <Item block={block} onExpand={onExpand} onCollapse={onCollapse} 
                 provided={provided} snapshot={snapshot}/>
         </div>
