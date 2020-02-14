@@ -45,7 +45,7 @@ const Item = ({
             }
             const onBlockKeyDown = (e) => {
                 switch (e.key) {
-                    case "Enter":
+                    case "Enter": 
                         if (isEditing) {
                           e.preventDefault();
                           renameBlockContext(name, block.id);
@@ -96,7 +96,10 @@ const Item = ({
                     }
                  </div>
                   {/* drag by block type */}
-                  <span className={`block__type ${block.data.type === 'D' ? '' : 'block__type--ca'}`
+                  <span className={`block__type ${block.data.type === 'D' ? '' : 'block__type--ca'}
+                  ${(contextBlock && block.id === contextBlock.id) ? 
+                    'block__type--active':''}
+                  `
                   }
                   ref={draggable}
                    {...provided.dragHandleProps}
@@ -104,13 +107,13 @@ const Item = ({
                    >
                       [{ block.data.type }]
                   </span>
-                  <div className={`block__name ${(!contextBlock || block.id !== contextBlock.id) ? '': 
-                  'block__name--active'}` }
+                  <div className={`block__name` }
                       onKeyDown={(e) => {
                         onBlockKeyDown(e)
                       }}
                       >
-                      <Link className={`block__link`}
+                      <Link className={`block__link ${(contextBlock && block.id === contextBlock.id) ? 
+                      'block__link--active':''}`}
                           to={{pathname: link
                                   , 
                               state: {

@@ -27,6 +27,9 @@
         &--cd {
             color: $clr-block-card-dismissed
         }
+        &--active {
+            font-size: 20px;
+        }
     }
     
     
@@ -38,25 +41,31 @@
         border: 1px solid transparent;
         padding: 1px;
         
-        &:active {
-            @include stroke-blue-sharp;
-        }
-        &--active {
-            @include stroke-blue-sharp;
-            border-radius: 2px;
-        }
+        
+        
        
     } 
     &__link {
         text-decoration: none;
         user-select: none;
-    }
+        &:focus, &--active {
+            outline: none;
+            font-size: 18px;
+            ::before, ::after {
+                font-size: 20px;
+            }
+            ::before {
+                content: '[';
+            }
+            ::after {
+                content: ']';
+            }
+        }
 
-    // &__children {
-    //     display: none;
-    //     padding-left: 1rem;
-    //     border-left: 1px solid $clr-stroke-grey;
-    // }
+        &--active {
+            @include font-blue-sharp;
+        }
+    }
 }
 
 .caret-container {
