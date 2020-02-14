@@ -33,7 +33,7 @@ const Items = () => {
     return (
         <CollectionConsumer> 
         {
-            ({blocks, updateBlocks, saveBlocks}) => {
+            ({blocks, updateBlocks, saveBlocksContext}) => {
 
                 const onExpand = (itemId) => {
                     console.log("onCollapse");
@@ -60,7 +60,7 @@ const Items = () => {
                     const newTree = moveItemOnTree(blocks, source, destination);
                     newTree.items[draggedId].parentID = destination.parentId;
 
-                    saveBlocks(newTree);
+                    saveBlocksContext(newTree);
                 };
 
                 if (blocks) {
@@ -68,17 +68,15 @@ const Items = () => {
                     return (
                         
                         <div className="blocks">
-                            {/* <DragDropContext> */}
-                                <Tree
-                                    tree={blocks}
-                                    renderItem={renderItem}
-                                    onExpand={onExpand}
-                                    onCollapse={onCollapse}
-                                    onDragEnd={onDragEnd}
-                                    isDragEnabled
-                                    isNestingEnabled
-                                />
-                            {/* </DragDropContext> */}
+                            <Tree
+                                tree={blocks}
+                                renderItem={renderItem}
+                                onExpand={onExpand}
+                                onCollapse={onCollapse}
+                                onDragEnd={onDragEnd}
+                                isDragEnabled
+                                isNestingEnabled
+                            />
                         </div>
                     )
                 }

@@ -31,29 +31,26 @@ const Item = ({
     <CollectionConsumer> 
         {
             ({updateContextBlockAndCleanup,
-                openContextMenu, renameBlock, getCard,
+                openContextMenu, renameBlockContext, getCardContext,
                 contextBlock, isEditing, updateIsEditing
             }) => {
             const triggerBlockName = () => {
-              console.error("BLOCK NAME TRIGGER")
               // in case we navigate with tab
               if (!contextBlock || block.id !== contextBlock.id) {
                 updateContextBlockAndCleanup(block, node);
               }
               if (block.data.type === 'f' || block.data.type === 'T') {
-                getCard(block.id);
+                getCardContext(block.id);
               }
             }
             const onBlockKeyDown = (e) => {
                 switch (e.key) {
                     case "Enter":
                         if (isEditing) {
-                          console.warn("isEditing")
                           e.preventDefault();
-                          renameBlock(name, block.id);
+                          renameBlockContext(name, block.id);
                           updateIsEditing(false);
                         } else {
-                          console.warn("not editing")
                           triggerBlockName();
                         }
                         break;

@@ -21,7 +21,7 @@ let blocks = {
             hasChildren: true,
             children: ["1", "2", "3"],
             isExpanded: true,
-            parentID:  null,
+            parentId:  null,
             data: {
                 name: "root",
                 count: 6,
@@ -33,7 +33,7 @@ let blocks = {
             hasChildren: true,
             children: ["4", "_0"],
             isExpanded: true,
-            parentID:  "0",
+            parentId:  "0",
             data: {
                 name: "English",
                 type: "D",
@@ -44,7 +44,7 @@ let blocks = {
             hasChildren: true,
             children: ["5"],
             isExpanded: false,
-            parentID:  "1",
+            parentId:  "1",
             data: {
                 name: "Witcher 3",
                 type: "D", 
@@ -55,7 +55,7 @@ let blocks = {
             hasChildren: false,
             children: [],
             isExpanded: false,
-            parentID:  "4",
+            parentId:  "4",
             data: {
                 name: "The Last Wish",
                 type: "D"
@@ -66,7 +66,7 @@ let blocks = {
             hasChildren: false,
             children: [],
             isExpanded: false,
-            parentID:  "1",
+            parentId:  "1",
             data: {
                 name: "a flashcard",
                 type: "f"
@@ -78,7 +78,7 @@ let blocks = {
             hasChildren: false,
             children: [],
             isExpanded: false,
-            parentID:  "0",
+            parentId:  "0",
             data: {
                 name: "Math",
                 type: "D",
@@ -89,7 +89,7 @@ let blocks = {
             hasChildren: false,
             children: [],
             isExpanded: false,
-            parentID:  "0",
+            parentId:  "0",
             data: {
                 name: "Programming",
                 type: "D",
@@ -196,7 +196,7 @@ const typeDefs = `
         hasChildren: Boolean
         children: [String]
         isExpanded: Boolean
-        parentID: String
+        parentId: String
         data: BlockData
     }
 
@@ -237,7 +237,7 @@ const typeDefs = `
         ): Card,
         addItem(
             type: String!
-            parentID: String!
+            parentId: String!
             ): JSON,
         saveBlocks (
             newBlocks: JSON
@@ -249,7 +249,7 @@ const typeDefs = `
         deleteBlock (id: String!): JSON,
         duplicateBlock (id: String!): JSON,
         addDeck (
-            parentID: String!
+            parentId: String!
         ): JSON
     }
 
@@ -262,16 +262,20 @@ const ID = () => {
     return '_' + Math.random().toString(36).substr(2, 9);
   };
 
-
-const addBlock = (parentID, id) => {
+ 
+const addBlock = (parentId, id) => { 
     let block = Object.assign({}, newDeckBlock);
-    block.parentID = parentID;
+    // even if you copy object, children have the same reference. 
+    // so you have to create a brand new array for children
+    block.children = [];
+    block.parentId = parentId;
     block.id = id;
-    blocks.items[parentID].children.push(id);
-    blocks.items[parentID].hasChildren = true;
-    blocks.items[parentID].isExpanded = true;
+    blocks.items[parentId].children.push(id);
+    blocks.items[parentId].hasChildren = true;
+    blocks.items[parentId].isExpanded = true;
     blocks.items[id] = block;
-    return block;
+    // console.log("addBlock blocks", blocks);
+    return block; 
 }
 
 
@@ -284,21 +288,21 @@ const resolvers = {
         blocks: () => blocks
     },
     Mutation: {
-        addDeck: (parent, {parentID}) => {
+        addDeck: (parent, {parentId}) => {
             let id = ID();
-            let block = addBlock(parentID, id);
+            let block = addBlock(parentId, id);
             block.data = {
                 type: 'D',
                 name: `deck ${id}`
             }
             return blocks;
         },
-        addItem: (parent, {type, parentID}) => { 
+        addItem: (parent, {type, parentId}) => { 
             let item = type === 'f' ? Object.assign({}, newCard) : Object.assign({}, newTopic);
             item.id = `_${ID()}`; 
             items = [...items, item];
             
-            let block = addBlock(parentID, item.id);
+            let block = addBlock(parentId, item.id);
             block.data = {
                 type,
                 name: `${type} ${item.id}`
@@ -309,7 +313,7 @@ const resolvers = {
             const card = _.find(items, {id: card_id})
             card.entries.push({    
                 name,
-                content,
+                content, 
                 type,
                 id
             })
@@ -343,7 +347,7 @@ const resolvers = {
             let block = blocks.items[id];
             delete blocks.items[id];
             console.log("deleted block", block);
-            let parent = blocks.items[block.parentID]
+            let parent = blocks.items[block.parentId]
             let idx = parent.children.indexOf(id);
             parent.children.splice(idx, 1); 
             if (parent.children.length === 0) {
@@ -359,7 +363,7 @@ const resolvers = {
             newBlock.id = newId;
             newBlock.hasChildren = false;
             newBlock.data.name = `${newBlock.data.name} (dupl)`
-            let parent = blocks.items[newBlock.parentID]
+            let parent = blocks.items[newBlock.parentId]
             let idx = parent.children.indexOf(id);
             parent.children.splice(idx + 1, 0, newId);
             blocks.items[newId] = newBlock;

@@ -2,8 +2,8 @@ import { gql } from 'apollo-boost';
 
 
 export const ADD_DECK = gql`
-    mutation addDeck($parentID: String!) {
-        addDeck(parentID: $parentID)
+    mutation addDeck($parentId: String!) {
+        addDeck(parentId: $parentId)
     }
 `
 
@@ -30,8 +30,8 @@ export const RENAME_BLOCK = gql`
 `
 
 export const ADD_ITEM = gql`
-    mutation addItem($type: String!, $parentID: String!){
-        addItem(type: $type, parentID: $parentID)
+    mutation addItem($type: String!, $parentId: String!){
+        addItem(type: $type, parentId: $parentId)
     }
 `
 export const SAVE_BLOCKS = gql`

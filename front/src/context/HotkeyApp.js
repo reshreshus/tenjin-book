@@ -2,42 +2,14 @@ import React, {useState} from 'react';
 import Hotkeys from 'react-hot-keys';
 import {CollectionConsumer} from '../context/CollectionContext';
 
-
-import { enableEditable, selectElementContents, hideContextMenu} from '../helpers/domHelpers';
-
-
 const HotkeyApp = () => {
     const [sidebarLength, updateSidebarLength] = useState(null)
+
     return (
         <CollectionConsumer> 
         {
-            ({showSidebars, updateShowSidebars, 
-                contextBlock, deleteBlock, addItem, duplicateBlock,
-                addDeck,
-                toggleCollapse, 
-                selectBlockToRenameContext}) => {
-
-                const toggleCollapseHot = () => {
-                    toggleCollapse(contextBlock);
-                }
-
-                const addItemHot = (type) => {
-                    console.log("addItemHot");
-                    if (contextBlock) {
-                        addItem(contextBlock, type);
-                    }
-                }
-
-                const addDeckHot = () => {
-                    console.log("addDeckHot");
-                    addDeck(contextBlock.id);
-                }
             
-                const selectBlockToRename = () => {
-                    console.log("F2 HANDLE RENAME");
-                    selectBlockToRenameContext();
-                }
-            
+            ({menuItems, showSidebars, updateShowSidebars}) => {
                 const toggleLeftSidebar = () => {
                     let sidebar = document.querySelector('.sidebar');
                     console.log("handleAltC", sidebar);
@@ -79,61 +51,25 @@ const HotkeyApp = () => {
                         // don't react
                     }
                 }
-            
-                const deleteBlockHot = (event) => {
-                    console.log("handleDel");
-                    if (contextBlock) {
-                        event.preventDefault();
-                        deleteBlock(contextBlock.id);
-                    }
-                }
-            
-                const duplicateBlockHot = () => {
-                    duplicateBlock(contextBlock.id);
-                }
-            
+
+                let hotkeys = menuItems.map(({hotkeyJs}) => hotkeyJs)
+                hotkeys = hotkeys.join(',')
+
                 const onKeyDown = (keyName, e, handle) => {
-                    console.log("test:onKeyDown", keyName);
-                    e.preventDefault();
-                    switch (keyName) {
-                        case 'f2':
-                            selectBlockToRename();
-                            break;
-                        case 'esc':
-                            hideContextMenu();
-                            break;
-                        case 'alt+c':
-                            toggleLeftSidebar();
-                            break;
-                        case 'alt+v':
-                            toggleRightSidebar();
-                            break;
-                        case 'del':
-                            deleteBlockHot(e);
-                            break;
-                        case 'a':
-                            addItemHot('f');
-                            break;
-                        case 'n':
-                            addItemHot('T');
-                            break;
-                        case 'alt+shift+d':
-                            addDeckHot();
-                            break;
-                        case 'ctrl+shift+d':
-                            duplicateBlockHot();
-                            break;
-                        case 'z':
-                            toggleCollapseHot();
-                        default:
-                            console.log("")
-                    }
+                    // TODO: add toggle on alt+c and alt+v
+                    // TODO and esc to close context menu
+                    menuItems.map(it => {
+                        if (keyName === it.hotkeyJs) {
+                            e.preventDefault();
+                            it.func();
+                        }
+                    })
                 }
 
                 
                 return (
                     <Hotkeys 
-                        keyName="a,z,ctrl+s,f2,esc,alt+shift+d,alt+c,alt+v,del,n,ctrl+shift+d" 
+                        keyName={hotkeys}
                         onKeyDown={(keyName, e, handle) => onKeyDown(keyName, e, handle)}
                     >
                     </Hotkeys>

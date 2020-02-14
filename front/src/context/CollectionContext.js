@@ -1,20 +1,41 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import HotkeyApp from './HotkeyApp';
 import ContextMenu from '../components/ContextMenu';
-import { selectElementContents,
-    enableEditable, removeSelections, 
+
+import { GET_BLOCKS} from '../api/queries';
+import { useQuery } from '@apollo/react-hooks';
+
+import { selectElementContents, removeSelections, 
          openContextMenu, hideContextMenu } from '../helpers/domHelpers'
-import { GET_CARD, SAVE_CARD, GET_BLOCKS, SAVE_BLOCKS, ADD_ITEM, 
-    RENAME_BLOCK, DELETE_BLOCK, DUPLICATE_BLOCK, ADD_DECK } from '../api/queries';
-import { useMutation, useQuery } from '@apollo/react-hooks';
+import {getContextMutations} from './ContextMutations';
+
 
 const Collection = React.createContext();
 
-function CollectionProvider({children}) {
+function CollectionProvider({children, 
+    duplicateBlock, 
+    deleteBlock,
+    addDeck,
+    addItem,
+    saveCard,
+    renameBlock,
+    getCard,
+    saveBlocks}) 
+    {
+    // console.error("getCard", getCard)
     const [blocks, updateBlocks] = useState(null) 
     const [contextBlock, updateContextBlock] = useState(null);
     const [showSidebars, updateShowSidebars] = useState([true, true]);
     const [isEditing, updateIsEditing] = useState(false);
+    const [isCardUpdating, updateIsCardUpdating] = useState(false);
+    const [card, updateCard] = useState(null);
+
+    useEffect(() => {
+        console.warn("contextBlock", contextBlock);
+    }, [contextBlock]);
+    useEffect(() => {
+        console.error("isEditing", isEditing);
+    }, [isEditing]);
 
     const {data: blocksData, loading: blocksLoading, error: blocksError} = useQuery(GET_BLOCKS,
         {
@@ -24,119 +45,19 @@ function CollectionProvider({children}) {
                 updateBlocks(blocksData.blocks) }
         });
 
-    const [getCardQuery] = useMutation(GET_CARD);
-    const [isCardUpdating, updateIsCardUpdating] = useState(false);
-
-    const [saveCardQuery] = useMutation(SAVE_CARD)
-    const [saveBlocksQuery] = useMutation(SAVE_BLOCKS);
-
-    const [addItemQuery] = useMutation(ADD_ITEM);
-
-    const [renameBlockQuery] = useMutation(RENAME_BLOCK);
-    const [deleteBlockQuery] = useMutation(DELETE_BLOCK);
-    const [duplicateBlockQuery] = useMutation(DUPLICATE_BLOCK);
-    const [addDeckQuery] = useMutation(ADD_DECK);
-
-    const [card, updateCard] = useState(null);
-
-    const toggleCollapse = (block) => {
-        block.isExpanded = !block.isExpanded;
-        updateBlocks(Object.assign({}, blocks));
-    }
-
-    const duplicateBlock = (blockId) => {
-        duplicateBlockQuery({
-            variables: {id: blockId}
-        }).then(data => {
-            console.log("duplicateBlockQuery", data.data.duplicateBlock);
-            updateBlocks(data.data.duplicateBlock);
-        })
-    }
-
-    const deleteBlock = (blockId) => {
-        console.log("deleteBlock blockId", blockId);
-        // if (blockPath && blockPath.length > 1) {
-        console.log("deleteBlock");
-        deleteBlockQuery({
-            variables: {id: blockId}
-        }).then((data) => {
-            updateBlocks(data.data.deleteBlock);
-        })
-        // } else {
-            // alert("Something is wrong. Probably can't delete root element");
-        // }
-        
-    }
-
-    const renameBlock = (newName, blockId) => {
-        console.log("renameBlock", newName);
-        renameBlockQuery({variables: {
-            id: blockId,
-            newName: newName
-        }}).then(data => {
-            console.log("renameCard data", data)
-            updateCard(null);
-            // TODO: not normalized
-            blocks.items[blockId].data.name = newName;
-            // blocks.items[blockId] = data.data.renameBlock;
-            updateBlocks(Object.assign({}, blocks))
-        })
-    }
-
     const findLastDeck = (block) => {
         // base case
         if (block.data.type === 'D') {
             return block;
         }
 
-        let parent = blocks.items[block.parentID];
+        let parent = blocks.items[block.parentId];
         if (!parent) {
             console.error("couldn't find a parent");
             return;
         }
         // if (parent.data.type === 'D') return parent
         return findLastDeck(parent);
-    }
-
-    const addDeck = (parentID) => {
-        if (blocks.items[parentID].data.type !== 'D') {
-            alert('Cannot make a deck from this type of item');
-            return;
-        }
-        console.log("addDeck");
-        addDeckQuery({
-            variables: {
-                parentID
-            }
-        }).then(data => {
-            console.log("addDeckQuery data", data);
-            updateBlocks(data.data.addDeck);
-        })
-    }
-
-    const addItem = (block, type) => {
-        if (block.data.type !== 'D') {
-            alert('Cannot make an item from this type of item');
-            return;
-        }
-        addItemQuery({
-            variables: {
-                type,
-                parentID: block.id
-            }
-        }).then((data) => {
-            console.log("add item data", data);
-            saveBlocks(data.data.addItem);
-        })
-    }
-
-    const saveBlocks = (newBlocks) => {
-        saveBlocksQuery({
-            variables: {"newBlocks": newBlocks}
-        }).then((data) => {
-            console.log("saveBlocks data", data)
-        })
-        updateBlocks(Object.assign({}, newBlocks));
     }
 
     const toggleExpanded = (block) => {
@@ -147,29 +68,12 @@ function CollectionProvider({children}) {
     const updateContextBlockAndCleanup = (block, blockRef) => {
         removeSelections();
         hideContextMenu();
-        let el = blockRef.current.querySelector('.content-editable');
-        // disableEditable(el);
         updateContextBlock(Object.assign({}, block));
     }
 
-    const saveCardServer = (savedCard) => {
-        updateCard(savedCard);
-        console.log("saveCardServer entries", card.entries);
-        // TODO: WTF I need to understand why this works
-        // looks like saveCardQuery works with an old version of savedCard (or card in state)
-        setTimeout(() => {
-            saveCardQuery({
-                variables: savedCard
-            }).then((data) => {
-                console.log("savecard data", data)
-            })
-        }, 100)
-    }
-
-    const addNewEntryContext = (cardId) => {
+    const addNewEntryContext = () => {
         let newCard = Object.assign({}, card)
         let newId = Math.max.apply(Math, card.entries.map(e => e.id)) + 1;
-        console.log("addNewEntryContext");
         let newEntry = {
             name:"New Entry", 
             content: {
@@ -183,11 +87,10 @@ function CollectionProvider({children}) {
         }
         
         newCard.entries.push(newEntry)
-        console.log("newCard (add new entry)", newCard);
         updateCard(newCard)
     }
 
-    const deleteEntryC = (entryID) => {
+    const deleteEntryContext = (entryID) => {
         let newCard = Object.assign({}, card);
         let newEntries = [...newCard.entries.filter((e => entryID !== e.id))];
         blocks.items[newCard.id].data.type =  'T';
@@ -214,6 +117,7 @@ function CollectionProvider({children}) {
         updateCard(newCard);
         
     }
+
     const selectBlockToRenameContext = () => {
         updateIsEditing(true);
         if (contextBlock) {
@@ -232,57 +136,100 @@ function CollectionProvider({children}) {
         }, 100);
     }
 
-    const getCard = (id) => {
-        updateIsCardUpdating(true);
-        getCardQuery({
-            variables: {id: id}
-        }).then((data) => {
-            console.log("cardData", data)
-            let newCard = data.data.card;
-            updateCard(newCard);
-            updateIsCardUpdating(false);
-            return newCard;
-        });        
+    const saveBlocksContext = async (newBlocks) => {
+        saveBlocks(newBlocks);
+        updateBlocks(newBlocks);
     }
 
-    return (
-        <Collection.Provider value={{
-                blocks,
-                addNewEntryContext,
-                deleteEntryC,
-                chooseTypeC,
-                updateContextBlockAndCleanup,
-                getCard,
-                openContextMenu,
-                hideContextMenu,
-                card,
-                isCardUpdating,
-                saveCardServer,
-                updateContextBlock,
-                showSidebars, 
-                updateShowSidebars,
+    const duplicateBlockContext = async (blockId) => {
+        let blocks = await duplicateBlock(blockId);
+        updateBlocks(blocks);
+    }
 
-                blocks,
-                updateBlocks,
-                findLastDeck,
-                addItem,
-                renameBlock,
-                deleteBlock,
-                toggleExpanded,
-                duplicateBlock,
-                toggleCollapse,
-                contextBlock,
-                saveBlocks,
-                addDeck,
-                isEditing, 
-                updateIsEditing,
-                selectBlockToRenameContext
+    const deleteBlockContext = async (blockId) => {
+        let blocks = await deleteBlock(blockId);
+        updateBlocks(blocks);
+    }
+
+    const renameBlockContext = async (newName, blockId) => {
+        updateCard(null);
+        renameBlock(newName, blockId, updateBlocks);
+        blocks.items[blockId].data.name = newName;     
+        updateBlocks(Object.assign({}, blocks));
+    }
+
+    const addDeckContext = async (parentId) => {
+        if (blocks.items[parentId].data.type !== 'D') {
+            alert('Cannot make a deck from this type of item');
+            return;
+        }
+        let newBlocks = await addDeck(parentId);
+        updateBlocks(newBlocks);
+    }
+
+    const addItemContext = async (block, type) => {
+        console.error("addItemContext");
+        if (block.data.type !== 'D') {
+            alert('Cannot make an item from this type of item');
+            return;
+        }
+        updateBlocks(await addItem(block.id, type));
+    }
+
+    const saveCardContext = (savedCard) => {
+        updateCard(savedCard);
+        saveCard(savedCard);
+    }
+
+    const getCardContext = async (id) => {
+        updateIsCardUpdating(true);
+        let newCard = await getCard(id);
+        console.error("NEW CARD", newCard)
+        updateCard(newCard);
+        updateIsCardUpdating(false);
+    }
+
+    const menuItems = getContextMutations(
+        addDeckContext, 
+        addItemContext, 
+        selectBlockToRenameContext,
+        duplicateBlockContext,
+        deleteBlockContext,
+        toggleExpanded,
+        contextBlock
+    );
+
+    return (
+    <Collection.Provider value={{
+            blocks,
+            addNewEntryContext,
+            deleteEntryContext,
+            chooseTypeC,
+            updateContextBlockAndCleanup,
+            getCardContext,
+            openContextMenu,
+            hideContextMenu,
+            card,
+            isCardUpdating,
+            saveCardContext,
+            updateContextBlock,
+            showSidebars, 
+            updateShowSidebars,
+            blocks,
+            updateBlocks,
+            findLastDeck,
+            contextBlock,
+            isEditing, 
+            updateIsEditing,
+            selectBlockToRenameContext,
+            renameBlockContext,
+            menuItems,
+            saveBlocksContext
         }}>
             {children}
-            <ContextMenu block={contextBlock} />
+            <ContextMenu />
             <HotkeyApp />
-        </Collection.Provider>)
-    
+    </Collection.Provider>)
 }
 
 const CollectionConsumer = Collection.Consumer;

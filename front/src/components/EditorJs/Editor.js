@@ -24,8 +24,8 @@ const Editor = ({block, repeat=false, isPreview=true}) => {
     }, [block]);
     return (
 <CollectionConsumer >
-    { ({addNewEntryContext, deleteEntryC,
-        chooseTypeC, card, isCardUpdating, saveCardServer,
+    { ({addNewEntryContext, deleteEntryContext,
+        chooseTypeC, card, isCardUpdating, saveCardContext,
         findLastDeck
     }) => {
         
@@ -46,7 +46,7 @@ const Editor = ({block, repeat=false, isPreview=true}) => {
             entry.content.blocks = blocks;
         })
         // this line probably doesn't make sense
-        saveCardServer(await Object.assign({}, card))
+        saveCardContext(await Object.assign({}, card))
     }
 
     const saveEditorInstance = (instance, entry) => {
@@ -61,7 +61,7 @@ const Editor = ({block, repeat=false, isPreview=true}) => {
 
     // it works for some reason
     const deleteEntryEditor = (id) => {
-        deleteEntryC(id);
+        deleteEntryContext(id);
         updateEntriesEditors(entriesEditors.filter(eE => eE.entry.id != id));
         setTimeout(() => {
             console.log("entries editors", entriesEditors);

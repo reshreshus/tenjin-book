@@ -7,6 +7,7 @@ export default function ShowDeck() {
         <CollectionConsumer> 
         {
             ({contextBlock}) => {
+                console.log("contextBlock", contextBlock);
                 return (
                     <div className="info">
                         <h1 className="title">( ･ิɷ･ิ)</h1>

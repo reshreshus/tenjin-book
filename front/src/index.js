@@ -1,10 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-// import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { BrowserRouter as Router} from 'react-router-dom';
-import {CollectionProvider} from './context/CollectionContext'
+import ApiContext from './context/ApiContext'
 
 // import 'bootstrap/dist/css/bootstrap.min.css';
 import ApolloClient from 'apollo-boost'
@@ -16,11 +15,11 @@ const client = new ApolloClient({
 
 ReactDOM.render(
     <ApolloProvider client={client}>
-        <CollectionProvider>
+        <ApiContext>
             <Router >
                 <App />
             </Router>
-        </CollectionProvider>
+        </ApiContext>
     </ApolloProvider>
 
 , document.getElementById('root'));
