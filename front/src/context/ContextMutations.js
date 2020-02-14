@@ -72,8 +72,8 @@ export const getContextMutations = (
             "shortcut": "Z",
             "hotkeyJs": "z",
             "func": () => {
-                console.log("Toggle Collapsedness");
-                toggleExpanded(contextBlock);
+                console.log("Toggle Expanded");
+                toggleExpanded(contextBlock.id);
             },
         },
         {

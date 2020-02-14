@@ -30,13 +30,6 @@ function CollectionProvider({children,
     const [isCardUpdating, updateIsCardUpdating] = useState(false);
     const [card, updateCard] = useState(null);
 
-    useEffect(() => {
-        console.warn("contextBlock", contextBlock);
-    }, [contextBlock]);
-    useEffect(() => {
-        console.error("isEditing", isEditing);
-    }, [isEditing]);
-
     const {data: blocksData, loading: blocksLoading, error: blocksError} = useQuery(GET_BLOCKS,
         {
             // TODO: query executes an unusual number of times
@@ -60,8 +53,10 @@ function CollectionProvider({children,
         return findLastDeck(parent);
     }
 
-    const toggleExpanded = (block) => {
+    const toggleExpanded = (blockId) => {
+        let block = blocks.items[blockId];
         block.isExpanded = !block.isExpanded;
+        console.log("toggleExpanded block", block);
         updateBlocks(Object.assign({}, blocks))
     }
 
