@@ -250,7 +250,8 @@ const typeDefs = `
         duplicateBlock (id: String!): JSON,
         addDeck (
             parentId: String!
-        ): JSON
+        ): JSON,
+        getDueCardsIds(deckId: String!): [String]
     }
 
 `;
@@ -278,6 +279,24 @@ const addBlock = (parentId, id) => {
     return block; 
 }
 
+const getCardsIdsOfDeck = (deckBlock) => {
+    let cardsIds = []
+    deckBlock.children.map(c => {
+        let block = blocks.items[c]
+        if (block.data.type === 'f') {
+            cardsIds.push(c);
+        } else if (block.data.type === 'D') {
+            cardsIds = [...cardsIds, ...getCardsIdsOfDeck(block)]
+        }
+    })
+    return cardsIds;
+}
+
+const selectDueCardsIds = (cardIds) => {
+    // genius
+    return cardIds;
+}
+
 
 
 // TODO: no error checking here
@@ -288,6 +307,12 @@ const resolvers = {
         blocks: () => blocks
     },
     Mutation: {
+        getDueCardsIds: (_, {deckId}) => {
+            let deckBlock = blocks.items[deckId];
+            let cardsIds = cardsIdsgetCardsIdsOfDeck(deckBlock);
+            let dueCardsIds = selectDueCardsIds(cardsIds);
+            return dueCardsIds;
+        },
         addDeck: (parent, {parentId}) => {
             let id = ID();
             let block = addBlock(parentId, id);

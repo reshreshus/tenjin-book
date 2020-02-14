@@ -1,7 +1,9 @@
 import React from 'react'
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import { GET_CARD, SAVE_CARD, GET_BLOCKS, SAVE_BLOCKS, ADD_ITEM, 
-    RENAME_BLOCK, DELETE_BLOCK, DUPLICATE_BLOCK, ADD_DECK } from '../api/queries';
+    RENAME_BLOCK, DELETE_BLOCK, DUPLICATE_BLOCK, ADD_DECK, 
+    GET_DUE_CARDS_IDS
+ } from '../api/queries';
 import {CollectionProvider} from './CollectionContext'
 
 export default function ApiContext({children}) {
@@ -15,6 +17,17 @@ export default function ApiContext({children}) {
     const [deleteBlockQuery] = useMutation(DELETE_BLOCK);
     const [duplicateBlockQuery] = useMutation(DUPLICATE_BLOCK);
     const [addDeckQuery] = useMutation(ADD_DECK);
+
+    const [getDueCardsIdsQuery] = useMutation(GET_DUE_CARDS_IDS);
+
+    const getDueCardsIds = async (deckId) => {
+        let data = await getDueCardsIdsQuery({
+            variables: {
+                deckId
+            }
+        })
+        return data.data.getDueCardsIds;
+    }
 
     const duplicateBlock = async (blockId) => {
         let data = await duplicateBlockQuery({
@@ -96,6 +109,7 @@ export default function ApiContext({children}) {
             renameBlock={renameBlock}
             getCard={getCard}
             saveBlocks={saveBlocks}
+            getDueCardsIds={getDueCardsIds}
             >
             {children}
         </CollectionProvider>)

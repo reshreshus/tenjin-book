@@ -20,7 +20,8 @@ function CollectionProvider({children,
     saveCard,
     renameBlock,
     getCard,
-    saveBlocks}) 
+    saveBlocks,
+    getDueCardsIds}) 
     {
     // console.error("getCard", getCard)
     const [blocks, updateBlocks] = useState(null) 
@@ -37,19 +38,11 @@ function CollectionProvider({children,
     })
 
     const getCardToRepeat = (deckBlock) => {
-        return getCardsIdsOfDeck(deckBlock)[0]
+        let cardsIds = getDueCardsIds(deckBlock);
+        // console.log("cardsIds", cardsIds);
+        return cardsIds[0]
     }
-
-    const getCardsIdsOfDeck = (deckBlock) => {
-        let cardsIds = []
-        deckBlock.children.map(c => {
-            if (blocks.items[c].data.type === 'f') {
-                cardsIds.push(c);
-            }
-        })
-        return cardsIds;
-    }
-
+    
     const {data: blocksData, loading: blocksLoading, error: blocksError} = useQuery(GET_BLOCKS,
         {
             // TODO: query executes an unusual number of times
