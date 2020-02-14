@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import Hotkeys from 'react-hot-keys';
 import {CollectionConsumer} from '../context/CollectionContext';
+import {hideContextMenu} from '../helpers/domHelpers';
 
 const HotkeyApp = () => {
     const [sidebarLength, updateSidebarLength] = useState(null)
@@ -53,17 +54,34 @@ const HotkeyApp = () => {
                 }
 
                 let hotkeys = menuItems.map(({hotkeyJs}) => hotkeyJs)
+                hotkeys = [...hotkeys, 'alt+v', 'alt+c', 'esc']
                 hotkeys = hotkeys.join(',')
-
+                
                 const onKeyDown = (keyName, e, handle) => {
                     // TODO: add toggle on alt+c and alt+v
                     // TODO and esc to close context menu
-                    menuItems.map(it => {
-                        if (keyName === it.hotkeyJs) {
+                    switch(keyName) {
+                        case 'alt+v':
+                            toggleRightSidebar();
                             e.preventDefault();
-                            it.func();
-                        }
-                    })
+                            break;
+                        case 'alt+c': 
+                            toggleLeftSidebar();
+                            e.preventDefault();
+                            break;
+                        case 'esc':
+                            hideContextMenu();
+                            e.preventDefault();
+                            break;
+                        default:
+                            menuItems.map(it => {
+                                if (keyName === it.hotkeyJs) {
+                                    e.preventDefault();
+                                    it.func();
+                                }
+                            })
+                    }
+                    
                 }
 
                 

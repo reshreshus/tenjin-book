@@ -147,7 +147,7 @@ function CollectionProvider({children,
     }
 
     const renameBlockContext = async (newName, blockId) => {
-        updateCard(null);
+        // updateCard(null);
         renameBlock(newName, blockId, updateBlocks);
         blocks.items[blockId].data.name = newName;     
         updateBlocks(Object.assign({}, blocks));
