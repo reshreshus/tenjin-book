@@ -1,7 +1,7 @@
 import React from 'react';
 
-const CardEvaluation = ({isPreview, updateIsQuestioning}) => {
-
+const CardEvaluation = ({repeatMode, updateIsQuestioning}) => {
+ 
     const evaluationSm15 = [
         {
             value: 1,
@@ -35,7 +35,7 @@ const CardEvaluation = ({isPreview, updateIsQuestioning}) => {
             {
                 evaluationSm15.map(v => (
                     <div className="card-eval__option" 
-                    onClick={() => isPreview ? updateIsQuestioning(true) : v.onClick()}
+                    onClick={() => !repeatMode.isEditing ? updateIsQuestioning(true) : v.onClick()}
                     style={{backgroundColor: v.color, color: 'white'}}> 
                         {v.desc} <br/> ( {v.value} )
                     </div>

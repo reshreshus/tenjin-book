@@ -7,26 +7,21 @@ import EditorHeader from './EditorHeader';
 
 import RepeatEntries from './Repeat/RepeatEntries';
 
-const Editor = ({block, repeat=false, isPreview=true}) => {
+const Editor = ({block, isPreview=true}) => {
     const [editorChanged, updateEditorChanged] = useState(false);
     const [entriesEditors, updateEntriesEditors] = useState(null);
 
-    const [isRepeatMode, updateIsRepeatMode] = useState(repeat);
     const [isQuestioning, updateIsQuestioning] = useState(true);
-
-    // useEffect(() => {
-    //     updateIsRepeatMode(repeat);
-    // }, [repeat])
 
     useEffect(() => {
         updateEntriesEditors(new Array())
-        updateIsRepeatMode(false);
     }, [block]);
     return (
 <CollectionConsumer >
     { ({addNewEntryContext, deleteEntryContext,
         chooseTypeC, card, isCardUpdating, saveCardContext,
-        findLastDeck
+        findLastDeck, editingMode,
+        updateEditingMode
     }) => {
         
     if(!card || isCardUpdating) {
@@ -78,7 +73,7 @@ const Editor = ({block, repeat=false, isPreview=true}) => {
             <HotkeysEditor saveCard={saveCard} />
             <EditorHeader template_title={template_title} deck_title={deck_title} />
             {
-                !isRepeatMode ? (
+                editingMode.isEditing ? (
                 <div> 
                     
                     <EditorEntries entries={entries} entriesEditors={entriesEditors} blockId={block.id} 
@@ -97,7 +92,7 @@ const Editor = ({block, repeat=false, isPreview=true}) => {
                         updateEditorChanged={updateEditorChanged}
                         blockId={block.id} entriesEditors={entriesEditors}
                         isQuestioning={isQuestioning} updateIsQuestioning={updateIsQuestioning}
-                        isPreview={isPreview}
+                        editingMode={editingMode} updateEditingMode={updateEditingMode}
                     />
                     <div onClick={() => saveCard()} className="btn btn-text editor__save">Save{editorChanged ? "*": ""}</div>
                 </div>
@@ -105,12 +100,16 @@ const Editor = ({block, repeat=false, isPreview=true}) => {
             
 
             <div onClick={()=> {
-                updateIsRepeatMode(!isRepeatMode);
+                updateEditingMode({
+                    ...editingMode,
+                    isEditing: !editingMode.isEditing
+                });
                 updateIsQuestioning(true);
                 updateEntriesEditors(new Array());
             }} className="btn-contrast editor__preview-button"> 
             {
-                isRepeatMode ? 'Edit' : 'Preview'
+                !editingMode.isEditing ? 'Edit' : 
+                (editingMode.isStudying ? 'Study' : 'Preview')
             }
             </div>
 

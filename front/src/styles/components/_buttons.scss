@@ -50,7 +50,8 @@
     padding: 7px;
     border-radius: 2px;
     @include font-code;
-    color: $clr-text-light-primary;
+    // TODO !important
+    color: $clr-text-light-primary !important;
     font-style: italic;
     font-size: 20px;
 }

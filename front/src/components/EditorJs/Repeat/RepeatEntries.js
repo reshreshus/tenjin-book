@@ -4,7 +4,7 @@ import CardEvaluation from './CardEvaluation';
 
 export default function RepeatEntires({entries, saveEditorInstance, updateEditorChanged, 
     entriesEditors, blockId,
-    isQuestioning, updateIsQuestioning, isPreview
+    isQuestioning, updateIsQuestioning, repeatMode
     }) {
     let questions = []
     let answers = []
@@ -44,7 +44,7 @@ export default function RepeatEntires({entries, saveEditorInstance, updateEditor
                             <div onClick={() => updateIsQuestioning(false)}
                             className="repeat-entries__show-answer btn-contrast"> Show answer </div>
                             :
-                            <CardEvaluation isPreview={isPreview} updateIsQuestioning={updateIsQuestioning}/>     
+                            <CardEvaluation repeatMode={repeatMode} updateIsQuestioning={updateIsQuestioning}/>     
                         }
                         
                         

@@ -32,7 +32,7 @@ const Item = ({
         {
             ({updateContextBlockAndCleanup,
                 openContextMenu, renameBlockContext, getCardContext,
-                contextBlock, isEditing, updateIsEditing
+                contextBlock, isEditing, updateIsEditing, updateEditingMode
             }) => {
             const triggerBlockName = () => {
               // in case we navigate with tab
@@ -126,12 +126,14 @@ const Item = ({
                       >
                       <Link className={`block__link ${(contextBlock && block.id === contextBlock.id) ? 
                       'block__link--active':''}`}
-                          to={{pathname: link
-                                  , 
-                              state: {
-                              block: block
-                          }}}
-                          onClick={() => triggerBlockName()}
+                          to={link}
+                          onClick={() => {
+                            updateEditingMode({
+                              isStudying: false,
+                              isEditing: true
+                            })
+                            triggerBlockName()
+                          }}
                           onContextMenu={(e) => {
                             updateContextBlockAndCleanup(block, node);
                             openContextMenu(e)

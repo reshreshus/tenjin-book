@@ -30,6 +30,26 @@ function CollectionProvider({children,
     const [isCardUpdating, updateIsCardUpdating] = useState(false);
     const [card, updateCard] = useState(null);
 
+    // const [editingMode, updateEditingMode] = useState([true, is]);
+    const [editingMode, updateEditingMode] = useState({
+        isStudying: false, // study or preview
+        isEditing: true
+    })
+
+    const getCardToRepeat = (deckBlock) => {
+        return getCardsIdsOfDeck(deckBlock)[0]
+    }
+
+    const getCardsIdsOfDeck = (deckBlock) => {
+        let cardsIds = []
+        deckBlock.children.map(c => {
+            if (blocks.items[c].data.type === 'f') {
+                cardsIds.push(c);
+            }
+        })
+        return cardsIds;
+    }
+
     const {data: blocksData, loading: blocksLoading, error: blocksError} = useQuery(GET_BLOCKS,
         {
             // TODO: query executes an unusual number of times
@@ -56,7 +76,6 @@ function CollectionProvider({children,
     const toggleExpanded = (blockId) => {
         let block = blocks.items[blockId];
         block.isExpanded = !block.isExpanded;
-        console.log("toggleExpanded block", block);
         updateBlocks(Object.assign({}, blocks))
     }
 
@@ -219,7 +238,10 @@ function CollectionProvider({children,
             selectBlockToRenameContext,
             renameBlockContext,
             menuItems,
-            saveBlocksContext
+            saveBlocksContext,
+            getCardToRepeat,
+            editingMode, 
+            updateEditingMode
         }}>
             {children}
             <ContextMenu />

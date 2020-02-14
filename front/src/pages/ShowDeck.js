@@ -1,12 +1,13 @@
 import React from 'react'
 import { CollectionConsumer } from '../context/CollectionContext';
+import {Link} from 'react-router-dom';
 
 export default function ShowDeck() {
     // TODO: react doesn't like it
     return (
         <CollectionConsumer> 
         {
-            ({contextBlock}) => {
+            ({contextBlock, updateEditingMode}) => {
                 console.log("contextBlock", contextBlock);
                 return (
                     <div className="info">
@@ -15,9 +16,12 @@ export default function ShowDeck() {
                             (contextBlock && contextBlock.data.name) ? <div>
                             <h2 className="subtitle">This is a chosen deck. "{contextBlock.data.name}"<br />
                             What will you do with it?</h2>
-                            <div className="btn-contrast">
+                            <Link to='/edit' onClick={() => updateEditingMode({
+                                isStudying: true,
+                                isEditing: false
+                            })} className="btn-contrast">
                                 study 
-                            </div>
+                            </Link>
                             </div>
                                 :
                             <h2 className="subtitle">Grunt Grunt <br/>
