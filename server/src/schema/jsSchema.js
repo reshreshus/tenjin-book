@@ -156,6 +156,9 @@ let items = [{
     template_id: "from db",
     deck_title: "English",
     template_title: "Basic",
+    repetitionStats: {
+        
+    },
     entries: [
         {
             id: 0,

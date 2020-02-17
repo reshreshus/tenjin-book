@@ -7,7 +7,7 @@ import EditorHeader from './EditorHeader';
 
 import RepeatEntries from './Repeat/RepeatEntries';
 
-const Editor = ({block, isPreview=true}) => {
+const Editor = ({block}) => {
     const [editorChanged, updateEditorChanged] = useState(false);
     const [entriesEditors, updateEntriesEditors] = useState(null);
 
@@ -34,9 +34,9 @@ const Editor = ({block, isPreview=true}) => {
     
     const saveCard = async () => { 
         updateEditorChanged(false);
-        console.log("those editors!!", entriesEditors)
+        // console.log("those editors!!", entriesEditors)
         entriesEditors.map( async ({entry, instance}) => {
-            console.log("instance", instance);
+            // console.log("instance", instance);
             const { blocks } = await instance.save();
             entry.content.blocks = blocks;
         })
@@ -68,6 +68,13 @@ const Editor = ({block, isPreview=true}) => {
         chooseTypeC(block.id, entryId, type);
     }
 
+    const toggleEditing = () => {
+        updateEditingMode({
+            ...editingMode,
+            isEditing: !editingMode.isEditing
+        });
+    }
+
     return (
         <div className="editor">
             <HotkeysEditor saveCard={saveCard} />
@@ -92,7 +99,7 @@ const Editor = ({block, isPreview=true}) => {
                         updateEditorChanged={updateEditorChanged}
                         blockId={block.id} entriesEditors={entriesEditors}
                         isQuestioning={isQuestioning} updateIsQuestioning={updateIsQuestioning}
-                        editingMode={editingMode} updateEditingMode={updateEditingMode}
+                        editingMode={editingMode} toggleEditing={toggleEditing}
                     />
                     <div onClick={() => saveCard()} className="btn btn-text editor__save">Save{editorChanged ? "*": ""}</div>
                 </div>
@@ -100,10 +107,7 @@ const Editor = ({block, isPreview=true}) => {
             
 
             <div onClick={()=> {
-                updateEditingMode({
-                    ...editingMode,
-                    isEditing: !editingMode.isEditing
-                });
+                toggleEditing();
                 updateIsQuestioning(true);
                 updateEntriesEditors(new Array());
             }} className="btn-contrast editor__preview-button"> 

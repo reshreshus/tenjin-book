@@ -1,6 +1,6 @@
 import React from 'react';
 
-const CardEvaluation = ({repeatMode, updateIsQuestioning}) => {
+const CardEvaluation = ({editingMode, updateIsQuestioning, toggleEditing}) => {
  
     const evaluationSm15 = [
         {
@@ -35,7 +35,14 @@ const CardEvaluation = ({repeatMode, updateIsQuestioning}) => {
             {
                 evaluationSm15.map(v => (
                     <div className="card-eval__option" 
-                    onClick={() => !repeatMode.isEditing ? updateIsQuestioning(true) : v.onClick()}
+                    onClick={() => {
+                        if (!editingMode.isStudying) {
+                            updateIsQuestioning(true);
+                            toggleEditing();
+                        } else {
+                            v.func();
+                        } 
+                    }}
                     style={{backgroundColor: v.color, color: 'white'}}> 
                         {v.desc} <br/> ( {v.value} )
                     </div>
