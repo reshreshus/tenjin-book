@@ -55,7 +55,7 @@ export const GET_CARD = gql`
     mutation Card($id: ID!) {
         card (id: $id) {
             id
-            template_title
+            templateTitle
             entries {
                 id
                 name
@@ -67,8 +67,8 @@ export const GET_CARD = gql`
 `;
 
 export const SAVE_CARD = gql`
-    mutation SaveCard($id: ID!, $template_title:String!, $entries: [JSON]) { 
-            saveCard(id: $id, template_title: $template_title, entries: $entries) {
+    mutation SaveCard($id: ID!, $templateTitle:String!, $entries: [JSON]) { 
+            saveCard(id: $id, templateTitle: $templateTitle, entries: $entries) {
             id
             entries {
                 content
@@ -78,8 +78,8 @@ export const SAVE_CARD = gql`
 `;
 
 export const ADD_CARD_ENTRY = gql`
-    mutation AddCardEntry($id: Int!, $name: String!, $content: JSON!, $type: String!, $card_id: ID!) {
-        addCardEntry(id: $id, name: $name, content: $content, type: $type, card_id: $card_id) {
+    mutation AddCardEntry($id: Int!, $name: String!, $content: JSON!, $type: String!, $cardId: ID!) {
+        addCardEntry(id: $id, name: $name, content: $content, type: $type, cardId: $cardId) {
             id
             content
         }

@@ -99,8 +99,8 @@ let blocks = {
 }
 
 const newCard = {
-    template_id: "from db",
-    template_title: "Basic",
+    templateId: "from db",
+    templateTitle: "Basic",
     entries: [
         {  
             id: 0,
@@ -128,8 +128,8 @@ const newCard = {
 }
 
 const newTopic = {
-    template_id: "from db",
-    template_title: "Basic Topic",
+    templateId: "from db",
+    templateTitle: "Basic Topic",
     entries: [
         {  
             id: 0,
@@ -153,9 +153,9 @@ const newDeckBlock = {
 
 let items = [{
     id: "_0",
-    template_id: "from db",
+    templateId: "from db",
     deck_title: "English",
-    template_title: "Basic",
+    templateTitle: "Basic",
     repetitionStats: {
         
     },
@@ -205,8 +205,8 @@ const typeDefs = `
 
     type Card {
         id: ID,
-        template_id: String,
-        template_title: String,
+        templateId: String,
+        templateTitle: String,
         entries: [CardEntry]  
     }
 
@@ -214,7 +214,7 @@ const typeDefs = `
         id: Int,
         name: String,
         content: JSON, 
-        template_title: String,
+        templateTitle: String,
         type: String
     }
 
@@ -235,7 +235,7 @@ const typeDefs = `
         card(id: ID!): Card,
         saveCard (
             id: ID!
-            template_title: String!
+            templateTitle: String!
             entries: [JSON]
         ): Card,
         addItem(
@@ -350,12 +350,12 @@ const resolvers = {
         card: (parent, { id }) => { 
                 return _.find(items, {id: id})
         },
-        saveCard: (parent, {id, template_title, entries}) => {
+        saveCard: (parent, {id, templateTitle, entries}) => {
             let card = _.find(items, {id: id});
             let idx = items.indexOf(card);
             card = {
                 id, 
-                template_title, 
+                templateTitle, 
                 entries
             } 
             items[idx] = card;
