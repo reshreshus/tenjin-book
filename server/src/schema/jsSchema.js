@@ -424,16 +424,18 @@ const resolvers = {
             tree.items[id].data.name = newName;
             return tree.items[id];
         },
-        deleteTreeItem: (_, {id}) => {           
+        deleteTreeItem: (_, {id}) => {
+            // console.log("deleteTreeItem id", id);
             let treeItem = tree.items[id];
             delete tree.items[id];
-            console.log("deleted treeItem", treeItem);
+            // console.log("deleted treeItem", treeItem);
             let parent = tree.items[treeItem.parentId]
             let idx = parent.children.indexOf(id);
             parent.children.splice(idx, 1); 
             if (parent.children.length === 0) {
                 parent.hasChildren = false;
             }
+            // console.log("deleteTreeItem tree", tree);
             return tree;
         },
         duplicateTreeItem: (_, {id}) => {

@@ -99,21 +99,24 @@ function CollectionProvider({children,
     }
 
     const calculateDueItemsInTreeItem = (parentItem, tree) => {
-        
         if (!isRepeatableItem(parentItem)) {
             // dueItemsCount is calculated from descendents as well
             let dueItemsCount = 0;
+            let dueDecksIds = []
             if (dueCardsChanged(parentItem)) {
                 let dueItemsIds = []
                 parentItem.children.map(childId => {
                     let childItem = tree.items[childId];
-                    console.log("CHILD ITEM", childItem);
                     if (!isDeck(childItem)) {
                         if (isDue(childItem)) {
                             dueItemsIds.push(childId);
                         }
                     } else {
-                        dueItemsCount += calculateDueItemsInTreeItem(childItem, tree);
+                        let childsDueItemsCount = calculateDueItemsInTreeItem(childItem, tree);
+                        if (childsDueItemsCount > 0) {
+                            dueDecksIds.push(childId);
+                            dueItemsCount += childsDueItemsCount;
+                        }
                     }
                 });
                 if (dueItemsIds) {
@@ -124,12 +127,21 @@ function CollectionProvider({children,
                 parentItem.children.map(childId => {
                     let childItem = tree.items[childId];
                     if (isDeck(childItem)) {
-                        dueItemsCount += calculateDueItemsInTreeItem(childItem, tree);
+                        // TODO: redundancy
+                        let childsDueItemsCount = calculateDueItemsInTreeItem(childItem, tree);
+                        if (childsDueItemsCount > 0) {
+                            dueDecksIds.push(childId);
+                            dueItemsCount += childsDueItemsCount;
+                        }
                     }
                 });
                 if (parentItem.data.dueItemsIds) {
                     dueItemsCount += parentItem.data.dueItemsIds.length;
                 }
+            }
+            // TODO
+            if (dueDecksIds) {
+                parentItem.data.dueDecksIds = dueDecksIds;
             }
             parentItem.data.dueItemsCount = dueItemsCount;
             return dueItemsCount;
@@ -145,6 +157,7 @@ function CollectionProvider({children,
         return givenTree;
     }
 
+    // TODO: recalculate when moving, deleting, duplicating, adding an item
     const recalculateTree = (treeItemsIds) => {
 
     }
@@ -155,13 +168,14 @@ function CollectionProvider({children,
     }
 
     const getCardToRepeat = (deckTreeItem=currentlyUsedDeck) => {
-        if (dueCardsIds) {
-            return dueCardsIds[0];
+        console.log("getCardToRepeat", deckTreeItem);
+        let dueItemsIds = deckTreeItem.data.dueItemsIds;
+        if (deckTreeItem.data.dueItemsIds) {
+            getCardContext(dueItemsIds[0])
+            updateContextTreeItem(tree.items[dueItemsIds[0]])
+        } else if (deckTreeItem.data.dueDecksIds) {
+            updateContextTreeItem(getCardToRepeat(tree.items[dueItemsIds[0]]));
         }
-        let cardsIds = getCardsIdsOfDeck(deckTreeItem, true);
-        updateDueCardsIds(cardsIds);
-        console.log("cardsIds", cardsIds);
-        return cardsIds[0]
     }
 
     const findLastDeck = (treeItem) => {
@@ -180,7 +194,6 @@ function CollectionProvider({children,
     }
 
     const toggleExpanded = (treeItemId) => {
-        console.error("toggleExpanded");
         let treeItem = tree.items[treeItemId];
         treeItem.isExpanded = !treeItem.isExpanded;
         updateTree(Object.assign({}, tree))
@@ -289,8 +302,6 @@ function CollectionProvider({children,
         let newtree = await addDeck(parentId);
         updateTree(newtree);
     }
-
-    
 
     const addItemContext = async (treeItem, type) => {
         if (treeItem.data.type !== 'D') {

@@ -7,7 +7,7 @@ export default function ShowDeck() {
     return (
         <CollectionConsumer> 
         {
-            ({contextTreeItem, updateEditingMode, updateCurrentlyUsedDeck}) => {
+            ({contextTreeItem, updateEditingMode, updateCurrentlyUsedDeck, getCardToRepeat}) => {
                 return (
                     <div className="info">
                         <h1 className="title">( ･ิɷ･ิ)</h1>
@@ -17,6 +17,7 @@ export default function ShowDeck() {
                             What will you do with it?</h2>
                             <Link to='/edit' onClick={() => {
                                 updateCurrentlyUsedDeck(contextTreeItem);
+                                getCardToRepeat(contextTreeItem);
                                 updateEditingMode({
                                     isStudying: true,
                                     isEditing: false
