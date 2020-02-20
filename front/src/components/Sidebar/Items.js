@@ -31,16 +31,15 @@ const Items = () => {
     return (
         <CollectionConsumer> 
         {
-            ({tree, updateTree, saveTreeContext}) => {
+            ({tree, updateTree, saveTreeContext, toggleExpanded}) => {
 
                 const onExpand = (itemId) => {
-                    console.log("onCollapse");
-                    updateTree(mutateTree(tree, itemId, { isExpanded: true }));
+                    toggleExpanded(itemId);
                 };
 
                 const onCollapse = (itemId) => {
-                    console.log("onCollapse");
-                    updateTree(mutateTree(tree, itemId, { isExpanded: false }));
+                    // updateTree(mutateTree(tree, itemId, { isExpanded: false }));
+                    toggleExpanded(itemId);
                 };
 
                 const onDragEnd = (

@@ -44,9 +44,10 @@ function CollectionProvider({children,
             // TODO: query executes an unusual number of times
             onCompleted:  () => { 
                 console.log(treeData.tree); 
-                
-                let tree = calculateDueItemsInTree(treeData.tree);
-                updateTree(tree);
+                if (treeData.tree) {
+                    let tree = calculateDueItemsInTree(treeData.tree);
+                    updateTree(tree);
+                }
             }
         });
 
@@ -179,6 +180,7 @@ function CollectionProvider({children,
     }
 
     const toggleExpanded = (treeItemId) => {
+        console.error("toggleExpanded");
         let treeItem = tree.items[treeItemId];
         treeItem.isExpanded = !treeItem.isExpanded;
         updateTree(Object.assign({}, tree))
@@ -296,7 +298,7 @@ function CollectionProvider({children,
             return;
         }
         let newTree = await addItem(treeItem.id, type)
-        updateTreeAndAddParams(newTree)
+        updateTreeAndAddParams(newTree);
     }
 
     const saveCardContext = (savedCard) => {
@@ -349,7 +351,8 @@ function CollectionProvider({children,
             getCardToRepeat,
             editingMode, 
             updateEditingMode,
-            updateCurrentlyUsedDeck
+            updateCurrentlyUsedDeck,
+            toggleExpanded
         }}>
             {children}
             <ContextMenu />

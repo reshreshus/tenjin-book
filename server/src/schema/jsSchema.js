@@ -416,8 +416,8 @@ const resolvers = {
             items[idx] = card;
             return card;
         },
-        saveTree: (parent, {newtree}) => {
-            tree = newtree;
+        saveTree: (parent, {newTree}) => {
+            tree = newTree;
             return tree; 
         },
         renameTreeItem: (parent, {id, newName}) => {
