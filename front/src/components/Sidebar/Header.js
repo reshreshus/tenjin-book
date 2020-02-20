@@ -6,10 +6,10 @@ export default function Header() {
     return (
         <CollectionConsumer>
         {
-            ({updateContextBlock}) => {
+            ({updateContextTreeItem}) => {
                 return (
                     <div className="header">
-                        <Link to="/" className="link" onClick={() => updateContextBlock(null)}>
+                        <Link to="/" className="link" onClick={() => updateContextTreeItem(null)}>
                             <h1>ROI Notebook<br/>
                             </h1>
                         </Link>

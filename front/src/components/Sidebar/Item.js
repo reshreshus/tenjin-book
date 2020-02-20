@@ -4,7 +4,7 @@ import {Link } from 'react-router-dom';
 import ContentEditable from 'react-contenteditable';
 
 const Item = ({
-  block,
+  treeItem,
   onExpand,
   onCollapse,
   provided,
@@ -12,7 +12,7 @@ const Item = ({
 }) => {
   let contentEditable;
   const [name, updateName] = useState(null);
-  // const [expanded, updateExpanded] = useState(block.expanded ? block.expanded : false)
+  // const [expanded, updateExpanded] = useState(treeItem.expanded ? treeItem.expanded : false)
   let node = useRef(null);
   let draggable = useRef(null);
   useEffect(() => {
@@ -21,8 +21,8 @@ const Item = ({
     //   node.current.setAttribute('tabIndex', 0)
   })
   if (!name) {
-    if (block) {
-      updateName(block.data.name);
+    if (treeItem) {
+      updateName(treeItem.data.name);
     }
     return <div> Taram taram </div>
   }
@@ -30,33 +30,33 @@ const Item = ({
   return (
     <CollectionConsumer> 
         {
-            ({updateContextBlockAndCleanup,
-                openContextMenu, renameBlockContext, getCardContext,
-                contextBlock, isEditing, updateIsEditing, updateEditingMode
+            ({updateContextTreeItemAndCleanup,
+                openContextMenu, renameTreeItemContext, getCardContext,
+                contextTreeItem, isEditing, updateIsEditing, updateEditingMode
             }) => {
-            const triggerBlockName = () => {
+            const triggerTreeItemName = () => {
               // in case we navigate with tab
-              if (!contextBlock || block.id !== contextBlock.id) {
-                updateContextBlockAndCleanup(block, node);
+              if (!contextTreeItem || treeItem.id !== contextTreeItem.id) {
+                updateContextTreeItemAndCleanup(treeItem, node);
               }
-              if (block.data.type === 'f' || block.data.type === 'T') {
-                getCardContext(block.id);
+              if (treeItem.data.type === 'f' || treeItem.data.type === 'T') {
+                getCardContext(treeItem.id);
               }
             }
-            const onBlockKeyDown = (e) => {
+            const onTreeItemKeyDown = (e) => {
                 switch (e.key) {
                     case "Enter": 
                         if (isEditing) {
                           e.preventDefault();
-                          renameBlockContext(name, block.id);
+                          renameTreeItemContext(name, treeItem.id);
                           updateIsEditing(false);
                         } else {
-                          triggerBlockName();
+                          triggerTreeItemName();
                         }
                         break;
                     case "Esc":
                         e.preventDefault();
-                        updateContextBlockAndCleanup(null, node);
+                        updateContextTreeItemAndCleanup(null, node);
                         break;
                     default:
                 }
@@ -67,23 +67,23 @@ const Item = ({
             };
 
             let link;
-            if (block.data.type === 'D') {
+            if (treeItem.data.type === 'D') {
                 link = 'show-deck'
-            } else if (block.data.type === 'f' || block.data.type === 'T') {
+            } else if (treeItem.data.type === 'f' || treeItem.data.type === 'T') {
                 link = 'edit'
             // if root, show main page
-            } else if (block.data.type === 'R') {
+            } else if (treeItem.data.type === 'R') {
                 link = '/'
             }
 
             return (
-              <div className={`block`} 
+              <div className="tree-item"
               ref={node}
               
               >
                 
                 
-                <div className="block__inline"
+                <div className="tree-item__inline"
                  ref={provided.innerRef} 
                  {...provided.draggableProps}
                 
@@ -92,30 +92,30 @@ const Item = ({
                   
                  <div className="caret-container">
                     {
-                        block.hasChildren ? 
-                        <span  className={`caret ${block.isExpanded ? 'caret-down': ''}`} 
-                          onClick={() => block.isExpanded ? onCollapse(block.id) : onExpand(block.id)}>
+                        treeItem.hasChildren ? 
+                        <span  className={`caret ${treeItem.isExpanded ? 'caret-down': ''}`} 
+                          onClick={() => treeItem.isExpanded ? onCollapse(treeItem.id) : onExpand(treeItem.id)}>
                           <svg width="20" height="20" viewBox="0 0 20 20"><path d="M13.75 9.56879C14.0833 9.76124 14.0833 10.2424 13.75 10.4348L8.5 13.4659C8.16667 13.6584 7.75 13.4178 7.75 13.0329L7.75 6.97072C7.75 6.58582 8.16667 6.34525 8.5 6.5377L13.75 9.56879Z" stroke="none" fill="currentColor"></path></svg>
                         </span>
                         :
                         ""
                     }
                  </div>
-                  {/* drag by block type */}
-                  <span className={`block__type ${block.data.type === 'D' ? '' : 'block__type--ca'}
-                  ${(contextBlock && block.id === contextBlock.id) ? 
-                    'block__type--active':''}
+                  {/* drag by treeItem type */}
+                  <span className={`tree-item__type ${treeItem.data.type === 'D' ? '' : 'tree-item__type--ca'}
+                  ${(contextTreeItem && treeItem.id === contextTreeItem.id) ? 
+                    'tree-item__type--active':''}
                   `
                   }
                   ref={draggable}
                    {...provided.dragHandleProps}
                    // onKeyDown doesn't work on react-contenteditable ¯\_(ツ)_/¯
                    >
-                      [{ block.data.type }]
+                      [{ treeItem.data.type }]
                   </span>
-                  <div className={`block__name` }
+                  <div className={`tree-item__name` }
                       onKeyDown={(e) => {
-                        onBlockKeyDown(e)
+                        onTreeItemKeyDown(e)
                       }}
                       style={snapshot.isDragging ? {
                         background:  "lightblue" }: {}}
@@ -124,28 +124,28 @@ const Item = ({
                         //   node.style.background = 'red'
                         // }}
                       >
-                      <Link className={`block__link ${(contextBlock && block.id === contextBlock.id) ? 
-                      'block__link--active':''}`}
+                      <Link className={`tree-item__link ${(contextTreeItem && treeItem.id === contextTreeItem.id) ? 
+                      'tree-item__link--active':''}`}
                           to={link}
                           onClick={() => {
                             updateEditingMode({
                               isStudying: false,
                               isEditing: true
                             })
-                            triggerBlockName()
+                            triggerTreeItemName()
                           }}
                           onContextMenu={(e) => {
-                            updateContextBlockAndCleanup(block, node);
+                            updateContextTreeItemAndCleanup(treeItem, node);
                             openContextMenu(e)
                           }}
                           >
                           <ContentEditable 
-                              key={block.id}
+                              key={treeItem.id}
                               innerRef={contentEditable}
                               html={name}
-                              disabled={ !(isEditing && contextBlock.id === block.id) }
+                              disabled={ !(isEditing && contextTreeItem.id === treeItem.id) }
                               className="content-editable"
-                              id={`block-${block.id}`}
+                              id={`tree-item-${treeItem.id}`}
                               onChange={(e)=>handleChange(e)}
                           />
                       </Link>

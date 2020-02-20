@@ -2,11 +2,11 @@
 export const getContextMutations = (
     addDeckContext, 
     addItemContext, 
-    selectBlockToRenameContext,
-    duplicateBlockContext,
-    deleteBlockContext,
+    selectTreeItemToRenameContext,
+    duplicateTreeItemContext,
+    deleteTreeItemContext,
     toggleExpanded,
-    contextBlock
+    contextTreeItem
     ) => {
 
     return [
@@ -16,7 +16,7 @@ export const getContextMutations = (
             "hotkeyJs": "alt+shift+d",
             "func": () => {
                 console.log("New Deck");
-                addDeckContext(contextBlock.id);
+                addDeckContext(contextTreeItem.id);
             }
         },
         {
@@ -25,7 +25,7 @@ export const getContextMutations = (
             "hotkeyJs": "n",
             "func": () => {
                 console.log("New Topic");
-                addItemContext(contextBlock, 'T');
+                addItemContext(contextTreeItem, 'T');
             },
         },
         {
@@ -34,7 +34,7 @@ export const getContextMutations = (
             "hotkeyJs": "a",
             "func": () => {
                 console.log("New New Card")
-                addItemContext(contextBlock, 'f');
+                addItemContext(contextTreeItem, 'f');
             },
         },
         {
@@ -45,7 +45,7 @@ export const getContextMutations = (
             "hotkeyJs": "f2",
             "func": () => {
                 console.log("Rename")
-                selectBlockToRenameContext();
+                selectTreeItemToRenameContext();
             },
             "disabled": true
         },
@@ -55,7 +55,7 @@ export const getContextMutations = (
             "hotkeyJs": "ctrl+shift+d",
             "func": () => {
                 console.log("Duplicate");
-                duplicateBlockContext(contextBlock.id)
+                duplicateTreeItemContext(contextTreeItem.id)
             },
         },
         {
@@ -64,7 +64,7 @@ export const getContextMutations = (
             "hotkeyJs": "del",
             "func": () => {
                 console.log("Delete")
-                deleteBlockContext(contextBlock.id);
+                deleteTreeItemContext(contextTreeItem.id);
             },
         },
         {
@@ -73,7 +73,7 @@ export const getContextMutations = (
             "hotkeyJs": "z",
             "func": () => {
                 console.log("Toggle Expanded");
-                toggleExpanded(contextBlock.id);
+                toggleExpanded(contextTreeItem.id);
             },
         },
         {

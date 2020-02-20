@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react'
 import HotkeyApp from './HotkeyApp';
 import ContextMenu from '../components/ContextMenu';
 
-import { GET_BLOCKS} from '../api/queries';
+import { GET_TREE} from '../api/queries';
 import { useQuery } from '@apollo/react-hooks';
 
 import { selectElementContents, removeSelections, 
@@ -13,20 +13,19 @@ import {getContextMutations} from './ContextMutations';
 const Collection = React.createContext();
 
 function CollectionProvider({children, 
-    duplicateBlock, 
-    deleteBlock,
+    duplicateTreeItem, 
+    deleteTreeItem,
     addDeck,
     addItem,
     saveCard,
-    renameBlock,
+    renameTreeItem,
     getCard,
-    saveBlocks,
-    getDueCardsIds,
+    savetree,
     advanceCard}) 
     {
     // console.error("getCard", getCard)
-    const [blocks, updateBlocks] = useState(null) 
-    const [contextBlock, updateContextBlock] = useState(null);
+    const [tree, updateTree] = useState(null) 
+    const [contextTreeItem, updateContextTreeItem] = useState(null);
     const [showSidebars, updateShowSidebars] = useState([true, true]);
     const [isEditing, updateIsEditing] = useState(false);
     const [isCardUpdating, updateIsCardUpdating] = useState(false);
@@ -41,16 +40,22 @@ function CollectionProvider({children,
         isEditing: true
     })
 
-    const getCardsIdsOfDeck = (block) => {
-        if (!block.hasChildren) return [];
+    const isDue = (treeItem) => {
+        let today = new Date();
+        return treeItem.data.repetitionStatsSm2.nextDate === today;
+    }
+
+    const getCardsIdsOfDeck = (treeItem, findDue = false) => {
+        if (!treeItem.hasChildren) return [];
         let cardsIds = []
-        block.children.map(cId => {
-            let curBlock = blocks.items[cId]
-            if (curBlock.data.type === 'f') {
+        
+        treeItem.children.map(cId => {
+            let curTreeItem = tree.items[cId]
+            if (curTreeItem.data.type === 'f' && (!findDue || isDue(curTreeItem))) {
                 cardsIds.push(cId);
             }
-            if (curBlock.hasChildren) {
-                cardsIds = [...cardsIds, ...getCardsIdsOfDeck(curBlock)]
+            if (curTreeItem.hasChildren) {
+                cardsIds = [...cardsIds, ...getCardsIdsOfDeck(curTreeItem)]
             }
         })
         return cardsIds;
@@ -66,31 +71,39 @@ function CollectionProvider({children,
         }
     }
 
-    const getCardToRepeat = (deckBlock=currentlyUsedDeck) => {
+    const calculateDueItemsInTree = (treeItem=tree.items[tree.rootId]) => {
+        
+    }
+
+    const recalculateTree = (treeItemsIds) => {
+
+    }
+
+    const getCardToRepeat = (deckTreeItem=currentlyUsedDeck) => {
         if (dueCardsIds) {
             return dueCardsIds[0];
         }
-        let cardsIds = getDueCardsIds(deckBlock);
+        let cardsIds = getCardsIdsOfDeck(deckTreeItem, true);
         updateDueCardsIds(cardsIds);
-        // console.log("cardsIds", cardsIds);
+        console.log("cardsIds", cardsIds);
         return cardsIds[0]
     }
     
-    const {data: blocksData, loading: blocksLoading, error: blocksError} = useQuery(GET_BLOCKS,
+    const {data: treeData, loading: treeLoading, error: treeError} = useQuery(GET_TREE,
         {
             // TODO: query executes an unusual number of times
             onCompleted:  () => { 
-                console.log(blocksData.blocks); 
-                updateBlocks(blocksData.blocks) }
+                console.log(treeData.tree); 
+                updateTree(treeData.tree) }
         });
 
-    const findLastDeck = (block) => {
+    const findLastDeck = (treeItem) => {
         // base case
-        if (block.data.type === 'D') {
-            return block;
+        if (treeItem.data.type === 'D') {
+            return treeItem;
         }
 
-        let parent = blocks.items[block.parentId];
+        let parent = tree.items[treeItem.parentId];
         if (!parent) {
             console.error("couldn't find a parent");
             return;
@@ -99,16 +112,16 @@ function CollectionProvider({children,
         return findLastDeck(parent);
     }
 
-    const toggleExpanded = (blockId) => {
-        let block = blocks.items[blockId];
-        block.isExpanded = !block.isExpanded;
-        updateBlocks(Object.assign({}, blocks))
+    const toggleExpanded = (treeItemId) => {
+        let treeItem = tree.items[treeItemId];
+        treeItem.isExpanded = !treeItem.isExpanded;
+        updateTree(Object.assign({}, tree))
     }
 
-    const updateContextBlockAndCleanup = (block, blockRef) => {
+    const updateContextTreeItemAndCleanup = (treeItem, treeItemRef) => {
         removeSelections();
         hideContextMenu();
-        updateContextBlock(Object.assign({}, block));
+        updateContextTreeItem(Object.assign({}, treeItem));
     }
 
     const addNewEntryContext = () => {
@@ -117,7 +130,7 @@ function CollectionProvider({children,
         let newEntry = {
             name:"New Entry", 
             content: {
-                blocks: [{
+                tree: [{
                     type: "paragraph",
                     data: { text: "" }
                 }]
@@ -133,10 +146,10 @@ function CollectionProvider({children,
     const deleteEntryContext = (entryID) => {
         let newCard = Object.assign({}, card);
         let newEntries = [...newCard.entries.filter((e => entryID !== e.id))];
-        blocks.items[newCard.id].data.type =  'T';
+        tree.items[newCard.id].data.type =  'T';
         newEntries.map(e => {
             if (e.type === 'Q') {
-                blocks.items[newCard.id].data.type = 'f';
+                tree.items[newCard.id].data.type = 'f';
             }
         });
         newCard.entries = newEntries;
@@ -147,73 +160,73 @@ function CollectionProvider({children,
         let newCard = Object.assign({}, card);
         let entry = newCard.entries.filter(e => e.id === entryId)[0]
         entry.type = type;
-        blocks.items[cardId].data.type = 'T'
+        tree.items[cardId].data.type = 'T'
         newCard.entries.map(e => {
             if (e.type === 'Q') {
-                blocks.items[cardId].data.type = 'f';
+                tree.items[cardId].data.type = 'f';
             }
         })
-        updateBlocks(Object.assign({}, blocks));
+        updateTree(Object.assign({}, tree));
         updateCard(newCard);
         
     }
 
-    const selectBlockToRenameContext = () => {
+    const selectTreeItemToRenameContext = () => {
         updateIsEditing(true);
-        if (contextBlock) {
-            let el = document.querySelector(`#block-${contextBlock.id}`);
+        if (contextTreeItem) {
+            let el = document.querySelector(`#treeItem-${contextTreeItem.id}`);
             selectElementContents(el);
         }
     }
 
     //TODO: not tested
-    const selectBlockToRenameAfterCreation = (block) => {
+    const selectTreeItemToRenameAfterCreation = (treeItem) => {
         updateIsEditing(true);
-        updateContextBlock(block)
-        // new Block isn't created immediately so I wait
+        updateContextTreeItem(treeItem)
+        // new TreeItem isn't created immediately so I wait
         setTimeout(() => {
-            selectBlockToRenameContext();
+            selectTreeItemToRenameContext();
         }, 100);
     }
 
-    const saveBlocksContext = async (newBlocks) => {
-        saveBlocks(newBlocks);
-        updateBlocks(newBlocks);
+    const savetreeContext = async (newtree) => {
+        savetree(newtree);
+        updateTree(newtree);
     }
 
-    const duplicateBlockContext = async (blockId) => {
-        let blocks = await duplicateBlock(blockId);
-        updateBlocks(blocks);
+    const duplicateTreeItemContext = async (treeItemId) => {
+        let tree = await duplicateTreeItem(treeItemId);
+        updateTree(tree);
     }
 
-    const deleteBlockContext = async (blockId) => {
-        let blocks = await deleteBlock(blockId);
-        updateBlocks(blocks);
+    const deleteTreeItemContext = async (treeItemId) => {
+        let tree = await deleteTreeItem(treeItemId);
+        updateTree(tree);
     }
 
-    const renameBlockContext = async (newName, blockId) => {
+    const renameTreeItemContext = async (newName, treeItemId) => {
         // updateCard(null);
-        renameBlock(newName, blockId, updateBlocks);
-        blocks.items[blockId].data.name = newName;     
-        updateBlocks(Object.assign({}, blocks));
+        renameTreeItem(newName, treeItemId, updateTree);
+        tree.items[treeItemId].data.name = newName;     
+        updateTree(Object.assign({}, tree));
     }
 
     const addDeckContext = async (parentId) => {
-        if (blocks.items[parentId].data.type !== 'D') {
+        if (tree.items[parentId].data.type !== 'D') {
             alert('Cannot make a deck from this type of item');
             return;
         }
-        let newBlocks = await addDeck(parentId);
-        updateBlocks(newBlocks);
+        let newtree = await addDeck(parentId);
+        updateTree(newtree);
     }
 
-    const addItemContext = async (block, type) => {
+    const addItemContext = async (treeItem, type) => {
         console.error("addItemContext");
-        if (block.data.type !== 'D') {
+        if (treeItem.data.type !== 'D') {
             alert('Cannot make an item from this type of item');
             return;
         }
-        updateBlocks(await addItem(block.id, type));
+        updateTree(await addItem(treeItem.id, type));
     }
 
     const saveCardContext = (savedCard) => {
@@ -224,7 +237,6 @@ function CollectionProvider({children,
     const getCardContext = async (id) => {
         updateIsCardUpdating(true);
         let newCard = await getCard(id);
-        console.error("NEW CARD", newCard)
         updateCard(newCard);
         updateIsCardUpdating(false);
     }
@@ -232,39 +244,38 @@ function CollectionProvider({children,
     const menuItems = getContextMutations(
         addDeckContext, 
         addItemContext, 
-        selectBlockToRenameContext,
-        duplicateBlockContext,
-        deleteBlockContext,
+        selectTreeItemToRenameContext,
+        duplicateTreeItemContext,
+        deleteTreeItemContext,
         toggleExpanded,
-        contextBlock
+        contextTreeItem
     );
 
     return (
     <Collection.Provider value={{
-            blocks,
+            tree,
             addNewEntryContext,
             deleteEntryContext,
             chooseTypeC,
-            updateContextBlockAndCleanup,
+            updateContextTreeItemAndCleanup,
             getCardContext,
             openContextMenu,
             hideContextMenu,
             card,
             isCardUpdating,
             saveCardContext,
-            updateContextBlock,
+            updateContextTreeItem,
             showSidebars, 
             updateShowSidebars,
-            blocks,
-            updateBlocks,
+            updateTree,
             findLastDeck,
-            contextBlock,
+            contextTreeItem,
             isEditing, 
             updateIsEditing,
-            selectBlockToRenameContext,
-            renameBlockContext,
+            selectTreeItemToRenameContext,
+            renameTreeItemContext,
             menuItems,
-            saveBlocksContext,
+            savetreeContext,
             getCardToRepeat,
             editingMode, 
             updateEditingMode,

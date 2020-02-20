@@ -4,7 +4,7 @@ const GraphQLJSON = require('graphql-type-json');
 
 import _ from 'lodash';
 
-let blocks = {
+let tree = {
     rootId: "-1",
     items: {
         "-1": {
@@ -111,7 +111,7 @@ const newCard = {
             id: 0,
             name: "Front",
             content: {
-                blocks: [{
+                tree: [{
                     type: "paragraph",
                     data: { text: "" }
                 }]
@@ -122,7 +122,7 @@ const newCard = {
             id: 1,
             name: "Back",
             content: {
-                blocks: [{
+                tree: [{
                     type: "paragraph",
                     data: { text: "" }
                 }]
@@ -141,7 +141,7 @@ const newTopic = {
             name: "Custom field",
             type: "C",
             content: {
-                blocks: [{
+                tree: [{
                     type: "paragraph",
                     data: { text: "" }
                 }]
@@ -150,7 +150,7 @@ const newTopic = {
     ]
 }
 
-const newDeckBlock = {
+const newDecktreeItem = {
     hasChildren: false,
     children: [],
     isExpanded: false
@@ -191,18 +191,18 @@ let items = [{
 const typeDefs = `
     scalar JSON
 
-    type BlockData {
+    type TreeItemData {
         name: String
         type: String
         repetitionStatsSm2: RepetitionStatsSm2
     }
 
-    type Block {
+    type TreeItem {
         hasChildren: Boolean
         children: [String]
         isExpanded: Boolean
         parentId: String
-        data: BlockData
+        data: TreeItemData
     }
 
     type RepetitionEvent {
@@ -235,7 +235,7 @@ const typeDefs = `
 
     type Query {
         items: [Card],
-        blocks: JSON,
+        tree: JSON,
         cardEntry(id: ID!): CardEntry
     }
 
@@ -257,15 +257,15 @@ const typeDefs = `
             type: String!
             parentId: String!
             ): JSON,
-        saveBlocks (
-            newBlocks: JSON
+        savetree (
+            newtree: JSON
         ): JSON,
-        renameBlock (
+        renameTreeItem (
             id: String!
             newName: String!
-        ): Block,
-        deleteBlock (id: String!): JSON,
-        duplicateBlock (id: String!): JSON,
+        ): TreeItem,
+        deleteTreeItem (id: String!): JSON,
+        duplicateTreeItem (id: String!): JSON,
         addDeck (
             parentId: String!
         ): JSON,
@@ -282,18 +282,18 @@ const ID = () => {
   };
 
  
-const addBlock = (parentId, id) => { 
-    let block = Object.assign({}, newDeckBlock);
+const addTreeItem = (parentId, id) => { 
+    let treeItem = Object.assign({}, newDeckTreeItem);
     // even if you copy object, children have the same reference. 
     // so you have to create a brand new array for children
-    block.children = [];
-    block.parentId = parentId;
-    block.id = id;
-    blocks.items[parentId].children.push(id);
-    blocks.items[parentId].hasChildren = true;
-    blocks.items[parentId].isExpanded = true;
-    blocks.items[id] = block;
-    return block; 
+    treeItem.children = [];
+    treeItem.parentId = parentId;
+    treeItem.id = id;
+    tree.items[parentId].children.push(id);
+    tree.items[parentId].hasChildren = true;
+    tree.items[parentId].isExpanded = true;
+    tree.items[id] = treeItem;
+    return treeItem; 
 }
 
 /*
@@ -315,9 +315,9 @@ const nextIntervalSm2 = (n, eF) => {
 
 
 // TODO: no logic for advancing Topics is sm2
-const advanceCardSm2 = (itemBlock, q) => {
+const advanceCardSm2 = (itemTreeItem, q) => {
     let date = new Date();
-    let stats = itemBlock.data.repetitionStatsSm2;
+    let stats = itemTreeItem.data.repetitionStatsSm2;
     stats.history.push({
         quality: q,
         date: String(date)
@@ -350,13 +350,13 @@ const resolvers = {
     JSON: GraphQLJSON, 
     Query: {   
         items: () => items,
-        blocks: () => blocks
+        tree: () => tree
     },
     Mutation: {
         advanceCard: (parent, {id, quality : q}) => {
-            let itemBlock = blocks.items[id]
-            if (itemBlock.data.type === 'f' || itemBlock.data.type === 'T') {
-                return advanceCardSm2(itemBlock, q);
+            let itemTreeItem = tree.items[id]
+            if (itemTreeItem.data.type === 'f' || itemTreeItem.data.type === 'T') {
+                return advanceCardSm2(itemTreeItem, q);
             } else {
                 console.error("Trying to advance non-item");
             }
@@ -364,24 +364,24 @@ const resolvers = {
         },
         addDeck: (parent, {parentId}) => {
             let id = ID();
-            let block = addBlock(parentId, id);
-            block.data = {
+            let treeItem = addTreeItem(parentId, id);
+            treeItem.data = {
                 type: 'D',
                 name: `deck ${id}`
             }
-            return blocks;
+            return tree;
         },
         addItem: (parent, {type, parentId}) => { 
             let item = type === 'f' ? Object.assign({}, newCard) : Object.assign({}, newTopic);
             item.id = `_${ID()}`; 
             items = [...items, item];
             
-            let block = addBlock(parentId, item.id);
-            block.data = {
+            let treeItem = addTreeItem(parentId, item.id);
+            treeItem.data = {
                 type,
                 name: `${type} ${item.id}`
             }
-            return blocks;
+            return tree;
         },
         addCardEntry: (parent, { id, name, content, type, card_id}) => {
             const card = _.find(items, {id: card_id})
@@ -407,47 +407,47 @@ const resolvers = {
             items[idx] = card;
             return card;
         },
-        saveBlocks: (parent, {newBlocks}) => {
-            // console.log("newBlocks", newBlocks);
-            blocks = newBlocks;
-            return blocks; 
+        savetree: (parent, {newtree}) => {
+            // console.log("newtree", newtree);
+            tree = newtree;
+            return tree; 
         },
-        renameBlock: (parent, {id, newName}) => {
-            // console.log("renameBlock newName", newName);
-            blocks.items[id].data.name = newName;
-            return blocks.items[id];
+        renameTreeItem: (parent, {id, newName}) => {
+            // console.log("renameTreeItem newName", newName);
+            tree.items[id].data.name = newName;
+            return tree.items[id];
         },
-        deleteBlock: (_, {id}) => {           
-            let block = blocks.items[id];
-            delete blocks.items[id];
-            console.log("deleted block", block);
-            let parent = blocks.items[block.parentId]
+        deleteTreeItem: (_, {id}) => {           
+            let treeItem = tree.items[id];
+            delete tree.items[id];
+            console.log("deleted treeItem", treeItem);
+            let parent = tree.items[treeItem.parentId]
             let idx = parent.children.indexOf(id);
             parent.children.splice(idx, 1); 
             if (parent.children.length === 0) {
                 parent.hasChildren = false;
             }
-            return blocks;
+            return tree;
         },
-        duplicateBlock: (_, {id}) => {
-            let block = blocks.items[id];
-            let newBlock = Object.assign({}, block);
+        duplicateTreeItem: (_, {id}) => {
+            let treeItem = tree.items[id];
+            let newTreeItem = Object.assign({}, treeItem);
             let newId = ID();
-            newBlock.children = []
-            newBlock.id = newId;
-            newBlock.hasChildren = false;
-            newBlock.data.name = `${newBlock.data.name} (dupl)`
-            let parent = blocks.items[newBlock.parentId]
+            newTreeItem.children = []
+            newTreeItem.id = newId;
+            newTreeItem.hasChildren = false;
+            newTreeItem.data.name = `${newTreeItem.data.name} (dupl)`
+            let parent = tree.items[newTreeItem.parentId]
             let idx = parent.children.indexOf(id);
             parent.children.splice(idx + 1, 0, newId);
-            blocks.items[newId] = newBlock;
+            tree.items[newId] = newTreeItem;
             // duplicate flashcard as well
-            if (newBlock.data.type === 'f'){
+            if (newTreeItem.data.type === 'f'){
                 let card = Object.assign({}, items.filter(c => id === c.id)[0]);
                 card.id = newId;
                 items.push(card);
             }
-            return blocks;
+            return tree;
         }
     }
 };

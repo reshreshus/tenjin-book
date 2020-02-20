@@ -7,7 +7,7 @@ import EditorHeader from './EditorHeader';
 
 import RepeatEntries from './Repeat/RepeatEntries';
 
-const Editor = ({block}) => {
+const Editor = ({treeItem}) => {
     const [editorChanged, updateEditorChanged] = useState(false);
     const [entriesEditors, updateEntriesEditors] = useState(null);
 
@@ -15,7 +15,7 @@ const Editor = ({block}) => {
 
     useEffect(() => {
         updateEntriesEditors(new Array())
-    }, [block]);
+    }, [treeItem]);
     return (
 <CollectionConsumer >
     { ({addNewEntryContext, deleteEntryContext,
@@ -28,7 +28,7 @@ const Editor = ({block}) => {
         return <div>loading</div>
     }
     const {template_title, entries} = card;
-    const deckParent = findLastDeck(block);
+    const deckParent = findLastDeck(treeItem);
     
     const deck_title = deckParent.data.name;
     
@@ -65,7 +65,7 @@ const Editor = ({block}) => {
     }
 
     const chooseType = (entryId, type) => {
-        chooseTypeC(block.id, entryId, type);
+        chooseTypeC(treeItem.id, entryId, type);
     }
 
     const toggleEditing = () => {
@@ -83,7 +83,7 @@ const Editor = ({block}) => {
                 editingMode.isEditing ? (
                 <div> 
                     
-                    <EditorEntries entries={entries} entriesEditors={entriesEditors} blockId={block.id} 
+                    <EditorEntries entries={entries} entriesEditors={entriesEditors} treeItemId={treeItem.id} 
                     saveEditorInstance={saveEditorInstance} deleteEntryEditor={deleteEntryEditor} 
                     chooseType={chooseType} updateEditorChanged={updateEditorChanged} editorChanged={editorChanged}
                     />
@@ -97,7 +97,7 @@ const Editor = ({block}) => {
                         entries={entries} 
                         saveEditorInstance={saveEditorInstance}
                         updateEditorChanged={updateEditorChanged}
-                        blockId={block.id} entriesEditors={entriesEditors}
+                        treeItemId={treeItem.id} entriesEditors={entriesEditors}
                         isQuestioning={isQuestioning} updateIsQuestioning={updateIsQuestioning}
                         editingMode={editingMode} toggleEditing={toggleEditing}
                     />

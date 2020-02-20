@@ -10,16 +10,16 @@ import Tree, {
 
 
 const renderItem = ({
-    item: block,
+    item: treeItem,
     onExpand,
     onCollapse,
     provided,
     snapshot
     }) => {
-    // console.log("render item", block);
+    // console.log("render item", treeItem);
     return (
         <div>
-            <Item block={block} onExpand={onExpand} onCollapse={onCollapse} 
+            <Item treeItem={treeItem} onExpand={onExpand} onCollapse={onCollapse} 
                 provided={provided} snapshot={snapshot}/>
         </div>
     );
@@ -31,16 +31,16 @@ const Items = () => {
     return (
         <CollectionConsumer> 
         {
-            ({blocks, updateBlocks, saveBlocksContext}) => {
+            ({tree, updateTree, saveTreeContext}) => {
 
                 const onExpand = (itemId) => {
                     console.log("onCollapse");
-                    updateBlocks(mutateTree(blocks, itemId, { isExpanded: true }));
+                    updateTree(mutateTree(tree, itemId, { isExpanded: true }));
                 };
 
                 const onCollapse = (itemId) => {
                     console.log("onCollapse");
-                    updateBlocks(mutateTree(blocks, itemId, { isExpanded: false }));
+                    updateTree(mutateTree(tree, itemId, { isExpanded: false }));
                 };
 
                 const onDragEnd = (
@@ -53,21 +53,21 @@ const Items = () => {
                     }
                     // source and destination contain only parent id 
                     // and index in parent's children array
-                    let parentOfDragged = blocks.items[source.parentId];
+                    let parentOfDragged = tree.items[source.parentId];
                     let draggedId = parentOfDragged.children[source.index];
-                    const newTree = moveItemOnTree(blocks, source, destination);
+                    const newTree = moveItemOnTree(tree, source, destination);
                     newTree.items[draggedId].parentID = destination.parentId;
 
-                    saveBlocksContext(newTree);
+                    saveTreeContext(newTree);
                 };
 
-                if (blocks) {
-                    console.log("tree", blocks);
+                if (tree) {
+                    console.log("tree", tree);
                     return (
                         
-                        <div className="blocks">
+                        <div className="tree">
                             <Tree
-                                tree={blocks}
+                                tree={tree}
                                 renderItem={renderItem}
                                 onExpand={onExpand}
                                 onCollapse={onCollapse}

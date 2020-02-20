@@ -4,7 +4,7 @@ import EditorJs from 'react-editor-js';
 import { EDITOR_JS_TOOLS } from './editorJsTools' 
 
 export default function Entry({e, saveEditorInstance, chooseType,
-    editorChanged, updateEditorChanged, deleteEntryEditor, blockId
+    editorChanged, updateEditorChanged, deleteEntryEditor
 }) {
     const [isChoosingType, updateChoosingType] = useState(false);
     const [isChanged, updateIsChanged] = useState(false);

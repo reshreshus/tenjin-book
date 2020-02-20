@@ -1,9 +1,6 @@
 import React, {useEffect} from 'react'
 import './styles/main.scss'
 import {Switch, Route} from 'react-router-dom';
-
-import {CollectionConsumer} from './context/CollectionContext';
-
 import Sidebar from './components/Sidebar/Sidebar';
 
 import Home from './pages/Home';

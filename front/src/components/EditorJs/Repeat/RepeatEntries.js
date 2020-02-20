@@ -3,7 +3,7 @@ import Entry from './Entry';
 import CardEvaluation from './CardEvaluation';
 
 export default function RepeatEntires({entries, saveEditorInstance, updateEditorChanged, 
-    entriesEditors, blockId,
+    entriesEditors, treeItemId,
     isQuestioning, updateIsQuestioning, editingMode, toggleEditing
     }) {
     let questions = []
@@ -17,7 +17,7 @@ export default function RepeatEntires({entries, saveEditorInstance, updateEditor
     })
 
     const repeatEntry = (e) => {
-        return <Entry e={e} key={`${blockId}${e.id}`}
+        return <Entry e={e} key={`${treeItemId}${e.id}`}
         saveEditorInstance={saveEditorInstance}
         updateEditorChanged={updateEditorChanged}
         />

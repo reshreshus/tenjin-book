@@ -1,6 +1,6 @@
 import React from 'react'
 import Header from './Header';
-import Blocks from './Blocks';
+// import Blocks from './Blocks';
 import Items from './Items';
 
 export default function Sidebar() {

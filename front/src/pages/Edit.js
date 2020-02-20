@@ -5,8 +5,8 @@ import { CollectionConsumer } from '../context/CollectionContext'
 
 export default function Edit() {        
     return (<CollectionConsumer >
-        { ({contextBlock}) => {
-                if (!contextBlock || !contextBlock.id) {
+        { ({contextTreeItem}) => {
+                if (!contextTreeItem || !contextTreeItem.id) {
                     return (<div className="info">
                                 <h1 className="title">( ･ิɷ･ิ)</h1>
                                 <h2 className="subtitle"> Something is wrong...</h2>
@@ -14,7 +14,7 @@ export default function Edit() {
                 }
 
                 return (
-                <Editor block={contextBlock} repeat={true} />
+                <Editor treeItem={contextTreeItem} repeat={true} />
                 )
             }
         }
