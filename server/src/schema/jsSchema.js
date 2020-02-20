@@ -150,10 +150,13 @@ const newTopic = {
     ]
 }
 
-const newDecktreeItem = {
+const newDeckTreeItem = {
     hasChildren: false,
     children: [],
-    isExpanded: false
+    isExpanded: false,
+    data: {
+
+    }
 }
 
 let items = [{
@@ -257,8 +260,8 @@ const typeDefs = `
             type: String!
             parentId: String!
             ): JSON,
-        savetree (
-            newtree: JSON
+        saveTree (
+            newTree: JSON
         ): JSON,
         renameTreeItem (
             id: String!
@@ -367,7 +370,7 @@ const resolvers = {
             let treeItem = addTreeItem(parentId, id);
             treeItem.data = {
                 type: 'D',
-                name: `deck ${id}`
+                name: `deck ${id}`,
             }
             return tree;
         },
@@ -379,7 +382,13 @@ const resolvers = {
             let treeItem = addTreeItem(parentId, item.id);
             treeItem.data = {
                 type,
-                name: `${type} ${item.id}`
+                name: `${type} ${item.id}`,
+                repetitionStatsSm2: {
+                    eFactor: 2.5,
+                    repetitionsCount: 0,
+                    nextDate: '-1',
+                    history: []
+                }
             }
             return tree;
         },
@@ -407,13 +416,11 @@ const resolvers = {
             items[idx] = card;
             return card;
         },
-        savetree: (parent, {newtree}) => {
-            // console.log("newtree", newtree);
+        saveTree: (parent, {newtree}) => {
             tree = newtree;
             return tree; 
         },
         renameTreeItem: (parent, {id, newName}) => {
-            // console.log("renameTreeItem newName", newName);
             tree.items[id].data.name = newName;
             return tree.items[id];
         },

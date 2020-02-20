@@ -20,7 +20,7 @@ function CollectionProvider({children,
     saveCard,
     renameTreeItem,
     getCard,
-    savetree,
+    saveTree,
     advanceCard}) 
     {
     const [tree, updateTree] = useState(null) 
@@ -138,7 +138,6 @@ function CollectionProvider({children,
     }
 
     const calculateDueItemsInTree = (givenTree) => {
-        
         let root = givenTree.items[givenTree.rootId];
         calculateDueItemsInTreeItem(root, givenTree);
         // updateTree(Object.assign({}, tree));
@@ -147,6 +146,11 @@ function CollectionProvider({children,
 
     const recalculateTree = (treeItemsIds) => {
 
+    }
+
+    const updateTreeAndAddParams = (newTree) => {
+        calculateDueItemsInTree(newTree);
+        updateTree(newTree);
     }
 
     const getCardToRepeat = (deckTreeItem=currentlyUsedDeck) => {
@@ -178,6 +182,8 @@ function CollectionProvider({children,
         let treeItem = tree.items[treeItemId];
         treeItem.isExpanded = !treeItem.isExpanded;
         updateTree(Object.assign({}, tree))
+        //todo: optimize, make a query
+        saveTree(tree);
     }
 
     const updateContextTreeItemAndCleanup = (treeItem, treeItemRef) => {
@@ -236,7 +242,7 @@ function CollectionProvider({children,
     const selectTreeItemToRenameContext = () => {
         updateIsEditing(true);
         if (contextTreeItem) {
-            let el = document.querySelector(`#treeItem-${contextTreeItem.id}`);
+            let el = document.querySelector(`#tree-item-${contextTreeItem.id}`);
             selectElementContents(el);
         }
     }
@@ -251,19 +257,19 @@ function CollectionProvider({children,
         }, 100);
     }
 
-    const savetreeContext = async (newtree) => {
-        savetree(newtree);
-        updateTree(newtree);
+    const saveTreeContext = (newTree) => {
+        updateTreeAndAddParams(newTree);
+        saveTree(newTree);
     }
 
     const duplicateTreeItemContext = async (treeItemId) => {
         let tree = await duplicateTreeItem(treeItemId);
-        updateTree(tree);
+        updateTreeAndAddParams(tree);
     }
 
     const deleteTreeItemContext = async (treeItemId) => {
         let tree = await deleteTreeItem(treeItemId);
-        updateTree(tree);
+        updateTreeAndAddParams(tree);
     }
 
     const renameTreeItemContext = async (newName, treeItemId) => {
@@ -282,13 +288,15 @@ function CollectionProvider({children,
         updateTree(newtree);
     }
 
+    
+
     const addItemContext = async (treeItem, type) => {
-        console.error("addItemContext");
         if (treeItem.data.type !== 'D') {
             alert('Cannot make an item from this type of item');
             return;
         }
-        updateTree(await addItem(treeItem.id, type));
+        let newTree = await addItem(treeItem.id, type)
+        updateTreeAndAddParams(newTree)
     }
 
     const saveCardContext = (savedCard) => {
@@ -337,7 +345,7 @@ function CollectionProvider({children,
             selectTreeItemToRenameContext,
             renameTreeItemContext,
             menuItems,
-            savetreeContext,
+            saveTreeContext,
             getCardToRepeat,
             editingMode, 
             updateEditingMode,

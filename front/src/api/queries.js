@@ -12,21 +12,21 @@ export const ADD_DECK = gql`
     }
 `
 
-export const DUPLICATE_TREE = gql`
-    mutation duplicateTree($id: String!) {
-        duplicateTree(id: $id)
+export const DUPLICATE_TREE_ITEM = gql`
+    mutation duplicateTreeItem($id: String!) {
+        duplicateTreeItem(id: $id)
     }
 `
 
-export const DELETE_TREE = gql`
-    mutation deleteTree($id: String!) {
-        deleteTree(id: $id)
+export const DELETE_TREE_ITEM = gql`
+    mutation deleteTreeItem($id: String!) {
+        deleteTreeItem(id: $id)
     }
 `
 
-export const RENAME_TREE = gql`
-    mutation renameTree($id: String!, $newName: String!) {
-        renameTree(id: $id, newName: $newName) {
+export const RENAME_TREE_ITEM = gql`
+    mutation renameTreeItem($id: String!, $newName: String!) {
+        renameTreeItem(id: $id, newName: $newName) {
             data {
                 name
             }
