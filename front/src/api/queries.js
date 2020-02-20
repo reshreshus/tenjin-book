@@ -1,5 +1,11 @@
 import { gql } from 'apollo-boost';
 
+export const ADVANCE_CARD = gql`
+    mutation advanceCard($id: String!, quality: Int!) {
+        advanceCard(id: $id, quality: $quality)
+    }
+`
+
 export const GET_DUE_CARDS_IDS = gql`
     mutation getDueCardsIds($deckId: String!) {
         getDueCardsIds(deckId: $deckId)

@@ -69,9 +69,21 @@ let blocks = {
             parentId:  "1",
             data: {
                 name: "a flashcard",
-                type: "f"
-            }
-
+                type: "f",
+                repetitionStatsSm2: {
+                    eFactor: 2.5,
+                    repetitionsCount: 0,
+                    nextDate: '-1',
+                    history: [repetitionStatsSm2: {
+                        eFactor: 2.5,
+                        repetitionsCount: 0,
+                        nextDate: '-1',
+                        history: [
+                        ]
+                    },
+                    ]
+                },
+            },
         },
         "2": {
             id: "2",
@@ -154,11 +166,7 @@ const newDeckBlock = {
 let items = [{
     id: "_0",
     templateId: "from db",
-    deck_title: "English",
     templateTitle: "Basic",
-    repetitionStats: {
-        
-    },
     entries: [
         {
             id: 0,
@@ -203,11 +211,24 @@ const typeDefs = `
         data: BlockData
     }
 
+    type RepetitionEvent {
+        date: String!
+        quality: Int!
+    }
+
+    type RepetitionStatsSm2 {
+        eFactor: String!
+        repetitionsCount: Int!
+        nextDate: String!
+        history: [RepetitionEvent]
+    }
+
     type Card {
         id: ID,
         templateId: String,
         templateTitle: String,
-        entries: [CardEntry]  
+        entries: [CardEntry],
+        repetitionStatsSm2: RepetitionStatsSm2
     }
 
     type CardEntry {
@@ -254,15 +275,15 @@ const typeDefs = `
         addDeck (
             parentId: String!
         ): JSON,
-        getDueCardsIds(deckId: String!): [String]
+        advanceCard(
+            id: String!
+            quality: Int!
+            ): JSON
     }
 
 `;
 
 const ID = () => {
-    // Math.random should be unique because of its seeding algorithm.
-    // Convert it to base 36 (numbers + letters), and grab the first 9 characters
-    // after the decimal.
     return '_' + Math.random().toString(36).substr(2, 9);
   };
 
@@ -278,26 +299,54 @@ const addBlock = (parentId, id) => {
     blocks.items[parentId].hasChildren = true;
     blocks.items[parentId].isExpanded = true;
     blocks.items[id] = block;
-    // console.log("addBlock blocks", blocks);
     return block; 
 }
 
-const getCardsIdsOfDeck = (deckBlock) => {
-    let cardsIds = []
-    deckBlock.children.map(c => {
-        let block = blocks.items[c]
-        if (block.data.type === 'f') {
-            cardsIds.push(c);
-        } else if (block.data.type === 'D') {
-            cardsIds = [...cardsIds, ...getCardsIdsOfDeck(block)]
-        }
-    })
-    return cardsIds;
+/*
+    Repeat items using the following intervals:
+    I(1):=1
+    I(2):=6
+    for n>2: I(n):=I(n-1)*EF
+    where:
+    I(n) - inter-repetition interval after the n-th repetition (in days),
+    EF - E-Factor of a given item
+    If interval is a fraction, round it up to the nearest integer.
+ */
+
+const nextIntervalSm2 = (n, eF) => {
+    if (n === 1) return 1;
+    if (n === 2) return 6;
+    return eF * nextIntervalSm2(n, eF);
 }
 
-const selectDueCardsIds = (cardIds) => {
-    // genius
-    return cardIds;
+
+// TODO: no logic for advancing Topics is sm2
+const advanceCardSm2 = (itemBlock, q) => {
+    let date = new Date();
+    let stats = itemBlock.data.repetitionStatsSm2;
+    stats.history.push({
+        quality: q,
+        date: String(date)
+    })
+    let eF = card.repetitionStatsSm2.eFactor;
+    let newEf = eF + (0.1-(5-q)*(0.08+(5-q)*0.02));
+    stats.repetitionsCount++
+    let nextInterval = Math.round(nextIntervalSm2(stats.repetitionsCount, eF));
+    if (q < 3) {
+        state.nextDate = '-1';  
+    } else {
+        let newDate = date.addDays(nextInterval);
+        stats.nextDate = newDate.toDateString();
+    }
+    
+    stats.eFactor = newEf;
+    return card; 
+}
+
+Date.prototype.addDays = function(days) {
+    var date = new Date(this.valueOf());
+    date.setDate(date.getDate() + days);
+    return date;
 }
 
 
@@ -310,11 +359,21 @@ const resolvers = {
         blocks: () => blocks
     },
     Mutation: {
+        advanceCard: (parent, {id, quality : q}) => {
+            let itemBlock = blocks.items[id]
+            if (itemBlock.data.type === 'f' || itemBlock.data.type === 'T') {
+                return advanceCardSm2(itemBlock, q);
+            } else {
+                console.error("Trying to advance non-item");
+            }
+            
+        },
         getDueCardsIds: (_, {deckId}) => {
-            let deckBlock = blocks.items[deckId];
-            let cardsIds = cardsIdsgetCardsIdsOfDeck(deckBlock);
-            let dueCardsIds = selectDueCardsIds(cardsIds);
-            return dueCardsIds;
+            // let deckBlock = blocks.items[deckId];
+            // let cardsIds = cardsIdsgetCardsIdsOfDeck(deckBlock);
+            // let dueCardsIds = selectDueCardsIds(cardsIds);
+            // return dueCardsIds;
+            return getDueCardsIds(deckId);
         },
         addDeck: (parent, {parentId}) => {
             let id = ID();
@@ -348,7 +407,7 @@ const resolvers = {
             return card.entries;
         },
         card: (parent, { id }) => { 
-                return _.find(items, {id: id})
+            return _.find(items, {id: id})
         },
         saveCard: (parent, {id, templateTitle, entries}) => {
             let card = _.find(items, {id: id});

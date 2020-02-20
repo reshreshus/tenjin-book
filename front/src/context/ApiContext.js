@@ -19,6 +19,17 @@ export default function ApiContext({children}) {
     const [addDeckQuery] = useMutation(ADD_DECK);
 
     const [getDueCardsIdsQuery] = useMutation(GET_DUE_CARDS_IDS);
+    const [advanceCardQuery] = useMutation();
+
+    const advanceCard = async (id, quality) => {
+        let data = await advanceCardQuery({
+            variables: {
+                id,
+                quality
+            }
+        });
+        return data.data.advanceCard;
+    }
 
     const getDueCardsIds = async (deckId) => {
         let data = await getDueCardsIdsQuery({
@@ -110,6 +121,7 @@ export default function ApiContext({children}) {
             getCard={getCard}
             saveBlocks={saveBlocks}
             getDueCardsIds={getDueCardsIds}
+            advanceCard={advanceCard}
             >
             {children}
         </CollectionProvider>)

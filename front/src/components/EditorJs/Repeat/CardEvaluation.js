@@ -4,27 +4,27 @@ const CardEvaluation = ({editingMode, updateIsQuestioning, toggleEditing}) => {
  
     const evaluationSm15 = [
         {
-            value: 1,
+            quality: 1,
             desc: "Totally Wrong",
             color: "#D47E78"
         },
         {
-            value: 2,
+            quality: 2,
             desc: "Wrong",
             color: "#D47E78"
         },
         {
-            value: 3,
+            quality: 3,
             desc: "Alright",
             color: "#8CD794"
         },
         {
-            value: 4,
+            quality: 4,
             desc: "Good",
             color: "#688DED"
         },
         {
-            value: 5,
+            quality: 5,
             desc: "Very Good",
             color: "#688DED"
         },

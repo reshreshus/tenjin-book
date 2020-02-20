@@ -21,7 +21,8 @@ function CollectionProvider({children,
     renameBlock,
     getCard,
     saveBlocks,
-    getDueCardsIds}) 
+    getDueCardsIds,
+    advanceCard}) 
     {
     // console.error("getCard", getCard)
     const [blocks, updateBlocks] = useState(null) 
@@ -31,14 +32,46 @@ function CollectionProvider({children,
     const [isCardUpdating, updateIsCardUpdating] = useState(false);
     const [card, updateCard] = useState(null);
 
+    const [currentlyUsedDeck, updateCurrentlyUsedDeck] = useState();
+    const [dueCardsIds, updateDueCardsIds] = useState();
+
     // const [editingMode, updateEditingMode] = useState([true, is]);
     const [editingMode, updateEditingMode] = useState({
         isStudying: false, // study or preview
         isEditing: true
     })
 
-    const getCardToRepeat = (deckBlock) => {
+    const getCardsIdsOfDeck = (block) => {
+        if (!block.hasChildren) return [];
+        let cardsIds = []
+        block.children.map(cId => {
+            let curBlock = blocks.items[cId]
+            if (curBlock.data.type === 'f') {
+                cardsIds.push(cId);
+            }
+            if (curBlock.hasChildren) {
+                cardsIds = [...cardsIds, ...getCardsIdsOfDeck(curBlock)]
+            }
+        })
+        return cardsIds;
+    }
+
+    const advanceCardContext = (deckId=currentlyUsedDeck.id, cardId, quality) => {
+        advanceCard(cardId, quality);
+        if (deckId === currentlyUsedDeck.id) {
+            let newDueCardsIds = dueCardsIds.filter(c => c.id !== cardId)
+            updateDueCardsIds([...newDueCardsIds]);
+        } else {
+            // TODO
+        }
+    }
+
+    const getCardToRepeat = (deckBlock=contextBlock) => {
+        if (dueCardsIds) {
+            return dueCardsIds[0];
+        }
         let cardsIds = getDueCardsIds(deckBlock);
+        updateDueCardsIds(cardsIds);
         // console.log("cardsIds", cardsIds);
         return cardsIds[0]
     }

@@ -47,7 +47,6 @@ export default function App() {
           <Route exact path="/edit/" component={() =>
             (<Edit card={{'deckTitle':'English', 'templateTitle': 'Basic'}}/>)}
             />
-          // "?" after id means id is optional
           <Route exact path="/show-deck/" component={ShowDeck} />
           <Route exact path="/" component={Home} />
         </Switch>
