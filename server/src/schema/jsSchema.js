@@ -74,16 +74,9 @@ let blocks = {
                     eFactor: 2.5,
                     repetitionsCount: 0,
                     nextDate: '-1',
-                    history: [repetitionStatsSm2: {
-                        eFactor: 2.5,
-                        repetitionsCount: 0,
-                        nextDate: '-1',
-                        history: [
-                        ]
-                    },
-                    ]
-                },
-            },
+                    history: []
+                }
+            }
         },
         "2": {
             id: "2",
@@ -201,6 +194,7 @@ const typeDefs = `
     type BlockData {
         name: String
         type: String
+        repetitionStatsSm2: RepetitionStatsSm2
     }
 
     type Block {
@@ -367,13 +361,6 @@ const resolvers = {
                 console.error("Trying to advance non-item");
             }
             
-        },
-        getDueCardsIds: (_, {deckId}) => {
-            // let deckBlock = blocks.items[deckId];
-            // let cardsIds = cardsIdsgetCardsIdsOfDeck(deckBlock);
-            // let dueCardsIds = selectDueCardsIds(cardsIds);
-            // return dueCardsIds;
-            return getDueCardsIds(deckId);
         },
         addDeck: (parent, {parentId}) => {
             let id = ID();

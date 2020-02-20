@@ -2,7 +2,7 @@ import React from 'react'
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import { GET_CARD, SAVE_CARD, GET_BLOCKS, SAVE_BLOCKS, ADD_ITEM, 
     RENAME_BLOCK, DELETE_BLOCK, DUPLICATE_BLOCK, ADD_DECK, 
-    GET_DUE_CARDS_IDS
+    GET_DUE_CARDS_IDS, ADVANCE_CARD
  } from '../api/queries';
 import {CollectionProvider} from './CollectionContext'
 
@@ -19,7 +19,7 @@ export default function ApiContext({children}) {
     const [addDeckQuery] = useMutation(ADD_DECK);
 
     const [getDueCardsIdsQuery] = useMutation(GET_DUE_CARDS_IDS);
-    const [advanceCardQuery] = useMutation();
+    const [advanceCardQuery] = useMutation(ADVANCE_CARD);
 
     const advanceCard = async (id, quality) => {
         let data = await advanceCardQuery({
