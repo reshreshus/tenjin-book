@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import { CollectionConsumer } from '../../context/CollectionContext';
+import {Redirect } from 'react-router';
 import HotkeysEditor from './HotkeysEditor';
 import EditorActions from './EditorActions';
 import EditorEntries from './EditorEntries';
@@ -21,10 +22,15 @@ const Editor = ({treeItem}) => {
     { ({addNewEntryContext, deleteEntryContext,
         chooseTypeC, card, isCardUpdating, saveCardContext,
         findLastDeck, editingMode,
-        updateEditingMode
+        updateEditingMode, advanceCardContext, isDeckDuesEmpty
     }) => {
-        
-    if(!card || isCardUpdating) {
+    if (treeItem.data.type === 'D')  {
+        return <Redirect push to='/show-deck' />
+    }
+    if(!card) {
+        // TODO
+        if (isCardUpdating)
+            return <div>loading</div>
         return <div>loading</div>
     }
     const {template_title, entries} = card;
@@ -94,7 +100,8 @@ const Editor = ({treeItem}) => {
                 ) : 
                 <div> 
                     <RepeatEntries 
-                        entries={entries} 
+                        treeItem={treeItem} entries={entries} 
+                        advanceCardContext={advanceCardContext}
                         saveEditorInstance={saveEditorInstance}
                         updateEditorChanged={updateEditorChanged}
                         treeItemId={treeItem.id} entriesEditors={entriesEditors}

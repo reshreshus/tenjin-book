@@ -1,10 +1,12 @@
 import React from 'react'
 import Entry from './Entry';
 import CardEvaluation from './CardEvaluation';
+import { getEvaluationOptions } from './sm2';
 
 export default function RepeatEntires({entries, saveEditorInstance, updateEditorChanged, 
     entriesEditors, treeItemId,
-    isQuestioning, updateIsQuestioning, editingMode, toggleEditing
+    isQuestioning, updateIsQuestioning, editingMode, toggleEditing, treeItem,
+    advanceCardContext
     }) {
     let questions = []
     let answers = []
@@ -44,7 +46,7 @@ export default function RepeatEntires({entries, saveEditorInstance, updateEditor
                             <div onClick={() => updateIsQuestioning(false)}
                             className="repeat-entries__show-answer btn-contrast"> Show answer </div>
                             :
-                            <CardEvaluation toggleEditing={toggleEditing}
+                            <CardEvaluation toggleEditing={toggleEditing} evalutionOptions={getEvaluationOptions(treeItem, advanceCardContext)}
                             editingMode={editingMode} updateIsQuestioning={updateIsQuestioning}/>     
                         }
                         

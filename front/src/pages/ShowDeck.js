@@ -7,7 +7,7 @@ export default function ShowDeck() {
     return (
         <CollectionConsumer> 
         {
-            ({contextTreeItem, updateEditingMode, updateCurrentlyUsedDeck, getCardToRepeat}) => {
+            ({contextTreeItem, updateEditingMode, updateCurrentlyUsedDeck, setCardToRepeat}) => {
                 return (
                     <div className="info">
                         <h1 className="title">( ･ิɷ･ิ)</h1>
@@ -16,8 +16,9 @@ export default function ShowDeck() {
                             <h2 className="subtitle">This is a chosen deck. "{contextTreeItem.data.name}"<br />
                             What will you do with it?</h2>
                             <Link to='/edit' onClick={() => {
+                                // TODO: refactor
                                 updateCurrentlyUsedDeck(contextTreeItem);
-                                getCardToRepeat(contextTreeItem);
+                                setCardToRepeat(contextTreeItem);
                                 updateEditingMode({
                                     isStudying: true,
                                     isEditing: false

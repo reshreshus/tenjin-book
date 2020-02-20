@@ -313,7 +313,7 @@ const addTreeItem = (parentId, id) => {
 const nextIntervalSm2 = (n, eF) => {
     if (n === 1) return 1;
     if (n === 2) return 6;
-    return eF * nextIntervalSm2(n, eF);
+    return eF * nextIntervalSm2(n - 1, eF);
 }
 
 
@@ -324,20 +324,20 @@ const advanceCardSm2 = (itemTreeItem, q) => {
     stats.history.push({
         quality: q,
         date: String(date)
-    })
-    let eF = card.repetitionStatsSm2.eFactor;
+    });
+    let eF = stats.eFactor;
     let newEf = eF + (0.1-(5-q)*(0.08+(5-q)*0.02));
     stats.repetitionsCount++
     let nextInterval = Math.round(nextIntervalSm2(stats.repetitionsCount, eF));
     if (q < 3) {
-        state.nextDate = '-1';  
+        stats.nextDate = '-1';  
     } else {
         let newDate = date.addDays(nextInterval);
         stats.nextDate = newDate.toDateString();
     }
     
     stats.eFactor = newEf;
-    return card; 
+    return itemTreeItem; 
 }
 
 Date.prototype.addDays = function(days) {
