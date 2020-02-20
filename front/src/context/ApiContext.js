@@ -17,8 +17,6 @@ export default function ApiContext({children}) {
     const [deleteBlockQuery] = useMutation(DELETE_BLOCK);
     const [duplicateBlockQuery] = useMutation(DUPLICATE_BLOCK);
     const [addDeckQuery] = useMutation(ADD_DECK);
-
-    const [getDueCardsIdsQuery] = useMutation(GET_DUE_CARDS_IDS);
     const [advanceCardQuery] = useMutation(ADVANCE_CARD);
 
     const advanceCard = async (id, quality) => {
@@ -29,15 +27,6 @@ export default function ApiContext({children}) {
             }
         });
         return data.data.advanceCard;
-    }
-
-    const getDueCardsIds = async (deckId) => {
-        let data = await getDueCardsIdsQuery({
-            variables: {
-                deckId
-            }
-        })
-        return data.data.getDueCardsIds;
     }
 
     const duplicateBlock = async (blockId) => {

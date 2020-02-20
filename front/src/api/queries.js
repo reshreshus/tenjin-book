@@ -6,12 +6,6 @@ export const ADVANCE_CARD = gql`
     }
 `
 
-export const GET_DUE_CARDS_IDS = gql`
-    mutation getDueCardsIds($deckId: String!) {
-        getDueCardsIds(deckId: $deckId)
-    }
-`
-
 export const ADD_DECK = gql`
     mutation addDeck($parentId: String!) {
         addDeck(parentId: $parentId)

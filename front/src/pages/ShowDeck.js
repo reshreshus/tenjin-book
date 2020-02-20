@@ -7,8 +7,7 @@ export default function ShowDeck() {
     return (
         <CollectionConsumer> 
         {
-            ({contextBlock, updateEditingMode}) => {
-                console.log("contextBlock", contextBlock);
+            ({contextBlock, updateEditingMode, updateCurrentlyUsedDeck}) => {
                 return (
                     <div className="info">
                         <h1 className="title">( ･ิɷ･ิ)</h1>
@@ -16,10 +15,13 @@ export default function ShowDeck() {
                             (contextBlock && contextBlock.data.name) ? <div>
                             <h2 className="subtitle">This is a chosen deck. "{contextBlock.data.name}"<br />
                             What will you do with it?</h2>
-                            <Link to='/edit' onClick={() => updateEditingMode({
-                                isStudying: true,
-                                isEditing: false
-                            })} className="btn-contrast">
+                            <Link to='/edit' onClick={() => {
+                                updateCurrentlyUsedDeck(contextBlock);
+                                updateEditingMode({
+                                    isStudying: true,
+                                    isEditing: false
+                                })
+                            }} className="btn-contrast">
                                 study 
                             </Link>
                             </div>

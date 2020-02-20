@@ -66,7 +66,7 @@ function CollectionProvider({children,
         }
     }
 
-    const getCardToRepeat = (deckBlock=contextBlock) => {
+    const getCardToRepeat = (deckBlock=currentlyUsedDeck) => {
         if (dueCardsIds) {
             return dueCardsIds[0];
         }
@@ -267,7 +267,8 @@ function CollectionProvider({children,
             saveBlocksContext,
             getCardToRepeat,
             editingMode, 
-            updateEditingMode
+            updateEditingMode,
+            updateCurrentlyUsedDeck
         }}>
             {children}
             <ContextMenu />

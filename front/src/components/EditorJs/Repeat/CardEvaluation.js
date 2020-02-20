@@ -33,8 +33,8 @@ const CardEvaluation = ({editingMode, updateIsQuestioning, toggleEditing}) => {
     return (
         <div className="card-eval">
             {
-                evaluationSm15.map(v => (
-                    <div className="card-eval__option" 
+                evaluationSm15.map((v, i) => (
+                    <div key={i} className="card-eval__option" 
                     onClick={() => {
                         if (!editingMode.isStudying) {
                             updateIsQuestioning(true);
