@@ -86,10 +86,9 @@ const Item = ({
                 <div className="tree-item__inline"
                  ref={provided.innerRef} 
                  {...provided.draggableProps}
+                >
                 
-                 >
-                  
-                  
+                
                  <div className="caret-container">
                     {
                         treeItem.hasChildren ? 
@@ -149,6 +148,9 @@ const Item = ({
                               onChange={(e)=>handleChange(e)}
                           />
                       </Link>
+                  </div>
+                  <div className="tree-item__params">
+                    {treeItem.data.dueItemsCount}
                   </div>
                 </div>
               </div>

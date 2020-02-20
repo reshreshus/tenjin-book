@@ -13,6 +13,12 @@
         margin: 5px;
         display: flex;
         align-items: center;
+        // justify-content: center;
+    }
+    &__params {
+        position: absolute;
+        color: red;
+        right: 0;
     }
     &__type {
         position: relative;

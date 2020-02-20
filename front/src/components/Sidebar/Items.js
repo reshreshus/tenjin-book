@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 // import Navigation from "@atlaskit/navigation";
 import Item from './Item';
 import {CollectionConsumer} from '../../context/CollectionContext';
