@@ -36,9 +36,9 @@ const Item = ({
             }) => {
             const triggerTreeItemName = () => {
               // in case we navigate with tab
-              if (!contextTreeItem || treeItem.id !== contextTreeItem.id) {
-                updateContextTreeItemAndCleanup(treeItem, node);
-              }
+              // if (!contextTreeItem || treeItem.id !== contextTreeItem.id) {
+              updateContextTreeItemAndCleanup(treeItem, node);
+              // }
               if (treeItem.data.type === 'f' || treeItem.data.type === 'T') {
                 getCardContext(treeItem.id);
               }
@@ -127,10 +127,12 @@ const Item = ({
                       'tree-item__link--active':''}`}
                           to={link}
                           onClick={() => {
-                            updateEditingMode({
-                              isStudying: false,
-                              isEditing: true
-                            })
+                            if (link === 'edit') {
+                              updateEditingMode({
+                                isStudying: false,
+                                isEditing: true
+                              })
+                            }
                             triggerTreeItemName()
                           }}
                           onContextMenu={(e) => {

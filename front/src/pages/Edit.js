@@ -14,7 +14,7 @@ export default function Edit() {
                 }
 
                 return (
-                <Editor treeItem={contextTreeItem} repeat={true} />
+                <Editor key={contextTreeItem.id} treeItem={contextTreeItem} />
                 )
             }
         }

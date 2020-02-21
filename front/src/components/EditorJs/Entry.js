@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react'
 
 import EditorJs from 'react-editor-js';
+// import EditorJs from '@editorjs/editorjs';
 import { EDITOR_JS_TOOLS } from './editorJsTools' 
 
 export default function Entry({e, saveEditorInstance, chooseType,
@@ -8,11 +9,27 @@ export default function Entry({e, saveEditorInstance, chooseType,
 }) {
     const [isChoosingType, updateChoosingType] = useState(false);
     const [isChanged, updateIsChanged] = useState(false);
+
+    // const [editor, updateEditor] = useState(new EditorJs({
+    //     data: e.content,
+    //     tools: EDITOR_JS_TOOLS,
+    //     onChange:() => {
+    //         updateAreChanged();
+    //     },
+    //     holderId: "editor-js-" + e.key,
+
+    // }));
+    // useEffect(() => {
+    //     editor.render(e.content);   
+    // });
+    // saveEditorInstance(editor, e);
+
     useEffect(() => {
         if (!editorChanged) {
             updateIsChanged(false);
         }
     }, [editorChanged])
+
 
     const updateAreChanged = () => {
         updateIsChanged(true);
@@ -31,6 +48,8 @@ export default function Entry({e, saveEditorInstance, chooseType,
         updateAreChanged();
         deleteEntryEditor(e.id);
     }
+
+    
 
     return (
         <div className="card-entry" >
@@ -72,21 +91,30 @@ export default function Entry({e, saveEditorInstance, chooseType,
             </div>
 
             <div className="card-entry__field">
-                <div className="card-entry__text-field" 
-                    id={"editor-js-" + e.id}>
+               
                     <EditorJs 
-                        key={e.id}
+                        // enableReInitialize={true}
+                        autofocus={e.id === 0}
+                        key={e.key}
                         instanceRef={instance => {
-                            saveEditorInstance(instance, e);
+                            // setTimeout(() => {
+                                // console.warn("saveEditorInstance e.key", e.key, e);
+                                saveEditorInstance(instance, e);
+                            // });      
                         }}
                         tools={EDITOR_JS_TOOLS}
-                        holder={"editor-js-" + e.id}
+                        holder={"editor-js-" + e.key}
                         data={e.content}
                         onChange={() => {
                             updateAreChanged();
+                            // console.log("CONTENT", JSON.stringify(e.content))
                         }}
-                    />
-                </div>
+                    >
+                        <div className="card-entry__text-field" 
+                            id={"editor-js-" + e.key}></div>
+
+                    </EditorJs>
+                
                 <div onClick={() => deleteEntry()} className="btn-circ btn-plus-minus">-</div>
             </div>
         </div>

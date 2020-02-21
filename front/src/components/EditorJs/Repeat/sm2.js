@@ -1,9 +1,4 @@
 export const getEvaluationOptions = (treeItem, advanceCardContext) => {
-    let algorithm = (quality) => {
-        return {
-            
-        }
-    }
     return [
         {
             quality: 1,

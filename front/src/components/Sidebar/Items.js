@@ -16,7 +16,6 @@ const renderItem = ({
     provided,
     snapshot
     }) => {
-    // console.log("render item", treeItem);
     return (
         <div>
             <Item treeItem={treeItem} onExpand={onExpand} onCollapse={onCollapse} 
@@ -31,7 +30,7 @@ const Items = () => {
     return (
         <CollectionConsumer> 
         {
-            ({tree, updateTree, saveTreeContext, toggleExpanded}) => {
+            ({tree, saveTreeContext, toggleExpanded}) => {
 
                 const onExpand = (itemId) => {
                     toggleExpanded(itemId);

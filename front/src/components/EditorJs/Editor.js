@@ -15,14 +15,16 @@ const Editor = ({treeItem}) => {
     const [isQuestioning, updateIsQuestioning] = useState(true);
 
     useEffect(() => {
+        console.error("new EDITORS-ENTIRES")
         updateEntriesEditors(new Array())
     }, [treeItem]);
+    
     return (
 <CollectionConsumer >
     { ({addNewEntryContext, deleteEntryContext,
         chooseTypeC, card, isCardUpdating, saveCardContext,
         findLastDeck, editingMode,
-        updateEditingMode, advanceCardContext, isDeckDuesEmpty
+        updateEditingMode, advanceCardContext
     }) => {
     if (treeItem.data.type === 'D')  {
         return <Redirect push to='/show-deck' />
@@ -34,30 +36,39 @@ const Editor = ({treeItem}) => {
         return <div>loading</div>
     }
     const {template_title, entries} = card;
+    // console.log("CARD", card);
+    
+    entries.map(e => {
+        e.key = `${e.id}${treeItem.id}`
+    })
     const deckParent = findLastDeck(treeItem);
     
     const deck_title = deckParent.data.name;
     
     const saveCard = async () => { 
+        console.log("entriesEditors", entriesEditors);
+        console.log("card", card);
         updateEditorChanged(false);
         // console.log("those editors!!", entriesEditors)
         entriesEditors.map( async ({entry, instance}) => {
             // console.log("instance", instance);
             const { blocks } = await instance.save();
             entry.content.blocks = blocks;
+            console.log("new content", blocks);
         })
         // this line probably doesn't make sense
         saveCardContext(await Object.assign({}, card))
     }
 
     const saveEditorInstance = (instance, entry) => {
-        if (card.entries.length !== entriesEditors.length) {
+        // if (card.entries.length !== entriesEditors.length) {
             entriesEditors.push({
                 "entry": entry,
                 "instance": instance
             })
-            
-        }
+            // 
+        // }
+        console.log("LENGTH", entriesEditors.length);   
     }
 
     // it works for some reason
@@ -89,7 +100,7 @@ const Editor = ({treeItem}) => {
                 editingMode.isEditing ? (
                 <div> 
                     
-                    <EditorEntries entries={entries} entriesEditors={entriesEditors} treeItemId={treeItem.id} 
+                    <EditorEntries entries={entries} entriesEditors={entriesEditors}
                     saveEditorInstance={saveEditorInstance} deleteEntryEditor={deleteEntryEditor} 
                     chooseType={chooseType} updateEditorChanged={updateEditorChanged} editorChanged={editorChanged}
                     />

@@ -42,7 +42,7 @@ let tree = {
         "4": { 
             id: "4",
             hasChildren: true,
-            children: ["5"],
+            children: ["5", "_1"],
             isExpanded: false,
             parentId:  "1",
             data: {
@@ -52,8 +52,8 @@ let tree = {
         },
         "5": {
             id: "5",
-            hasChildren: false,
-            children: [],
+            hasChildren: true,
+            children: ["_2"],
             isExpanded: false,
             parentId:  "4",
             data: {
@@ -69,6 +69,40 @@ let tree = {
             parentId:  "1",
             data: {
                 name: "a flashcard",
+                type: "f",
+                repetitionStatsSm2: {
+                    eFactor: 2.5,
+                    repetitionsCount: 0,
+                    nextDate: '-1',
+                    history: []
+                }
+            }
+        },
+        "_1": {
+            id: "_1",
+            hasChildren: false,
+            children: [],
+            isExpanded: false,
+            parentId:  "1",
+            data: {
+                name: "2nd flashcard",
+                type: "f",
+                repetitionStatsSm2: {
+                    eFactor: 2.5,
+                    repetitionsCount: 0,
+                    nextDate: '-1',
+                    history: []
+                }
+            }
+        },
+        "_2": {
+            id: "_2",
+            hasChildren: false,
+            children: [],
+            isExpanded: false,
+            parentId:  "5",
+            data: {
+                name: "3rd flashcard",
                 type: "f",
                 repetitionStatsSm2: {
                     eFactor: 2.5,
@@ -160,35 +194,96 @@ const newDeckTreeItem = {
 }
 
 let items = [{
-    id: "_0",
-    templateId: "from db",
-    templateTitle: "Basic",
-    entries: [
-        {
-            id: 0,
-            name: "Front",
-            content: {
-                blocks: [{
-                    type: "paragraph",
-                    data: { text: "probably some editorJs stuff or html" }
-                }]
+        id: "_0",
+        templateId: "from db",
+        templateTitle: "Basic",
+        entries: [
+            {
+                id: 0,
+                name: "Front",
+                content: {
+                    blocks: [{
+                        type: "paragraph",
+                        data: { text: "probably some editorJs stuff or html" }
+                    }]
+                },
+                type: "Q",
             },
-            type: "Q",
-        },
-        {
-            id: 1,
-            name: "Back",
-            content: {
-                blocks: [{
-                    type: "paragraph",
-                    data: { text: "probably some editorJs stuff or html" }
-                }]
-            },   
-            type: "A",
-        },
-        
-    ]
-}]
+            {
+                id: 1,
+                name: "Back",
+                content: {
+                    blocks: [{
+                        type: "paragraph",
+                        data: { text: "probably some editorJs stuff or html" }
+                    }]
+                },   
+                type: "A",
+            },
+            
+        ]
+    },
+    {
+        id: "_1",
+        templateId: "from db",
+        templateTitle: "Basic",
+        entries: [
+            {
+                id: 0,
+                name: "Front",
+                content: {
+                    blocks: [{
+                        type: "paragraph",
+                        data: { text: "2nd flashcard question" }
+                    }]
+                },
+                type: "Q",
+            },
+            {
+                id: 1,
+                name: "Back",
+                content: {
+                    blocks: [{
+                        type: "paragraph",
+                        data: { text: "2nd flashcard answer" }
+                    }]
+                },   
+                type: "A",
+            },
+            
+        ]
+    },
+    {
+        id: "_2",
+        templateId: "from db",
+        templateTitle: "Basic",
+        entries: [
+            {
+                id: 0,
+                name: "Front",
+                content: {
+                    blocks: [{
+                        type: "paragraph",
+                        data: { text: "3rd flashcard question" }
+                    }]
+                },
+                type: "Q",
+            },
+            {
+                id: 1,
+                name: "Back",
+                content: {
+                    blocks: [{
+                        type: "paragraph",
+                        data: { text: "3rd flashcard answer" }
+                    }]
+                },   
+                type: "A",
+            },
+            
+        ]
+    }
+]
 
 
 const typeDefs = `
@@ -324,7 +419,7 @@ const advanceCardSm2 = (itemTreeItem, q) => {
     stats.history.push({
         quality: q,
         date: String(date)
-    });
+    }); 
     let eF = stats.eFactor;
     let newEf = eF + (0.1-(5-q)*(0.08+(5-q)*0.02));
     stats.repetitionsCount++
@@ -356,10 +451,11 @@ const resolvers = {
         tree: () => tree
     },
     Mutation: {
-        advanceCard: (parent, {id, quality : q}) => {
+        advanceCard: (parent, {id, quality : q}) => {    
             let itemTreeItem = tree.items[id]
             if (itemTreeItem.data.type === 'f' || itemTreeItem.data.type === 'T') {
-                return advanceCardSm2(itemTreeItem, q);
+                advanceCardSm2(itemTreeItem, q);  
+                return tree;
             } else {
                 console.error("Trying to advance non-item");
             }
