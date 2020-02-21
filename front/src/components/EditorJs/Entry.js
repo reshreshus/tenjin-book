@@ -94,7 +94,7 @@ export default function Entry({e, saveEditorInstance, chooseType,
                
                     <EditorJs 
                         // enableReInitialize={true}
-                        autofocus={e.id === 0}
+                        // autofocus={e.id === 0}
                         key={e.key}
                         instanceRef={instance => {
                             saveEditorInstance(instance, e);    

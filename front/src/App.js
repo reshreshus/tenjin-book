@@ -11,14 +11,15 @@ import ShowDeck from './pages/ShowDeck';
 export default function App() {
 
   useEffect(() => {
-    document.querySelectorAll('.resizer').forEach(e=>{
+    
+    document.querySelectorAll('.resizer').forEach(e => {
       // setting default widths
-      e.previousElementSibling.style.width=
+      e.previousElementSibling.style.width =
       // e.nextElementSibling.style.width=
       // e.parentNode.offsetWidth/3-e.offsetWidth/3+'px';
       '600px';
       e.style.height = e.previousElementSibling.style.height;
-
+      
       e.onmousedown=()=>{
         console.log("resizer moving?")
         e.parentNode.onmousemove=ev=>{

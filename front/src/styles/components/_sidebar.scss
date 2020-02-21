@@ -4,5 +4,7 @@
     @include stroke-blue-sharp;
     padding: 1rem;
     overflow: auto;
+    display: inline-flex;
+    flex-direction: column;
 }
 

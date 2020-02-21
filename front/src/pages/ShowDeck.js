@@ -7,7 +7,7 @@ export default function ShowDeck() {
     return (
         <CollectionConsumer> 
         {
-            ({contextTreeItem, updateEditingMode, updateCurrentlyUsedDeck, setCardToRepeat}) => {
+            ({contextTreeItem, updateEditingMode, updateCurrentlyUsedDeck, setCardToRepeat, tree}) => {
                 return (
                     <div className="info">
                         <h1 className="title">( ･ิɷ･ิ)</h1>
@@ -32,6 +32,7 @@ export default function ShowDeck() {
                             You need to choose a deck to study
                             </h2>
                         }
+                        {/* {console.log(JSON.stringify(tree, null, 2))} */}
                     </div>
                 )
             }

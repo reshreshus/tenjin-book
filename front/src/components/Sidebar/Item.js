@@ -18,7 +18,14 @@ const Item = ({
   useEffect(() => {
       contentEditable = React.createRef();
       draggable.current.removeAttribute("tabIndex");
-    //   node.current.setAttribute('tabIndex', 0)
+
+      // let el = document.querySelector(`#tree-item-${treeItem.id}`);
+      // let resizer = document.querySelector('.resizer')
+      // console.log("#tree-item", resizer.previousElementSibling.style.width);
+      
+      // if (resizer.previousElementSibling.style.width < `${el.getBoundingClientRect().right + 600}px`) {
+      //   resizer.previousElementSibling.style.width = `${el.getBoundingClientRect().right + 1500}px`
+      // }
   })
   if (!name) {
     if (treeItem) {

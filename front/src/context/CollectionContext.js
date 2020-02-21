@@ -200,7 +200,8 @@ function CollectionProvider({children,
 
         let parent = tree.items[treeItem.parentId];
         if (!parent) {
-            console.error("couldn't find a parent");
+            console.warn("couldn't find a parent");
+            return tree.items[tree.rootId];
             return;
         }
         // if (parent.data.type === 'D') return parent
