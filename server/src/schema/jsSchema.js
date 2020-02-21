@@ -541,6 +541,8 @@ const resolvers = {
             newTreeItem.children = []
             newTreeItem.id = newId;
             newTreeItem.hasChildren = false;
+            // Apparently, Object.assign just copies references of inside objects
+            newTreeItem.data = Object.assign({}, treeItem.data)
             newTreeItem.data.name = `${newTreeItem.data.name} (dupl)`
             let parent = tree.items[newTreeItem.parentId]
             let idx = parent.children.indexOf(id);

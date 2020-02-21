@@ -54,7 +54,6 @@ export default function Entry({e, saveEditorInstance, chooseType,
     return (
         <div className="card-entry" >
             <div className="card-entry__header">
-                {console.log("editorChanged", editorChanged)}
                 <div className={`card-entry__choose-type ${isChoosingType ? "": "hide"}`}>
                     {
                         ['A', 'Q', 'C'].map((type, i) => (

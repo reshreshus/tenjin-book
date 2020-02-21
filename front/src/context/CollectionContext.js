@@ -202,7 +202,6 @@ function CollectionProvider({children,
         if (!parent) {
             console.warn("couldn't find a parent");
             return tree.items[tree.rootId];
-            return;
         }
         // if (parent.data.type === 'D') return parent
         return findLastDeck(parent);
@@ -293,8 +292,8 @@ function CollectionProvider({children,
     }
 
     const duplicateTreeItemContext = async (treeItemId) => {
-        let tree = await duplicateTreeItem(treeItemId);
-        updateTreeAndAddParams(tree);
+        let newTree = await duplicateTreeItem(treeItemId);
+        updateTreeAndAddParams(newTree);
     }
 
     const deleteTreeItemContext = async (treeItemId) => {
