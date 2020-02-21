@@ -21,7 +21,7 @@ const Editor = ({treeItem}) => {
     return (
 <CollectionConsumer >
     { ({addNewEntryContext, deleteEntryContext,
-        chooseTypeC, card, isCardUpdating, saveCardContext,
+        chooseTypeContext, card, isCardUpdating, saveCardContext,
         findLastDeck, editingMode,
         updateEditingMode, advanceCardContext
     }) => {
@@ -76,7 +76,7 @@ const Editor = ({treeItem}) => {
     }
 
     const chooseType = (entryId, type) => {
-        chooseTypeC(treeItem.id, entryId, type);
+        chooseTypeContext(treeItem.id, entryId, type);
     }
 
     const toggleEditing = () => {

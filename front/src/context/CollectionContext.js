@@ -253,7 +253,7 @@ function CollectionProvider({children,
         updateCard(newCard);
     }
 
-    const chooseTypeC = (cardId, entryId, type) => {
+    const chooseTypeContext = (cardId, entryId, type) => {
         let newCard = Object.assign({}, card);
         let entry = newCard.entries.filter(e => e.id === entryId)[0]
         entry.type = type;
@@ -263,9 +263,11 @@ function CollectionProvider({children,
                 tree.items[cardId].data.type = 'f';
             }
         })
-        updateTree(Object.assign({}, tree));
+        let newTree = Object.assign({}, tree)
+        updateTree(newTree);
         updateCard(newCard);
-        
+        // TODO: optimize
+        saveTree(newTree)
     }
 
     const selectTreeItemToRenameContext = () => {
@@ -356,7 +358,7 @@ function CollectionProvider({children,
             tree,
             addNewEntryContext,
             deleteEntryContext,
-            chooseTypeC,
+            chooseTypeContext,
             updateContextTreeItemAndCleanup,
             getCardContext,
             openContextMenu,
