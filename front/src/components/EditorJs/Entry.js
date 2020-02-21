@@ -97,17 +97,13 @@ export default function Entry({e, saveEditorInstance, chooseType,
                         autofocus={e.id === 0}
                         key={e.key}
                         instanceRef={instance => {
-                            // setTimeout(() => {
-                                // console.warn("saveEditorInstance e.key", e.key, e);
-                                saveEditorInstance(instance, e);
-                            // });      
+                            saveEditorInstance(instance, e);    
                         }}
                         tools={EDITOR_JS_TOOLS}
                         holder={"editor-js-" + e.key}
                         data={e.content}
                         onChange={() => {
                             updateAreChanged();
-                            // console.log("CONTENT", JSON.stringify(e.content))
                         }}
                     >
                         <div className="card-entry__text-field" 

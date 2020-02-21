@@ -30,12 +30,12 @@ function CollectionProvider({children,
     const [isCardUpdating, updateIsCardUpdating] = useState(false);
     const [card, updateCard] = useState(null);
 
-    useEffect(() => {
-        console.warn("contextTreeItem", contextTreeItem);
-    }, [contextTreeItem]);
-    useEffect(() => {
-        console.warn("card", contextTreeItem);
-    }, [card]);
+    // useEffect(() => {
+    //     console.warn("contextTreeItem", contextTreeItem);
+    // }, [contextTreeItem]);
+    // useEffect(() => {
+    //     console.warn("card", contextTreeItem);
+    // }, [card]);
 
     const [currentlyUsedDeck, updateCurrentlyUsedDeck] = useState();
 
@@ -163,7 +163,6 @@ function CollectionProvider({children,
 
     const advanceCardContext = async (itemId, quality) => {
         let newTree = await advanceCard(itemId, quality);
-        console.log("newTree", newTree);
         // TODO: optimize
         updateTree(newTree);
         calculateDueItemsInTree(newTree);
@@ -172,24 +171,24 @@ function CollectionProvider({children,
         if (currentlyUsedDeck.data.dueItemsCount <= 1) {
             updateContextTreeItem(currentlyUsedDeck)
         } else {
-            setCardToRepeat(newTree.items[currentlyUsedDeck.id]);
+            setCardToRepeat(newTree.items[currentlyUsedDeck.id], newTree);
             updateCurrentlyUsedDeck(newTree.items[currentlyUsedDeck.id]);
         }
         
     }
 
-    const setCardToRepeat = (deckTreeItem=currentlyUsedDeck) => {
-        console.log("setCardToRepeat", deckTreeItem);
+    const setCardToRepeat = (deckTreeItem=currentlyUsedDeck, newTree=tree) => {
+        // console.log("setCardToRepeat", deckTreeItem);
         let dueItemsIds = deckTreeItem.data.dueItemsIds;
         if (dueItemsIds.length > 0) {
-            updateContextTreeItem(tree.items[dueItemsIds[0]]);
+            updateContextTreeItem(newTree.items[dueItemsIds[0]]);
             getCardContext(dueItemsIds[0]);
         } else if (deckTreeItem.data.dueDecksIds.length > 0) {
-            setCardToRepeat(tree.items[deckTreeItem.data.dueDecksIds[0]]);
+            setCardToRepeat(newTree.items[deckTreeItem.data.dueDecksIds[0]]);
         } else {
             console.error("No CARD TO REPEAT")
             // updateCard(null);
-              // updateContextTreeItem(deckTreeItem)
+            // updateContextTreeItem(deckTreeItem)
         }
     }
 
@@ -334,6 +333,8 @@ function CollectionProvider({children,
 
     // TODO rename to set
     const getCardContext = async (id) => {
+        // this little thing makes it possible to rerender EditorJs
+        updateCard(null);
         updateIsCardUpdating(true);
         let newCard = await getCard(id);
         updateCard(newCard);
