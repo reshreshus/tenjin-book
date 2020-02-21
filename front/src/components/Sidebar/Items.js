@@ -54,8 +54,7 @@ const Items = () => {
                     let parentOfDragged = tree.items[source.parentId];
                     let draggedId = parentOfDragged.children[source.index];
                     const newTree = moveItemOnTree(tree, source, destination);
-                    newTree.items[draggedId].parentID = destination.parentId;
-
+                    newTree.items[draggedId].parentId = destination.parentId;
                     saveTreeContext(newTree);
                 };
 
