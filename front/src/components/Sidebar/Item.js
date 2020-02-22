@@ -159,7 +159,7 @@ const Item = ({
                       </Link>
                   </div>
                   <div className="tree-item__params">
-                    {treeItem.data.dueItemsCount}
+                    {treeItem.data.dueItemsCount > 0 ? treeItem.data.dueItemsCount: ''}
                   </div>
                 </div>
               </div>

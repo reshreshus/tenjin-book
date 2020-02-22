@@ -129,8 +129,7 @@ const Editor = ({treeItem}) => {
             }
             </div>
 
-            
-            
+            {/* {console.log(JSON.stringify(card, null, 2))} */}
         </div>
     )
     }
