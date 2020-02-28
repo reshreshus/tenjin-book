@@ -320,7 +320,7 @@ function CollectionProvider({children,
     }
 
     const addItemContext = async (treeItem, type) => {
-        if (treeItem.data.type !== 'D') {
+        if (treeItem.data.type !== 'D') { 
             alert('Cannot make an item from this type of item');
             return;
         }
