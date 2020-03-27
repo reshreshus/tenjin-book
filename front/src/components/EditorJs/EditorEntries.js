@@ -3,7 +3,7 @@ import Entry from './Entry';
 
 export default function EditorEntries({entries, entriesEditors, 
     saveEditorInstance, deleteEntryEditor, 
-    chooseType, updateEditorChanged, editorChanged}) {
+    chooseType, updateEditorChanged, editorChanged, onMarkdownEntryChange}) {
     return (
         <div className="editor__entries">
                 {   entries && entriesEditors ?
@@ -14,6 +14,7 @@ export default function EditorEntries({entries, entriesEditors,
                         chooseType={chooseType}
                         editorChanged={editorChanged}
                         updateEditorChanged={updateEditorChanged}
+                        onMarkdownEntryChange={onMarkdownEntryChange}
                         />
                     )) : "Hmm, a card is empty. Strange..."
                 }

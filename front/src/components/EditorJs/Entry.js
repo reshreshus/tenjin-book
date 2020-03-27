@@ -3,26 +3,16 @@ import EntryMarkdown from './EntryMarkdown';
 import EntryEditorJs from './EntryEditorJs';
 
 export default function Entry({e, saveEditorInstance, chooseType,
-    editorChanged, updateEditorChanged, deleteEntryEditor
+    editorChanged, updateEditorChanged, deleteEntryEditor, onMarkdownEntryChange, source
 }) {
     const [isChoosingType, updateChoosingType] = useState(false);
     const [isChanged, updateIsChanged] = useState(false);
     const [isPreview, updateIsPreview] = useState(false);
+    
 
-    console.log({e})
-    // const [editor, updateEditor] = useState(new EditorJs({
-    //     data: e.content,
-    //     tools: EDITOR_JS_TOOLS,
-    //     onChange:() => {
-    //         updateAreChanged();
-    //     },
-    //     holderId: "editor-js-" + e.key,
-
-    // }));
-    // useEffect(() => {
-    //     editor.render(e.content);   
-    // });
-    // saveEditorInstance(editor, e);
+    const onEditorChange = (value) => {
+        onMarkdownEntryChange(e.id, value);
+    }
 
     useEffect(() => {
         if (!editorChanged) {
@@ -54,6 +44,7 @@ export default function Entry({e, saveEditorInstance, chooseType,
     return (
         <div className="card-entry" >
             <div className="card-entry__header">
+                {isChanged ? "*": ""}
                 <div className={`card-entry__choose-type ${isChoosingType ? "": "hide"}`}>
                     {
                         ['A', 'Q', 'C'].map((type, i) => (
@@ -96,10 +87,14 @@ export default function Entry({e, saveEditorInstance, chooseType,
                     {
                     isEntryMarkdown() ?
                         <EntryMarkdown e={e} key={e.key}
-                        isPreview={isPreview}
+                        isPreview={isPreview} source={e.content}
+                        onChange={(value) => {
+                            onEditorChange(value)
+                            updateAreChanged();
+                        }}
                         />
                         :
-                        <EntryEditorJs key={e.key} 
+                        <EntryEditorJs entryKey={e.key} 
                             instanceRef={instance => {
                                 saveEditorInstance(instance, e);    
                             }}

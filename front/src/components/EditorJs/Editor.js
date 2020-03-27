@@ -11,12 +11,18 @@ import RepeatEntries from './Repeat/RepeatEntries';
 const Editor = ({treeItem}) => {
     const [editorChanged, updateEditorChanged] = useState(false);
     const [entriesEditors, updateEntriesEditors] = useState(null);
+    const [markdownEntriesData, updateMarkdownEntriesData] = useState([]);
 
     const [isQuestioning, updateIsQuestioning] = useState(true);
 
     useEffect(() => {
         updateEntriesEditors(new Array())
     }, [treeItem]);
+
+    const onMarkdownEntryChange = (idx, value) => {
+        markdownEntriesData.filter(e => e.id === idx)[0].content = value;
+        // updateMarkdownEntriesData([...markdownEntriesData])
+    }
     
     return (
 <CollectionConsumer >
@@ -38,7 +44,11 @@ const Editor = ({treeItem}) => {
     
     entries.map(e => {
         e.key = `${e.id}${treeItem.id}`
-    })
+        if (e.format === "markdown") {
+            markdownEntriesData.push(e);
+        }
+    });
+
     const deckParent = findLastDeck(treeItem);
     
     const deck_title = deckParent.data.name;
@@ -94,7 +104,10 @@ const Editor = ({treeItem}) => {
                 editingMode.isEditing ? (
                 <div> 
                     
-                    <EditorEntries entries={entries} entriesEditors={entriesEditors}
+                    <EditorEntries 
+                    // markdownEntriesData={markdownEntriesData}
+                    onMarkdownEntryChange={onMarkdownEntryChange}
+                    entries={entries} entriesEditors={entriesEditors}
                     saveEditorInstance={saveEditorInstance} deleteEntryEditor={deleteEntryEditor} 
                     chooseType={chooseType} updateEditorChanged={updateEditorChanged} editorChanged={editorChanged}
                     />

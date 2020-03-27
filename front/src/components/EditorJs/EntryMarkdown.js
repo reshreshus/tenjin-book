@@ -2,12 +2,8 @@ import React, { useState } from 'react'
 import MarkdownRender from './MarkdownRender'
 import CodemirrorEditor from './CodemirrorEditor'
 
-export default function EntryMarkdown({e, isPreview}) {
-    const [source, updateSource] = useState(e.content);
-
-    const onEditorChange = (value) => {
-        updateSource(value);
-    }
+export default function EntryMarkdown({source, isPreview, onChange}) {
+    
 
     return (
         <div className="card-entry__text-field">
@@ -15,7 +11,7 @@ export default function EntryMarkdown({e, isPreview}) {
                 isPreview ?
                 <MarkdownRender className="editor_render" source={source}/>
                 :
-                <CodemirrorEditor className="editor_codemirror" source={source} onEditorChange={onEditorChange} />
+                <CodemirrorEditor className="editor_codemirror" source={source} onEditorChange={onChange} />
             }
             
         </div>
