@@ -3,7 +3,7 @@ import {UnControlled as CodeMirror} from 'react-codemirror2'
 import 'codemirror/mode/gfm/gfm';
 import 'codemirror/mode/markdown/markdown';
 import 'codemirror/lib/codemirror.css';
-import 'codemirror/theme/material.css';
+// import 'codemirror/theme/material.css';
 
 export default function CodemirrorEditor({source, onEditorChange}) {
     return (
@@ -12,7 +12,7 @@ export default function CodemirrorEditor({source, onEditorChange}) {
             className="codemirror-custom"
             options={{
                 mode: 'gfm',
-                theme: 'material',
+                // theme: '',
                 lineNumbers: false
             }}
             onChange={(editor, data, value) => {

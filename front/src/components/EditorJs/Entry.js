@@ -7,6 +7,7 @@ export default function Entry({e, saveEditorInstance, chooseType,
 }) {
     const [isChoosingType, updateChoosingType] = useState(false);
     const [isChanged, updateIsChanged] = useState(false);
+    const [isPreview, updateIsPreview] = useState(false);
 
     console.log({e})
     // const [editor, updateEditor] = useState(new EditorJs({
@@ -48,6 +49,8 @@ export default function Entry({e, saveEditorInstance, chooseType,
         deleteEntryEditor(e.id);
     }
 
+    const isEntryMarkdown = () => e.format === 'markdown';
+
     return (
         <div className="card-entry" >
             <div className="card-entry__header">
@@ -83,17 +86,17 @@ export default function Entry({e, saveEditorInstance, chooseType,
                         e.name
                     }
                 </div>
-                {isChanged ? "*" : ""}
+                {
+                    isEntryMarkdown() ? (<div className="card-entry__switch btn-contrast" 
+                    onClick={() => updateIsPreview(!isPreview)}> switch</div>) : ""
+                }
             </div>
 
             <div className="card-entry__field">
                     {
-                    (e.format === 'markdown') ?
+                    isEntryMarkdown() ?
                         <EntryMarkdown e={e} key={e.key}
-                        deleteEntryEditor={deleteEntryEditor}
-                        chooseType={chooseType}
-                        editorChanged={editorChanged}
-                        updateEditorChanged={updateEditorChanged}
+                        isPreview={isPreview}
                         />
                         :
                         <EntryEditorJs key={e.key} 
@@ -106,7 +109,7 @@ export default function Entry({e, saveEditorInstance, chooseType,
                             }}
                         />    
                     }          
-                <div onClick={() => deleteEntry()} className="btn-circ btn-plus-minus">-</div>
+                <div onClick={() => deleteEntry()} className="card-entry__remove btn-circ btn-plus-minus">-</div>
             </div>
         </div>
     )

@@ -2,17 +2,15 @@ import React, { useState } from 'react'
 import MarkdownRender from './MarkdownRender'
 import CodemirrorEditor from './CodemirrorEditor'
 
-export default function EntryMarkdown({e, deleteEntryEditor, chooseType, editorChanged, updateEditorChanged}) {
+export default function EntryMarkdown({e, isPreview}) {
     const [source, updateSource] = useState(e.content);
-    const [isPreview, updateIsPreview] = useState(false);
 
     const onEditorChange = (value) => {
         updateSource(value);
     }
 
     return (
-        <div className="editor">
-            <div className="editor__btn btn btn-primary" onClick={() => updateIsPreview(!isPreview)}> switch</div>
+        <div className="card-entry__text-field">
             {
                 isPreview ?
                 <MarkdownRender className="editor_render" source={source}/>
