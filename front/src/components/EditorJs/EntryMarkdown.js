@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import MarkdownRender from './MarkdownRender'
 import CodemirrorEditor from './CodemirrorEditor'
 
-export default function MarkdownEntry({e}) {
+export default function EntryMarkdown({e, deleteEntryEditor, chooseType, editorChanged, updateEditorChanged}) {
     const [source, updateSource] = useState(e.content);
     const [isPreview, updateIsPreview] = useState(false);
 

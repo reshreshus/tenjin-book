@@ -1,8 +1,6 @@
 import React, {useState, useEffect} from 'react'
-
-import EditorJs from 'react-editor-js';
-// import EditorJs from '@editorjs/editorjs';
-import { EDITOR_JS_TOOLS } from './editorJsTools' 
+import EntryMarkdown from './EntryMarkdown';
+import EntryEditorJs from './EntryEditorJs';
 
 export default function Entry({e, saveEditorInstance, chooseType,
     editorChanged, updateEditorChanged, deleteEntryEditor
@@ -50,8 +48,6 @@ export default function Entry({e, saveEditorInstance, chooseType,
         deleteEntryEditor(e.id);
     }
 
-    
-
     return (
         <div className="card-entry" >
             <div className="card-entry__header">
@@ -91,26 +87,25 @@ export default function Entry({e, saveEditorInstance, chooseType,
             </div>
 
             <div className="card-entry__field">
-               
-                    <EditorJs 
-                        // enableReInitialize={true}
-                        // autofocus={e.id === 0}
-                        key={e.key}
-                        instanceRef={instance => {
-                            saveEditorInstance(instance, e);    
-                        }}
-                        tools={EDITOR_JS_TOOLS}
-                        holder={"editor-js-" + e.key}
-                        data={e.content}
-                        onChange={() => {
-                            updateAreChanged();
-                        }}
-                    >
-                        <div className="card-entry__text-field" 
-                            id={"editor-js-" + e.key}></div>
-
-                    </EditorJs>
-                
+                    {
+                    (e.format === 'markdown') ?
+                        <EntryMarkdown e={e} key={e.key}
+                        deleteEntryEditor={deleteEntryEditor}
+                        chooseType={chooseType}
+                        editorChanged={editorChanged}
+                        updateEditorChanged={updateEditorChanged}
+                        />
+                        :
+                        <EntryEditorJs key={e.key} 
+                            instanceRef={instance => {
+                                saveEditorInstance(instance, e);    
+                            }}
+                            data={e.content}
+                            onChange={() => {
+                                updateAreChanged();
+                            }}
+                        />    
+                    }          
                 <div onClick={() => deleteEntry()} className="btn-circ btn-plus-minus">-</div>
             </div>
         </div>
