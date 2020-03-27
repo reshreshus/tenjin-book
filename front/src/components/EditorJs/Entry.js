@@ -10,6 +10,7 @@ export default function Entry({e, saveEditorInstance, chooseType,
     const [isChoosingType, updateChoosingType] = useState(false);
     const [isChanged, updateIsChanged] = useState(false);
 
+    console.log({e})
     // const [editor, updateEditor] = useState(new EditorJs({
     //     data: e.content,
     //     tools: EDITOR_JS_TOOLS,

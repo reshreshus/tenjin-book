@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import { CollectionConsumer } from '../../context/CollectionContext';
-import {Redirect } from 'react-router';
+import { Redirect } from 'react-router';
 import HotkeysEditor from './HotkeysEditor';
 import EditorActions from './EditorActions';
 import EditorEntries from './EditorEntries';
@@ -128,8 +128,6 @@ const Editor = ({treeItem}) => {
                 (editingMode.isStudying ? 'Study' : 'Preview')
             }
             </div>
-
-            {/* {console.log(JSON.stringify(card, null, 2))} */}
         </div>
     )
     }

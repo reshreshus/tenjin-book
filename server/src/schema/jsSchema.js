@@ -479,6 +479,14 @@ let items = [{
         "entries": [
           {
             "id": 0,
+            "name": "markdown entry",
+            "format": "markdown",
+            "content": "x^2 = y",
+            "type": "C",
+            "__typename": "CardEntry",
+          },
+          {
+            "id": 1,
             "name": "Front",
             "content": {
               "tree": [
@@ -679,6 +687,7 @@ let items = [{
           {
             "id": 0,
             "name": "Front",
+            "format": "markdown",
             "content": {
               "tree": [
                 {
@@ -801,6 +810,7 @@ const typeDefs = `
         content: JSON, 
         templateTitle: String,
         type: String
+        format: String
     }
 
     type Query {

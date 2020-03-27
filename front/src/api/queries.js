@@ -61,6 +61,7 @@ export const GET_CARD = gql`
                 name
                 content
                 type
+                format
             }
         }
     }
