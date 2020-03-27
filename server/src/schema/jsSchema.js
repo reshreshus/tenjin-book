@@ -481,7 +481,7 @@ let items = [{
             "id": 0,
             "name": "markdown entry",
             "format": "markdown",
-            "content": "x^2 = y",
+            "content": "$x^2 = y$",
             "type": "C",
             "__typename": "CardEntry",
           },

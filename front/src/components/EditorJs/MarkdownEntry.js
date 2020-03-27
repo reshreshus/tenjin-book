@@ -1,11 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react'
+import MarkdownRender from './MarkdownRender'
+import CodemirrorEditor from './CodemirrorEditor'
 
-const MarkdownEntry = () => {
+export default function MarkdownEntry({e}) {
+    const [source, updateSource] = useState(e.content);
+    const [isPreview, updateIsPreview] = useState(false);
+
+    const onEditorChange = (value) => {
+        updateSource(value);
+    }
+
     return (
-        <div>
-            MARKDOWN ENTRY!
+        <div className="editor">
+            <div className="editor__btn btn btn-primary" onClick={() => updateIsPreview(!isPreview)}> switch</div>
+            {
+                isPreview ?
+                <MarkdownRender className="editor_render" source={source}/>
+                :
+                <CodemirrorEditor className="editor_codemirror" source={source} onEditorChange={onEditorChange} />
+            }
+            
         </div>
-    );
+    )
 }
-
-export default MarkdownEntry;

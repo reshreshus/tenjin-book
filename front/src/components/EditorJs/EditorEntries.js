@@ -10,7 +10,7 @@ export default function EditorEntries({entries, entriesEditors,
                 {   entries && entriesEditors ?
                     entries.map(e => (
                         (e.format === 'markdown') ?
-                        <MarkdownEntry />
+                        <MarkdownEntry e={e} key={e.key}/>
                         :
                         <Entry e={e} key={e.key}
                         saveEditorInstance={saveEditorInstance}

@@ -16,5 +16,12 @@
   "bugs": {
     "url": "https://github.com/reshreshus/merumera/issues"
   },
-  "homepage": "https://github.com/reshreshus/merumera#readme"
+  "homepage": "https://github.com/reshreshus/merumera#readme",
+  "dependencies": {
+    "codemirror": "^5.52.2",
+    "react-codemirror2": "^7.1.0",
+    "react-markdown": "^4.3.1",
+    "react-mathjax": "^1.0.1",
+    "remark-math": "^2.0.1"
+  }
 }
