@@ -1,0 +1,27 @@
+.editor {
+  width: 100%;
+}
+.editor__header {
+  margin: 1rem 0;
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+.editor__header * {
+  flex: 1;
+}
+.editor__entries {
+  width: 100%;
+}
+.editor__actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-right: 3.75rem;
+}
+.editor__save {
+  margin-top: 2rem;
+}
+.editor__preview-button {
+  margin-top: 2rem;
+}

@@ -4,20 +4,6 @@
     align-items: center;
 }
 
-.card-entry-repeat {
-    width: 100%;
-    display: flex;
-    &__field {
-        // @include bg-primary; 
-        // padding: 5px;
-        // padding-left: 16.5px;
-        flex: 5;
-        width: 100%;
-        // border-radius: 10px;
-        margin-bottom: 0.4rem;
-    }
-}
-
 .card-eval {
     display: flex;
     justify-content: center;

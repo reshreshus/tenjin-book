@@ -12,8 +12,8 @@ const Entry = ({e, saveEditorInstance, updateEditorChanged}) => {
     }
 
     return (
-        <div className="card-entry-repeat">
-            <div className="card-entry-repeat__field">
+        <div className="card-entry">
+            <div className="card-entry__field--repeat">
                 {
                 e.format === 'markdown' ?
                 <div className="card-entry__text-field">
