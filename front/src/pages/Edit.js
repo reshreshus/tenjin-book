@@ -1,6 +1,6 @@
 import React from 'react'
 import {useLocation} from 'react-router-dom';
-import Editor from '../components/EditorJs/Editor';
+import Editor from '../components/Editor/Editor';
 import { CollectionConsumer } from '../context/CollectionContext'
 
 export default function Edit() {        
