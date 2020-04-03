@@ -9,9 +9,9 @@ export default function Header() {
             ({updateContextTreeItem}) => {
                 return (
                     <div className="header">
-                        <Link to="/" className="link" onClick={() => updateContextTreeItem(null)}>
-                            <h1>Tenjin Book<br/>
-                            </h1>
+                        <Link to="/" className="header__link link" onClick={() => updateContextTreeItem(null)}>
+                            <img className="header__img" src="tenjinbook.png" height="50px"/>
+                            <h1>Tenjin Book </h1> 
                         </Link>
                     </div>
                 )

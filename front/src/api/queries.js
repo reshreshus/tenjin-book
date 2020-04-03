@@ -73,6 +73,7 @@ export const SAVE_CARD = gql`
             id
             entries {
                 content
+                format
             }
         }
     }

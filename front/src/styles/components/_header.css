@@ -1,0 +1,7 @@
+.header__link {
+  display: flex;
+  align-items: center;
+}
+.header__img {
+  margin-right: 0.7rem;
+}

@@ -3,13 +3,12 @@ import EntryMarkdown from './EntryMarkdown';
 import EntryEditorJs from './EntryEditorJs';
 
 export default function Entry({e, saveEditorInstance, chooseType,
-    editorChanged, updateEditorChanged, deleteEntryEditor, onMarkdownEntryChange, source
+    editorChanged, updateEditorChanged, deleteEntryEditor, onMarkdownEntryChange, updateEntryFormat
 }) {
     const [isChoosingType, updateChoosingType] = useState(false);
     const [isChanged, updateIsChanged] = useState(false);
     const [isPreview, updateIsPreview] = useState(false);
     
-
     const onEditorChange = (value) => {
         onMarkdownEntryChange(e.id, value);
     }
@@ -77,6 +76,9 @@ export default function Entry({e, saveEditorInstance, chooseType,
                         e.name
                     }
                 </div>
+                <div className="card-entry__switch btn-contrast" 
+                    onClick={() => updateEntryFormat(e.id, isEntryMarkdown() ? "EditorJs" : "markdown")}> 
+                    {isEntryMarkdown() ? "markdown" : "EditorJs" }</div>
                 {
                     isEntryMarkdown() ? (<div className="card-entry__switch btn-contrast" 
                     onClick={() => updateIsPreview(!isPreview)}> switch</div>) : ""
