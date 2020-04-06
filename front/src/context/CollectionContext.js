@@ -339,6 +339,7 @@ function CollectionProvider({children,
         updateCard(null);
         updateIsCardUpdating(true);
         let newCard = await getCard(id);
+        console.log({newCard});
         updateCard(newCard);
         updateIsCardUpdating(false);
     }

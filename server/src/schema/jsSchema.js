@@ -687,7 +687,6 @@ let items = [{
           {
             "id": 0,
             "name": "Front",
-            "format": "markdown",
             "content": {
               "tree": [
                 {
