@@ -59,7 +59,7 @@ const HotkeyApp = () => {
                 }
 
                 let hotkeys = menuItems.map(({hotkeyJs}) => hotkeyJs)
-                hotkeys = [...hotkeys, 'alt+v', 'alt+c', 'ctrl+alt+h', 'esc']
+                hotkeys = [...hotkeys, 'alt+v', 'ctrl+b', 'ctrl+alt+h', 'esc']
                 hotkeys = hotkeys.join(',')
                 
                 const onKeyDown = (keyName, e, handle) => {
@@ -70,7 +70,7 @@ const HotkeyApp = () => {
                             toggleRightSidebar();
                             e.preventDefault();
                             break;
-                        case 'alt+c': 
+                        case 'ctrl+b': 
                             toggleLeftSidebar();
                             e.preventDefault();
                             break;
