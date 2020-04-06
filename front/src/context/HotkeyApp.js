@@ -13,7 +13,6 @@ const HotkeyApp = () => {
             ({menuItems, showSidebars, updateShowSidebars}) => {
                 const toggleLeftSidebar = () => {
                     let sidebar = document.querySelector('.sidebar');
-                    console.log("handleAltC", sidebar);
                     // both sidebars are on
                     // switch left sidebar off
                     if (showSidebars[0] === true && showSidebars[1] == true) {
@@ -29,9 +28,15 @@ const HotkeyApp = () => {
                         // don't react
                     }
                 }
+
+                const openSidebarHalfFullWidth = () => {
+                    let sidebar = document.querySelector('.sidebar');
+                    const windowWidth = document.body.offsetWidth;
+                    console.log({windowWidth})                    
+                    sidebar.style.width = `${windowWidth}px`
+                }
             
                 const toggleRightSidebar = () => {
-                    console.log("hadnleAltV")
                     let sidebar = document.querySelector('.sidebar');
                     let rightSidebar = document.querySelector('.right-sidebar');
                     // both sidebars are on
@@ -54,7 +59,7 @@ const HotkeyApp = () => {
                 }
 
                 let hotkeys = menuItems.map(({hotkeyJs}) => hotkeyJs)
-                hotkeys = [...hotkeys, 'alt+v', 'alt+c', 'esc']
+                hotkeys = [...hotkeys, 'alt+v', 'alt+c', 'ctrl+alt+h', 'esc']
                 hotkeys = hotkeys.join(',')
                 
                 const onKeyDown = (keyName, e, handle) => {
@@ -68,6 +73,9 @@ const HotkeyApp = () => {
                         case 'alt+c': 
                             toggleLeftSidebar();
                             e.preventDefault();
+                            break;
+                        case 'ctrl+alt+h':
+                            openSidebarHalfFullWidth();
                             break;
                         case 'esc':
                             hideContextMenu();
