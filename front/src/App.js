@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react'
-import './styles/main.scss'
+import './styles/main.sass'
 import {Switch, Route} from 'react-router-dom';
 import Sidebar from './components/Sidebar/Sidebar';
 
