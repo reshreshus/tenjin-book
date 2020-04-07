@@ -210,7 +210,11 @@ function CollectionProvider({children,
 
     const updateContextTreeItemAndCleanup = (treeItem, treeItemRef) => {
         removeSelections();
-        hideContextMenu();
+        // if clicked on the same item let openContextMenu close it 
+        // instead of opening again after hideContextMenu()
+        if (contextTreeItem && contextTreeItem.id !== treeItem.id) {
+            hideContextMenu();
+        }
         updateContextTreeItem(Object.assign({}, treeItem));
     }
 
@@ -356,7 +360,6 @@ function CollectionProvider({children,
     }
 
     const openAppContextMenu = (e) => {
-        console.log("openAppContextMenu", {menuItems})
         updateMenuItems(appMenuItems());
         openContextMenu(e);
     }

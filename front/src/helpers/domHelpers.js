@@ -1,12 +1,21 @@
 export const openContextMenu = (e) => {
     e.preventDefault();
     let menu = document.querySelector('.cmenu')
+    if (menu) {
+        console.log({classes: menu.classList})
+        if (menu.classList.contains("hide")) {
+            menu.style.top = `${e.clientY + 10}px`;
+            menu.style.left = `${e.clientX - 30}px`;
+            menu.classList.remove('hide');
+        } else {
+            menu.classList.add('hide');
+        }
+        console.log({classesAFter: menu.classList})
+    }
     
-    menu.style.top = `${e.clientY + 10}px`;
-    menu.style.left = `${e.clientX - 30}px`;
-    menu.classList.remove('hide');
 }
 export const hideContextMenu = () => {
+    console.log("hideContextMenu")
     let menu = document.querySelector('.cmenu')
     menu.classList.add('hide');
     menu.style.top = '-200%';
