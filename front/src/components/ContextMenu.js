@@ -1,11 +1,12 @@
 import React from 'react';
 import {CollectionConsumer} from '../context/CollectionContext';
 
-const ContextMenu = () => {
+const ContextMenu = ({menuItems}) => {
+
     return (
         <CollectionConsumer> 
         {
-            ({hideContextMenu, menuItems}) => {
+            ({hideContextMenu}) => {
 
                 return (
                     // TODO doesn't leave the mouse if we didn't enter it first!

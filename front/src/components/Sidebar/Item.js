@@ -38,7 +38,7 @@ const Item = ({
     <CollectionConsumer> 
         {
             ({updateContextTreeItemAndCleanup,
-                openContextMenu, renameTreeItemContext, getCardContext,
+                openTreeContextMenu, renameTreeItemContext, getCardContext,
                 contextTreeItem, isEditing, updateIsEditing, updateEditingMode
             }) => {
             const triggerTreeItemName = () => {
@@ -144,7 +144,7 @@ const Item = ({
                           }}
                           onContextMenu={(e) => {
                             updateContextTreeItemAndCleanup(treeItem, node);
-                            openContextMenu(e)
+                            openTreeContextMenu(e)
                           }}
                           >
                           <ContentEditable 

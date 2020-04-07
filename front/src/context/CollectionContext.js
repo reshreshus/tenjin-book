@@ -7,7 +7,8 @@ import { useQuery } from '@apollo/react-hooks';
 
 import { selectElementContents, removeSelections, 
          openContextMenu, hideContextMenu } from '../helpers/domHelpers'
-import {getContextMutations} from './ContextMutations';
+import { getContextMutations } from './contextMutations';
+import { appMenuItems } from './appMenuItems';
 
 
 const Collection = React.createContext();
@@ -30,13 +31,6 @@ function CollectionProvider({children,
     const [isCardUpdating, updateIsCardUpdating] = useState(false);
     const [card, updateCard] = useState(null);
 
-    // useEffect(() => {
-    //     console.warn("contextTreeItem", contextTreeItem);
-    // }, [contextTreeItem]);
-    // useEffect(() => {
-    //     console.warn("card", contextTreeItem);
-    // }, [card]);
-
     const [currentlyUsedDeck, updateCurrentlyUsedDeck] = useState();
 
     const [editingMode, updateEditingMode] = useState({
@@ -44,8 +38,7 @@ function CollectionProvider({children,
         isEditing: true
     })
 
-    const {data: treeData, loading: treeLoading, error: treeError} = useQuery(GET_TREE,
-        {
+    const {data: treeData, loading: treeLoading, error: treeError} = useQuery(GET_TREE, {
             // TODO: query executes an unusual number of times
             onCompleted:  () => { 
                 console.log(treeData.tree); 
@@ -344,7 +337,7 @@ function CollectionProvider({children,
         updateIsCardUpdating(false);
     }
 
-    const menuItems = getContextMutations(
+    const treeMenuItems = () => getContextMutations(
         addDeckContext, 
         addItemContext, 
         selectTreeItemToRenameContext,
@@ -354,6 +347,20 @@ function CollectionProvider({children,
         contextTreeItem
     );
 
+    // let menuItems = treeMenuItems();
+    const [menuItems, updateMenuItems] = useState(treeMenuItems())
+
+    const openTreeContextMenu = (e) => {
+        updateMenuItems(treeMenuItems());
+        openContextMenu(e);
+    }
+
+    const openAppContextMenu = (e) => {
+        console.log("openAppContextMenu", {menuItems})
+        updateMenuItems(appMenuItems());
+        openContextMenu(e);
+    }
+
     return (
     <Collection.Provider value={{
             tree,
@@ -362,7 +369,8 @@ function CollectionProvider({children,
             chooseTypeContext,
             updateContextTreeItemAndCleanup,
             getCardContext,
-            openContextMenu,
+            openTreeContextMenu,
+            openAppContextMenu,
             hideContextMenu,
             card,
             isCardUpdating,
@@ -387,7 +395,7 @@ function CollectionProvider({children,
             advanceCardContext
         }}>
             {children}
-            <ContextMenu />
+            <ContextMenu menuItems={menuItems}/>
             <HotkeyApp />
     </Collection.Provider>)
 }
