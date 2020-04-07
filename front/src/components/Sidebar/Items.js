@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useState} from 'react';
 // import Navigation from "@atlaskit/navigation";
 import Item from './Item';
 import {CollectionConsumer} from '../../context/CollectionContext';
@@ -27,6 +27,7 @@ const renderItem = ({
 
 
 const Items = () => {
+    const [searchText, updateSearchText] = useState(null);
     return (
         <CollectionConsumer> 
         {
@@ -61,17 +62,19 @@ const Items = () => {
                 if (tree) {
                     console.log("tree", tree);
                     return (
-                        
-                        <div className="tree">
-                            <Tree
-                                tree={tree}
-                                renderItem={renderItem}
-                                onExpand={onExpand}
-                                onCollapse={onCollapse}
-                                onDragEnd={onDragEnd}
-                                isDragEnabled
-                                isNestingEnabled
-                            />
+                        <div>
+                            <input className="sidebar__search" type="text" onChange={e => updateSearchText(e.target.value)}/>
+                            <div className="tree">
+                                <Tree
+                                    tree={tree}
+                                    renderItem={renderItem}
+                                    onExpand={onExpand}
+                                    onCollapse={onCollapse}
+                                    onDragEnd={onDragEnd}
+                                    isDragEnabled
+                                    isNestingEnabled
+                                />
+                            </div>
                         </div>
                     )
                 }
