@@ -1,9 +1,7 @@
 import React from 'react';
 import {CollectionConsumer} from '../context/CollectionContext';
-import { ADD_DECK } from '../api/queries';
 
 const ContextMenu = () => {
-
     return (
         <CollectionConsumer> 
         {
