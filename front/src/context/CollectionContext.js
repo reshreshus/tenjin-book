@@ -22,13 +22,14 @@ function CollectionProvider({children,
     renameTreeItem,
     getCard,
     saveTree,
-    advanceCard}) 
+    advanceCard,
+    getItems
+}) 
     {
     const [tree, updateTree] = useState(null) 
     const [contextTreeItem, updateContextTreeItem] = useState(null);
     const [showSidebars, updateShowSidebars] = useState([true, true]);
     const [isEditing, updateIsEditing] = useState(false);
-    const [isCardUpdating, updateIsCardUpdating] = useState(false);
     const [card, updateCard] = useState(null);
 
     const [currentlyUsedDeck, updateCurrentlyUsedDeck] = useState();
@@ -48,6 +49,11 @@ function CollectionProvider({children,
                 }
             }
         });
+
+    const getAll = () => {
+        const items = getItems();
+        return { tree, items }
+    }
 
     const getCardsIdsOfDeck = (treeItem, findDue = false) => {
         if (!treeItem.hasChildren) return [];
@@ -171,17 +177,14 @@ function CollectionProvider({children,
     }
 
     const setCardToRepeat = (deckTreeItem=currentlyUsedDeck, newTree=tree) => {
-        // console.log("setCardToRepeat", deckTreeItem);
         let dueItemsIds = deckTreeItem.data.dueItemsIds;
         if (dueItemsIds.length > 0) {
             updateContextTreeItem(newTree.items[dueItemsIds[0]]);
-            getCardContext(dueItemsIds[0]);
+            setCardContext(dueItemsIds[0]);
         } else if (deckTreeItem.data.dueDecksIds.length > 0) {
             setCardToRepeat(newTree.items[deckTreeItem.data.dueDecksIds[0]]);
         } else {
             console.error("No CARD TO REPEAT")
-            // updateCard(null);
-            // updateContextTreeItem(deckTreeItem)
         }
     }
 
@@ -331,14 +334,12 @@ function CollectionProvider({children,
     }
 
     // TODO rename to set
-    const getCardContext = async (id) => {
+    const setCardContext = async (id) => {
         // this little thing makes it possible to rerender EditorJs
         updateCard(null);
-        updateIsCardUpdating(true);
         let newCard = await getCard(id);
         console.log({newCard});
         updateCard(newCard);
-        updateIsCardUpdating(false);
     }
 
     const treeMenuItems = () => getContextMutations(
@@ -371,12 +372,11 @@ function CollectionProvider({children,
             deleteEntryContext,
             chooseTypeContext,
             updateContextTreeItemAndCleanup,
-            getCardContext,
+            setCardContext,
             openTreeContextMenu,
             openAppContextMenu,
             hideContextMenu,
             card,
-            isCardUpdating,
             saveCardContext,
             updateContextTreeItem,
             showSidebars, 

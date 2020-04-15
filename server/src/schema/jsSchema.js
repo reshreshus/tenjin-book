@@ -1,6 +1,7 @@
 const { ApolloServer, gql } = require('apollo-server');
 const GraphQLJSON = require('graphql-type-json');
 // import { makeExecutableSchema } from 'graphql-tools';
+import { getItems } from '../db';
 
 import _ from 'lodash';
 
@@ -813,12 +814,12 @@ const typeDefs = `
     }
 
     type Query {
-        items: [Card],
-        tree: JSON,
-        cardEntry(id: ID!): CardEntry
+      tree: JSON,
+      cardEntry(id: ID!): CardEntry
     }
 
     type Mutation {
+        items: [Card],
         addCardEntry (
             name: String!
             content: JSON
@@ -857,8 +858,8 @@ const typeDefs = `
 `;
 
 const ID = () => {
-    return '_' + Math.random().toString(36).substr(2, 9);
-  };
+	return '_' + Math.random().toString(36).substr(2, 9);
+};
 
  
 const addTreeItem = (parentId, id) => { 
@@ -928,10 +929,10 @@ Date.prototype.addDays = function(days) {
 const resolvers = {  
     JSON: GraphQLJSON, 
     Query: {   
-        items: () => items,
-        tree: () => tree
+        tree: () => tree,
     },
     Mutation: {
+        items: () => items,
         advanceCard: (parent, {id, quality : q}) => {    
             let itemTreeItem = tree.items[id]
             if (itemTreeItem.data.type === 'f' || itemTreeItem.data.type === 'T') {

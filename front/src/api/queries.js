@@ -45,6 +45,12 @@ export const SAVE_TREE = gql`
     }
 `;
 
+export const GET_ITEMS = gql`
+    mutation {
+        items 
+    }
+`;
+
 export const GET_TREE = gql`
     {
         tree 

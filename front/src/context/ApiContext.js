@@ -2,7 +2,7 @@ import React from 'react'
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import { GET_CARD, SAVE_CARD, SAVE_TREE, ADD_ITEM, 
     RENAME_TREE_ITEM, DELETE_TREE_ITEM, DUPLICATE_TREE_ITEM, ADD_DECK, 
-    ADVANCE_CARD
+    ADVANCE_CARD, GET_ITEMS
  } from '../api/queries';
 import {CollectionProvider} from './CollectionContext'
 
@@ -11,6 +11,8 @@ export default function ApiContext({children}) {
     const [saveCardQuery] = useMutation(SAVE_CARD)
     const [saveTreeQuery] = useMutation(SAVE_TREE);
 
+    const [getTreeQuery] = useMutation(GET_ITEMS);
+
     const [addItemQuery] = useMutation(ADD_ITEM);
 
     const [renameTreeItemQuery] = useMutation(RENAME_TREE_ITEM);
@@ -18,6 +20,11 @@ export default function ApiContext({children}) {
     const [duplicateTreeItemQuery] = useMutation(DUPLICATE_TREE_ITEM);
     const [addDeckQuery] = useMutation(ADD_DECK);
     const [advanceCardQuery] = useMutation(ADVANCE_CARD);
+
+    const getItems = async () => {
+        let data = await getTreeQuery();
+        return data.data.items;
+    }
 
     const advanceCard = async (id, quality) => {
         let data = await advanceCardQuery({
@@ -110,6 +117,7 @@ export default function ApiContext({children}) {
             getCard={getCard}
             saveTree={saveTree}
             advanceCard={advanceCard}
+            getItems={getItems}
             >
             {children}
         </CollectionProvider>)

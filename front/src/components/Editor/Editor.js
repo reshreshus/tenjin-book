@@ -51,7 +51,7 @@ const Editor = ({treeItem}) => {
     return (
 <CollectionConsumer >
     { ({addNewEntryContext, deleteEntryContext,
-        chooseTypeContext, card, isCardUpdating, saveCardContext,
+        chooseTypeContext, card, saveCardContext,
         findLastDeck, editingMode,
         updateEditingMode, advanceCardContext
     }) => {
@@ -59,9 +59,6 @@ const Editor = ({treeItem}) => {
         return <Redirect push to='/show-deck' />
     }
     if(!card) {
-        // TODO
-        if (isCardUpdating)
-            return <div>loading</div>
         return <div>loading</div>
     }
     const {template_title, entries} = card;

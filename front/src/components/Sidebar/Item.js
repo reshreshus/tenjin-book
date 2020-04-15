@@ -12,20 +12,11 @@ const Item = ({
 }) => {
   let contentEditable;
   const [name, updateName] = useState(null);
-  // const [expanded, updateExpanded] = useState(treeItem.expanded ? treeItem.expanded : false)
   let node = useRef(null);
   let draggable = useRef(null);
   useEffect(() => {
       contentEditable = React.createRef();
       draggable.current.removeAttribute("tabIndex");
-
-      // let el = document.querySelector(`#tree-item-${treeItem.id}`);
-      // let resizer = document.querySelector('.resizer')
-      // console.log("#tree-item", resizer.previousElementSibling.style.width);
-      
-      // if (resizer.previousElementSibling.style.width < `${el.getBoundingClientRect().right + 600}px`) {
-      //   resizer.previousElementSibling.style.width = `${el.getBoundingClientRect().right + 1500}px`
-      // }
   })
   if (!name) {
     if (treeItem) {
@@ -38,16 +29,13 @@ const Item = ({
     <CollectionConsumer> 
         {
             ({updateContextTreeItemAndCleanup,
-                openTreeContextMenu, renameTreeItemContext, getCardContext,
+                openTreeContextMenu, renameTreeItemContext, setCardContext,
                 contextTreeItem, isEditing, updateIsEditing, updateEditingMode
             }) => {
             const triggerTreeItemName = () => {
-              // in case we navigate with tab
-              // if (!contextTreeItem || treeItem.id !== contextTreeItem.id) {
               updateContextTreeItemAndCleanup(treeItem, node);
-              // }
               if (treeItem.data.type === 'f' || treeItem.data.type === 'T') {
-                getCardContext(treeItem.id);
+                setCardContext(treeItem.id);
               }
             }
             const onTreeItemKeyDown = (e) => {
@@ -125,10 +113,6 @@ const Item = ({
                       }}
                       style={snapshot.isDragging ? {
                         background:  "lightblue" }: {}}
-                        // onDragOver={() => {
-                        //   console.log("onDragOver")
-                        //   node.style.background = 'red'
-                        // }}
                       >
                       <Link className={`tree-item__link ${(contextTreeItem && treeItem.id === contextTreeItem.id) ? 
                       'tree-item__link--active':''}`}

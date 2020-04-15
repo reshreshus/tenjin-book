@@ -18,8 +18,8 @@ console.log('server working..');
 // })
 
 server.listen().then(({ url }) => {
-    console.log(`🚀 Server ready at ${url}`)
-  });
+  console.log(`🚀 Server ready at ${url}`)
+});
 
 
 
