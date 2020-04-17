@@ -21,11 +21,10 @@ const populateDb = () => {
 
 // populateDb();
 export const getItems = async () => {
-    let data = []
-    db.items.find({}, async function(err, docs) {
-        // console.log({err})
-        console.log("getItems")
-        data = docs;
-    })
-    console.log({data})
+    let data = await new Promise(resolve => 
+        db.items.find({}, function(err, docs) {
+            resolve(docs)
+        })
+    )
+    return data;
 }

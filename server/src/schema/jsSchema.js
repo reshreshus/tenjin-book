@@ -819,7 +819,7 @@ const typeDefs = `
     }
 
     type Mutation {
-        items: [Card],
+        items: [JSON],
         addCardEntry (
             name: String!
             content: JSON
@@ -932,7 +932,7 @@ const resolvers = {
         tree: () => tree,
     },
     Mutation: {
-        items: () => items,
+        items: () => getItems(),
         advanceCard: (parent, {id, quality : q}) => {    
             let itemTreeItem = tree.items[id]
             if (itemTreeItem.data.type === 'f' || itemTreeItem.data.type === 'T') {
