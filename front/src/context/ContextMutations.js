@@ -5,8 +5,7 @@ export const getContextMutations = (
     selectTreeItemToRenameContext,
     duplicateTreeItemContext,
     deleteTreeItemContext,
-    toggleExpanded,
-    contextTreeItem
+    toggleExpanded
     ) => {
 
     return [
@@ -16,7 +15,7 @@ export const getContextMutations = (
             "hotkeyJs": "alt+shift+d",
             "func": () => {
                 console.log("New Deck");
-                addDeckContext(contextTreeItem.id);
+                addDeckContext();
             }
         },
         {
@@ -25,8 +24,7 @@ export const getContextMutations = (
             "hotkeyJs": "n",
             "func": () => {
                 console.log("New Topic");
-                // TODO: why contextTreeItem here?
-                addItemContext(contextTreeItem, 'T');
+                addItemContext('T');
             },
         },
         {
@@ -35,8 +33,7 @@ export const getContextMutations = (
             "hotkeyJs": "a",
             "func": () => {
                 console.log("New New Card")
-                console.warn({contextTreeItem})
-                addItemContext(contextTreeItem, 'f');
+                addItemContext('f');
             },
         },
         {
@@ -57,7 +54,7 @@ export const getContextMutations = (
             "hotkeyJs": "ctrl+shift+d",
             "func": () => {
                 console.log("Duplicate");
-                duplicateTreeItemContext(contextTreeItem.id)
+                duplicateTreeItemContext()
             },
         },
         {
@@ -66,7 +63,7 @@ export const getContextMutations = (
             "hotkeyJs": "del",
             "func": () => {
                 console.log("Delete")
-                deleteTreeItemContext(contextTreeItem.id);
+                deleteTreeItemContext();
             },
         },
         {
@@ -75,7 +72,7 @@ export const getContextMutations = (
             "hotkeyJs": "z",
             "func": () => {
                 console.log("Toggle Expanded");
-                toggleExpanded(contextTreeItem.id);
+                toggleExpanded();
             },
         },
         {

@@ -207,7 +207,7 @@ function CollectionProvider({children,
         return findLastDeck(parent);
     }
 
-    const toggleExpanded = (treeItemId) => {
+    const toggleExpanded = (treeItemId = contextTreeItem.id) => {
         let treeItem = tree.items[treeItemId];
         treeItem.isExpanded = !treeItem.isExpanded;
         updateTree(Object.assign({}, tree))
@@ -297,12 +297,12 @@ function CollectionProvider({children,
         saveTree(newTree);
     }
 
-    const duplicateTreeItemContext = async (treeItemId) => {
+    const duplicateTreeItemContext = async (treeItemId = contextTreeItem.id) => {
         let newTree = await duplicateTreeItem(treeItemId);
         updateTreeAndAddParams(newTree);
     }
 
-    const deleteTreeItemContext = async (treeItemId) => {
+    const deleteTreeItemContext = async (treeItemId = contextTreeItem.id) => {
         let tree = await deleteTreeItem(treeItemId);
         updateTreeAndAddParams(tree);
     }
@@ -314,7 +314,7 @@ function CollectionProvider({children,
         updateTree(Object.assign({}, tree));
     }
 
-    const addDeckContext = async (parentId) => {
+    const addDeckContext = async (parentId = contextTreeItem.id) => {
         if (!isDeck(tree.items[parentId])) {
             alert('Cannot make a deck from this type of item');
             return;
@@ -323,7 +323,7 @@ function CollectionProvider({children,
         updateTree(newtree);
     }
 
-    const addItemContext = async (treeItem, type) => {
+    const addItemContext = async (type, treeItem = contextTreeItem) => {
         if (treeItem.data.type !== 'D') { 
             alert('Cannot make an item from this type of item');
             return;
