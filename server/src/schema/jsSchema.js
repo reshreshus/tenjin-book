@@ -188,8 +188,8 @@ const nextIntervalSm2 = (n, eF) => {
     return eF * nextIntervalSm2(n - 1, eF);
 }
 
-const updateTreeDb = async () => {
-  updateTree(tree);
+const updateTreeDb = async (newTree = tree) => {
+  updateTree(newTree);
 }
 
 // TODO: no logic for advancing Topics is sm2
@@ -232,7 +232,7 @@ const resolvers = {
             let itemTreeItem = tree.items[id]
             if (itemTreeItem.data.type === 'f' || itemTreeItem.data.type === 'T') {
                 advanceCardSm2(itemTreeItem, q);
-                updateTree(tree)
+                updateTreeDb(tree)
                 return tree;
             } else {
                 console.error("Trying to advance non-item");
@@ -246,7 +246,7 @@ const resolvers = {
                 type: 'D',
                 name: `deck ${id}`,
             }
-            updateTree(tree);
+            updateTreeDb(tree);
             return tree;
         },
         addItem: (_, {type, parentId}) => { 
@@ -266,7 +266,7 @@ const resolvers = {
 					history: []
 				}
 			}
-			updateTree(tree);
+			updateTreeDb(tree);
 			return tree;
         },
         addCardEntry: (_, { id, name, content, type, card_id}) => {
@@ -295,12 +295,12 @@ const resolvers = {
         },
         saveTree: (_, {newTree}) => {
             tree = newTree;
-            updateTree(newTree);
+            updateTreeDb(newTree);
             return tree; 
         },
         renameTreeItem: (_, {id, newName}) => {
             tree.items[id].data.name = newName;
-            updateTree(tree);
+            updateTreeDb(tree);
             return tree.items[id];
         },
         deleteTreeItem: (_, {id}) => {
@@ -312,7 +312,7 @@ const resolvers = {
             if (parent.children.length === 0) {
                 parent.hasChildren = false;
             }
-            updateTree(tree);
+            updateTreeDb(tree);
             return tree;
         },
         duplicateTreeItem: (_, {id}) => {
@@ -335,7 +335,7 @@ const resolvers = {
                 card.id = newId;
                 insertItem(card);
             }
-            updateTree(tree);
+            updateTreeDb(tree);
             return tree;
         }
     }

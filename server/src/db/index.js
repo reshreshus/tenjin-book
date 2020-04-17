@@ -42,13 +42,15 @@ export const insertItem = async (item) => await new Promise(resolve =>
 
 export const getTree = async () => await new Promise(resolve => 
     db.tree.find({}, function(err, docs) {
-        if (!err)
+        if (!err) {
+            console.log("count", docs.length)
             resolve(docs[0])
+        }
     })
 )
 
-export const updateTree = async () => await new Promise(resolve => 
-    db.tree.update({}, tree)
+export const updateTree = async (newTree) => await new Promise(resolve =>
+    db.tree.update({}, newTree)
 )
 
 export const putTreeItem = async (id, item) => await new Promise(resolve => 
