@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon --exec babel-node src/index.js",
-    "start-pop": "nodemon --exec cross-env PROD_ENV=pop babel-node src/db/index.js"
+    "populate-default": "cross-env PROD_ENV=pop babel-node src/db/index.js"
   },
   "keywords": [],
   "author": "reshreshus",
