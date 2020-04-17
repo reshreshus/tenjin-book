@@ -22,8 +22,7 @@ function CollectionProvider({children,
     renameTreeItem,
     getCard,
     saveTree,
-    advanceCard,
-    getItems
+    advanceCard
 }) 
     {
     const [tree, updateTree] = useState(null) 
@@ -51,15 +50,6 @@ function CollectionProvider({children,
     });
 
     const [isAppMenuUsed, updateIsAppMenuUsed] = useState(false);
-    
-    useEffect(() => {
-        console.log({contextTreeItem})
-    }, [contextTreeItem])
-
-    const getAll = () => {
-        const items = getItems();
-        return { tree, items }
-    }
 
     const getCardsIdsOfDeck = (treeItem, findDue = false) => {
         if (!treeItem.hasChildren) return [];
@@ -89,13 +79,19 @@ function CollectionProvider({children,
         return treeItem.data.dueCardsChanged ? treeItem.data.dueCardsChanged : true;
     }
 
+    const getDate = (dt = new Date()) => {
+        return dt.getFullYear() + "/" + (dt.getMonth() + 1) + "/" + dt.getDate();
+    }
+
     const isDue = (treeItem) => {
-        let today = new Date();
-        let nextDate = treeItem.data.repetitionStatsSm2.nextDate ;
-        // TODO
+        let today = getDate();
+        console.log({today})
+        let nextDate = treeItem.data.repetitionStatsSm2.nextDate;
+        // nextDate === '-1' it is a new card
         return nextDate === today || nextDate === '-1';
     }
 
+    // TODO: too many calculations and updates of the tree
     const calculateDueItemsInTreeItem = (parentItem, tree) => {
         // TODO
         if (!isRepeatableItem(parentItem)) {

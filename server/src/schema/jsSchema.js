@@ -192,6 +192,10 @@ const updateTreeDb = async (newTree = tree) => {
   updateTree(newTree);
 }
 
+const getDate = (dt = new Date()) => {
+    return dt.getFullYear() + "/" + (dt.getMonth() + 1) + "/" + dt.getDate();
+}
+
 // TODO: no logic for advancing Topics is sm2
 const advanceCardSm2 = (treeItem, q) => {
     let date = new Date();
@@ -207,11 +211,12 @@ const advanceCardSm2 = (treeItem, q) => {
     if (q < 3) {
         stats.nextDate = '-1';  
     } else {
-        let newDate = date.addDays(nextInterval);
-        stats.nextDate = newDate.toDateString();
+        let newDate = date;
+        stats.nextDate = getDate(newDate);
     }
-    
     stats.eFactor = newEf;
+
+    console.log({stats})
 }
 
 Date.prototype.addDays = function(days) {

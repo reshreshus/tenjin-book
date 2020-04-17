@@ -43,7 +43,6 @@ export const insertItem = async (item) => await new Promise(resolve =>
 export const getTree = async () => await new Promise(resolve => 
     db.tree.find({}, function(err, docs) {
         if (!err) {
-            console.log("count", docs.length)
             resolve(docs[0])
         }
     })
