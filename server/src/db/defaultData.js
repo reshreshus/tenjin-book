@@ -10,7 +10,7 @@ export const tree = {
           "3"
         ],
         "isExpanded": true,
-        "parentId": null,
+        "parentId": "-1",
         "data": {
           "name": "Deck",
           "count": 6,

@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon --exec babel-node src/index.js",
-    "start-nedb": "nodemon --exec babel-node src/db/index.js"
+    "start-pop": "nodemon --exec cross-env PROD_ENV=pop babel-node src/db/index.js"
   },
   "keywords": [],
   "author": "reshreshus",
@@ -14,7 +14,8 @@
     "@babel/cli": "^7.8.3",
     "@babel/core": "^7.8.3",
     "@babel/node": "^7.8.3",
-    "@babel/preset-env": "^7.8.3"
+    "@babel/preset-env": "^7.8.3",
+    "cross-env": "^7.0.2"
   },
   "dependencies": {
     "apollo-server": "^2.9.16",

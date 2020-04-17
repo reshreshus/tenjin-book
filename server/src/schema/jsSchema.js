@@ -209,9 +209,9 @@ const advanceCardSm2 = (treeItem, q) => {
     stats.repetitionsCount++
     let nextInterval = Math.round(nextIntervalSm2(stats.repetitionsCount, eF));
     if (q < 3) {
-        stats.nextDate = '-1';  
+        stats.nextDate = '-1'; 
     } else {
-        let newDate = date;
+        let newDate = date.addDays(nextInterval);
         stats.nextDate = getDate(newDate);
     }
     stats.eFactor = newEf;

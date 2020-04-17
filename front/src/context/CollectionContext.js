@@ -84,8 +84,7 @@ function CollectionProvider({children,
     }
 
     const isDue = (treeItem) => {
-        let today = getDate();
-        console.log({today})
+        let today = getDate(); 
         let nextDate = treeItem.data.repetitionStatsSm2.nextDate;
         // nextDate === '-1' it is a new card
         return nextDate === today || nextDate === '-1';
@@ -303,6 +302,7 @@ function CollectionProvider({children,
     const deleteTreeItemContext = async (treeItemId = contextTreeItem.id) => {
         let tree = await deleteTreeItem(treeItemId);
         updateTreeAndAddParams(tree);
+        updateContextTreeItem(null);
     }
 
     const renameTreeItemContext = async (newName, treeItemId) => {

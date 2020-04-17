@@ -15,8 +15,9 @@ const populateDb = () => {
     db.items.insert(items, (err, newItems) => {
     })
 }
-
-// populateDb();
+if (process.env.PROD_ENV === "pop") {
+    populateDb()
+}
 
 export const getItems = async () => await new Promise(resolve => 
     db.items.find({}, function(err, docs) {
