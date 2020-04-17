@@ -9,13 +9,10 @@ db.items.loadDatabase();
 db.tree.loadDatabase();
 
 const populateDb = () => {
-    db.tree.insert({tree}, (err) => {
-        console.log({err})
+    db.tree.insert(tree, (err) => {
     });
 
-    db.items.insert({items}, (err, newItems) => {
-        console.log({err})
-        console.log({newItems})
+    db.items.insert(items, (err, newItems) => {
     })
 }
 
@@ -29,7 +26,6 @@ export const getItems = async () => await new Promise(resolve =>
 
 export const getItem = async (id) => await new Promise(resolve => 
     db.items.find({id: id}, function(err, docs) {
-        console.log({docs})
         if (!err)
             resolve(docs[0])
     })
@@ -41,7 +37,6 @@ export const updateItem = async (id, item) => await new Promise(resolve =>
 
 export const insertItem = async (item) => await new Promise(resolve => 
     db.items.insert(item, function(err, newDoc) {
-        console.log({newDoc})
     })
 )
 

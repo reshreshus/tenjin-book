@@ -1,8 +1,9 @@
 import React from 'react';
 import {CollectionConsumer} from '../context/CollectionContext';
 
-const ContextMenu = ({menuItems}) => {
+const ContextMenu = ({menuItems, appMenuItems, isAppMenuUsed}) => {
 
+    const menu = isAppMenuUsed ? appMenuItems() : menuItems
     return (
         <CollectionConsumer> 
         {
@@ -12,7 +13,7 @@ const ContextMenu = ({menuItems}) => {
                     // TODO doesn't leave the mouse if we didn't enter it first!
                     <div className="cmenu hide" onMouseLeave={(e) => hideContextMenu(e)}>
                         {
-                            menuItems.map((it, i) => (
+                            menu.map((it, i) => (
                                 !it.disabled ?
                                 <div key={i} className="cmenu__item" onClick={(e) => {
                                     e.preventDefault();

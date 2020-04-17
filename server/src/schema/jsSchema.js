@@ -5,7 +5,8 @@ import { getItems, getTree, getItem, updateTree, updateItem, insertItem } from '
 
 import _ from 'lodash';
 
-let tree = getTree();
+let tree = {}
+getTree().then(result => tree = result); 
 
 const newCard = {
     templateId: "from db",
@@ -249,23 +250,24 @@ const resolvers = {
             return tree;
         },
         addItem: (_, {type, parentId}) => { 
-            let item = type === 'f' ? Object.assign({}, newCard) : Object.assign({}, newTopic);
-            item.id = `_${ID()}`; 
-            items = [...items, item];
-            
-            let treeItem = addTreeItem(parentId, item.id);
-            treeItem.data = {
-                type,
-                name: `${type} ${item.id}`,
-                repetitionStatsSm2: {
-                    eFactor: 2.5,
-                    repetitionsCount: 0,
-                    nextDate: '-1',
-                    history: []
-                }
-            }
-            updateTree(tree);
-            return tree;
+			// console.log("addItem", {tree})
+			let item = type === 'f' ? Object.assign({}, newCard) : Object.assign({}, newTopic);
+			item.id = `_${ID()}`; 
+			insertItem(item);
+			
+			let treeItem = addTreeItem(parentId, item.id);
+			treeItem.data = {
+				type,
+				name: `${type} ${item.id}`,
+				repetitionStatsSm2: {
+					eFactor: 2.5,
+					repetitionsCount: 0,
+					nextDate: '-1',
+					history: []
+				}
+			}
+			updateTree(tree);
+			return tree;
         },
         addCardEntry: (_, { id, name, content, type, card_id}) => {
             const card = getItem(id);
@@ -283,13 +285,11 @@ const resolvers = {
         },
         saveCard: (parent, {id, templateTitle, entries}) => {
             let card = getItem(id);
-            // let idx = items.indexOf(card);
             card = {
                 id, 
                 templateTitle, 
                 entries
             } 
-            // items[idx] = card;
             updateItem(card.id, card)
             return card;
         },
@@ -331,11 +331,9 @@ const resolvers = {
             tree.items[newId] = newTreeItem;
             // duplicate flashcard as well
             if (newTreeItem.data.type === 'f' || newTreeItem.data.type === 'T') {
-                // let card = Object.assign({}, items.filter(c => id === c.id)[0]);
                 let card = getItem(id);
                 card.id = newId;
                 insertItem(card);
-                // items.push(card);
             }
             updateTree(tree);
             return tree;

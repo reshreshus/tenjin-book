@@ -3,14 +3,14 @@ import Hotkeys from 'react-hot-keys';
 import {CollectionConsumer} from '../context/CollectionContext';
 import {hideContextMenu} from '../helpers/domHelpers';
 
-const HotkeyApp = () => {
+const HotkeyApp = ({menuItems}) => {
     const [sidebarLength, updateSidebarLength] = useState(null)
 
     return (
         <CollectionConsumer> 
         {
             
-            ({menuItems, showSidebars, updateShowSidebars}) => {
+            ({showSidebars, updateShowSidebars}) => {
                 const toggleLeftSidebar = () => {
                     let sidebar = document.querySelector('.sidebar');
                     // both sidebars are on
@@ -92,7 +92,6 @@ const HotkeyApp = () => {
                     
                 }
 
-                
                 return (
                     <Hotkeys 
                         keyName={hotkeys}

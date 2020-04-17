@@ -49,6 +49,8 @@ function CollectionProvider({children,
             }
         }
     });
+
+    const [isAppMenuUsed, updateIsAppMenuUsed] = useState(false);
     
     useEffect(() => {
         console.log({contextTreeItem})
@@ -235,7 +237,7 @@ function CollectionProvider({children,
                     type: "paragraph",
                     data: { text: "" }
                 }]
-            }, 
+            },
             type:"C",
             id: newId
         }
@@ -319,11 +321,12 @@ function CollectionProvider({children,
             alert('Cannot make a deck from this type of item');
             return;
         }
-        let newtree = await addDeck(parentId);
-        updateTree(newtree);
+        let newTree = await addDeck(parentId);
+        updateTree(newTree);
     }
 
     const addItemContext = async (type, treeItem = contextTreeItem) => {
+        console.warn({contextTreeItem});
         if (treeItem.data.type !== 'D') { 
             alert('Cannot make an item from this type of item');
             return;
@@ -346,64 +349,64 @@ function CollectionProvider({children,
         updateCard(newCard);
     }
 
-    const treeMenuItems = () => getContextMutations(
+    const openTreeContextMenu = (e) => {
+        updateIsAppMenuUsed(false);
+        openContextMenu(e);
+    }
+
+    const openAppContextMenu = (e) => {
+        updateIsAppMenuUsed(true);
+        openContextMenu(e);
+    }
+
+    let menuItems =  getContextMutations(
         addDeckContext, 
         addItemContext, 
         selectTreeItemToRenameContext,
         duplicateTreeItemContext,
         deleteTreeItemContext,
-        toggleExpanded,
-        contextTreeItem
+        toggleExpanded
     );
-
-    // let menuItems = treeMenuItems();
-    const [menuItems, updateMenuItems] = useState(treeMenuItems())
-
-    const openTreeContextMenu = (e) => {
-        updateMenuItems(treeMenuItems());
-        openContextMenu(e);
-    }
-
-    const openAppContextMenu = (e) => {
-        updateMenuItems(appMenuItems());
-        openContextMenu(e);
-    }
 
     return (
     <Collection.Provider value={{
-            tree,
-            addNewEntryContext,
-            deleteEntryContext,
-            chooseTypeContext,
-            updateContextTreeItemAndCleanup,
-            setCardContext,
-            openTreeContextMenu,
-            openAppContextMenu,
-            hideContextMenu,
-            card,
-            saveCardContext,
-            showSidebars, 
-            updateShowSidebars,
-            updateTree,
-            findLastDeck,
-            contextTreeItem,
-            updateContextTreeItem,
-            isEditing, 
-            updateIsEditing,
-            selectTreeItemToRenameContext,
-            renameTreeItemContext,
-            menuItems,
-            saveTreeContext,
-            setCardToRepeat,
-            editingMode, 
-            updateEditingMode,
-            updateCurrentlyUsedDeck,
-            toggleExpanded,
-            advanceCardContext
+        updateContextTreeItemAndCleanup,
+        contextTreeItem,
+        updateContextTreeItem,
+
+        tree,
+        updateTree,
+        selectTreeItemToRenameContext,
+        renameTreeItemContext,
+        saveTreeContext,
+
+        card,
+        saveCardContext,
+        setCardContext,
+        findLastDeck,
+        addNewEntryContext,
+        deleteEntryContext,
+        chooseTypeContext,
+        
+        isEditing, 
+        updateIsEditing,
+        editingMode, 
+        updateEditingMode,
+
+        setCardToRepeat,
+        advanceCardContext,
+        updateCurrentlyUsedDeck,
+
+        showSidebars, 
+        updateShowSidebars,
+        toggleExpanded,
+        openTreeContextMenu,
+        openAppContextMenu,
+        hideContextMenu
         }}>
             {children}
-            <ContextMenu menuItems={menuItems}/>
-            <HotkeyApp />
+            <ContextMenu menuItems={menuItems} appMenuItems={() => appMenuItems()} isAppMenuUsed={isAppMenuUsed}/>
+            <HotkeyApp menuItems={menuItems}/>
     </Collection.Provider>)
 }
 
