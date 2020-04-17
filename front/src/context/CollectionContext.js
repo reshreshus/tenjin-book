@@ -40,15 +40,19 @@ function CollectionProvider({children,
     })
 
     const {data: treeData, loading: treeLoading, error: treeError} = useQuery(GET_TREE, {
-            // TODO: query executes an unusual number of times
-            onCompleted:  () => { 
-                console.log(treeData.tree); 
-                if (treeData.tree) {
-                    let tree = calculateDueItemsInTree(treeData.tree);
-                    updateTree(tree);
-                }
+        // TODO: query executes an unusual number of times
+        onCompleted:  () => { 
+            console.log(treeData.tree); 
+            if (treeData.tree) {
+                let tree = calculateDueItemsInTree(treeData.tree);
+                updateTree(tree);
             }
-        });
+        }
+    });
+    
+    useEffect(() => {
+        console.log({contextTreeItem})
+    }, [contextTreeItem])
 
     const getAll = () => {
         const items = getItems();
@@ -378,12 +382,12 @@ function CollectionProvider({children,
             hideContextMenu,
             card,
             saveCardContext,
-            updateContextTreeItem,
             showSidebars, 
             updateShowSidebars,
             updateTree,
             findLastDeck,
             contextTreeItem,
+            updateContextTreeItem,
             isEditing, 
             updateIsEditing,
             selectTreeItemToRenameContext,

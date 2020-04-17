@@ -20,11 +20,46 @@ const populateDb = () => {
 }
 
 // populateDb();
-export const getItems = async () => {
-    let data = await new Promise(resolve => 
-        db.items.find({}, function(err, docs) {
-            resolve(docs)
-        })
-    )
-    return data;
-}
+
+export const getItems = async () => await new Promise(resolve => 
+    db.items.find({}, function(err, docs) {
+        resolve(docs)
+    })
+)
+
+export const getItem = async (id) => await new Promise(resolve => 
+    db.items.find({id: id}, function(err, docs) {
+        console.log({docs})
+        if (!err)
+            resolve(docs[0])
+    })
+)
+
+export const updateItem = async (id, item) => await new Promise(resolve => 
+    db.items.update({id: id}, item)
+)
+
+export const insertItem = async (item) => await new Promise(resolve => 
+    db.items.insert(item, function(err, newDoc) {
+        console.log({newDoc})
+    })
+)
+
+export const getTree = async () => await new Promise(resolve => 
+    db.tree.find({}, function(err, docs) {
+        if (!err)
+            resolve(docs[0])
+    })
+)
+
+export const updateTree = async () => await new Promise(resolve => 
+    db.tree.update({}, tree)
+)
+
+export const putTreeItem = async (id, item) => await new Promise(resolve => 
+    db.tree.find({}, function(err, docs) {
+        const tree = docs;
+        tree.items.id = item
+        db.tree.update({}, tree)
+    })
+)

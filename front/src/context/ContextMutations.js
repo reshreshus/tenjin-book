@@ -25,6 +25,7 @@ export const getContextMutations = (
             "hotkeyJs": "n",
             "func": () => {
                 console.log("New Topic");
+                // TODO: why contextTreeItem here?
                 addItemContext(contextTreeItem, 'T');
             },
         },
@@ -34,6 +35,7 @@ export const getContextMutations = (
             "hotkeyJs": "a",
             "func": () => {
                 console.log("New New Card")
+                console.warn({contextTreeItem})
                 addItemContext(contextTreeItem, 'f');
             },
         },
