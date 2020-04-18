@@ -9,7 +9,6 @@ export default function Sidebar() {
             <Header />
             {/* <Blocks /> */}
             <Items />
-            
         </div>
     )
 }
