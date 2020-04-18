@@ -18,6 +18,11 @@ const Item = ({
       // contentEditable = React.createRef();
       draggable.current.removeAttribute("tabIndex");
   })
+
+  useEffect(() => {
+    updateName(treeItem.data.name)
+  }, [treeItem.data.name]);
+
   if (!name) {
     if (treeItem) {
       updateName(treeItem.data.name);

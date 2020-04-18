@@ -152,7 +152,7 @@ function CollectionProvider({children,
             return dueItemsCount;
         } else {
             console.error("calculating due items from non-deck element")
-        }   
+        }
     }
 
     const calculateDueItemsInTree = (givenTree) => {
@@ -234,7 +234,7 @@ function CollectionProvider({children,
         let newCard = Object.assign({}, card)
         let newId = Math.max.apply(Math, card.entries.map(e => e.id)) + 1;
         let newEntry = {
-            name:"New Entry", 
+            name:"New Entry",
             content: {
                 tree: [{
                     type: "paragraph",
@@ -244,7 +244,6 @@ function CollectionProvider({children,
             type:"C",
             id: newId
         }
-        
         newCard.entries.push(newEntry)
         updateCard(newCard)
     }
@@ -273,10 +272,9 @@ function CollectionProvider({children,
             }
         })
         let newTree = Object.assign({}, tree)
-        updateTree(newTree);
         updateCard(newCard);
         // TODO: optimize
-        saveTree(newTree)
+        saveTreeContext(newTree)
     }
 
     const selectTreeItemToRenameContext = () => {
@@ -304,9 +302,8 @@ function CollectionProvider({children,
     }
 
     const renameTreeItemContext = async (newName, treeItemId) => {
-        // updateCard(null);
         renameTreeItem(newName, treeItemId, updateTree);
-        tree.items[treeItemId].data.name = newName;     
+        tree.items[treeItemId].data.name = newName;
         updateTree(Object.assign({}, tree));
     }
 
@@ -330,6 +327,27 @@ function CollectionProvider({children,
     }
 
     const saveCardContext = (savedCard) => {
+        let entry = savedCard.entries.filter(e => e.type === 'Q')[0];
+        if (!entry)
+            entry = savedCard.entries[0];
+        updateIsEditing(true);
+        setTimeout(() => {
+            let newName;
+            if (entry.format === "markdown") {
+                newName = entry.content;
+            } else {
+                if (entry.content.blocks) {
+                    newName = entry.content.blocks[0].data.text;
+                }
+            }
+            if (newName) {
+                newName = newName.slice(0, 20);
+                tree.items[savedCard.id].data.name = newName;
+                saveTreeContext(tree);
+            }
+            updateIsEditing(false);
+        }, 100);
+
         updateCard(savedCard);
         saveCard(savedCard);
     }
@@ -339,7 +357,6 @@ function CollectionProvider({children,
         // this little thing makes it possible to rerender EditorJs
         updateCard(null);
         let newCard = await getCard(id);
-        console.log({newCard});
         updateCard(newCard);
     }
 
@@ -354,8 +371,8 @@ function CollectionProvider({children,
     }
 
     let menuItems =  getContextMutations(
-        addDeckContext, 
-        addItemContext, 
+        addDeckContext,
+        addItemContext,
         selectTreeItemToRenameContext,
         duplicateTreeItemContext,
         deleteTreeItemContext,
