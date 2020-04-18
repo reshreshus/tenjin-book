@@ -215,8 +215,6 @@ const advanceCardSm2 = (treeItem, q) => {
         stats.nextDate = getDate(newDate);
     }
     stats.eFactor = newEf;
-
-    console.log({stats})
 }
 
 Date.prototype.addDays = function(days) {

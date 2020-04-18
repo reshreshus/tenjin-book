@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon --exec babel-node src/index.js",
+    "start-rest": "nodemon --exec babel-node src/rest.js",
     "populate-default": "cross-env PROD_ENV=pop babel-node src/db/index.js"
   },
   "keywords": [],
@@ -27,6 +28,7 @@
     "graphql-tools": "^4.0.6",
     "graphql-type-json": "^0.3.1",
     "lodash": "^4.17.15",
+    "multer": "^1.4.2",
     "nedb": "^1.8.0",
     "nodemon": "^2.0.2"
   }
