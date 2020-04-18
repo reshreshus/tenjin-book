@@ -4,7 +4,6 @@ import Item from './Item';
 import {CollectionConsumer} from '../../context/CollectionContext';
 
 import Tree, {
-    mutateTree,
     moveItemOnTree
   } from "@atlaskit/tree";
 
@@ -18,7 +17,7 @@ const renderItem = ({
     }) => {
     return (
         <div>
-            <Item treeItem={treeItem} onExpand={onExpand} onCollapse={onCollapse} 
+            <Item treeItem={treeItem} onExpand={onExpand} onCollapse={onCollapse}
                 provided={provided} snapshot={snapshot}/>
         </div>
     );
@@ -27,9 +26,9 @@ const renderItem = ({
 
 
 const Items = () => {
-    const [searchText, updateSearchText] = useState(null);
+    const [_, updateSearchText] = useState(null);
     return (
-        <CollectionConsumer> 
+        <CollectionConsumer>
         {
             ({tree, saveTreeContext, toggleExpanded}) => {
 
@@ -46,11 +45,11 @@ const Items = () => {
                     source,
                     destination
                     ) => {
-                
+
                     if (!destination) {
                       return;
                     }
-                    // source and destination contain only parent id 
+                    // source and destination contain only parent id
                     // and index in parent's children array
                     let parentOfDragged = tree.items[source.parentId];
                     let draggedId = parentOfDragged.children[source.index];
@@ -78,12 +77,11 @@ const Items = () => {
                         </div>
                     )
                 }
-                
                 return (
                     <div>No data</div>
                 )
             }
-        }  
+        }
         </CollectionConsumer>
     )
 }

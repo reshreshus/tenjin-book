@@ -5,7 +5,7 @@ import { Link, Redirect } from 'react-router-dom';
 export default function ShowDeck() {
     // TODO: react doesn't like it
     return (
-        <CollectionConsumer> 
+        <CollectionConsumer>
         {
             ({contextTreeItem, updateEditingMode, updateCurrentlyUsedDeck, setCardToRepeat, updateHeaderDeck}) => {
                 if (contextTreeItem) {

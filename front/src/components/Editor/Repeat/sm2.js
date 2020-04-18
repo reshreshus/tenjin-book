@@ -38,25 +38,25 @@ export const getEvaluationOptions = (treeItem, advanceCardContext) => {
     ]
 };
 
-const funcSm2 = (treeItem, q) => {
-    let date = new Date();
-    let stats = treeItem.data.repetitionStatsSm2;
-    stats.history.push({
-        quality: q,
-        date: String(date)
-    })
-    let eF = stats.eFactor;
-    let newEf = eF + (0.1-(5-q)*(0.08+(5-q)*0.02));
-    stats.repetitionsCount++
-    let nextInterval = Math.round(nextIntervalSm2(stats.repetitionsCount, eF));
-    if (q < 3) {
-        stats.nextDate = '-1';  
-    } else {
-        let newDate = date.addDays(nextInterval);
-        stats.nextDate = newDate.toDateString();
-    }
-    stats.eFactor = newEf;
-}
+// const funcSm2 = (treeItem, q) => {
+//     let date = new Date();
+//     let stats = treeItem.data.repetitionStatsSm2;
+//     stats.history.push({
+//         quality: q,
+//         date: String(date)
+//     })
+//     let eF = stats.eFactor;
+//     let newEf = eF + (0.1-(5-q)*(0.08+(5-q)*0.02));
+//     stats.repetitionsCount++
+//     let nextInterval = Math.round(nextIntervalSm2(stats.repetitionsCount, eF));
+//     if (q < 3) {
+//         stats.nextDate = '-1';
+//     } else {
+//         let newDate = date.addDays(nextInterval);
+//         stats.nextDate = newDate.toDateString();
+//     }
+//     stats.eFactor = newEf;
+// }
 
 const nextIntervalWithQualitySm2 = (treeItem, q) => {
     if (q >= 3) {

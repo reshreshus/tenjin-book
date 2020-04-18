@@ -1,13 +1,9 @@
-import React, {useState} from 'react'
+import React from 'react'
 import MarkdownRender from '../MarkdownRender'
 import EntryEditorJs from '../EntryEditorJs'
 
 const Entry = ({e, saveEditorInstance, updateEditorChanged}) => {
-    // TODO: isChanged not used
-    const [isChanged, updateIsChanged] = useState(false);
-
     const updateAreChanged = () => {
-        updateIsChanged(true);
         updateEditorChanged(true);
     }
 
@@ -20,15 +16,15 @@ const Entry = ({e, saveEditorInstance, updateEditorChanged}) => {
                 <MarkdownRender source={e.content}/>
                 </div>
                 :
-                <EntryEditorJs entryKey={e.key} 
+                <EntryEditorJs entryKey={e.key}
                     instanceRef={instance => {
-                        saveEditorInstance(instance, e);    
+                        saveEditorInstance(instance, e);
                     }}
                     data={e.content}
                     onChange={() => {
                         updateAreChanged();
                     }}
-                /> 
+                />
                 }
             </div>
         </div>

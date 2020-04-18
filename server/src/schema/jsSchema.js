@@ -6,7 +6,7 @@ import { getItems, getTree, getItem, updateTree, updateItem, insertItem } from '
 import _ from 'lodash';
 
 let tree = {}
-getTree().then(result => tree = result); 
+getTree().then(result => tree = result);
 
 const newCard = {
     templateId: "from db",

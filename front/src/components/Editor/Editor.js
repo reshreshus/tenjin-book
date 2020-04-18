@@ -12,12 +12,12 @@ const Editor = ({treeItem}) => {
     const [editorChanged, updateEditorChanged] = useState(false);
     const [editorJsEntries, updateEditorJsEntries] = useState(null);
 
-    const [editorEntries, updateEditorEntries] = useState([]);
+    const editorEntries = []
 
     const [isQuestioning, updateIsQuestioning] = useState(true);
 
     useEffect(() => {
-        updateEditorJsEntries(new Array())
+        updateEditorJsEntries([])
     }, [treeItem]);
 
     const onMarkdownEntryChange = (idx, value) => {
@@ -47,7 +47,7 @@ const Editor = ({treeItem}) => {
         updateEditorJsEntries(editorJsEntries.filter(e => e.entry.id !== idx));
         updateEditorChanged(true);
     }
-    
+
     return (
 <CollectionConsumer >
     { ({addNewEntryContext, deleteEntryContext,
@@ -64,15 +64,15 @@ const Editor = ({treeItem}) => {
     const {template_title, entries} = card;
     editorEntries.length = 0;
     editorEntries.push(...entries)
-    editorEntries.map(e => {
+    editorEntries.forEach(e => {
         e.key = `${e.id}${treeItem.id}`
     });
 
     const deckParent = findLastDeck(treeItem);
-    
+
     const deck_title = deckParent.data.name;
-    
-    const saveCard = async () => { 
+
+    const saveCard = async () => {
         updateEditorChanged(false);
         editorJsEntries.map( async ({entry, instance}) => {
             const { blocks } = await instance.save();
@@ -83,23 +83,19 @@ const Editor = ({treeItem}) => {
     }
 
     const saveEditorInstance = (instance, entry) => {
-        // if (card.entries.length !== entriesEditors.length) {
-            editorJsEntries.push({
-                "entry": entry,
-                "instance": instance
-            })
-            // 
-        // }
+        editorJsEntries.push({
+            "entry": entry,
+            "instance": instance
+        })
     }
 
     // it works for some reason
     const deleteEntryEditor = (id) => {
         deleteEntryContext(id);
-        updateEditorJsEntries(editorJsEntries.filter(eE => eE.entry.id != id));
+        updateEditorJsEntries(editorJsEntries.filter(eE => eE.entry.id !== id));
         setTimeout(() => {
             console.log("entries editors", editorJsEntries);
         }, 300);
-        
     }
 
     const chooseType = (entryId, type) => {
@@ -119,25 +115,24 @@ const Editor = ({treeItem}) => {
             <EditorHeader template_title={template_title} deck_title={deck_title} />
             {
                 editingMode.isEditing ? (
-                <div> 
-                    
-                    <EditorEntries 
+                <div>
+                    <EditorEntries
                     // markdownEntriesData={markdownEntriesData}
                     onMarkdownEntryChange={onMarkdownEntryChange}
                     entries={editorEntries} entriesEditors={editorJsEntries}
-                    saveEditorInstance={saveEditorInstance} deleteEntryEditor={deleteEntryEditor} 
-                    chooseType={chooseType} updateEditorChanged={updateEditorChanged} 
+                    saveEditorInstance={saveEditorInstance} deleteEntryEditor={deleteEntryEditor}
+                    chooseType={chooseType} updateEditorChanged={updateEditorChanged}
                     editorChanged={editorChanged}
                     updateEntryFormat={updateEntryFormat}
                     />
-                    <EditorActions addNewEntry={addNewEntryContext} saveCard={saveCard} 
+                    <EditorActions addNewEntry={addNewEntryContext} saveCard={saveCard}
                     editorChanged={editorChanged} card={card}
                     />
                 </div>
-                ) : 
-                <div> 
-                    <RepeatEntries 
-                        treeItem={treeItem} entries={entries} 
+                ) :
+                <div>
+                    <RepeatEntries
+                        treeItem={treeItem} entries={entries}
                         advanceCardContext={advanceCardContext}
                         saveEditorInstance={saveEditorInstance}
                         updateEditorChanged={updateEditorChanged}
@@ -148,15 +143,14 @@ const Editor = ({treeItem}) => {
                     <div onClick={() => saveCard()} className="btn btn-text editor__save">Save{editorChanged ? "*": ""}</div>
                 </div>
             }
-            
 
             <div onClick={()=> {
                 toggleEditing();
                 updateIsQuestioning(true);
-                updateEditorJsEntries(new Array());
-            }} className="btn-contrast editor__preview-button"> 
+                updateEditorJsEntries([]);
+            }} className="btn-contrast editor__preview-button">
             {
-                !editingMode.isEditing ? 'Edit' : 
+                !editingMode.isEditing ? 'Edit' :
                 (editingMode.isStudying ? 'Study' : 'Preview')
             }
             </div>

@@ -7,14 +7,14 @@ const HotkeyApp = ({menuItems, addItemHeaderDeck}) => {
     const [sidebarLength, updateSidebarLength] = useState(null)
 
     return (
-        <CollectionConsumer> 
+        <CollectionConsumer>
         {
             ({showSidebars, updateShowSidebars}) => {
                 const toggleLeftSidebar = () => {
                     let sidebar = document.querySelector('.sidebar');
                     // both sidebars are on
                     // switch left sidebar off
-                    if (showSidebars[0] === true && showSidebars[1] == true) {
+                    if (showSidebars[0] === true && showSidebars[1] === true) {
                         sidebar.style.display = 'none';
                         updateShowSidebars([false, true])
                     // left sidebar is off
@@ -40,7 +40,7 @@ const HotkeyApp = ({menuItems, addItemHeaderDeck}) => {
                     let rightSidebar = document.querySelector('.right-sidebar');
                     // both sidebars are on
                     // switch right sidebar off
-                    if (showSidebars[0] === true && showSidebars[1] == true) {
+                    if (showSidebars[0] === true && showSidebars[1] === true) {
                         updateSidebarLength(sidebar.clientWidth)
                         rightSidebar.style.display = 'none';
                         updateShowSidebars([true, false])
@@ -84,7 +84,7 @@ const HotkeyApp = ({menuItems, addItemHeaderDeck}) => {
                             e.preventDefault();
                             break;
                         default:
-                            menuItems.map(it => {
+                            menuItems.forEach(it => {
                                 if (keyName === it.hotkeyJs) {
                                     e.preventDefault();
                                     it.func();

@@ -8,7 +8,7 @@ export default function Entry({e, saveEditorInstance, chooseType,
     const [isChoosingType, updateChoosingType] = useState(false);
     const [isChanged, updateIsChanged] = useState(false);
     const [isPreview, updateIsPreview] = useState(false);
-    
+
     const onEditorChange = (value) => {
         onMarkdownEntryChange(e.id, value);
     }
@@ -24,7 +24,7 @@ export default function Entry({e, saveEditorInstance, chooseType,
         updateIsChanged(true);
         updateEditorChanged(true);
     }
-    
+
     const openChoosingType = () => {
         updateChoosingType(true)
     }
@@ -47,10 +47,10 @@ export default function Entry({e, saveEditorInstance, chooseType,
                 <div className={`card-entry__choose-type ${isChoosingType ? "": "hide"}`}>
                     {
                         ['A', 'Q', 'C'].map((type, i) => (
-                            <div key={i} 
-                                className={`btn ${type===e.type ? 
+                            <div key={i}
+                                className={`btn ${type===e.type ?
                                     'btn-circ' : ''}`}
-                                onClick={()=> 
+                                onClick={()=>
                                     {
                                         closeChoosingType();
                                         if (e.type !== type) {
@@ -64,23 +64,23 @@ export default function Entry({e, saveEditorInstance, chooseType,
                     ))
                     }
                 </div>
-                
+
                 <div onClick={() => {
                     openChoosingType(e.id)
                 }}
                 className={`card-entry__qa btn-circ ${isChoosingType ? "hide": ""}`}> { e.type }
                 </div>
-                
+
                 <div className="card-entry__name">
                     {
                         e.name
                     }
                 </div>
-                <div className="card-entry__switch btn-contrast" 
-                    onClick={() => updateEntryFormat(e.id, isEntryMarkdown() ? "EditorJs" : "markdown")}> 
+                <div className="card-entry__switch btn-contrast"
+                    onClick={() => updateEntryFormat(e.id, isEntryMarkdown() ? "EditorJs" : "markdown")}>
                     {isEntryMarkdown() ? "markdown" : "EditorJs" }</div>
                 {
-                    isEntryMarkdown() ? (<div className="card-entry__switch btn-contrast" 
+                    isEntryMarkdown() ? (<div className="card-entry__switch btn-contrast"
                     onClick={() => updateIsPreview(!isPreview)}> switch</div>) : ""
                 }
             </div>
@@ -96,16 +96,16 @@ export default function Entry({e, saveEditorInstance, chooseType,
                         }}
                         />
                         :
-                        <EntryEditorJs entryKey={e.key} 
+                        <EntryEditorJs entryKey={e.key}
                             instanceRef={instance => {
-                                saveEditorInstance(instance, e);    
+                                saveEditorInstance(instance, e);
                             }}
                             data={e.content}
                             onChange={() => {
                                 updateAreChanged();
                             }}
-                        />    
-                    }          
+                        />
+                    }
                 <div onClick={() => deleteEntry()} className="card-entry__remove btn-circ btn-plus-minus">-</div>
             </div>
         </div>

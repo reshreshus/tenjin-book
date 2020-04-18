@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, { useState } from 'react'
 import HotkeyApp from './HotkeyApp';
 import ContextMenu from '../components/ContextMenu';
 
@@ -41,7 +41,7 @@ function CollectionProvider({children,
         isEditing: true
     })
 
-    const {data: treeData, loading: treeLoading, error: treeError} = useQuery(GET_TREE, {
+    const {data: treeData} = useQuery(GET_TREE, {
         // TODO: query executes an unusual number of times
         onCompleted:  () => { 
             console.log(treeData.tree); 
@@ -62,21 +62,21 @@ function CollectionProvider({children,
         }
     }
 
-    const getCardsIdsOfDeck = (treeItem, findDue = false) => {
-        if (!treeItem.hasChildren) return [];
-        let cardsIds = []
+    // const getCardsIdsOfDeck = (treeItem, findDue = false) => {
+    //     if (!treeItem.hasChildren) return [];
+    //     let cardsIds = []
 
-        treeItem.children.map(cId => {
-            let curTreeItem = tree.items[cId]
-            if (isRepeatableItem(curTreeItem) && (!findDue || isDue(curTreeItem))) {
-                cardsIds.push(cId);
-            }
-            if (curTreeItem.hasChildren) {
-                cardsIds = [...cardsIds, ...getCardsIdsOfDeck(curTreeItem)]
-            }
-        })
-        return cardsIds;
-    }
+    //     treeItem.children.map(cId => {
+    //         let curTreeItem = tree.items[cId]
+    //         if (isRepeatableItem(curTreeItem) && (!findDue || isDue(curTreeItem))) {
+    //             cardsIds.push(cId);
+    //         }
+    //         if (curTreeItem.hasChildren) {
+    //             cardsIds = [...cardsIds, ...getCardsIdsOfDeck(curTreeItem)]
+    //         }
+    //     })
+    //     return cardsIds;
+    // }
 
     const isRepeatableItem = (treeItem) => {
         return treeItem.data.type === 'f' || treeItem.data.type === 'T';
@@ -110,7 +110,7 @@ function CollectionProvider({children,
             let dueDecksIds = []
             if (dueCardsChanged(parentItem)) {
                 let dueItemsIds = []
-                parentItem.children.map(childId => {
+                parentItem.children.forEach(childId => {
                     let childItem = tree.items[childId];
                     if (!isDeck(childItem)) {
                         if (isDue(childItem)) {
@@ -129,7 +129,7 @@ function CollectionProvider({children,
                     parentItem.data.dueItemsIds = dueItemsIds;
                 }
             } else {
-                parentItem.children.map(childId => {
+                parentItem.children.forEach(childId => {
                     let childItem = tree.items[childId];
                     if (isDeck(childItem)) {
                         // TODO: redundancy
@@ -163,9 +163,8 @@ function CollectionProvider({children,
     }
 
     // TODO: recalculate when moving, deleting, duplicating, adding an item
-    const recalculateTree = (treeItemsIds) => {
-
-    }
+    // const recalculateTree = (treeItemsIds) => {
+    // }
 
     const updateTreeAndAddParams = (newTree) => {
         calculateDueItemsInTree(newTree);
@@ -254,7 +253,7 @@ function CollectionProvider({children,
         let newCard = Object.assign({}, card);
         let newEntries = [...newCard.entries.filter((e => entryID !== e.id))];
         tree.items[newCard.id].data.type =  'T';
-        newEntries.map(e => {
+        newEntries.forEach(e => {
             if (e.type === 'Q') {
                 tree.items[newCard.id].data.type = 'f';
             }
@@ -268,7 +267,7 @@ function CollectionProvider({children,
         let entry = newCard.entries.filter(e => e.id === entryId)[0]
         entry.type = type;
         tree.items[cardId].data.type = 'T'
-        newCard.entries.map(e => {
+        newCard.entries.forEach(e => {
             if (e.type === 'Q') {
                 tree.items[cardId].data.type = 'f';
             }
@@ -286,16 +285,6 @@ function CollectionProvider({children,
             let el = document.querySelector(`#tree-item-${contextTreeItem.id}`);
             selectElementContents(el);
         }
-    }
-
-    //TODO: not tested
-    const selectTreeItemToRenameAfterCreation = (treeItem) => {
-        updateIsEditing(true);
-        updateContextTreeItem(treeItem)
-        // new TreeItem isn't created immediately so I wait
-        setTimeout(() => {
-            selectTreeItemToRenameContext();
-        }, 100);
     }
 
     const saveTreeContext = (newTree) => {

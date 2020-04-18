@@ -1,9 +1,8 @@
 import React from 'react'
-import {useLocation} from 'react-router-dom';
 import Editor from '../components/Editor/Editor';
 import { CollectionConsumer } from '../context/CollectionContext'
 
-export default function Edit() {        
+export default function Edit() {
     return (<CollectionConsumer >
         { ({contextTreeItem}) => {
                 if (!contextTreeItem || !contextTreeItem.id) {

@@ -10,12 +10,12 @@ const Item = ({
   provided,
   snapshot
 }) => {
-  let contentEditable;
+  let contentEditable = useRef(null);
   const [name, updateName] = useState(null);
   let node = useRef(null);
   let draggable = useRef(null);
   useEffect(() => {
-      contentEditable = React.createRef();
+      // contentEditable = React.createRef();
       draggable.current.removeAttribute("tabIndex");
   })
   if (!name) {
@@ -26,7 +26,7 @@ const Item = ({
   }
 
   return (
-    <CollectionConsumer> 
+    <CollectionConsumer>
         {
             ({updateContextTreeItemAndCleanup,
                 openTreeContextMenu, renameTreeItemContext, setCardContext,
@@ -40,7 +40,7 @@ const Item = ({
             }
             const onTreeItemKeyDown = (e) => {
                 switch (e.key) {
-                    case "Enter": 
+                    case "Enter":
                         if (isEditing) {
                           e.preventDefault();
                           renameTreeItemContext(name, treeItem.id);
@@ -74,20 +74,17 @@ const Item = ({
             return (
               <div className="tree-item"
               ref={node}
-              
               >
-                
-                
+
                 <div className="tree-item__inline"
-                 ref={provided.innerRef} 
+                 ref={provided.innerRef}
                  {...provided.draggableProps}
                 >
-                
-                
+
                  <div className="caret-container">
                     {
-                        treeItem.hasChildren ? 
-                        <span  className={`caret ${treeItem.isExpanded ? 'caret-down': ''}`} 
+                        treeItem.hasChildren ?
+                        <span  className={`caret ${treeItem.isExpanded ? 'caret-down': ''}`}
                           onClick={() => treeItem.isExpanded ? onCollapse(treeItem.id) : onExpand(treeItem.id)}>
                           <svg width="20" height="20" viewBox="0 0 20 20"><path d="M13.75 9.56879C14.0833 9.76124 14.0833 10.2424 13.75 10.4348L8.5 13.4659C8.16667 13.6584 7.75 13.4178 7.75 13.0329L7.75 6.97072C7.75 6.58582 8.16667 6.34525 8.5 6.5377L13.75 9.56879Z" stroke="none" fill="currentColor"></path></svg>
                         </span>
@@ -97,7 +94,7 @@ const Item = ({
                  </div>
                   {/* drag by treeItem type */}
                   <span className={`tree-item__type ${treeItem.data.type === 'D' ? '' : 'tree-item__type--ca'}
-                  ${(contextTreeItem && treeItem.id === contextTreeItem.id) ? 
+                  ${(contextTreeItem && treeItem.id === contextTreeItem.id) ?
                     'tree-item__type--active':''}
                   `
                   }
@@ -131,7 +128,7 @@ const Item = ({
                             openTreeContextMenu(e)
                           }}
                           >
-                          <ContentEditable 
+                          <ContentEditable
                               key={treeItem.id}
                               innerRef={contentEditable}
                               html={name}

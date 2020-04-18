@@ -11,10 +11,10 @@ export default function Header() {
                 return (
                     <div className="header">
                         <Link to="/" className="header__link link" onClick={() => updateContextTreeItem(null)}>
-                            <img className="header__img" src="tenjinbook.png" height="50px"/>
-                            <h1>Tenjin Book </h1> 
+                            <img className="header__img" src="tenjinbook.png" height="50px" alt="header"/>
+                            <h1>Tenjin Book </h1>
                         </Link>
-                        <img className="header__options" src={dots} alt="dots" height="28px" 
+                        <img className="header__options" src={dots} alt="dots" height="28px"
                             onClick={(e) => openAppContextMenu(e)}/>
                     </div>
                 )

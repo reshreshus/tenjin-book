@@ -51,11 +51,10 @@ export default function ApiContext({children}) {
     }
 
     const renameTreeItem = async (newName, treeItemId) => {
-        let data = renameTreeItemQuery({variables: {
+        renameTreeItemQuery({variables: {
             id: treeItemId,
             newName: newName
         }})
-        // return data.data.renameTreeItem;
     }
 
     const addDeck = async (parentId) => {
