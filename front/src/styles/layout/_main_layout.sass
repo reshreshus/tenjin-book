@@ -1,0 +1,45 @@
+html, body
+    height: 100%
+
+body
+    font-size: 16px
+    background-color:  $clr-bg-primary
+    margin: 0
+    padding: 0
+
+.app
+    display: flex
+    flex-direction: row
+    height: 100%
+
+.resizer
+    width: 10px
+    background: $clr-blue-soft
+    box-sizing: border-box
+    cursor: col-resize
+    z-index: 1
+    height: 100%
+
+#root
+    height: 100%
+
+.title
+    font-size: 5rem
+    font-weight: 500
+    letter-spacing: -.3rem
+    margin: 1rem 0
+
+.subtitle
+    font-size: 1.5rem
+    font-weight: 500
+
+[contenteditable]:focus
+    outline: 0px solid transparent
+
+a:any-link
+    text-decoration: none
+    color: $clr-text-soft
+
+.info
+    margin: 0 2rem
+    width: 100%
