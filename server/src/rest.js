@@ -13,19 +13,24 @@ const mediaFolder = path.join(dbPath, 'media');
 
 app.use('/media', express.static(mediaFolder));
 
+const getDate = (dt = new Date()) => {
+	// return `${dt.getFullYear()}${(dt.getMonth() + 1)}${dt.getDate()}`
+	return Date.now();
+}
 
 const storageConfig = multer.diskStorage({
 	destination: (req, file, cb) =>{
 			cb(null, mediaFolder);
 	},
 	filename: (req, file, cb) =>{
-			cb(null, file.originalname);
+			cb(null, getDate() + path.extname(file.originalname));
 	}
 });
 
 app.use(multer({storage:storageConfig}).single("image"));
 
 app.post("/uploadByFile", function (req, res, next) {
+	// console.log({filedata: req.file})
   res.send({
 		"success": 1,
 		"file": {

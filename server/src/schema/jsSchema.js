@@ -104,7 +104,7 @@ const typeDefs = `
     type CardEntry {
         id: Int,
         name: String,
-        content: JSON, 
+        content: JSON,
         templateTitle: String,
         type: String
         format: String
@@ -193,7 +193,7 @@ const updateTreeDb = async (newTree = tree) => {
 }
 
 const getDate = (dt = new Date()) => {
-    return dt.getFullYear() + "/" + (dt.getMonth() + 1) + "/" + dt.getDate();
+    return `${dt.getFullYear()}/${(dt.getMonth() + 1)}/${dt.getDate()}`
 }
 
 // TODO: no logic for advancing Topics is sm2

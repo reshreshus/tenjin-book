@@ -14,7 +14,7 @@ import Delimiter from '@editorjs/delimiter'
 import InlineCode from '@editorjs/inline-code'
 import SimpleImage from '@editorjs/simple-image'
 // import Warning from '@editorjs/warning'
- 
+
 export const EDITOR_JS_TOOLS = {
   embed: Embed,
   table: Table,
@@ -27,6 +27,7 @@ export const EDITOR_JS_TOOLS = {
     config: {
       endpoints: {
         byFile: 'http://localhost:5000/uploadByFile', // Your backend file uploader endpoint
+        // TODO: don't even know what it means
         byUrl: 'http://localhost:5000/uploadByUrl', // Your endpoint that provides uploading by Url
       }
     }

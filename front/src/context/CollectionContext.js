@@ -91,7 +91,7 @@ function CollectionProvider({children,
     }
 
     const getDate = (dt = new Date()) => {
-        return dt.getFullYear() + "/" + (dt.getMonth() + 1) + "/" + dt.getDate();
+        return `${dt.getFullYear()}/${(dt.getMonth() + 1)}/${dt.getDate()}`
     }
 
     const isDue = (treeItem) => {
