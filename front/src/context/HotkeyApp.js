@@ -3,13 +3,12 @@ import Hotkeys from 'react-hot-keys';
 import {CollectionConsumer} from '../context/CollectionContext';
 import {hideContextMenu} from '../helpers/domHelpers';
 
-const HotkeyApp = ({menuItems}) => {
+const HotkeyApp = ({menuItems, addItemHeaderDeck}) => {
     const [sidebarLength, updateSidebarLength] = useState(null)
 
     return (
         <CollectionConsumer> 
         {
-            
             ({showSidebars, updateShowSidebars}) => {
                 const toggleLeftSidebar = () => {
                     let sidebar = document.querySelector('.sidebar');
@@ -32,10 +31,10 @@ const HotkeyApp = ({menuItems}) => {
                 const openSidebarHalfFullWidth = () => {
                     let sidebar = document.querySelector('.sidebar');
                     const windowWidth = document.body.offsetWidth;
-                    console.log({windowWidth})                    
+                    console.log({windowWidth})
                     sidebar.style.width = `${windowWidth}px`
                 }
-            
+
                 const toggleRightSidebar = () => {
                     let sidebar = document.querySelector('.sidebar');
                     let rightSidebar = document.querySelector('.right-sidebar');
@@ -59,18 +58,21 @@ const HotkeyApp = ({menuItems}) => {
                 }
 
                 let hotkeys = menuItems.map(({hotkeyJs}) => hotkeyJs)
-                hotkeys = [...hotkeys, 'alt+v', 'ctrl+b', 'ctrl+alt+h', 'esc']
+                hotkeys = [...hotkeys, 'alt+v', 'ctrl+b', 'ctrl+alt+h', 'esc', 'ctrl+alt+a']
                 hotkeys = hotkeys.join(',')
-                
+
                 const onKeyDown = (keyName, e, handle) => {
                     // TODO: add toggle on alt+c and alt+v
                     // TODO and esc to close context menu
                     switch(keyName) {
+                        case 'ctrl+alt+a':
+                            addItemHeaderDeck()
+                            break;
                         case 'alt+v':
                             toggleRightSidebar();
                             e.preventDefault();
                             break;
-                        case 'ctrl+b': 
+                        case 'ctrl+b':
                             toggleLeftSidebar();
                             e.preventDefault();
                             break;
@@ -89,20 +91,18 @@ const HotkeyApp = ({menuItems}) => {
                                 }
                             })
                     }
-                    
                 }
 
                 return (
-                    <Hotkeys 
+                    <Hotkeys
                         keyName={hotkeys}
                         onKeyDown={(keyName, e, handle) => onKeyDown(keyName, e, handle)}
                     >
                     </Hotkeys>
                 )
             }
-        
         }
-         </CollectionConsumer> 
+         </CollectionConsumer>
     );
 }
 

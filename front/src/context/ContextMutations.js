@@ -30,7 +30,7 @@ export const getContextMutations = (
         {
             "desc": "New Card",
             "shortcut": "A",
-            "hotkeyJs": "a",
+            "hotkeyJs": "ctrl+shift+a",
             "func": () => {
                 console.log("New New Card")
                 addItemContext('f');

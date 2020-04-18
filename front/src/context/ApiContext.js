@@ -1,7 +1,7 @@
 import React from 'react'
-import { useMutation, useQuery } from '@apollo/react-hooks';
-import { GET_CARD, SAVE_CARD, SAVE_TREE, ADD_ITEM, 
-    RENAME_TREE_ITEM, DELETE_TREE_ITEM, DUPLICATE_TREE_ITEM, ADD_DECK, 
+import { useMutation } from '@apollo/react-hooks';
+import { GET_CARD, SAVE_CARD, SAVE_TREE, ADD_ITEM,
+    RENAME_TREE_ITEM, DELETE_TREE_ITEM, DUPLICATE_TREE_ITEM, ADD_DECK,
     ADVANCE_CARD, GET_ITEMS
  } from '../api/queries';
 import {CollectionProvider} from './CollectionContext'
@@ -42,14 +42,14 @@ export default function ApiContext({children}) {
         })
         return data.data.duplicateTreeItem;
     }
-    
+
     const deleteTreeItem = async (treeItemId) => {
         let data = await deleteTreeItemQuery({
             variables: {id: treeItemId}
         });
         return data.data.deleteTreeItem;
     }
-    
+
     const renameTreeItem = async (newName, treeItemId) => {
         let data = renameTreeItemQuery({variables: {
             id: treeItemId,
@@ -57,7 +57,7 @@ export default function ApiContext({children}) {
         }})
         // return data.data.renameTreeItem;
     }
-    
+
     const addDeck = async (parentId) => {
         let data = await addDeckQuery({
             variables: {
@@ -67,7 +67,7 @@ export default function ApiContext({children}) {
         console.error("addDeck data", data);
         return data.data.addDeck;
     }
-    
+
     const addItem =  async (treeItemId, type) => {
         let data = await addItemQuery({
             variables: {
@@ -75,10 +75,9 @@ export default function ApiContext({children}) {
                 parentId: treeItemId
             }
         })
-        console.error("addItem data", data);
         return data.data.addItem;
     }
-    
+
     const saveTree = (newTree) => {
         saveTreeQuery({
             variables: {"newTree": newTree}
@@ -86,7 +85,7 @@ export default function ApiContext({children}) {
             console.log("saveTree data", data)
         })
     }
-    
+
     const saveCard = (savedCard) => {
         // TODO: WTF I need to understand why this works
         // looks like saveCardQuery works with an old version of savedCard (or card in state)
@@ -98,16 +97,16 @@ export default function ApiContext({children}) {
             })
         }, 100)
     }
-    
-    const getCard = async (id) => {     
+
+    const getCard = async (id) => {
         let data = await getCardQuery({
             variables: {id: id}
         })
         return data.data.card;
     }
-    
+
     return (
-        <CollectionProvider 
+        <CollectionProvider
             duplicateTreeItem={duplicateTreeItem}
             deleteTreeItem={deleteTreeItem}
             addDeck={addDeck}

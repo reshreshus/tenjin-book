@@ -28,7 +28,7 @@ function CollectionProvider({children,
     const [tree, updateTree] = useState(null);
 
     const [contextTreeItem, updateContextTreeItem] = useState(null);
-    const [deckForAddingItems, updateDeckForAddingItems] = useState(null);
+    const [headerDeck, updateHeaderDeck] = useState(null);
 
     const [showSidebars, updateShowSidebars] = useState([true, true]);
     const [isEditing, updateIsEditing] = useState(false);
@@ -53,6 +53,14 @@ function CollectionProvider({children,
     });
 
     const [isAppMenuUsed, updateIsAppMenuUsed] = useState(false);
+
+    const addItemHeaderDeck = async (type='f') => {
+        if (headerDeck) {
+            const newTreeItem = await addItemContext(type, headerDeck);
+            setCardContext(newTreeItem.id)
+            updateContextTreeItem(newTreeItem)
+        }
+    }
 
     const getCardsIdsOfDeck = (treeItem, findDue = false) => {
         if (!treeItem.hasChildren) return [];
@@ -323,13 +331,13 @@ function CollectionProvider({children,
     }
 
     const addItemContext = async (type, treeItem = contextTreeItem) => {
-        console.warn({contextTreeItem});
-        if (treeItem.data.type !== 'D') { 
+        if (treeItem.data.type !== 'D') {
             alert('Cannot make an item from this type of item');
             return;
         }
-        let newTree = await addItem(treeItem.id, type);
+        let {newTree, newTreeItem} = await addItem(treeItem.id, type);
         updateTreeAndAddParams(newTree);
+        return newTreeItem;
     }
 
     const saveCardContext = (savedCard) => {
@@ -377,8 +385,8 @@ function CollectionProvider({children,
         renameTreeItemContext,
         saveTreeContext,
 
-        deckForAddingItems,
-        updateDeckForAddingItems,
+        headerDeck,
+        updateHeaderDeck,
 
         card,
         saveCardContext,
@@ -406,7 +414,7 @@ function CollectionProvider({children,
         }}>
             {children}
             <ContextMenu menuItems={menuItems} appMenuItems={() => appMenuItems()} isAppMenuUsed={isAppMenuUsed}/>
-            <HotkeyApp menuItems={menuItems}/>
+            <HotkeyApp menuItems={menuItems} addItemHeaderDeck={addItemHeaderDeck}/>
     </Collection.Provider>)
 }
 

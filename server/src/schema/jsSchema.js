@@ -203,13 +203,13 @@ const advanceCardSm2 = (treeItem, q) => {
     stats.history.push({
         quality: q,
         date: String(date)
-    }); 
+    });
     let eF = stats.eFactor;
     let newEf = eF + (0.1-(5-q)*(0.08+(5-q)*0.02));
     stats.repetitionsCount++
     let nextInterval = Math.round(nextIntervalSm2(stats.repetitionsCount, eF));
     if (q < 3) {
-        stats.nextDate = '-1'; 
+        stats.nextDate = '-1';
     } else {
         let newDate = date.addDays(nextInterval);
         stats.nextDate = getDate(newDate);
@@ -226,14 +226,14 @@ Date.prototype.addDays = function(days) {
 }
 
 // TODO: no error checking here
-const resolvers = {  
-    JSON: GraphQLJSON, 
-    Query: {   
+const resolvers = {
+    JSON: GraphQLJSON,
+    Query: {
         tree: () => tree,
     },
     Mutation: {
         items: () => tree,
-        advanceCard: (_, {id, quality : q}) => {    
+        advanceCard: (_, {id, quality : q}) => {
             let itemTreeItem = tree.items[id]
             if (itemTreeItem.data.type === 'f' || itemTreeItem.data.type === 'T') {
                 advanceCardSm2(itemTreeItem, q);
@@ -242,7 +242,7 @@ const resolvers = {
             } else {
                 console.error("Trying to advance non-item");
             }
-            
+
         },
         addDeck: (_, {parentId}) => {
             let id = ID();
@@ -254,12 +254,11 @@ const resolvers = {
             updateTreeDb(tree);
             return tree;
         },
-        addItem: (_, {type, parentId}) => { 
-			// console.log("addItem", {tree})
+        addItem: (_, {type, parentId}) => {
 			let item = type === 'f' ? Object.assign({}, newCard) : Object.assign({}, newTopic);
-			item.id = `_${ID()}`; 
+			item.id = `_${ID()}`;
 			insertItem(item);
-			
+
 			let treeItem = addTreeItem(parentId, item.id);
 			treeItem.data = {
 				type,
@@ -272,36 +271,36 @@ const resolvers = {
 				}
 			}
 			updateTreeDb(tree);
-			return tree;
+			return {newTree : tree, newTreeItem : treeItem};
         },
         addCardEntry: (_, { id, name, content, type, card_id}) => {
             const card = getItem(id);
-            card.entries.push({    
+            card.entries.push({
                 name,
-                content, 
+                content,
                 type,
                 id
             });
             updateItem(card.id, card)
             return card.entries;
         },
-        card: (_, { id }) => { 
+        card: (_, { id }) => {
             return getItem(id);
         },
         saveCard: (parent, {id, templateTitle, entries}) => {
             let card = getItem(id);
             card = {
-                id, 
-                templateTitle, 
+                id,
+                templateTitle,
                 entries
-            } 
+            }
             updateItem(card.id, card)
             return card;
         },
         saveTree: (_, {newTree}) => {
             tree = newTree;
             updateTreeDb(newTree);
-            return tree; 
+            return tree;
         },
         renameTreeItem: (_, {id, newName}) => {
             tree.items[id].data.name = newName;
@@ -313,7 +312,7 @@ const resolvers = {
             delete tree.items[id];
             let parent = tree.items[treeItem.parentId]
             let idx = parent.children.indexOf(id);
-            parent.children.splice(idx, 1); 
+            parent.children.splice(idx, 1);
             if (parent.children.length === 0) {
                 parent.hasChildren = false;
             }

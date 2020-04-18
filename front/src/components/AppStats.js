@@ -5,10 +5,10 @@ export default function AppStats() {
     return (
         <CollectionConsumer>
         {
-            ({deckForAddingItems}) => {
+            ({headerDeck}) => {
                 return (
                     <div className="btn-contrast">
-                        { deckForAddingItems ? deckForAddingItems.data.name : "Deck's Name" }
+                        { headerDeck ? headerDeck.data.name : "Deck's Name" }
                     </div>
                 )
             }
