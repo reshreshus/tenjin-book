@@ -37,10 +37,12 @@ export default function App() {
   
   return (
     <div className="app">
-      {/* <div className={`${'hide'}`}></div> */}
       <Sidebar />
       <div className="resizer"/>
       <div className="right-sidebar">
+        <div className="right-sidebar__header">
+
+        </div>
         <Switch>
           <Route exact path="/edit/" component={() =>
             (<Edit card={{'deckTitle':'English', 'templateTitle': 'Basic'}}/>)}
