@@ -7,12 +7,14 @@ export default function ShowDeck() {
     return (
         <CollectionConsumer> 
         {
-            ({contextTreeItem, updateEditingMode, updateCurrentlyUsedDeck, setCardToRepeat, tree}) => {
+            ({contextTreeItem, updateEditingMode, updateCurrentlyUsedDeck, setCardToRepeat, updateDeckForAddingItems}) => {
                 return (
                     <div className="info">
                         <h1 className="title">( ･ิɷ･ิ)</h1>
                         {
-                            (contextTreeItem && contextTreeItem.data.name) ? <div>
+                            (contextTreeItem && contextTreeItem.data.name)
+                            ?
+                            <div>
                             <h2 className="subtitle">This is a chosen deck. "{contextTreeItem.data.name}"<br />
                             What will you do with it?</h2>
                             <Link to='/edit' onClick={() => {
@@ -23,9 +25,12 @@ export default function ShowDeck() {
                                     isStudying: true,
                                     isEditing: false
                                 })
-                            }} className="btn-contrast">
-                                study 
+                            }} className="btn-contrast" style={{marginRight: "1rem"}}>
+                                study
                             </Link>
+                            <div className="btn-contrast" onClick={() => updateDeckForAddingItems(contextTreeItem)}>
+                                Pick for Addition
+                            </div>
                             </div>
                                 :
                             <h2 className="subtitle">Grunt Grunt <br/>

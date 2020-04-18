@@ -5,7 +5,7 @@ import ContextMenu from '../components/ContextMenu';
 import { GET_TREE} from '../api/queries';
 import { useQuery } from '@apollo/react-hooks';
 
-import { selectElementContents, removeSelections, 
+import { selectElementContents, removeSelections,
          openContextMenu, hideContextMenu } from '../helpers/domHelpers'
 import { getContextMutations } from './contextMutations';
 import { appMenuItems } from './appMenuItems';
@@ -13,8 +13,8 @@ import { appMenuItems } from './appMenuItems';
 
 const Collection = React.createContext();
 
-function CollectionProvider({children, 
-    duplicateTreeItem, 
+function CollectionProvider({children,
+    duplicateTreeItem,
     deleteTreeItem,
     addDeck,
     addItem,
@@ -23,10 +23,13 @@ function CollectionProvider({children,
     getCard,
     saveTree,
     advanceCard
-}) 
+})
     {
-    const [tree, updateTree] = useState(null) 
+    const [tree, updateTree] = useState(null);
+
     const [contextTreeItem, updateContextTreeItem] = useState(null);
+    const [deckForAddingItems, updateDeckForAddingItems] = useState(null);
+
     const [showSidebars, updateShowSidebars] = useState([true, true]);
     const [isEditing, updateIsEditing] = useState(false);
     const [card, updateCard] = useState(null);
@@ -54,7 +57,7 @@ function CollectionProvider({children,
     const getCardsIdsOfDeck = (treeItem, findDue = false) => {
         if (!treeItem.hasChildren) return [];
         let cardsIds = []
-        
+
         treeItem.children.map(cId => {
             let curTreeItem = tree.items[cId]
             if (isRepeatableItem(curTreeItem) && (!findDue || isDue(curTreeItem))) {
@@ -166,15 +169,13 @@ function CollectionProvider({children,
         // TODO: optimize
         updateTree(newTree);
         calculateDueItemsInTree(newTree);
-        // if we repeated the last 
-       
+        // if we repeated the last
         if (currentlyUsedDeck.data.dueItemsCount <= 1) {
             updateContextTreeItem(currentlyUsedDeck)
         } else {
             setCardToRepeat(newTree.items[currentlyUsedDeck.id], newTree);
             updateCurrentlyUsedDeck(newTree.items[currentlyUsedDeck.id]);
         }
-        
     }
 
     const setCardToRepeat = (deckTreeItem=currentlyUsedDeck, newTree=tree) => {
@@ -376,6 +377,9 @@ function CollectionProvider({children,
         renameTreeItemContext,
         saveTreeContext,
 
+        deckForAddingItems,
+        updateDeckForAddingItems,
+
         card,
         saveCardContext,
         setCardContext,
@@ -383,17 +387,17 @@ function CollectionProvider({children,
         addNewEntryContext,
         deleteEntryContext,
         chooseTypeContext,
-        
-        isEditing, 
+
+        isEditing,
         updateIsEditing,
-        editingMode, 
+        editingMode,
         updateEditingMode,
 
         setCardToRepeat,
         advanceCardContext,
         updateCurrentlyUsedDeck,
 
-        showSidebars, 
+        showSidebars,
         updateShowSidebars,
         toggleExpanded,
         openTreeContextMenu,
