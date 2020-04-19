@@ -234,14 +234,14 @@ function CollectionProvider({children,
         let newCard = Object.assign({}, card)
         let newId = Math.max.apply(Math, card.entries.map(e => e.id)) + 1;
         let newEntry = {
-            name:"New Entry",
+            name: "New Entry",
             content: {
                 tree: [{
                     type: "paragraph",
                     data: { text: "" }
                 }]
             },
-            type:"C",
+            type: "C",
             id: newId
         }
         newCard.entries.push(newEntry)
@@ -327,23 +327,31 @@ function CollectionProvider({children,
     }
 
     const saveCardContext = (savedCard) => {
-        let entry = savedCard.entries.filter(e => e.type === 'Q')[0];
-        if (!entry)
-            entry = savedCard.entries[0];
+        let qEntries = savedCard.entries.filter(e => e.type === 'Q');
+        let cEntries = savedCard.entries.filter(e => e.type === 'C');
+        let entries = qEntries;
+        entries.push(...cEntries);
+
         updateIsEditing(true);
         setTimeout(() => {
             let newName;
-            if (entry.format === "markdown") {
-                newName = entry.content;
-            } else {
-                if (entry.content.blocks) {
-                    newName = entry.content.blocks[0].data.text;
+            for (let i = 0; i < entries.length; i++) {
+                let entry = entries[i];
+                if (entry.format === "markdown") {
+                    newName = entry.content;
+                } else {
+                    try {
+                        newName = entry.content.blocks[0].data.text;
+                    } catch {
+                        // TODO
+                    }
                 }
-            }
-            if (newName) {
-                newName = newName.slice(0, 20);
-                tree.items[savedCard.id].data.name = newName;
-                saveTreeContext(tree);
+                if (newName) {
+                    newName = newName.slice(0, 20);
+                    tree.items[savedCard.id].data.name = newName;
+                    saveTreeContext(tree);
+                    break;
+                }
             }
             updateIsEditing(false);
         }, 100);
