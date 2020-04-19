@@ -10,6 +10,8 @@ import { selectElementContents, removeSelections,
 import { getContextMutations } from './contextMutations';
 import { appMenuItems } from './appMenuItems';
 
+import { getRandomInt } from '../helpers/jsHelpers';
+
 
 const Collection = React.createContext();
 
@@ -188,7 +190,7 @@ function CollectionProvider({children,
     const setCardToRepeat = (deckTreeItem=currentlyUsedDeck, newTree=tree) => {
         let dueItemsIds = deckTreeItem.data.dueItemsIds;
         if (dueItemsIds.length > 0) {
-            updateContextTreeItem(newTree.items[dueItemsIds[0]]);
+            updateContextTreeItem(newTree.items[dueItemsIds[getRandomInt(0, dueItemsIds.length - 1)]]);
             setCardContext(dueItemsIds[0]);
         } else if (deckTreeItem.data.dueDecksIds.length > 0) {
             setCardToRepeat(newTree.items[deckTreeItem.data.dueDecksIds[0]]);
