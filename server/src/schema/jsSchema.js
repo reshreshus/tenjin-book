@@ -1,9 +1,7 @@
 const { ApolloServer } = require('apollo-server');
 const GraphQLJSON = require('graphql-type-json');
 // import { makeExecutableSchema } from 'graphql-tools';
-import { getItems, getTree, getItem, updateTree, updateItem, insertItem } from '../db';
-
-import _ from 'lodash';
+import { getTree, getItem, updateTree, updateItem, insertItem } from '../db';
 
 let tree = {}
 getTree().then(result => tree = result);
@@ -158,9 +156,9 @@ const ID = () => {
 	return '_' + Math.random().toString(36).substr(2, 9);
 };
 
-const addTreeItem = (parentId, id) => { 
+const addTreeItem = (parentId, id) => {
     let treeItem = Object.assign({}, newDeckTreeItem);
-    // even if you copy object, children have the same reference. 
+    // even if you copy object, children have the same reference.
     // so you have to create a brand new array for children
     treeItem.children = [];
     treeItem.parentId = parentId;
@@ -169,7 +167,7 @@ const addTreeItem = (parentId, id) => {
     tree.items[parentId].hasChildren = true;
     tree.items[parentId].isExpanded = true;
     tree.items[id] = treeItem;
-    return treeItem; 
+    return treeItem;
 }
 
 /*
@@ -215,6 +213,22 @@ const advanceCardSm2 = (treeItem, q) => {
         stats.nextDate = getDate(newDate);
     }
     stats.eFactor = newEf;
+}
+
+const deleteTreeItemChildren = (childrenIds) => {
+    console.log("deleteTreeItemChildren", childrenIds);
+    if (!childrenIds) {
+        console.error("no children");
+        return;
+    }
+    let treeItem;
+    childrenIds.forEach(id => {
+        treeItem = tree.items[id];
+        if (treeItem.hasChildren) {
+            deleteTreeItemChildren(treeItem.children);
+        }
+        delete tree.items[id];
+    })
 }
 
 Date.prototype.addDays = function(days) {
@@ -285,7 +299,7 @@ const resolvers = {
         card: (_, { id }) => {
             return getItem(id);
         },
-        saveCard: (parent, {id, templateTitle, entries}) => {
+        saveCard: (_, {id, templateTitle, entries}) => {
             let card = getItem(id);
             card = {
                 id,
@@ -307,6 +321,7 @@ const resolvers = {
         },
         deleteTreeItem: (_, {id}) => {
             let treeItem = tree.items[id];
+            deleteTreeItemChildren(treeItem.children);
             delete tree.items[id];
             let parent = tree.items[treeItem.parentId]
             let idx = parent.children.indexOf(id);

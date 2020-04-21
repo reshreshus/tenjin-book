@@ -17,7 +17,6 @@ const Editor = ({treeItem}) => {
     const [isQuestioning, updateIsQuestioning] = useState(true);
 
     useEffect(() => {
-        console.log("treeItem.id");
         updateEditorJsEntries([])
     }, [treeItem]);
 
@@ -63,7 +62,6 @@ const Editor = ({treeItem}) => {
         return <div>loading</div>
     }
     const {template_title, entries} = card;
-    console.log({card})
     editorEntries.length = 0;
     editorEntries.push(...entries)
     editorEntries.forEach(e => {
