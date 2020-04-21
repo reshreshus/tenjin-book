@@ -321,21 +321,23 @@ const resolvers = {
             let treeItem = tree.items[id];
             let newTreeItem = Object.assign({}, treeItem);
             let newId = ID();
-            newTreeItem.children = []
+            newTreeItem.children = [];
             newTreeItem.id = newId;
             newTreeItem.hasChildren = false;
             // Apparently, Object.assign just copies references of inside objects
-            newTreeItem.data = Object.assign({}, treeItem.data)
+            newTreeItem.data = Object.assign({}, treeItem.data);
             newTreeItem.data.name = `${newTreeItem.data.name} (dupl)`
-            let parent = tree.items[newTreeItem.parentId]
+            let parent = tree.items[newTreeItem.parentId];
             let idx = parent.children.indexOf(id);
             parent.children.splice(idx + 1, 0, newId);
             tree.items[newId] = newTreeItem;
             // duplicate flashcard as well
             if (newTreeItem.data.type === 'f' || newTreeItem.data.type === 'T') {
-                let card = getItem(id);
-                card.id = newId;
-                insertItem(card);
+                getItem(id).then(result => {
+                    result.id = newId;
+                    delete result._id;
+                    insertItem(result);
+                });
             }
             updateTreeDb(tree);
             return tree;

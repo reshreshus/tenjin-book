@@ -19,7 +19,7 @@ const Editor = ({treeItem}) => {
     useEffect(() => {
         console.log("treeItem.id");
         updateEditorJsEntries([])
-    }, [treeItem.id]);
+    }, [treeItem]);
 
     const onMarkdownEntryChange = (idx, value) => {
         editorEntries.filter(e => e.id === idx)[0].content = value;
@@ -63,6 +63,7 @@ const Editor = ({treeItem}) => {
         return <div>loading</div>
     }
     const {template_title, entries} = card;
+    console.log({card})
     editorEntries.length = 0;
     editorEntries.push(...entries)
     editorEntries.forEach(e => {
