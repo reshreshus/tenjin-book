@@ -191,7 +191,8 @@ function CollectionProvider({children,
         let dueItemsIds = deckTreeItem.data.dueItemsIds;
         if (dueItemsIds.length > 0) {
             updateContextTreeItem(newTree.items[dueItemsIds[getRandomInt(0, dueItemsIds.length - 1)]]);
-            setCardContext(dueItemsIds[0]);
+            // setCardContext(null);
+            setCardContext(dueItemsIds[getRandomInt(0, dueItemsIds.length - 1)]);
         } else if (deckTreeItem.data.dueDecksIds.length > 0) {
             setCardToRepeat(newTree.items[deckTreeItem.data.dueDecksIds[0]]);
         } else {

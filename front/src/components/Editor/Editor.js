@@ -17,8 +17,9 @@ const Editor = ({treeItem}) => {
     const [isQuestioning, updateIsQuestioning] = useState(true);
 
     useEffect(() => {
+        console.log("treeItem.id");
         updateEditorJsEntries([])
-    }, [treeItem]);
+    }, [treeItem.id]);
 
     const onMarkdownEntryChange = (idx, value) => {
         editorEntries.filter(e => e.id === idx)[0].content = value;
