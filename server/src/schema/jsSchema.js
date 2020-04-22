@@ -2,6 +2,7 @@ const { ApolloServer } = require('apollo-server');
 const GraphQLJSON = require('graphql-type-json');
 // import { makeExecutableSchema } from 'graphql-tools';
 import { getTree, getItem, updateTree, updateItem, insertItem } from '../db';
+import { advanceCardSm2 } from '../srs/algo';
 
 let tree = {}
 getTree().then(result => tree = result);
@@ -170,49 +171,15 @@ const addTreeItem = (parentId, id) => {
     return treeItem;
 }
 
-/*
-    Repeat items using the following intervals:
-    I(1):=1
-    I(2):=6
-    for n>2: I(n):=I(n-1)*EF
-    where:
-    I(n) - inter-repetition interval after the n-th repetition (in days),
-    EF - E-Factor of a given item
-    If interval is a fraction, round it up to the nearest integer.
- */
-const nextIntervalSm2 = (n, eF) => {
-    if (n === 1) return 1;
-    if (n === 2) return 6;
-    return eF * nextIntervalSm2(n - 1, eF);
-}
-
 const updateTreeDb = async (newTree = tree) => {
   updateTree(newTree);
 }
 
-const getDate = (dt = new Date()) => {
-    return `${dt.getFullYear()}/${(dt.getMonth() + 1)}/${dt.getDate()}`
-}
-
 // TODO: no logic for advancing Topics is sm2
-const advanceCardSm2 = (treeItem, q) => {
+const advanceCard = (treeItem, q) => {
     let date = new Date();
     let stats = treeItem.data.repetitionStatsSm2;
-    stats.history.push({
-        quality: q,
-        date: String(date)
-    });
-    let eF = stats.eFactor;
-    let newEf = eF + (0.1-(5-q)*(0.08+(5-q)*0.02));
-    stats.repetitionsCount++
-    let nextInterval = Math.round(nextIntervalSm2(stats.repetitionsCount, eF));
-    if (q < 3) {
-        stats.nextDate = '-1';
-    } else {
-        let newDate = date.addDays(nextInterval);
-        stats.nextDate = getDate(newDate);
-    }
-    stats.eFactor = newEf;
+    stats = advanceCardSm2(stats, q, date);
 }
 
 const deleteTreeItemChildren = (childrenIds) => {
@@ -248,7 +215,7 @@ const resolvers = {
         advanceCard: (_, {id, quality : q}) => {
             let itemTreeItem = tree.items[id]
             if (itemTreeItem.data.type === 'f' || itemTreeItem.data.type === 'T') {
-                advanceCardSm2(itemTreeItem, q);
+                advanceCard(itemTreeItem, q);
                 updateTreeDb(tree)
                 return tree;
             } else {

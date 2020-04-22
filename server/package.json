@@ -6,7 +6,8 @@
   "scripts": {
     "start": "nodemon --exec babel-node src/index.js",
     "start-rest": "nodemon --exec babel-node src/rest.js",
-    "populate-default": "cross-env PROD_ENV=pop babel-node src/db/index.js"
+    "populate-default": "cross-env PROD_ENV=pop babel-node src/db/index.js",
+    "test": "mocha 'src/test' || exit 0"
   },
   "keywords": [],
   "author": "reshreshus",
@@ -16,7 +17,9 @@
     "@babel/core": "^7.8.3",
     "@babel/node": "^7.8.3",
     "@babel/preset-env": "^7.8.3",
-    "cross-env": "^7.0.2"
+    "chai": "^4.2.0",
+    "cross-env": "^7.0.2",
+    "mocha": "^7.1.1"
   },
   "dependencies": {
     "apollo-server": "^2.9.16",
