@@ -1,4 +1,4 @@
-const advanceCardSm2 = (stats, q, date) => {
+const advanceCardSm2 = (stats, q) => {
     let nextInterval;
     const { repetitionsCount, eF } = stats;
     let today = new Date();
@@ -8,8 +8,9 @@ const advanceCardSm2 = (stats, q, date) => {
         } else if (repetitionsCount === 1) {
             nextInterval = 6;
         } else {
-            const previousDate = parseDate(stats.history[stats.history.length - 1].date);
-            const previousInterval = dateDiffDays(previousDate, today);
+            // const previousDate = parseDate(stats.history[stats.history.length - 1].date);
+            // const previousInterval = dateDiffDays(previousDate, today);
+            const previousInterval = stats.interval;
             nextInterval = previousInterval * eF;
         }
         let newEf = eF + (0.1-(5-q)*(0.08+(5-q)*0.02));
@@ -31,10 +32,11 @@ const advanceCardSm2 = (stats, q, date) => {
     //     quality: q,
     //     date: getDate(today)
     // });
-    stats.history = [{
-        quality: q,
-        date: getDate(today)
-    }];
+    // stats.history = [{
+    //     quality: q,
+    //     date: getDate(today)
+    // }];
+    stats.interval = nextInterval;
 
     return stats;
 }

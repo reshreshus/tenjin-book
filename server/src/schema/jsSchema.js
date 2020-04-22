@@ -61,6 +61,28 @@ const newDeckTreeItem = {
     data: { }
 }
 
+const ID = () => {
+	return '_' + Math.random().toString(36).substr(2, 9);
+};
+
+const addTreeItem = (parentId, id) => {
+    let treeItem = Object.assign({}, newDeckTreeItem);
+    // even if you copy object, children have the same reference.
+    // so you have to create a brand new array for children
+    treeItem.children = [];
+    treeItem.parentId = parentId;
+    treeItem.id = id;
+    tree.items[parentId].children.push(id);
+    tree.items[parentId].hasChildren = true;
+    tree.items[parentId].isExpanded = true;
+    tree.items[id] = treeItem;
+    return treeItem;
+}
+
+const updateTreeDb = async (newTree = tree) => {
+  updateTree(newTree);
+}
+
 const typeDefs = `
     scalar JSON
 
@@ -87,7 +109,7 @@ const typeDefs = `
         eFactor: String!
         repetitionsCount: Int!
         nextDate: String!
-        history: [RepetitionEvent]
+        interval: String
     }
 
     type Card {
@@ -150,28 +172,6 @@ const typeDefs = `
     }
 
 `;
-
-const ID = () => {
-	return '_' + Math.random().toString(36).substr(2, 9);
-};
-
-const addTreeItem = (parentId, id) => {
-    let treeItem = Object.assign({}, newDeckTreeItem);
-    // even if you copy object, children have the same reference.
-    // so you have to create a brand new array for children
-    treeItem.children = [];
-    treeItem.parentId = parentId;
-    treeItem.id = id;
-    tree.items[parentId].children.push(id);
-    tree.items[parentId].hasChildren = true;
-    tree.items[parentId].isExpanded = true;
-    tree.items[id] = treeItem;
-    return treeItem;
-}
-
-const updateTreeDb = async (newTree = tree) => {
-  updateTree(newTree);
-}
 
 // TODO: no logic for advancing Topics is sm2
 const advanceCard = (treeItem, q) => {
