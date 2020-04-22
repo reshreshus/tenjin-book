@@ -11,7 +11,7 @@ const newCard = {
     templateId: "from db",
     templateTitle: "Basic",
     entries: [
-        {  
+        {
             id: 0,
             name: "Front",
             content: {
@@ -30,7 +30,7 @@ const newCard = {
                     type: "paragraph",
                     data: { text: "" }
                 }]
-            },   
+            },
             type: "A",
         }
     ]
@@ -40,7 +40,7 @@ const newTopic = {
     templateId: "from db",
     templateTitle: "Basic Topic",
     entries: [
-        {  
+        {
             id: 0,
             name: "Custom field",
             type: "C",
@@ -49,7 +49,7 @@ const newTopic = {
                     type: "paragraph",
                     data: { text: "" }
                 }]
-            } 
+            }
         }
     ]
 }
@@ -58,9 +58,7 @@ const newDeckTreeItem = {
     hasChildren: false,
     children: [],
     isExpanded: false,
-    data: {
-
-    }
+    data: { }
 }
 
 const typeDefs = `

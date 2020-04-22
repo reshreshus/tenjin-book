@@ -94,13 +94,24 @@ function CollectionProvider({children,
 
     const getDate = (dt = new Date()) => {
         return `${dt.getFullYear()}/${(dt.getMonth() + 1)}/${dt.getDate()}`
+        // return dt.toGMTString();
+    }
+
+    Date.prototype.addDays = function(days) {
+        var date = new Date(this.valueOf());
+        date.setDate(date.getDate() + days);
+        return date;
     }
 
     const isDue = (treeItem) => {
-        let today = getDate(); 
+        let today = new Date();
+        // today = today.addDays(1);
+        const todayString = getDate(today);
+        // console.log({todayString});
         let nextDate = treeItem.data.repetitionStatsSm2.nextDate;
+        // console.log({nextDate})
         // nextDate === '-1' it is a new card
-        return nextDate === today || nextDate === '-1';
+        return nextDate === todayString || nextDate === '-1';
     }
 
     // TODO: too many calculations and updates of the tree

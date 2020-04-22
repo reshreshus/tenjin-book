@@ -7,7 +7,9 @@ describe('algo', function() {
     it('next interval should be a number', function() {
         let n = getRandomInt(1, 20);
         let eF = 2.5;
-        expect(nextIntervalSm2(n, eF)).to.be.a('number')
+        let result = nextIntervalSm2(n, eF);
+        console.log({result})
+        expect(result).to.be.a('number')
     })
 });
 
