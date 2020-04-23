@@ -10,7 +10,7 @@ const testCardsSm2 = [
         "nextInterval": 1,
         "nextEFactor": "",
         "testText": function() {
-            return `q = ${this.q}`
+            return `q = ${this.q}, nextInterval=${this.nextInterval}, nextEFactor=${this.nextEFactor}`
         }
     },
 ]

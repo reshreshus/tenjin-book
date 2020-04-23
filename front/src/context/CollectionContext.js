@@ -103,15 +103,29 @@ function CollectionProvider({children,
         return date;
     }
 
+    const parseDate = (dateString) => {
+        const [year, month, day] = dateString.split('/');
+        return new Date(year, month - 1, day);
+    }
+
     const isDue = (treeItem) => {
         let today = new Date();
-        // today = today.addDays(1);
-        const todayString = getDate(today);
+        // today = today.addDays(15);
+        // const todayString = getDate(today);
         // console.log({todayString});
         let nextDate = treeItem.data.repetitionStatsSm2.nextDate;
+        if (nextDate === '-1') return true;
+        if (nextDate !== '-1') {
+            console.log({today});
+            nextDate = parseDate(nextDate);
+            console.log({nextDate});
+            console.log({return: today >= nextDate})
+        }
+
         // console.log({nextDate})
         // nextDate === '-1' it is a new card
-        return nextDate === todayString || nextDate === '-1';
+        // return nextDate === todayString || nextDate === '-1';
+        return today >= nextDate;
     }
 
     // TODO: too many calculations and updates of the tree
@@ -201,9 +215,10 @@ function CollectionProvider({children,
     const setCardToRepeat = (deckTreeItem=currentlyUsedDeck, newTree=tree) => {
         let dueItemsIds = deckTreeItem.data.dueItemsIds;
         if (dueItemsIds.length > 0) {
-            updateContextTreeItem(newTree.items[dueItemsIds[getRandomInt(0, dueItemsIds.length - 1)]]);
+            let nextDueItemId = getRandomInt(0, dueItemsIds.length - 1);
+            updateContextTreeItem(newTree.items[dueItemsIds[nextDueItemId]]);
             // setCardContext(null);
-            setCardContext(dueItemsIds[getRandomInt(0, dueItemsIds.length - 1)]);
+            setCardContext(dueItemsIds[nextDueItemId]);
         } else if (deckTreeItem.data.dueDecksIds.length > 0) {
             setCardToRepeat(newTree.items[deckTreeItem.data.dueDecksIds[0]]);
         } else {

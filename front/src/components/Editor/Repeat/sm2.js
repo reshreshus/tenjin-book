@@ -61,14 +61,15 @@ export const getEvaluationOptions = (treeItem, advanceCardContext) => {
 const nextIntervalWithQualitySm2 = (treeItem, q) => {
     if (q >= 3) {
         let stats = treeItem.data.repetitionStatsSm2;
-        return `In ${Math.round(nextIntervalSm2(stats.repetitionsCount + 1, stats.eF))} day(s)`;
+        console.log({stats})
+        return `In ${Math.round(nextIntervalSm2(stats))} day(s)`;
     } else {
         return 'today'
     }
 }
 
-const nextIntervalSm2 = (n, eF) => {
-    if (n === 1) return 1;
-    if (n === 2) return 6;
-    return eF * nextIntervalSm2(n - 1, eF);
+const nextIntervalSm2 = ({eF, interval, repetitionsCount}) => {
+    if (repetitionsCount === 0) return 1;
+    if (repetitionsCount === 1) return 6;
+    return eF * interval;
 };
