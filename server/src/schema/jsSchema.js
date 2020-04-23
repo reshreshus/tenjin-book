@@ -1,7 +1,7 @@
 const { ApolloServer } = require('apollo-server');
 const GraphQLJSON = require('graphql-type-json');
 // import { makeExecutableSchema } from 'graphql-tools';
-import { getTree, getItem, updateTree, updateItem, insertItem } from '../db';
+import { getTree, getItem, updateTree, updateItem, insertItem, backup } from '../db';
 import { advanceCardSm2 } from '../srs/algo';
 
 let tree = {}
@@ -135,6 +135,7 @@ const typeDefs = `
     }
 
     type Mutation {
+        backup: String,
         items: [JSON],
         addCardEntry (
             name: String!
@@ -209,6 +210,10 @@ const resolvers = {
         tree: () => tree,
     },
     Mutation: {
+        backup: () => {
+            backup();
+            return "ok"
+        },
         items: () => tree,
         advanceCard: (_, {id, quality : q}) => {
             let itemTreeItem = tree.items[id]

@@ -53,7 +53,7 @@ export const GET_ITEMS = gql`
 
 export const GET_TREE = gql`
     {
-        tree 
+        tree
     }
 `;
 
@@ -74,7 +74,7 @@ export const GET_CARD = gql`
 `;
 
 export const SAVE_CARD = gql`
-    mutation SaveCard($id: ID!, $templateTitle:String!, $entries: [JSON]) { 
+    mutation SaveCard($id: ID!, $templateTitle:String!, $entries: [JSON]) {
             saveCard(id: $id, templateTitle: $templateTitle, entries: $entries) {
             id
             entries {
@@ -93,3 +93,9 @@ export const ADD_CARD_ENTRY = gql`
         }
     }
 `;
+
+export const BACKUP = gql`
+    mutation Backup() {
+        backup
+    }
+`
