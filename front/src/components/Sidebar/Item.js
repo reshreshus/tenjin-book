@@ -143,8 +143,8 @@ const Item = ({
                               onChange={(e)=>handleChange(e)}
                           />
                       </Link>
-                      { treeItem.data.repetitionStatsSm2 ?
-                      treeItem.data.repetitionStatsSm2.nextDate : "" }
+                      {/* { treeItem.data.repetitionStatsSm2 ?
+                      treeItem.data.repetitionStatsSm2.nextDate : "" } */}
                   </div>
                   <div className="tree-item__params">
                     {treeItem.data.dueItemsCount > 0 ? treeItem.data.dueItemsCount: ''}

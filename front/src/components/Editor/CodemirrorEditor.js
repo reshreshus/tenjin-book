@@ -13,7 +13,8 @@ export default function CodemirrorEditor({source, onEditorChange}) {
             options={{
                 mode: 'gfm',
                 // theme: '',
-                lineNumbers: false
+                lineNumbers: false,
+                lineWrapping: true,
             }}
             onChange={(editor, data, value) => {
                 onEditorChange(value);
