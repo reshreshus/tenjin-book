@@ -112,10 +112,10 @@ const Editor = ({treeItem}) => {
     return (
         <div className="editor">
             <HotkeysEditor saveCard={saveCard} />
-            <EditorHeader template_title={template_title} deck_title={deck_title} />
             {
                 editingMode.isEditing ? (
                 <div>
+                    <EditorHeader template_title={template_title} deck_title={deck_title} />
                     <EditorEntries
                     // markdownEntriesData={markdownEntriesData}
                     onMarkdownEntryChange={onMarkdownEntryChange}
