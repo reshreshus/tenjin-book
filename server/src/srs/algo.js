@@ -9,17 +9,19 @@ const advanceCardSm2 = (stats, q) => {
         } else if (repetitionsCount === 1) {
             nextInterval = 6;
         } else {
-            // const previousDate = parseDate(stats.history[stats.history.length - 1].date);
-            // const previousInterval = dateDiffDays(previousDate, today);
-            const previousInterval = stats.interval;
+            // const previousInterval = stats.interval;
+            console.log({eF, previousInterval})
             nextInterval = Math.round(previousInterval * eF);
+            // console.log({nextInterval})
         }
         let newEf = eF + (0.1 - (5 - q) * (0.08 + (5 - q) * 0.02));
-        stats.eF = newEf;
+        // console.log({newEf})
+        stats.eFactor = newEf;
         stats.repetitionsCount++;
 
         let newDate = today.addDays(nextInterval);
         stats.nextDate = getDate(newDate);
+        // console.log({nextDate: stats.nextDate});
     } else {
         stats.repetitionsCount = 0;
         nextInterval = 1;
@@ -29,15 +31,6 @@ const advanceCardSm2 = (stats, q) => {
         stats.nextDate = '-1';
     }
     stats.interval = nextInterval;
-    // console.log({stats})
-    // stats.history.push({
-    //     quality: q,
-    //     date: getDate(today)
-    // });
-    // stats.history = [{
-    //     quality: q,
-    //     date: getDate(today)
-    // }];
 
     return stats;
 }

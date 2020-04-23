@@ -68,8 +68,8 @@ const nextIntervalWithQualitySm2 = (treeItem, q) => {
     }
 }
 
-const nextIntervalSm2 = ({eF, interval, repetitionsCount}) => {
+const nextIntervalSm2 = ({eFactor, interval, repetitionsCount}) => {
     if (repetitionsCount === 0) return 1;
     if (repetitionsCount === 1) return 6;
-    return eF * interval;
+    return eFactor * interval;
 };

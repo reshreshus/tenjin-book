@@ -110,22 +110,13 @@ function CollectionProvider({children,
 
     const isDue = (treeItem) => {
         let today = new Date();
-        // today = today.addDays(15);
-        // const todayString = getDate(today);
-        // console.log({todayString});
+        // today = today.addDays(16);
         let nextDate = treeItem.data.repetitionStatsSm2.nextDate;
         if (nextDate === '-1') return true;
-        if (nextDate !== '-1') {
-            console.log({today});
+        else {
             nextDate = parseDate(nextDate);
-            console.log({nextDate});
-            console.log({return: today >= nextDate})
+            return today >= nextDate;
         }
-
-        // console.log({nextDate})
-        // nextDate === '-1' it is a new card
-        // return nextDate === todayString || nextDate === '-1';
-        return today >= nextDate;
     }
 
     // TODO: too many calculations and updates of the tree
