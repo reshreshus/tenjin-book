@@ -47,7 +47,7 @@ export const SAVE_TREE = gql`
 
 export const GET_ITEMS = gql`
     mutation {
-        items 
+        items
     }
 `;
 
@@ -95,7 +95,7 @@ export const ADD_CARD_ENTRY = gql`
 `;
 
 export const BACKUP = gql`
-    mutation Backup() {
+    mutation Backup {
         backup
     }
 `

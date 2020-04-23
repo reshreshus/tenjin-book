@@ -1,4 +1,4 @@
-export const appMenuItems = () => {
+export const appMenuItems = (backup) => {
     return [
         {
             "desc": "Export All",
@@ -14,6 +14,7 @@ export const appMenuItems = () => {
             "hotkeyJs": "",
             "func": () => {
                 console.log("Backup");
+                backup();
             }
         }
     ]

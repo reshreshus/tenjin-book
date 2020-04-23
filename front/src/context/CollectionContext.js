@@ -24,7 +24,8 @@ function CollectionProvider({children,
     renameTreeItem,
     getCard,
     saveTree,
-    advanceCard
+    advanceCard,
+    backup
 })
     {
     const [tree, updateTree] = useState(null);
@@ -45,8 +46,8 @@ function CollectionProvider({children,
 
     const {data: treeData} = useQuery(GET_TREE, {
         // TODO: query executes an unusual number of times
-        onCompleted:  () => { 
-            console.log(treeData.tree); 
+        onCompleted:  () => {
+            console.log(treeData.tree);
             if (treeData.tree) {
                 let tree = calculateDueItemsInTree(treeData.tree);
                 updateTree(tree);
@@ -447,7 +448,7 @@ function CollectionProvider({children,
         hideContextMenu
         }}>
             {children}
-            <ContextMenu menuItems={menuItems} appMenuItems={() => appMenuItems()} isAppMenuUsed={isAppMenuUsed}/>
+            <ContextMenu menuItems={menuItems} appMenuItems={() => appMenuItems(backup)} isAppMenuUsed={isAppMenuUsed}/>
             <HotkeyApp menuItems={menuItems} addItemHeaderDeck={addItemHeaderDeck}/>
     </Collection.Provider>)
 }

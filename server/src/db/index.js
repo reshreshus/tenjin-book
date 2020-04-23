@@ -69,7 +69,7 @@ export const putTreeItem = async (id, item) => await new Promise(resolve =>
 )
 
 const getDate = (dt = new Date()) => {
-	return `${dt.getFullYear()}${(dt.getMonth() + 1)}${dt.getDate()}${dt.getSeconds()}`
+	return `${dt.getFullYear()}-${(dt.getMonth() + 1)}-${dt.getDate()}-${dt.getHours()}-${dt.getMinutes()}-${dt.getSeconds()}`
 	// return dt.toISOString();
 }
 
