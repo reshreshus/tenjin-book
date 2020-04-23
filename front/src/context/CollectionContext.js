@@ -370,7 +370,7 @@ function CollectionProvider({children,
                 if (newName) {
                     // temporary костыль
                     if (!newName.startsWith('![](http://localhost:5000/media')) {
-                        newName = newName.slice(0, 20);
+                        newName = newName.slice(0, 50);
                         tree.items[savedCard.id].data.name = newName;
                         saveTreeContext(tree);
                         break;
