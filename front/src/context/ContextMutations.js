@@ -11,7 +11,7 @@ export const getContextMutations = (
 
     return [
         {
-            "desc": "Dismiss",
+            "desc": "Dismiss / Undismiss",
             "shortcut": "Alt + D",
             "hotkeyJs": "alt+d",
             "func": () => {

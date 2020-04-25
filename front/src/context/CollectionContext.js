@@ -110,6 +110,7 @@ function CollectionProvider({children,
     }
 
     const isDue = (treeItem) => {
+        if (treeItem.data.status === 'dismissed') return false;
         let today = new Date();
         // today = today.addDays(16);
         let nextDate = treeItem.data.repetitionStatsSm2.nextDate;
@@ -403,8 +404,13 @@ function CollectionProvider({children,
     }
 
     const dismissItemContext = () => {
-        tree.items[contextTreeItem.id].data.status = 'dismissed';
-        saveTree(tree);
+        const item = tree.items[contextTreeItem.id];
+        if (item.data.status === 'dismissed') {
+            item.data.status = 'active'
+        } else {
+            item.data.status = 'dismissed'
+        }
+        saveTreeContext(tree);
     }
 
     let menuItems =  getContextMutations(
