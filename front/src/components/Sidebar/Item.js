@@ -98,10 +98,17 @@ const Item = ({
                     }
                  </div>
                   {/* drag by treeItem type */}
-                  <span className={`tree-item__type ${treeItem.data.type === 'D' ? '' : 'tree-item__type--ca'}
+                  <span
+                  className={`tree-item__type
                   ${(contextTreeItem && treeItem.id === contextTreeItem.id) ?
                     'tree-item__type--active':''}
                   `
+                  }
+                  style={
+                    treeItem.data.type === 'D' ?
+                    (treeItem.data.status === 'dismissed' ?  {color: '#868219'} : {color: '#3E68FA'})
+                    :
+                    (treeItem.data.status === 'dismissed' ? {color: '#868219'} : {color: '#2CD93E'} )
                   }
                   ref={draggable}
                    {...provided.dragHandleProps}

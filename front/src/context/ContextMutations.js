@@ -1,14 +1,24 @@
 
 export const getContextMutations = (
-    addDeckContext, 
-    addItemContext, 
+    addDeckContext,
+    addItemContext,
     selectTreeItemToRenameContext,
     duplicateTreeItemContext,
     deleteTreeItemContext,
-    toggleExpanded
+    toggleExpanded,
+    dismissItemContext
     ) => {
 
     return [
+        {
+            "desc": "Dismiss",
+            "shortcut": "Alt + D",
+            "hotkeyJs": "alt+d",
+            "func": () => {
+                console.log("Dismiss Item");
+                dismissItemContext();
+            }
+        },
         {
             "desc": "New Deck",
             "shortcut": "Alt + Shift + D",

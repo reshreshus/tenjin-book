@@ -402,13 +402,19 @@ function CollectionProvider({children,
         openContextMenu(e);
     }
 
+    const dismissItemContext = () => {
+        tree.items[contextTreeItem.id].data.status = 'dismissed';
+        saveTree(tree);
+    }
+
     let menuItems =  getContextMutations(
         addDeckContext,
         addItemContext,
         selectTreeItemToRenameContext,
         duplicateTreeItemContext,
         deleteTreeItemContext,
-        toggleExpanded
+        toggleExpanded,
+        dismissItemContext
     );
 
     return (
