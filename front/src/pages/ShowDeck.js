@@ -1,9 +1,13 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { CollectionConsumer } from '../context/CollectionContext';
 import { Link, Redirect } from 'react-router-dom';
 
 export default function ShowDeck() {
-    // TODO: react doesn't like it
+    const [uploadValue, updateUploadValue] = useState();
+
+    const onFileSelected = (e) => {
+        console.log({target: e.target.files[0]})
+    }
     return (
         <CollectionConsumer>
         {
@@ -17,6 +21,17 @@ export default function ShowDeck() {
                         return (
                             <div className="info">
                                 <h1 className="title">( ･ิɷ･ิ)</h1>
+                                <input className="hide" id="img-upload" type="file" accept="image/*"
+                                onChange={(e) => onFileSelected(e)} />
+                                <div className="info__img-upload">
+                                    <label for="img-upload" id="file-drag">
+                                        { uploadValue ? <div> { uploadValue }% </div> : ""}
+                                        <div id="start">
+                                            <i class="fa fa-upload" aria-hidden="true"></i>
+                                            <div> Select image for the deck </div>
+                                        </div>
+                                    </label>
+                                </div>
                                 <div>
                                 <h2 className="subtitle">This is a chosen deck. "{contextTreeItem.data.name}"<br />
                                 What will you do with it?</h2>
