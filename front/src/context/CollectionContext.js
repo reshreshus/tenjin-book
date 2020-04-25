@@ -235,11 +235,25 @@ function CollectionProvider({children,
     }
 
     const toggleExpanded = (treeItemId = contextTreeItem.id) => {
-        let treeItem = tree.items[treeItemId];
+        const treeItem = tree.items[treeItemId];
         treeItem.isExpanded = !treeItem.isExpanded;
         updateTree(Object.assign({}, tree))
         //todo: optimize, make a query
         saveTree(tree);
+    }
+
+    const collapseAllChild = (id) => {
+        const treeItem = tree.items[id];
+        treeItem.isExpanded = false;
+        treeItem.children.forEach(cId => collapseAllChild(cId))
+    }
+
+    const collapseAll = (treeItemId = contextTreeItem.id) => {
+        console.log("collapseAll")
+        const treeItem = tree.items[treeItemId];
+        treeItem.isExpanded = false;
+        treeItem.children.forEach(cId => collapseAll(cId))
+        saveTreeContext(tree);
     }
 
     const updateContextTreeItemAndCleanup = (treeItem, treeItemRef) => {
@@ -420,7 +434,8 @@ function CollectionProvider({children,
         duplicateTreeItemContext,
         deleteTreeItemContext,
         toggleExpanded,
-        dismissItemContext
+        dismissItemContext,
+        collapseAll,
     );
 
     return (

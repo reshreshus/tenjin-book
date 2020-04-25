@@ -6,7 +6,8 @@ export const getContextMutations = (
     duplicateTreeItemContext,
     deleteTreeItemContext,
     toggleExpanded,
-    dismissItemContext
+    dismissItemContext,
+    collapseAll,
     ) => {
 
     return [
@@ -83,13 +84,14 @@ export const getContextMutations = (
                 toggleExpanded();
             },
         },
-        // {
-        //     "desc": "Collapse All",
-        //     "shortcut": "Ctrl+Z",
-        //     "hotkeyJs": "ctrl+z",
-        //     "func": () => {
-        //         console.log("Toggle Collapsedness")
-        //     },
-        // }
+        {
+            "desc": "Collapse All",
+            "shortcut": "Ctrl + Alt + Z",
+            "hotkeyJs": "shift+z",
+            "func": () => {
+                // console.log("Toggle Collapsedness")
+                collapseAll();
+            },
+        }
     ]
 }
