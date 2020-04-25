@@ -29,7 +29,7 @@ export const getContextMutations = (
         },
         {
             "desc": "New Card",
-            "shortcut": "A",
+            "shortcut": "Ctrl + Shift + A",
             "hotkeyJs": "ctrl+shift+a",
             "func": () => {
                 console.log("New New Card")
@@ -37,8 +37,6 @@ export const getContextMutations = (
             },
         },
         {
-            // when you press rename, cursor goes away
-            // go it doesn't edit, but 'a' will trigger flashcard creation
             "desc": "Rename",
             "shortcut": "F2",
             "hotkeyJs": "f2",
@@ -75,13 +73,13 @@ export const getContextMutations = (
                 toggleExpanded();
             },
         },
-        {
-            "desc": "Collapse All",
-            "shortcut": "Ctrl+Z",
-            "hotkeyJs": "ctrl+z",
-            "func": () => {
-                console.log("Toggle Collapsedness")
-            },
-        }
+        // {
+        //     "desc": "Collapse All",
+        //     "shortcut": "Ctrl+Z",
+        //     "hotkeyJs": "ctrl+z",
+        //     "func": () => {
+        //         console.log("Toggle Collapsedness")
+        //     },
+        // }
     ]
 }
