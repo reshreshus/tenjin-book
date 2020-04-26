@@ -70,12 +70,11 @@ function CollectionProvider({children,
     }
 
     const zoomInDeckContext = (deckId=contextTreeItem.id) => {
-        console.log("zoomInDeckContext");
         updateRootTreeItem(tree.items[deckId]);
     }
 
     const zoomOutContext = () => {
-        if (rootTreeItem.parentId)
+        if (rootTreeItem && rootTreeItem.parentId)
             updateRootTreeItem(tree.items[rootTreeItem.parentId]);
     }
 
