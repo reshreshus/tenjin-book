@@ -70,8 +70,6 @@ const Editor = ({treeItem}) => {
 
     const deckParent = findLastDeck(treeItem);
 
-    const deck_title = deckParent.data.name;
-
     const saveCard = async () => {
         updateEditorChanged(false);
         editorJsEntries.map( async ({entry, instance}) => {
@@ -115,7 +113,7 @@ const Editor = ({treeItem}) => {
             {
                 editingMode.isEditing ? (
                 <div>
-                    <EditorHeader template_title={template_title} deck_title={deck_title} />
+                    <EditorHeader template_title={template_title} deckParent={deckParent} />
                     <EditorEntries
                     // markdownEntriesData={markdownEntriesData}
                     onMarkdownEntryChange={onMarkdownEntryChange}
