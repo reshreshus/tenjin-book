@@ -12,7 +12,7 @@ import { appMenuItems } from './appMenuItems';
 
 import { getRandomInt } from '../helpers/jsHelpers';
 
-import { uploadDeckImage } from '../api/rest';
+import { uploadDeckImage, deleteImage } from '../api/rest';
 
 
 const Collection = React.createContext();
@@ -85,9 +85,12 @@ function CollectionProvider({children,
 
     const uploadImageDeckContext = async (deckId, file) => {
         const url = await uploadDeckImage(deckId, file);
-        tree.items[deckId].data.img = url;
+        const treeItem = tree.items[deckId]
+        if (treeItem.data.img) {
+            deleteImage(treeItem.data.img)
+        }
+        treeItem.data.img = url;
         saveTreeContext(tree);
-        // TODO: delete previous image
     }
 
     const isRepeatableItem = (treeItem) => {

@@ -14,3 +14,8 @@ export const uploadDeckImage = async (deckId, imageFile) => {
     });
     return data.file.url;
 }
+
+export const deleteImage = async (url) => {
+    const { data } = await axios.delete(url);
+    return data.status;
+}
