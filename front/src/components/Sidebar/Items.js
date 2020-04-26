@@ -30,7 +30,7 @@ const Items = () => {
     return (
         <CollectionConsumer>
         {
-            ({tree, saveTreeContext, toggleExpanded}) => {
+            ({tree, saveTreeContext, toggleExpanded, rootTreeItem}) => {
 
                 const onExpand = (itemId) => {
                     toggleExpanded(itemId);
@@ -59,6 +59,10 @@ const Items = () => {
                 };
 
                 if (tree) {
+                    console.log({rootTreeItem})
+                    if (rootTreeItem) {
+                        tree.rootId = rootTreeItem.id;
+                    }
                     console.log("tree", tree);
                     return (
                         <div>

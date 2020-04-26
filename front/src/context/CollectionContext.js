@@ -39,6 +39,8 @@ function CollectionProvider({children,
     const [isEditing, updateIsEditing] = useState(false);
     const [card, updateCard] = useState(null);
 
+    const [rootTreeItem, updateRootTreeItem] = useState(null);
+
     const [currentlyUsedDeck, updateCurrentlyUsedDeck] = useState();
 
     const [editingMode, updateEditingMode] = useState({
@@ -67,21 +69,10 @@ function CollectionProvider({children,
         }
     }
 
-    // const getCardsIdsOfDeck = (treeItem, findDue = false) => {
-    //     if (!treeItem.hasChildren) return [];
-    //     let cardsIds = []
-
-    //     treeItem.children.map(cId => {
-    //         let curTreeItem = tree.items[cId]
-    //         if (isRepeatableItem(curTreeItem) && (!findDue || isDue(curTreeItem))) {
-    //             cardsIds.push(cId);
-    //         }
-    //         if (curTreeItem.hasChildren) {
-    //             cardsIds = [...cardsIds, ...getCardsIdsOfDeck(curTreeItem)]
-    //         }
-    //     })
-    //     return cardsIds;
-    // }
+    const zoomInDeckContext = (deckId=contextTreeItem.id) => {
+        console.log("zoomInDeckContext");
+        updateRootTreeItem(tree.items[deckId]);
+    }
 
     const uploadImageDeckContext = async (deckId, file) => {
         const url = await uploadDeckImage(deckId, file);
@@ -448,6 +439,7 @@ function CollectionProvider({children,
         toggleExpanded,
         dismissItemContext,
         collapseAll,
+        zoomInDeckContext,
     );
 
     return (
@@ -461,6 +453,8 @@ function CollectionProvider({children,
         selectTreeItemToRenameContext,
         renameTreeItemContext,
         saveTreeContext,
+        zoomInDeckContext,
+        rootTreeItem,
 
         headerDeck,
         updateHeaderDeck,
