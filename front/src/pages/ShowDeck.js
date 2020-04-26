@@ -31,7 +31,7 @@ export default function ShowDeck() {
                                     <label for="img-upload" id="file-drag">
                                         { uploadValue ? <div> { uploadValue }% </div> : ""}
                                         <div id="start">
-                                            <i class="fa fa-upload" aria-hidden="true"></i>
+                                            <i className="fa fa-upload" aria-hidden="true"></i>
                                             <div> Select image for the deck </div>
                                         </div>
                                     </label>

@@ -476,6 +476,7 @@ function CollectionProvider({children,
         setCardToRepeat,
         advanceCardContext,
         updateCurrentlyUsedDeck,
+        uploadImageDeckContext,
 
         showSidebars,
         updateShowSidebars,

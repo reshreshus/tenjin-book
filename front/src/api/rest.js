@@ -7,7 +7,7 @@ export const uploadDeckImage = (deckId, imageFile) => {
     formData.append("image", imageFile);
     formData.append("id", deckId);
 
-    axios.post(`${serverUrl}/uploadDeckImage`, formData, {
+    axios.post(`${serverUrl}/uploadByFile`, formData, {
         headers: {
         'Content-Type': 'multipart/form-data'
         }
