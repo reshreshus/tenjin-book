@@ -5,13 +5,17 @@ import { Link, Redirect } from 'react-router-dom';
 export default function ShowDeck() {
     const [uploadValue, updateUploadValue] = useState();
 
-    const onFileSelected = (e) => {
-        console.log({target: e.target.files[0]})
-    }
     return (
         <CollectionConsumer>
         {
-            ({contextTreeItem, updateEditingMode, updateCurrentlyUsedDeck, setCardToRepeat, updateHeaderDeck}) => {
+            ({contextTreeItem, updateEditingMode, updateCurrentlyUsedDeck,
+                setCardToRepeat, updateHeaderDeck, uploadImageDeckContext}) => {
+
+                const onFileSelected = (e) => {
+                    const file = e.target.files[0]
+                    uploadImageDeckContext(contextTreeItem.id, file);
+                }
+
                 if (contextTreeItem) {
                     if (contextTreeItem.data && contextTreeItem.data.type !== 'D') {
                         return (

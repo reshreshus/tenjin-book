@@ -12,6 +12,8 @@ import { appMenuItems } from './appMenuItems';
 
 import { getRandomInt } from '../helpers/jsHelpers';
 
+import { uploadDeckImage } from '../api/rest';
+
 
 const Collection = React.createContext();
 
@@ -80,6 +82,11 @@ function CollectionProvider({children,
     //     })
     //     return cardsIds;
     // }
+
+    const uploadImageDeckContext = (deckId, file) => {
+        console.log("uploadImageDeckContext")
+        uploadDeckImage(deckId, file);
+    }
 
     const isRepeatableItem = (treeItem) => {
         return treeItem.data.type === 'f' || treeItem.data.type === 'T';
