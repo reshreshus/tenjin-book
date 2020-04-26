@@ -26,7 +26,9 @@ export default function ShowDeck() {
                             <div className="info">
                                 {
                                     contextTreeItem.data.img ?
-                                    <img src={contextTreeItem.data.img} alt="deck's header image" />
+                                    <img src={contextTreeItem.data.img}
+                                    className="info__img"
+                                    alt="deck's header image" />
                                     :
                                     <h1 className="title">( ･ิɷ･ิ)</h1>
                                 }
