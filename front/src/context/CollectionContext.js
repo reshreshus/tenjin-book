@@ -74,6 +74,11 @@ function CollectionProvider({children,
         updateRootTreeItem(tree.items[deckId]);
     }
 
+    const zoomOutContext = () => {
+        if (rootTreeItem.parentId)
+            updateRootTreeItem(tree.items[rootTreeItem.parentId]);
+    }
+
     const uploadImageDeckContext = async (deckId, file) => {
         const url = await uploadDeckImage(deckId, file);
         const treeItem = tree.items[deckId]
@@ -440,6 +445,7 @@ function CollectionProvider({children,
         dismissItemContext,
         collapseAll,
         zoomInDeckContext,
+        zoomOutContext
     );
 
     return (

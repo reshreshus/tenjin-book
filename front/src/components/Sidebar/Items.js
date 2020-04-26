@@ -59,7 +59,6 @@ const Items = () => {
                 };
 
                 if (tree) {
-                    console.log({rootTreeItem})
                     if (rootTreeItem) {
                         tree.rootId = rootTreeItem.id;
                     }

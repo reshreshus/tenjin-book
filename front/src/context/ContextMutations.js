@@ -8,7 +8,8 @@ export const getContextMutations = (
     toggleExpanded,
     dismissItemContext,
     collapseAll,
-    zoomInDeckContext
+    zoomInDeckContext,
+    zoomOutContext
     ) => {
 
     return [
@@ -28,6 +29,15 @@ export const getContextMutations = (
             "func": () => {
                 console.log("Zoom In");
                 zoomInDeckContext();
+            }
+        },
+        {
+            "desc": "Zoom Out",
+            "shortcut": "Ctrl + Left",
+            "hotkeyJs": "ctrl+left",
+            "func": () => {
+                console.log("Zoom Out");
+                zoomOutContext();
             }
         },
         {
