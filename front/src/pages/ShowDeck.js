@@ -24,7 +24,12 @@ export default function ShowDeck() {
                     } else if (contextTreeItem.data.name) {
                         return (
                             <div className="info">
-                                <h1 className="title">( ･ิɷ･ิ)</h1>
+                                {
+                                    contextTreeItem.data.img ?
+                                    <img src={contextTreeItem.data.img} alt="deck's header image" />
+                                    :
+                                    <h1 className="title">( ･ิɷ･ิ)</h1>
+                                }
                                 <input className="hide" id="img-upload" type="file" accept="image/*"
                                 onChange={(e) => onFileSelected(e)} />
                                 <div className="info__img-upload">

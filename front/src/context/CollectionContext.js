@@ -83,9 +83,11 @@ function CollectionProvider({children,
     //     return cardsIds;
     // }
 
-    const uploadImageDeckContext = (deckId, file) => {
-        console.log("uploadImageDeckContext")
-        uploadDeckImage(deckId, file);
+    const uploadImageDeckContext = async (deckId, file) => {
+        const url = await uploadDeckImage(deckId, file);
+        tree.items[deckId].data.img = url;
+        saveTreeContext(tree);
+        // TODO: delete previous image
     }
 
     const isRepeatableItem = (treeItem) => {
