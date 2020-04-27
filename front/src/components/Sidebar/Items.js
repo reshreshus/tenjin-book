@@ -59,16 +59,17 @@ const Items = () => {
                 };
 
                 if (tree) {
+                    const sidebarTree = Object.assign({}, tree);
                     if (rootTreeItem) {
-                        tree.rootId = rootTreeItem.id;
+                        sidebarTree.rootId = rootTreeItem.id;
                     }
-                    console.log("tree", tree);
+                    console.log("sidebarTree", sidebarTree);
                     return (
                         <div>
-                            <input className="sidebar__search" type="text" onChange={e => updateSearchText(e.target.value)}/>
+                            {/* <input className="sidebar__search" type="text" onChange={e => updateSearchText(e.target.value)}/> */}
                             <div className="tree">
                                 <Tree
-                                    tree={tree}
+                                    tree={sidebarTree}
                                     renderItem={renderItem}
                                     onExpand={onExpand}
                                     onCollapse={onCollapse}

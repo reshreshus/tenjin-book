@@ -39,7 +39,7 @@ function CollectionProvider({children,
     const [isEditing, updateIsEditing] = useState(false);
     const [card, updateCard] = useState(null);
 
-    const [rootTreeItem, updateRootTreeItem] = useState(null);
+    const [rootTreeItem, updateRootTreeItem] = useState();
 
     const [currentlyUsedDeck, updateCurrentlyUsedDeck] = useState();
 
