@@ -43,6 +43,11 @@ function CollectionProvider({children,
 
     const [currentlyUsedDeck, updateCurrentlyUsedDeck] = useState();
 
+    const [typeIsShown, updateTypeIsShown] = useState({
+        'f': true,
+        'T': true
+    })
+
     const [editingMode, updateEditingMode] = useState({
         isStudying: false, // study or preview
         isEditing: true
@@ -329,6 +334,7 @@ function CollectionProvider({children,
     }
 
     const saveTreeContext = (newTree) => {
+        console.log("saveTreeContext")
         updateTreeAndAddParams(newTree);
         saveTree(newTree);
     }
@@ -487,7 +493,10 @@ function CollectionProvider({children,
         toggleExpanded,
         openTreeContextMenu,
         openAppContextMenu,
-        hideContextMenu
+        hideContextMenu,
+
+        typeIsShown,
+        updateTypeIsShown
         }}>
             {children}
             <ContextMenu menuItems={menuItems} appMenuItems={() => appMenuItems(backup)} isAppMenuUsed={isAppMenuUsed}/>
