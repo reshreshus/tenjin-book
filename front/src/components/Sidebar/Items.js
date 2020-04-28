@@ -25,7 +25,6 @@ const renderItem = ({
 const removeHiddenItems = (tree, item, typeIsShown) => {
     item.children = item.children.filter(cId => {
         const child = tree.items[cId];
-        console.log(child.data.type, typeIsShown[child.data.type]);
         if (child.data.type === 'D') {
             removeHiddenItems(tree, child, typeIsShown);
         } else if ( !typeIsShown[child.data.type] ) {

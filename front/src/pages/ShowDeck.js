@@ -9,13 +9,13 @@ export default function ShowDeck() {
         <CollectionConsumer>
         {
             ({contextTreeItem, updateEditingMode, updateCurrentlyUsedDeck,
-                setCardToRepeat, updateHeaderDeck, uploadImageDeckContext}) => {
+                setCardToRepeat, updateHeaderDeck,
+                uploadImageDeckContext, deleteImageDeckContext}) => {
 
                 const onFileSelected = (e) => {
                     const file = e.target.files[0]
                     uploadImageDeckContext(contextTreeItem.id, file);
                 }
-
                 if (contextTreeItem) {
                     if (contextTreeItem.data && contextTreeItem.data.type !== 'D') {
                         return (
@@ -26,9 +26,14 @@ export default function ShowDeck() {
                             <div className="deck-info">
                                 {
                                     contextTreeItem.data.img ?
-                                    <img src={contextTreeItem.data.img}
-                                    className="deck-info__img"
-                                    alt="deck's header image" />
+                                    <div>
+                                        <img src={contextTreeItem.data.img}
+                                        className="deck-info__img"
+                                        alt="deck's header image" />
+                                        <br />
+                                        <div onClick={() => deleteImageDeckContext()}
+                                        className="btn-contrast"> Delete image</div>
+                                    </div>
                                     :
                                     <h1 className="title">( ･ิɷ･ิ)</h1>
                                 }

@@ -90,6 +90,18 @@ function CollectionProvider({children,
             deleteImage(treeItem.data.img)
         }
         treeItem.data.img = url;
+        // ?
+        updateContextTreeItem(treeItem);
+        saveTreeContext(tree);
+    }
+
+    const deleteImageDeckContext = (deckId=contextTreeItem.id) => {
+        const treeItem = tree.items[deckId];
+        if (treeItem.data.img) {
+            deleteImage(treeItem.data.img)
+            treeItem.data.img = null
+        }
+        updateContextTreeItem(treeItem);
         saveTreeContext(tree);
     }
 
@@ -335,6 +347,7 @@ function CollectionProvider({children,
 
     const saveTreeContext = (newTree) => {
         console.log("saveTreeContext")
+        newTree = Object.assign({}, newTree);
         updateTreeAndAddParams(newTree);
         saveTree(newTree);
     }
@@ -487,6 +500,7 @@ function CollectionProvider({children,
         advanceCardContext,
         updateCurrentlyUsedDeck,
         uploadImageDeckContext,
+        deleteImageDeckContext,
 
         showSidebars,
         updateShowSidebars,
