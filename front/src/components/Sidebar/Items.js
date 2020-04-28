@@ -79,15 +79,26 @@ const Items = () => {
                     removeHiddenItems(sidebarTree, sidebarTree.items[sidebarTree.rootId], typeIsShown);
                     console.log("sidebarTree", sidebarTree);
                     return (
-                        <div>
+                        <div className="browser">
                             {/* <input className="sidebar__search" type="text" onChange={e => updateSearchText(e.target.value)}/> */}
-                            <div className="btn-contrast" style={{marginRight: '1rem'}} onClick={() => {
-                                updateTypeIsShown({
-                                    ...typeIsShown,
-                                    'f': !typeIsShown.f
-                                })
-                            }}>f</div>
-                            <div className="btn-contrast">T</div>
+                            <div className="browser__options">
+                                <div className={`btn browser__show-type-f
+                                ${!typeIsShown.f ? 'browser__show-type-f--hidden': ''}`}
+                                onClick={() => {
+                                    updateTypeIsShown({
+                                        ...typeIsShown,
+                                        'f': !typeIsShown.f
+                                    })
+                                }}>[f]</div>
+                                <div className={`btn browser__show-type-T
+                                ${!typeIsShown.T ? 'browser__show-type-T--hidden': ''}`}
+                                onClick={() => {
+                                    updateTypeIsShown({
+                                        ...typeIsShown,
+                                        'T': !typeIsShown.T
+                                    })
+                                }}>[T]</div>
+                            </div>
                             <div className="tree">
                                 <Tree
                                     tree={sidebarTree}
