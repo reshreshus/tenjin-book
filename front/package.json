@@ -2,6 +2,7 @@
   "name": "landing-horus",
   "version": "0.1.0",
   "private": true,
+  "main": "electron/main.js",
   "dependencies": {
     "@apollo/react-hooks": "^3.1.3",
     "@atlaskit/tree": "^7.1.0",
@@ -72,7 +73,8 @@
   "scripts": {
     "start": "node scripts/start.js",
     "build": "webpack --config webpack.config.js",
-    "test": "node scripts/test.js"
+    "test": "node scripts/test.js",
+    "electron": "electron ."
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -164,6 +166,7 @@
     "@editorjs/warning": "^1.1.1",
     "@svgr/webpack": "4.3.3",
     "case-sensitive-paths-webpack-plugin": "2.2.0",
+    "electron": "^8.2.5",
     "html-webpack-plugin": "4.0.0-beta.5",
     "optimize-css-assets-webpack-plugin": "5.0.3",
     "pnp-webpack-plugin": "1.5.0",
