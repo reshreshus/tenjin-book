@@ -9,6 +9,7 @@
     "build": "webpack --config webpack.config.js",
     "test": "node scripts/test.js",
     "electron": "electron .",
+    "electron-wait": "node ./electron/electron-wait-react.js",
     "electron-dev": "set ELECTRON_START_URL=http://localhost:3000 && electron .",
     "dev" : "set PORT=3000 && nf start"
   },
