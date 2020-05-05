@@ -19,18 +19,16 @@ export default function App() {
       // e.parentNode.offsetWidth/3-e.offsetWidth/3+'px';
       '600px';
       e.style.height = e.previousElementSibling.style.height;
-      
-      e.onmousedown=()=>{
-        console.log("resizer moving?")
-        e.parentNode.onmousemove=ev=>{
-          e.previousElementSibling.style.width=
+
+      e.onmousedown= () => {
+        e.parentNode.onmousemove = ev => {
+          e.previousElementSibling.style.width =
           ev.clientX-e.offsetWidth/2+'px';
-          e.nextElementSibling.style.width=
+          e.nextElementSibling.style.width =
           e.parentNode.offsetWidth-ev.clientX-e.offsetWidth/2+'px';
         };
       };
-      e.parentNode.onmouseup=
-      ()=>{e.parentNode.onmousemove=undefined};
+      e.parentNode.onmouseup = () => e.parentNode.onmousemove=undefined
     });
   })
 
