@@ -1,0 +1,2 @@
+server: npm start
+storage: npm run-script start-rest

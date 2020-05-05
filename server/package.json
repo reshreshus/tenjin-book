@@ -4,10 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon --exec babel-node src/index.js",
-    "start-rest": "nodemon --exec babel-node src/rest.js",
+    "start": "set PORT=4000 && nodemon --exec babel-node src/index.js",
+    "start-rest": "set PORT=5000 && nodemon --exec babel-node src/rest.js",
     "populate-default": "cross-env PROD_ENV=pop babel-node src/db/index.js",
-    "test": "mocha 'src/test' || exit 0"
+    "test": "mocha 'src/test' || exit 0",
+    "dev": "set PORT=4000 && nf start"
   },
   "keywords": [],
   "author": "reshreshus",
