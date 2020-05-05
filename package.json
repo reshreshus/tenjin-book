@@ -2,7 +2,7 @@
   "name": "tenjin",
   "version": "1.0.0",
   "description": "ROI Notebook\r === \r The name draws inspiration from ROI(return on investment)... and Notebook.\r The app draws inspiration from \r * [Anki](https://apps.ankiweb.net/)\r * Supermemo\r * [workflowy](https://workflowy.com/)\r * [vimflowy](https://vimflowy.netlify.com/).",
-  "main": "index.js",
+  "bin": "nf start",
   "scripts": {
     "dev": "nf start"
   },
