@@ -18,6 +18,12 @@ const createWindow = () => {
 
   // and load the index.html of the app.
 //   mainWindow.loadFile(path.join(__dirname, 'index.html'));
+
+  const startUrl = process.env.ELECTRON_START_URL || url.format({
+    pathname: path.join(__dirname, '/../build/index.html'),
+    protocol: 'file:',
+    slashes: true
+  });
   mainWindow.loadURL('http://localhost:3000/')
 
   // Open the DevTools.
