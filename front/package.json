@@ -2,16 +2,28 @@
   "name": "landing-horus",
   "version": "0.1.0",
   "private": true,
-  "main": "electron/main.js",
+  "main": "public/electron.js",
   "homepage": "./",
+  "build": {
+    "appId": "com.reshreshus.tenjin",
+    "files": [
+      "build/**/*",
+      "node_modules/**/*"
+    ],
+    "directories": {
+      "buildResources": "assets"
+    }
+  },
   "scripts": {
     "start": "set PORT=3000 && node scripts/start.js",
-    "build": "webpack --config webpack.config.js",
+    "build": "node scripts/build.js",
     "test": "node scripts/test.js",
     "electron": "electron .",
     "electron-wait": "node ./electron/electron-wait-react.js",
     "electron-dev": "set ELECTRON_START_URL=http://localhost:3000 && electron .",
-    "dev" : "set PORT=3000 && nf start"
+    "dev": "set PORT=3000 && nf start",
+    "pack-electron": "electron-builder --dir",
+    "dist-electron": "electron-builder"
   },
   "dependencies": {
     "@apollo/react-hooks": "^3.1.3",
