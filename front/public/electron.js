@@ -1,6 +1,14 @@
 const { app, BrowserWindow } = require('electron');
 const path = require('path');
 
+// const exec = require('child_process').exec;
+// console.log(__dirname)
+// exec('cd ../../server && npm start', function(err,stdout,stderr) {
+//   if(err) {
+//     console.error({err})
+//   }
+// })
+
 const createWindow = () => {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
@@ -12,14 +20,14 @@ const createWindow = () => {
   });
 
   // and load the index.html of the app.
-  mainWindow.loadFile(path.join(__dirname, 'index.html'));
+  // mainWindow.loadFile(path.join(__dirname, 'index.html'));
 
   // const startUrl = process.env.ELECTRON_START_URL || url.format({
   //   pathname: path.join(__dirname, '/../build/index.html'),
   //   protocol: 'file:',
   //   slashes: true
   // });
-  // mainWindow.loadURL('http://localhost:3000/')
+  mainWindow.loadURL('http://localhost:3000/')
 
   // Open the DevTools.
   mainWindow.webContents.openDevTools();

@@ -59,6 +59,7 @@
     "@editorjs/warning": "^1.1.1",
     "electron": "^8.2.5",
     "electron-builder": "^22.6.0",
+    "foreman": "^3.0.1",
     "react-editor-js": "^1.4.2"
   },
   "scripts": {
