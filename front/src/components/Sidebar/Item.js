@@ -3,6 +3,10 @@ import { CollectionConsumer } from '../../context/CollectionContext';
 import {Link } from 'react-router-dom';
 import ContentEditable from 'react-contenteditable';
 
+import fType from '../../assets/svg/f-type.svg';
+import tType from '../../assets/svg/t-type.svg';
+import dType from '../../assets/svg/folder.svg';
+
 const Item = ({
   treeItem,
   onExpand,
@@ -28,6 +32,14 @@ const Item = ({
       updateName(treeItem.data.name);
     }
     return <div> Taram taram </div>
+  }
+
+  const getItemIcon = (type) => {
+    if (type === 'f')
+      return fType;
+    else if (type === 'T') {
+      return tType;
+    } else return dType;
   }
 
   return (
@@ -104,17 +116,20 @@ const Item = ({
                     'tree-item__type--active':''}
                   `
                   }
-                  style={
-                    treeItem.data.type === 'D' ?
-                    (treeItem.data.status === 'dismissed' ?  {color: '#868219'} : {color: '#3E68FA'})
-                    :
-                    (treeItem.data.status === 'dismissed' ? {color: '#868219'} : {color: '#2CD93E'} )
-                  }
+                  // style={
+                  //   treeItem.data.type === 'D' ?
+                  //   (treeItem.data.status === 'dismissed' ?  {color: '#868219'} : {color: '#3E68FA'})
+                  //   :
+                  //   (treeItem.data.status === 'dismissed' ? {color: '#868219'} : {color: '#2CD93E'} )
+                  // }
                   ref={draggable}
                    {...provided.dragHandleProps}
                    // onKeyDown doesn't work on react-contenteditable ¯\_(ツ)_/¯
                    >
-                      [{ treeItem.data.type }]
+                      {/* [{ treeItem.data.type }] */}
+                      {
+                        <img src={getItemIcon(treeItem.data.type)} fill="red" width="20px" height="20px"/>
+                      }
                   </span>
                   <div className={`tree-item__name` }
                       onKeyDown={(e) => {
