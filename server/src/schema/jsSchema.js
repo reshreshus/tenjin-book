@@ -244,14 +244,15 @@ const resolvers = {
 			let treeItem = addTreeItem(parentId, item.id);
 			treeItem.data = {
 				type,
-				name: `${type} ${item.id}`,
+                name: `${type} ${item.id}`,
+                status: type === 'f' ? 'active' : 'dismissed',
 				repetitionStatsSm2: {
 					eFactor: 2.5,
 					repetitionsCount: 0,
 					nextDate: '-1',
 					history: []
 				}
-			}
+            }
 			updateTreeDb(tree);
 			return {newTree : tree, newTreeItem : treeItem};
         },
