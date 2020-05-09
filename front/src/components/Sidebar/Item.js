@@ -116,12 +116,6 @@ const Item = ({
                     'tree-item__type--active':''}
                   `
                   }
-                  // style={
-                  //   treeItem.data.type === 'D' ?
-                  //   (treeItem.data.status === 'dismissed' ?  {color: '#868219'} : {color: '#3E68FA'})
-                  //   :
-                  //   (treeItem.data.status === 'dismissed' ? {color: '#868219'} : {color: '#2CD93E'} )
-                  // }
                   ref={draggable}
                    {...provided.dragHandleProps}
                    // onKeyDown doesn't work on react-contenteditable ¯\_(ツ)_/¯
@@ -154,6 +148,7 @@ const Item = ({
                             updateContextTreeItemAndCleanup(treeItem, node);
                             openTreeContextMenu(e)
                           }}
+                          style={treeItem.data.status === 'dismissed' ?  {color: '#868219'} : {}}
                           >
                           <ContentEditable
                               key={treeItem.id}
