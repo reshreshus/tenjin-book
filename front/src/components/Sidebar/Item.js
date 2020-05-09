@@ -120,7 +120,6 @@ const Item = ({
                    {...provided.dragHandleProps}
                    // onKeyDown doesn't work on react-contenteditable ¯\_(ツ)_/¯
                    >
-                      {/* [{ treeItem.data.type }] */}
                       {
                         <img src={getItemIcon(treeItem.data.type)} fill="red" width="20px" height="20px"/>
                       }
