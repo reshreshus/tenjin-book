@@ -5,6 +5,11 @@ import {CollectionConsumer} from '../../context/CollectionContext';
 
 import Tree, { moveItemOnTree } from "@atlaskit/tree";
 
+import fType from '../../assets/svg/f-type.svg';
+import fTypeAdd from '../../assets/svg/f-type-add.svg';
+import tType from '../../assets/svg/t-type.svg';
+import tTypeAdd from '../../assets/svg/t-type-add.svg';
+import addFolder from '../../assets/svg/add-folder.svg';
 
 const renderItem = ({
     item: treeItem,
@@ -81,22 +86,24 @@ const Items = () => {
                         <div className="browser">
                             {/* <input className="sidebar__search" type="text" onChange={e => updateSearchText(e.target.value)}/> */}
                             <div className="browser__options">
-                                <div className={`btn browser__show-type-f
-                                ${!typeIsShown.f ? 'browser__show-type-f--hidden': ''}`}
+                                <div className={`btn browser__show-type
+                                ${!typeIsShown.f ? 'browser__show-type--hidden': ''}`}
                                 onClick={() => {
                                     updateTypeIsShown({
                                         ...typeIsShown,
                                         'f': !typeIsShown.f
                                     })
-                                }}>[f]</div>
-                                <div className={`btn browser__show-type-T
-                                ${!typeIsShown.T ? 'browser__show-type-T--hidden': ''}`}
+                                }}>
+                                    <img class="browser__options-icon" src={fType} />
+                                </div>
+                                <div className={`btn browser__show-type
+                                ${!typeIsShown.T ? 'browser__show-type--hidden': ''}`}
                                 onClick={() => {
                                     updateTypeIsShown({
                                         ...typeIsShown,
                                         'T': !typeIsShown.T
                                     })
-                                }}>[T]</div>
+                                }}><img class="browser__options-icon" src={tType} /></div>
                             </div>
                             <div className="tree">
                                 <Tree
