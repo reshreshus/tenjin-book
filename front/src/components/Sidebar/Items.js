@@ -45,7 +45,8 @@ const Items = () => {
         <CollectionConsumer>
         {
             ({tree, saveTreeContext, toggleExpanded, rootTreeItem,
-                typeIsShown, updateTypeIsShown
+                typeIsShown, updateTypeIsShown, addDeckRootElementContext,
+                addItemRootElementContext,
             }) => {
 
                 const onExpand = (itemId) => {
@@ -86,24 +87,26 @@ const Items = () => {
                         <div className="browser">
                             {/* <input className="sidebar__search" type="text" onChange={e => updateSearchText(e.target.value)}/> */}
                             <div className="browser__options">
-                                <div className={`btn browser__show-type
-                                ${!typeIsShown.f ? 'browser__show-type--hidden': ''}`}
+                                <img className="btn browser__options-icon" src={fTypeAdd}
+                                onClick={() => addItemRootElementContext('f')}
+                                />
+
+                                <img className={`btn browser__options-icon
+                                ${!typeIsShown.f ? 'browser__options-icon--hidden': ''}`} src={fType}
                                 onClick={() => {
                                     updateTypeIsShown({
                                         ...typeIsShown,
                                         'f': !typeIsShown.f
                                     })
-                                }}>
-                                    <img class="browser__options-icon" src={fType} />
-                                </div>
-                                <div className={`btn browser__show-type
-                                ${!typeIsShown.T ? 'browser__show-type--hidden': ''}`}
-                                onClick={() => {
+                                }}/>
+                                <img className={`btn browser__options-icon
+                                ${!typeIsShown.T ? 'browser__options-icon--hidden': ''}`}
+                                src={tType} onClick={() => {
                                     updateTypeIsShown({
                                         ...typeIsShown,
                                         'T': !typeIsShown.T
                                     })
-                                }}><img class="browser__options-icon" src={tType} /></div>
+                                }}/>
                             </div>
                             <div className="tree">
                                 <Tree

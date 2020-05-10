@@ -390,6 +390,7 @@ function CollectionProvider({children,
         updateTree(Object.assign({}, tree));
     }
 
+    // TODO: combine deck and item addition
     const addDeckContext = async (parentId = contextTreeItem.id) => {
         if (!isDeck(tree.items[parentId])) {
             alert('Cannot make a deck from this type of item');
@@ -397,6 +398,16 @@ function CollectionProvider({children,
         }
         let newTree = await addDeck(parentId);
         updateTree(newTree);
+    }
+
+    const addDeckRootElementContext = () => {
+        addDeckContext(rootTreeItem ? tree.items[rootTreeItem.id] : tree.items[tree.rootId])
+    }
+
+    const addItemRootElementContext = (type) => {
+        // tree.items[tree.rootId].data.type = "D"
+        // tree.items[rootTreeItem.id].data.type = "D"
+        addItemContext(type, rootTreeItem ? tree.items[rootTreeItem.id] : tree.items[tree.rootId])
     }
 
     const addItemContext = async (type, treeItem = contextTreeItem) => {
@@ -492,6 +503,9 @@ function CollectionProvider({children,
         updateContextTreeItemAndCleanup,
         contextTreeItem,
         updateContextTreeItem,
+
+        addDeckRootElementContext,
+        addItemRootElementContext,
 
         tree,
         updateTree,
