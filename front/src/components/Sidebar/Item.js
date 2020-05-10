@@ -42,6 +42,10 @@ const Item = ({
     } else return dType;
   }
 
+  const getProperItemsCount = (count) => {
+    return count <= '1000' ? count : '1000+'
+  }
+
   return (
     <CollectionConsumer>
         {
@@ -163,7 +167,9 @@ const Item = ({
                       treeItem.data.repetitionStatsSm2.nextDate : "" } */}
                   </div>
                   <div className="tree-item__params">
-                    {treeItem.data.dueItemsCount > 0 ? treeItem.data.dueItemsCount: ''}
+                    {treeItem.data.dueItemsCount > 0 ? <span>
+                      | {getProperItemsCount(treeItem.data.dueItemsCount)}
+                    </span>: ''}
                   </div>
                 </div>
               </div>
