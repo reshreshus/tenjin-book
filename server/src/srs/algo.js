@@ -9,7 +9,7 @@ const advanceCardSm2 = (stats, q) => {
         } else if (repetitionsCount === 1) {
             nextInterval = 6;
         } else {
-            // const previousInterval = stats.interval;
+            const previousInterval = stats.interval;
             console.log({eF, previousInterval})
             nextInterval = Math.round(previousInterval * eF);
             // console.log({nextInterval})
