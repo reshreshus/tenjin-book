@@ -90,6 +90,12 @@ const Items = () => {
                                 <img className="btn browser__options-icon" src={fTypeAdd}
                                 onClick={() => addItemRootElementContext('f')}
                                 />
+                                <img className="btn browser__options-icon" src={tTypeAdd}
+                                onClick={() => addItemRootElementContext('T')}
+                                />
+                                <img className="btn browser__options-icon" src={addFolder}
+                                onClick={() => addDeckRootElementContext()}
+                                />
 
                                 <img className={`btn browser__options-icon
                                 ${!typeIsShown.f ? 'browser__options-icon--hidden': ''}`} src={fType}

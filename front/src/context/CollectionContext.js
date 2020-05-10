@@ -401,7 +401,7 @@ function CollectionProvider({children,
     }
 
     const addDeckRootElementContext = () => {
-        addDeckContext(rootTreeItem ? tree.items[rootTreeItem.id] : tree.items[tree.rootId])
+        addDeckContext(rootTreeItem ? rootTreeItem.id : tree.rootId)
     }
 
     const addItemRootElementContext = (type) => {
