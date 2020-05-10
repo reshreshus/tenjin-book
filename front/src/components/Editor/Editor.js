@@ -51,8 +51,7 @@ const Editor = ({treeItem}) => {
     return (
 <CollectionConsumer >
     { ({addNewEntryContext, deleteEntryContext,
-        chooseTypeContext, card, saveCardContext,
-        findLastDeck, editingMode,
+        chooseTypeContext, card, saveCardContext, editingMode,
         updateEditingMode, advanceCardContext
     }) => {
     if (treeItem.data.type === 'D')  {
@@ -67,8 +66,6 @@ const Editor = ({treeItem}) => {
     editorEntries.forEach(e => {
         e.key = `${e.id}${treeItem.id}`
     });
-
-    const deckParent = findLastDeck(treeItem);
 
     const saveCard = async () => {
         updateEditorChanged(false);
@@ -110,7 +107,6 @@ const Editor = ({treeItem}) => {
     return (
         <div className="editor">
             <HotkeysEditor saveCard={saveCard} />
-            <EditorHeader template_title={template_title} deckParent={deckParent} />
             {
                 editingMode.isEditing ? (
                 <div>
