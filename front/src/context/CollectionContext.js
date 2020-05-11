@@ -43,10 +43,9 @@ function CollectionProvider({children,
   backup
 })
   {
-  const [tree, updateTree] = useState(null);
-  const [contextTreeItem, updateContextTreeItem] = useState(null);
-  const [card, updateCard] = useState(null);
-
+  const [tree, updateTree] = useStickyState(null, 'tree');
+  const [contextTreeItem, updateContextTreeItem] = useStickyState(null, 'context-tree-item');
+  const [card, updateCard] = useStickyState(null, 'card');
   const [headerDeck, updateHeaderDeck] = useState(null);
   const [showSidebars, updateShowSidebars] = useState([true, true]);
   const [currentlyUsedDeck, updateCurrentlyUsedDeck] = useState();
