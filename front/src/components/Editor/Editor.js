@@ -144,7 +144,7 @@ const Editor = ({treeItem}) => {
                 toggleEditing();
                 updateIsQuestioning(true);
                 updateEditorJsEntries([]);
-            }} className="btn-contrast editor__preview-button">
+            }} className="btn-text editor__preview-button">
             {
                 !editingMode.isEditing ? 'Edit' :
                 (editingMode.isStudying ? 'Study' : 'Preview')

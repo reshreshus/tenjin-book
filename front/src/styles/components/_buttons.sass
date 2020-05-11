@@ -8,9 +8,10 @@
 
 @mixin btn-primary
     @include btn
-    @include bg-blue-softer
+    // @include bg-blue-softer
     border-radius: 3px
-    color: $clr-text-light-primary
+    // color: $clr-text-light-primary
+    border: 1.5px solid black
 
 .btn-primary
     @include btn-primary
@@ -28,14 +29,11 @@
     width: 30px
     height: 30px
     line-height: 30px
+    text-transform: lowercase
 
 .btn-circ
     @include btn-circ
-    // &--sm
-    //     width: 20px !important
-    //     height: 20px !important
-    //     line-height: 20px
-    //
+
 
 @mixin btn-contrast
     @include btn
