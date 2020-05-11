@@ -5,12 +5,12 @@ const { advanceCardSm2 } = require('../srs/algo');
 const { testCardsSm2 } = require('./sm2testCards');
 
 describe('algo', function() {
-    testCardsSm2.forEach(card => {
-        it(card.testText(), function() {
-            let result = advanceCardSm2(card.repetitionStatsSm2, card.q);
-            assert.equal(result.interval, card.nextInterval);
-        })
-    });
+  testCardsSm2.forEach(card => {
+    it(card.testText(), function() {
+      let result = advanceCardSm2(card.repetitionStatsSm2, card.q);
+      assert.equal(result.interval, card.nextInterval);
+    })
+  });
 });
 
 // function getRandomInt(min, max) {

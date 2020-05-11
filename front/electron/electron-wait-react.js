@@ -7,19 +7,19 @@ const client = new net.Socket();
 
 let startedElectron = false;
 const tryConnection = () => client.connect({port: port}, () => {
-        client.end();
-        if(!startedElectron) {
-            console.log('ELECTRON ELECTRON');
-            console.log(__dirname)
-            startedElectron = true;
-            const exec = require('child_process').exec;
-            exec('npm run electron-dev');
-        }
+    client.end();
+    if(!startedElectron) {
+      console.log('ELECTRON ELECTRON');
+      console.log(__dirname)
+      startedElectron = true;
+      const exec = require('child_process').exec;
+      exec('npm run electron-dev');
     }
+  }
 );
 
 tryConnection();
 
 client.on('error', (error) => {
-    setTimeout(tryConnection, 1000);
+  setTimeout(tryConnection, 1000);
 });

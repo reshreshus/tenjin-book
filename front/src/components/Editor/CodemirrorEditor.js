@@ -6,19 +6,19 @@ import 'codemirror/lib/codemirror.css';
 // import 'codemirror/theme/material.css';
 
 export default function CodemirrorEditor({source, onEditorChange}) {
-    return (
-        <CodeMirror
-            value={source}
-            className="codemirror-custom"
-            options={{
-                mode: 'gfm',
-                // theme: '',
-                lineNumbers: false,
-                lineWrapping: true,
-            }}
-            onChange={(editor, data, value) => {
-                onEditorChange(value);
-            }}
-        />
-    )
+  return (
+    <CodeMirror
+      value={source}
+      className="codemirror-custom"
+      options={{
+        mode: 'gfm',
+        // theme: '',
+        lineNumbers: false,
+        lineWrapping: true,
+      }}
+      onChange={(editor, data, value) => {
+        onEditorChange(value);
+      }}
+    />
+  )
 }

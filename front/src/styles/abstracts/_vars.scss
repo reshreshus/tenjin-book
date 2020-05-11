@@ -29,35 +29,35 @@ $clr-stroke-blue-sharp: #4C5AD8;
 $clr-stroke-grey: rgb(236, 238, 240);
 
 @mixin font-blue-sharp {
-    color: $clr-stroke-blue-sharp !important;
+  color: $clr-stroke-blue-sharp !important;
 }
 
 @mixin stroke-blue-sharp {
-    border: 1px solid $clr-stroke-blue-sharp;
+  border: 1px solid $clr-stroke-blue-sharp;
 }
 
 @mixin font-light-primary {
-    color: $clr-text-light-primary;
+  color: $clr-text-light-primary;
 }
 
 @mixin bg-light-primary {
-    background-color: $clr-text-light-primary;
+  background-color: $clr-text-light-primary;
 }
 
 @mixin bg-blue-soft {
-    background-color: $clr-blue-soft;
+  background-color: $clr-blue-soft;
 }
 @mixin bg-blue-softer {
-    background-color: $clr-blue-softer;
+  background-color: $clr-blue-softer;
 }
 @mixin bg-green-soft {
-    background-color: $clr-green-soft;
+  background-color: $clr-green-soft;
 }
 @mixin bg-red-soft {
-    background-color: $clr-red-soft;
+  background-color: $clr-red-soft;
 }
 
 @mixin bg-primary {
-    @include bg-light-primary;
-    @include stroke-blue-sharp; 
+  @include bg-light-primary;
+  @include stroke-blue-sharp; 
 }

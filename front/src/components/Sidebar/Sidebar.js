@@ -4,11 +4,11 @@ import Header from './Header';
 import Items from './Items';
 
 export default function Sidebar() {
-    return (
-        <div className="sidebar">
-            <Header />
-            {/* <Blocks /> */}
-            <Items />
-        </div>
-    )
+  return (
+    <div className="sidebar">
+      <Header />
+      {/* <Blocks /> */}
+      <Items />
+    </div>
+  )
 }
