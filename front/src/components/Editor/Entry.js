@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import EntryMarkdown from './EntryMarkdown';
 import EntryEditorJs from './EntryEditorJs';
+import Dropdown from '../Dropdown';
 import deleteIcon from '../../assets/svg/delete-cross-circle.svg'
 
 export default function Entry({e, saveEditorInstance, chooseType,
@@ -72,11 +73,13 @@ export default function Entry({e, saveEditorInstance, chooseType,
                 className={`card-entry__qa btn-circ ${isChoosingType ? "hide": ""}`}> { e.type }
                 </div>
 
-                <div className="card-entry__switch btn-text"
+                <div className="card-entry__switch btn-ed"
                     onClick={() => updateEntryFormat(e.id, isEntryMarkdown() ? "EditorJs" : "markdown")}>
                     {isEntryMarkdown() ? "markdown" : "EditorJs" }</div>
+                    {/* <Dropdown /> */}
+
                 {
-                    isEntryMarkdown() ? (<div className="card-entry__switch btn-text"
+                    isEntryMarkdown() ? (<div className="card-entry__switch btn-ed"
                     onClick={() => updateIsPreview(!isPreview)}> switch</div>) : ""
                 }
                 <img onClick={() => deleteEntry()}

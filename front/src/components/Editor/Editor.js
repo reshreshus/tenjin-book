@@ -136,7 +136,7 @@ const Editor = ({treeItem}) => {
                         isQuestioning={isQuestioning} updateIsQuestioning={updateIsQuestioning}
                         editingMode={editingMode} toggleEditing={toggleEditing}
                     />
-                    <div onClick={() => saveCard()} className="btn btn-text editor__save">Save{editorChanged ? "*": ""}</div>
+                    <div onClick={() => saveCard()} className="btn btn-ed editor__save">Save{editorChanged ? "*": ""}</div>
                 </div>
             }
 
@@ -144,7 +144,7 @@ const Editor = ({treeItem}) => {
                 toggleEditing();
                 updateIsQuestioning(true);
                 updateEditorJsEntries([]);
-            }} className="btn-text editor__preview-button">
+            }} className="btn-ed editor__preview-button">
             {
                 !editingMode.isEditing ? 'Edit' :
                 (editingMode.isStudying ? 'Study' : 'Preview')

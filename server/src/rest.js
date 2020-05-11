@@ -8,7 +8,7 @@ import fs from 'fs';
 
 app.use(cors())
 
-const port = process.env.PORT || 5000
+const port = process.env.PORT.trim() || 5000
 const endpoint = `http://localhost:${port}`;
 const dbPath = "C:/Users/Rishat/AppData/Roaming/Tenjin/db"
 const mediaFolder = path.join(dbPath, 'media');
