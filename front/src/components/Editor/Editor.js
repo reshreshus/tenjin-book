@@ -67,6 +67,8 @@ const Editor = ({treeItem}) => {
         e.key = `${e.id}${treeItem.id}`
     });
 
+    console.log({card})
+
     const saveCard = async () => {
         updateEditorChanged(false);
         editorJsEntries.map( async ({entry, instance}) => {
