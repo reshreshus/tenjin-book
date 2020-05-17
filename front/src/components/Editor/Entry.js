@@ -42,6 +42,10 @@ export default function Entry({e, saveEditorInstance, chooseType,
 
   const isEntryMarkdown = () => e.format === 'markdown';
 
+  const updateSelected = (format) => {
+    updateEntryFormat(e.id, format);
+  }
+
   return (
     <div className="card-entry" >
       <div className="card-entry__header">
@@ -73,10 +77,11 @@ export default function Entry({e, saveEditorInstance, chooseType,
         className={`card-entry__qa btn-circ ${isChoosingType ? "hide": ""}`}> { e.type }
         </div>
 
-        <div className="card-entry__switch btn-ed"
+        {/* <div className="card-entry__switch btn-ed"
           onClick={() => updateEntryFormat(e.id, isEntryMarkdown() ? "EditorJs" : "markdown")}>
-          {isEntryMarkdown() ? "markdown" : "EditorJs" }</div>
-          {/* <Dropdown /> */}
+          {isEntryMarkdown() ? "markdown" : "EditorJs" }</div> */}
+          <Dropdown items={['markdown', 'EditorJs']}
+          updateSelected={updateSelected} selected={e.format === 'markdown' ? 'markdown' : 'EditorJs'}/>
 
         {
           isEntryMarkdown() ? (<div className="card-entry__switch btn-ed"
