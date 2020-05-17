@@ -28,6 +28,7 @@ const Editor = ({treeItem}) => {
   const updateEntryFormat = (idx, format) => {
     console.log({format})
     let entry = editorEntries.filter(e => e.id === idx)[0];
+    if (entry.format === format) return;
     if (format === "markdown") {
       entry.content = ""
     } else {

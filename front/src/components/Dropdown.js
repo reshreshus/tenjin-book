@@ -2,9 +2,14 @@ import React, { useState } from 'react'
 import { ReactComponent as Caret } from '../assets/svg/caret.svg'
 
 export default function Dropdown({items, selected, updateSelected}) {
+  const [open, setOpen] = useState(false);
+
   function DpItem({name}) {
     return (
-      <div className="dp-menu__item" onClick={() => updateSelected(name)}>
+      <div className="dp-menu__item" onClick={() => {
+          updateSelected(name)
+          setOpen(false);
+        }}>
         { name }
       </div>
     )
@@ -17,8 +22,6 @@ export default function Dropdown({items, selected, updateSelected}) {
       </div>
     )
   }
-
-  const [open, setOpen] = useState(false);
 
   return (
     <div className="dp">
