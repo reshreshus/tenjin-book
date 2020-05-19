@@ -3,7 +3,14 @@
   align-items: center
   justify-content: space-between
   border-bottom: 2px solid black
-  padding: 0 .4rem
+  padding: 1rem .4rem
+
+  &--wrapped
+    flex-direction: column
+    border: 0
+
+    >*
+      margin-bottom: 1rem
 
   &__link
     display: flex
@@ -15,6 +22,11 @@
 
   &__title
     font-size: 1.7rem
+    font-weight: bold;
+    text-transform: uppercase;
+    margin: 0;
+    text-align: center;
+    letter-spacing: 0.3ch;
 
   &__options
     cursor: pointer

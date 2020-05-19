@@ -10,7 +10,6 @@ import ShowDeck from './pages/ShowDeck';
 
 
 export default function App() {
-
   return (
     <div className="app">
       <Sidebar />

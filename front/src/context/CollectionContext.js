@@ -73,6 +73,7 @@ function CollectionProvider({children,
   const [isAppMenuUsed, updateIsAppMenuUsed] = useState(false);
 
 
+
   const addItemHeaderDeck = async (type='f') => {
     if (headerDeck) {
       const newTreeItem = await addItemContext(type, headerDeck);
@@ -84,18 +85,19 @@ function CollectionProvider({children,
   useEffect(() => {
     document.querySelectorAll('.resizer').forEach(e => {
       // setting default widths
-      e.previousElementSibling.style.width =
+      // e.previousElementSibling.style.width =
       // e.nextElementSibling.style.width=
       // e.parentNode.offsetWidth/3-e.offsetWidth/3+'px';
-      '600px';
+      // '600px';
       e.style.height = e.previousElementSibling.style.height;
-
       e.onmousedown= () => {
       e.parentNode.onmousemove = ev => {
-        e.previousElementSibling.style.width =
-        ev.clientX-e.offsetWidth/2+'px';
-        e.nextElementSibling.style.width =
-        e.parentNode.offsetWidth-ev.clientX-e.offsetWidth/2+'px';
+        if (showSidebars[0]) {
+          e.previousElementSibling.style.width =
+          ev.clientX-e.offsetWidth/2+'px';
+          e.nextElementSibling.style.width =
+          e.parentNode.offsetWidth-ev.clientX-e.offsetWidth/2+'px';
+        }
       };
       };
       e.parentNode.onmouseup = () => e.parentNode.onmousemove=undefined

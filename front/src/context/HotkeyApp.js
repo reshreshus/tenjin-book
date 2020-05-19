@@ -15,14 +15,15 @@ const HotkeyApp = ({menuItems, addItemHeaderDeck}) => {
           // both sidebars are on
           // switch left sidebar off
           if (showSidebars[0] === true && showSidebars[1] === true) {
-            sidebar.style.display = 'none';
-            updateShowSidebars([false, true])
+            // sidebar.style.display = 'none';
+            sidebar.style.width = '5rem';
+            updateShowSidebars([false, true]);
           // left sidebar is off
           // switch it on
           } else if (showSidebars[0] === false && showSidebars[1] === true) {
             // sidebar.style.width = sidebarLength;
             sidebar.style.display = 'inline';
-            updateShowSidebars([true, true])
+            updateShowSidebars([true, true]);
           } else {
             // don't react
           }

@@ -1,14 +1,21 @@
 import React from 'react'
 import Header from './Header';
-// import Blocks from './Blocks';
 import Items from './Items';
+import { CollectionConsumer } from '../../context/CollectionContext';
 
 export default function Sidebar() {
   return (
-    <div className="sidebar">
-      <Header />
-      {/* <Blocks /> */}
-      <Items />
-    </div>
+    <CollectionConsumer>
+    {
+      ({showSidebars}) => {
+        return (
+          <div className={`sidebar ${!showSidebars[0] ? 'sidebar--wrapped' : ''}`}>
+            <Header />
+            {showSidebars[0] && <Items />}
+          </div>
+        )
+      }
+    }
+    </CollectionConsumer>
   )
 }
