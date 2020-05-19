@@ -11,6 +11,9 @@ import tType from '../../assets/svg/t-type.svg';
 import tTypeAdd from '../../assets/svg/t-type-add.svg';
 import addFolder from '../../assets/svg/add-folder.svg';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFolderPlus } from '@fortawesome/free-solid-svg-icons';
+
 const renderItem = ({
   item: treeItem,
   onExpand,
@@ -96,6 +99,10 @@ const Items = () => {
                 <img className="btn browser__options-icon" src={addFolder}
                 onClick={() => addDeckRootElementContext()}
                 />
+                {/* <FontAwesomeIcon className="btn browser__options-icon"
+                onClick={() => addDeckRootElementContext()}
+                icon={faFolderPlus}
+                /> */}
 
                 <img className={`btn browser__options-icon
                 ${!typeIsShown.f ? 'browser__options-icon--hidden': ''}`} src={fType}
