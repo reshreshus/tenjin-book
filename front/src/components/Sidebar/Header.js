@@ -14,7 +14,7 @@ export default function Header() {
         return (
           <div className={`header ${!sidebarIsShown ? 'header--wrapped' : ''}`}>
             <Link to="/" className="header__link link">
-              { sidebarIsShown && <h1 className="header__title" onClick={() => updateContextTreeItem(null)}>Tenjin Book </h1> }
+              <h1 className={`header__title ${!sidebarIsShown ? 'header__title--wrapped': ''}`} onClick={() => updateContextTreeItem(null)}>Tenjin Book </h1>
               <img className="header__img" src="tenjinbook.png" alt="header"
               onClick={() => {toggleLeftSidebar()}}
               />

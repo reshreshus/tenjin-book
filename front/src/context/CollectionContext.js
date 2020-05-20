@@ -80,7 +80,8 @@ function CollectionProvider({children,
     let sidebar = document.querySelector('.sidebar');
     if (sidebarIsShown) {
       updateSidebarWidth(sidebar.style.width);
-      sidebar.style.width = '5rem';
+      sidebar.style.transition = '400ms';
+      sidebar.style.width = '4rem';
       updateSidebarIsShown(false)
     } else {
       updateSidebarIsShown(true);

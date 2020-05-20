@@ -1,10 +1,11 @@
 body {
-  @include font-code;
+  @include font-text;
   @include font-turquoise-darker;
 }
 
 h1, h2, h3, h4, h5, h6 {
   @include font-turquoise-dark;
+  @include font-sans;
 }
 
 .text-dark {

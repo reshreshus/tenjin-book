@@ -4,29 +4,38 @@
   justify-content: space-between
   border-bottom: 2px solid black
   padding: 1rem .4rem
-
   &--wrapped
     flex-direction: column
     border: 0
-
     >*
       margin-bottom: 1rem
+
+    .header__title
+      left: -999px;
+
+    .header__img
+      margin-left: 0
 
   &__link
     display: flex
     align-items: center
 
   &__img
+    margin-left: 15rem
     margin-right: 0.7rem
     height: 2.5rem
 
   &__title
+    position: absolute;
+    margin: 0;
+
     font-size: 1.7rem
     font-weight: bold;
     text-transform: uppercase;
-    margin: 0;
+
     text-align: center;
     letter-spacing: 0.3ch;
+    transition: 1200ms;
 
   &__options
     cursor: pointer
