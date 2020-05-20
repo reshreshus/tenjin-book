@@ -10,15 +10,13 @@ export default function Header() {
   return (
     <CollectionConsumer>
     {
-      ({updateContextTreeItem, openAppContextMenu, sidebarIsShown, updateShowSidebars}) => {
+      ({updateContextTreeItem, openAppContextMenu, sidebarIsShown, toggleLeftSidebar}) => {
         return (
           <div className={`header ${!sidebarIsShown ? 'header--wrapped' : ''}`}>
-            <Link to="/" className="header__link link"
-            onClick={() => updateContextTreeItem(null)}
-            >
-              { sidebarIsShown && <h1 className="header__title">Tenjin Book </h1> }
+            <Link to="/" className="header__link link">
+              { sidebarIsShown && <h1 className="header__title" onClick={() => updateContextTreeItem(null)}>Tenjin Book </h1> }
               <img className="header__img" src="tenjinbook.png" alt="header"
-              onClick={() => {}}
+              onClick={() => {toggleLeftSidebar()}}
               />
             </Link>
             <FontAwesomeIcon

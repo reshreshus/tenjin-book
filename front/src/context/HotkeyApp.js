@@ -3,13 +3,13 @@ import Hotkeys from 'react-hot-keys';
 import {CollectionConsumer} from '../context/CollectionContext';
 import {hideContextMenu} from '../helpers/domHelpers';
 
-const HotkeyApp = ({menuItems, addItemHeaderDeck, toggleLeftSidebar}) => {
+const HotkeyApp = ({ menuItems, addItemHeaderDeck }) => {
   const [rightSidebarWidth, updateRightSidebarWidth] = useState(null)
 
   return (
     <CollectionConsumer>
     {
-      ({ rightSidebarIsShown, updateRightSidebarIsShown }) => {
+      ({ rightSidebarIsShown, updateRightSidebarIsShown, toggleLeftSidebar }) => {
         const openSidebarHalfFullWidth = () => {
           let sidebar = document.querySelector('.sidebar');
           const windowWidth = document.body.offsetWidth;

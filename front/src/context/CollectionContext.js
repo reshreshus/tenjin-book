@@ -568,13 +568,14 @@ function CollectionProvider({children,
     updateSidebarIsShown,
     rightSidebarIsShown,
     updateRightSidebarIsShown,
+    toggleLeftSidebar,
 
     typeIsShown,
     updateTypeIsShown
     }}>
       {children}
       <ContextMenu menuItems={menuItems} appMenuItems={() => appMenuItems(backup)} isAppMenuUsed={isAppMenuUsed}/>
-      <HotkeyApp toggleLeftSidebar={toggleLeftSidebar} menuItems={menuItems} addItemHeaderDeck={addItemHeaderDeck}/>
+      <HotkeyApp menuItems={menuItems} addItemHeaderDeck={addItemHeaderDeck}/>
   </Collection.Provider>)
 }
 
