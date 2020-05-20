@@ -46,8 +46,10 @@ function CollectionProvider({children,
   const [tree, updateTree] = useStickyState(null, 'tree');
   const [contextTreeItem, updateContextTreeItem] = useStickyState(null, 'context-tree-item');
   const [card, updateCard] = useStickyState(null, 'card');
+
   const [headerDeck, updateHeaderDeck] = useState(null);
   const [showSidebars, updateShowSidebars] = useState([true, true]);
+  const [sidebarIsShown, updateSidebarIsShown] = useState(true);
   const [currentlyUsedDeck, updateCurrentlyUsedDeck] = useState();
   const [typeIsShown, updateTypeIsShown] = useState({
     'f': true,
@@ -72,7 +74,19 @@ function CollectionProvider({children,
   });
   const [isAppMenuUsed, updateIsAppMenuUsed] = useState(false);
 
+  const [sidebarWidth, updateSidebarWidth] = useState('21rem');
 
+  const toggleLeftSidebar = () => {
+    let sidebar = document.querySelector('.sidebar');
+    if (sidebarIsShown) {
+      updateSidebarWidth(sidebar.style.width);
+      sidebar.style.width = '5rem';
+      updateSidebarIsShown(false)
+    } else {
+      updateSidebarIsShown(true);
+      sidebar.style.width = sidebarWidth;
+    }
+  }
 
   const addItemHeaderDeck = async (type='f') => {
     if (headerDeck) {
@@ -552,13 +566,15 @@ function CollectionProvider({children,
     openTreeContextMenu,
     openAppContextMenu,
     hideContextMenu,
+    sidebarIsShown,
+    updateSidebarIsShown,
 
     typeIsShown,
     updateTypeIsShown
     }}>
       {children}
       <ContextMenu menuItems={menuItems} appMenuItems={() => appMenuItems(backup)} isAppMenuUsed={isAppMenuUsed}/>
-      <HotkeyApp menuItems={menuItems} addItemHeaderDeck={addItemHeaderDeck}/>
+      <HotkeyApp toggleLeftSidebar={toggleLeftSidebar} menuItems={menuItems} addItemHeaderDeck={addItemHeaderDeck}/>
   </Collection.Provider>)
 }
 

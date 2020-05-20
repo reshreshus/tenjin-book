@@ -3,31 +3,22 @@ import Hotkeys from 'react-hot-keys';
 import {CollectionConsumer} from '../context/CollectionContext';
 import {hideContextMenu} from '../helpers/domHelpers';
 
-const HotkeyApp = ({menuItems, addItemHeaderDeck}) => {
+const HotkeyApp = ({menuItems, addItemHeaderDeck, toggleLeftSidebar}) => {
   const [sidebarLength, updateSidebarLength] = useState(null)
 
   return (
     <CollectionConsumer>
     {
-      ({showSidebars, updateShowSidebars}) => {
-        const toggleLeftSidebar = () => {
-          let sidebar = document.querySelector('.sidebar');
-          // both sidebars are on
-          // switch left sidebar off
-          if (showSidebars[0] === true && showSidebars[1] === true) {
-            // sidebar.style.display = 'none';
-            sidebar.style.width = '5rem';
-            updateShowSidebars([false, true]);
-          // left sidebar is off
-          // switch it on
-          } else if (showSidebars[0] === false && showSidebars[1] === true) {
-            // sidebar.style.width = sidebarLength;
-            sidebar.style.display = 'inline';
-            updateShowSidebars([true, true]);
-          } else {
-            // don't react
-          }
-        }
+      ({ showSidebars, updateShowSidebars }) => {
+        // const toggleLeftSidebar = () => {
+        //   let sidebar = document.querySelector('.sidebar');
+        //   if (sidebarIsShown) {
+        //     sidebar.style.width = '5rem';
+        //     updateSidebarIsShown(false)
+        //   } else {
+        //     updateSidebarIsShown(true);
+        //   }
+        // }
 
         const openSidebarHalfFullWidth = () => {
           let sidebar = document.querySelector('.sidebar');

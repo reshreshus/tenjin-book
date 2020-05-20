@@ -7,11 +7,11 @@ export default function Sidebar() {
   return (
     <CollectionConsumer>
     {
-      ({showSidebars}) => {
+      ({sidebarIsShown}) => {
         return (
-          <div className={`sidebar ${!showSidebars[0] ? 'sidebar--wrapped' : ''}`}>
+          <div className={`sidebar ${!sidebarIsShown ? 'sidebar--wrapped' : ''}`}>
             <Header />
-            {showSidebars[0] && <Items />}
+            {sidebarIsShown && <Items />}
           </div>
         )
       }
