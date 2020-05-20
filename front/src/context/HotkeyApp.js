@@ -4,22 +4,12 @@ import {CollectionConsumer} from '../context/CollectionContext';
 import {hideContextMenu} from '../helpers/domHelpers';
 
 const HotkeyApp = ({menuItems, addItemHeaderDeck, toggleLeftSidebar}) => {
-  const [sidebarLength, updateSidebarLength] = useState(null)
+  const [rightSidebarWidth, updateRightSidebarWidth] = useState(null)
 
   return (
     <CollectionConsumer>
     {
-      ({ showSidebars, updateShowSidebars }) => {
-        // const toggleLeftSidebar = () => {
-        //   let sidebar = document.querySelector('.sidebar');
-        //   if (sidebarIsShown) {
-        //     sidebar.style.width = '5rem';
-        //     updateSidebarIsShown(false)
-        //   } else {
-        //     updateSidebarIsShown(true);
-        //   }
-        // }
-
+      ({ rightSidebarIsShown, updateRightSidebarIsShown }) => {
         const openSidebarHalfFullWidth = () => {
           let sidebar = document.querySelector('.sidebar');
           const windowWidth = document.body.offsetWidth;
@@ -30,22 +20,16 @@ const HotkeyApp = ({menuItems, addItemHeaderDeck, toggleLeftSidebar}) => {
         const toggleRightSidebar = () => {
           let sidebar = document.querySelector('.sidebar');
           let rightSidebar = document.querySelector('.right-sidebar');
-          // both sidebars are on
-          // switch right sidebar off
-          if (showSidebars[0] === true && showSidebars[1] === true) {
-            updateSidebarLength(sidebar.clientWidth)
+          if (rightSidebarIsShown) {
+            updateRightSidebarWidth(sidebar.clientWidth)
             rightSidebar.style.display = 'none';
-            updateShowSidebars([true, false])
+            updateRightSidebarIsShown(false);
             sidebar.style.width = '100%';
-          // right sidebar is off
-          // switch it on
-          } else if (showSidebars[0] === true && showSidebars[1] === false) {
-            console.log("sidebarLength", sidebarLength);
-            sidebar.style.width = `${sidebarLength}px`;
-            rightSidebar.style.display = 'inline';
-            updateShowSidebars([true, true]);
           } else {
-            // don't react
+            console.log("sidebarLength", rightSidebarWidth);
+            sidebar.style.width = `${rightSidebarWidth}px`;
+            rightSidebar.style.display = 'inline';
+            updateRightSidebarIsShown(true);
           }
         }
 

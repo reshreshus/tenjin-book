@@ -48,8 +48,6 @@ function CollectionProvider({children,
   const [card, updateCard] = useStickyState(null, 'card');
 
   const [headerDeck, updateHeaderDeck] = useState(null);
-  const [showSidebars, updateShowSidebars] = useState([true, true]);
-  const [sidebarIsShown, updateSidebarIsShown] = useState(true);
   const [currentlyUsedDeck, updateCurrentlyUsedDeck] = useState();
   const [typeIsShown, updateTypeIsShown] = useState({
     'f': true,
@@ -74,7 +72,9 @@ function CollectionProvider({children,
   });
   const [isAppMenuUsed, updateIsAppMenuUsed] = useState(false);
 
+  const [sidebarIsShown, updateSidebarIsShown] = useState(true);
   const [sidebarWidth, updateSidebarWidth] = useState('21rem');
+  const [rightSidebarIsShown, updateRightSidebarIsShown] = useState(true);
 
   const toggleLeftSidebar = () => {
     let sidebar = document.querySelector('.sidebar');
@@ -106,7 +106,7 @@ function CollectionProvider({children,
       e.style.height = e.previousElementSibling.style.height;
       e.onmousedown= () => {
       e.parentNode.onmousemove = ev => {
-        if (showSidebars[0]) {
+        if (sidebarIsShown) {
           e.previousElementSibling.style.width =
           ev.clientX-e.offsetWidth/2+'px';
           e.nextElementSibling.style.width =
@@ -560,14 +560,14 @@ function CollectionProvider({children,
     uploadImageDeckContext,
     deleteImageDeckContext,
 
-    showSidebars,
-    updateShowSidebars,
     toggleExpanded,
     openTreeContextMenu,
     openAppContextMenu,
     hideContextMenu,
     sidebarIsShown,
     updateSidebarIsShown,
+    rightSidebarIsShown,
+    updateRightSidebarIsShown,
 
     typeIsShown,
     updateTypeIsShown
