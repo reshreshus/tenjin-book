@@ -128,6 +128,8 @@ const Items = () => {
                   onExpand={onExpand}
                   onCollapse={onCollapse}
                   onDragEnd={onDragEnd}
+                  // TODO
+                  offsetPerLevel={20}
                   isDragEnabled
                   isNestingEnabled
                 />
