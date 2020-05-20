@@ -9,7 +9,7 @@ export default function Sidebar() {
     {
       ({sidebarIsShown}) => {
         return (
-          <div className={`sidebar ${!sidebarIsShown ? 'sidebar--wrapped' : ''}`}>
+          <div className={`sidebar ${!sidebarIsShown ? 'sidebar--wrapped' : ''}`} style={!sidebarIsShown ? {width: '4rem'} : {}}>
             <Header />
             {sidebarIsShown && <Items />}
           </div>

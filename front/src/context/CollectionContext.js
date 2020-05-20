@@ -44,7 +44,7 @@ function CollectionProvider({children,
 })
   {
   const [tree, updateTree] = useStickyState(null, 'tree');
-  const [contextTreeItem, updateContextTreeItem] = useStickyState(null, 'context-tree-item');
+  const [contextTreeItem, updateContextTreeItem] = useStickyState(null, 'contextTreeItem');
   const [card, updateCard] = useStickyState(null, 'card');
 
   const [headerDeck, updateHeaderDeck] = useState(null);
@@ -72,9 +72,9 @@ function CollectionProvider({children,
   });
   const [isAppMenuUsed, updateIsAppMenuUsed] = useState(false);
 
-  const [sidebarIsShown, updateSidebarIsShown] = useState(true);
-  const [sidebarWidth, updateSidebarWidth] = useState('21rem');
-  const [rightSidebarIsShown, updateRightSidebarIsShown] = useState(true);
+  const [sidebarIsShown, updateSidebarIsShown] = useStickyState(true, 'sidebarIsShown');
+  const [sidebarWidth, updateSidebarWidth] = useStickyState('21rem', 'sidebarWidth');
+  const [rightSidebarIsShown, updateRightSidebarIsShown] = useStickyState(true, 'rightSidebarIsShown');
 
   const toggleLeftSidebar = () => {
     let sidebar = document.querySelector('.sidebar');
@@ -99,14 +99,14 @@ function CollectionProvider({children,
 
   useEffect(() => {
     document.querySelectorAll('.resizer').forEach(e => {
-      // setting default widths
-      // e.previousElementSibling.style.width =
+      // e.previousElementSibling.style.width = '4rem';
       // e.nextElementSibling.style.width=
       // e.parentNode.offsetWidth/3-e.offsetWidth/3+'px';
       // '600px';
       e.style.height = e.previousElementSibling.style.height;
       e.onmousedown= () => {
       e.parentNode.onmousemove = ev => {
+        // TODO: save every n seconds if changes
         if (sidebarIsShown) {
           e.previousElementSibling.style.width =
           ev.clientX-e.offsetWidth/2+'px';
