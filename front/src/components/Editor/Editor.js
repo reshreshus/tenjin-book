@@ -20,13 +20,17 @@ const Editor = ({treeItem}) => {
     updateEditorJsEntries([])
   }, [treeItem]);
 
+  useEffect(() => {
+    console.error({editorChanged})
+  }, [editorChanged])
+
   const onMarkdownEntryChange = (idx, value) => {
     editorEntries.filter(e => e.id === idx)[0].content = value;
     // updateMarkdownEntriesData([...markdownEntriesData])
   }
 
   const updateEntryFormat = (idx, format) => {
-    console.log({format})
+    console.error("updateEntryFormat")
     let entry = editorEntries.filter(e => e.id === idx)[0];
     if (entry.format === format) return;
     if (format === "markdown") {
@@ -60,24 +64,25 @@ const Editor = ({treeItem}) => {
   }
   if(!card) {
     return <div>loading</div>
+  } else {
+    console.warn({card})
   }
-  const {template_title, entries} = card;
+  const { entries } = card;
   editorEntries.length = 0;
   editorEntries.push(...entries)
   editorEntries.forEach(e => {
     e.key = `${e.id}${treeItem.id}`
   });
 
-  console.log({card})
-
   const saveCard = async () => {
     updateEditorChanged(false);
+    console.error('saveCard', editorChanged)
     editorJsEntries.map( async ({entry, instance}) => {
       const { blocks } = await instance.save();
       entry.content.blocks = blocks;
     })
-    // this line probably doesn't make sense
-    saveCardContext(await Object.assign({}, card))
+
+    saveCardContext(JSON.parse(JSON.stringify(card)))
   }
 
   const saveEditorInstance = (instance, entry) => {
@@ -108,7 +113,7 @@ const Editor = ({treeItem}) => {
   }
 
   return (
-    <div className="editor">
+    <div className="editor" style={editorChanged ? {backgroundColor: 'green'} : {}}>
       <HotkeysEditor saveCard={saveCard} />
       {
         editingMode.isEditing ? (

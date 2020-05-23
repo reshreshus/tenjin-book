@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react'
 import EntryMarkdown from './EntryMarkdown';
 import EntryEditorJs from './EntryEditorJs';
 import Dropdown from '../Dropdown';
-import deleteIcon from '../../assets/svg/delete-cross-circle.svg'
+import { ReactComponent as DeleteIcon } from '../../assets/svg/delete-cross-circle.svg'
 
 export default function Entry({e, saveEditorInstance, chooseType,
   editorChanged, updateEditorChanged, deleteEntryEditor, onMarkdownEntryChange, updateEntryFormat
@@ -10,10 +10,6 @@ export default function Entry({e, saveEditorInstance, chooseType,
   const [isChoosingType, updateChoosingType] = useState(false);
   const [isChanged, updateIsChanged] = useState(false);
   const [isPreview, updateIsPreview] = useState(false);
-
-  const onEditorChange = (value) => {
-    onMarkdownEntryChange(e.id, value);
-  }
 
   useEffect(() => {
     if (!editorChanged) {
@@ -85,11 +81,11 @@ export default function Entry({e, saveEditorInstance, chooseType,
 
         {
           isEntryMarkdown() ? (<div className="card-entry__switch btn-ed"
-          onClick={() => updateIsPreview(!isPreview)}> switch</div>) : ""
+          onClick={() => updateIsPreview(!isPreview)}> Switch </div>) : ""
         }
-        <img onClick={() => deleteEntry()}
-        className="card-entry__remove-icon"
-        src={deleteIcon} />
+        <DeleteIcon onClick={() => deleteEntry()}
+        className="card-entry__remove-icon btn"/>
+
       </div>
 
       <div className="card-entry__field">
@@ -98,8 +94,8 @@ export default function Entry({e, saveEditorInstance, chooseType,
             <EntryMarkdown e={e} key={e.key}
             isPreview={isPreview} source={e.content}
             onChange={(value) => {
-              onEditorChange(value)
               updateAreChanged();
+              onMarkdownEntryChange(e.id, value);
             }}
             />
             :
