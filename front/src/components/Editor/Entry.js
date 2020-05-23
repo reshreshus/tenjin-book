@@ -3,6 +3,8 @@ import EntryMarkdown from './EntryMarkdown';
 import EntryEditorJs from './EntryEditorJs';
 import Dropdown from '../Dropdown';
 import { ReactComponent as DeleteIcon } from '../../assets/svg/delete-cross-circle.svg'
+import { ReactComponent as EditIcon } from '../../assets/svg/edit.svg'
+import { ReactComponent as DisplayIcon } from '../../assets/svg/display.svg'
 
 export default function Entry({e, saveEditorInstance, chooseType,
   editorChanged, updateEditorChanged, deleteEntryEditor, onMarkdownEntryChange, updateEntryFormat
@@ -80,12 +82,11 @@ export default function Entry({e, saveEditorInstance, chooseType,
           updateSelected={updateSelected} selected={e.format === 'markdown' ? 'markdown' : 'EditorJs'}/>
 
         {
-          isEntryMarkdown() ? (<div className="card-entry__switch btn-ed"
-          onClick={() => updateIsPreview(!isPreview)}> Switch </div>) : ""
+          isEntryMarkdown() ? (<div className="card-entry__switch btn"
+          onClick={() => updateIsPreview(!isPreview)}> {isPreview ? <EditIcon /> : <DisplayIcon /> } </div>) : ""
         }
         <DeleteIcon onClick={() => deleteEntry()}
         className="card-entry__remove-icon btn"/>
-
       </div>
 
       <div className="card-entry__field">
