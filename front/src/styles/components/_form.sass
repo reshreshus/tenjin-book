@@ -8,6 +8,42 @@
   align-items: center
 
   &__img
-    margin-bottom: 1rem
     path
       fill: white
+
+.field
+  width: 100%
+  margin: 0 auto
+  position: relative
+  margin: 3rem auto 1rem
+  border-bottom: 3px dashed white
+  transition: 500ms
+
+  &__label
+    position: absolute
+    left: 0
+
+    color: white
+    font-size: 1.2rem
+
+    transform-origin: 0%
+    transition: transform 400ms
+
+
+  &__input
+    outline: none
+    border: none
+    overflow: hidden
+    margin: 0
+    width: 100%
+    padding: 0.25rem 0
+    background: none
+    color: white
+    font-size: 1.2em
+    font-weight: bold
+    transition: border 500ms
+
+  &:focus-within .field__label,
+  .field__input:not(:placeholder-shown) + .field__label
+    transform: scale(0.8) translateY(-2.6rem)
+    opacity: 1
