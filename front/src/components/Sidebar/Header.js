@@ -1,7 +1,8 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
 import { CollectionConsumer } from '../../context/CollectionContext';
-import dots from '../../assets/svg/dots-three-vertical.svg'
+// import dots from '../../assets/svg/dots-three-vertical.svg'
+import { ReactComponent as TenjinIcon } from '../../assets/svg/tenjin.svg';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBraille } from '@fortawesome/free-solid-svg-icons';
@@ -15,9 +16,9 @@ export default function Header() {
           <div className={`header ${!sidebarIsShown ? 'header--wrapped' : ''}`}>
             <Link to="/" className="header__link link">
               <h1 className={`header__title ${!sidebarIsShown ? 'header__title--wrapped': ''}`} onClick={() => updateContextTreeItem(null)}>Tenjin Book </h1>
-              <img className="header__img" src="tenjinbook.png" alt="header"
-              onClick={() => {toggleLeftSidebar()}}
-              />
+              {/* <img  src="tenjinbook.png" alt="header"
+              onClick={() => {toggleLeftSidebar()}} */}
+              <TenjinIcon className="header__img" onClick={() => {toggleLeftSidebar()}}/>
             </Link>
             <FontAwesomeIcon
                 className="header__options"
