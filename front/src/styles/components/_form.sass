@@ -58,3 +58,21 @@
   .field__input:not(:placeholder-shown) + .field__label
     transform: scale(0.8) translateY(-2.6rem)
     opacity: 1
+
+  &::after
+    content: ""
+    position: relative
+    display: block
+    height: 4px
+    width: 100%
+    background-color: $clr-stroke-grey
+    transform: scaleX(0)
+    transform-origin: 0%
+    opacity: 0
+    transition: all 500ms ease
+    top: 3.5px
+
+  &:focus-within
+    &::after
+      transform: scaleX(1)
+      opacity: 1
