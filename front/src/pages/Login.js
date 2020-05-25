@@ -4,9 +4,9 @@ import { ReactComponent as TenjinIcon } from '../assets/svg/tenjin.svg';
 export default function Login() {
   return (
     <div className="login">
-      <div className="login-form">
-        <TenjinIcon className="login-form__img"/>
-        <form>
+      <div >
+        <form className="login-form">
+          <TenjinIcon className="login-form__img"/>
           <div className="field">
             <input type="email" name="email" className="field__input" placeholder=" "/>
             <label for="email" className="field__label"> Email </label>
@@ -16,7 +16,7 @@ export default function Login() {
             <label for="password" className="field__label"> Password </label>
           </div>
 
-          <button>Sign Up</button>
+          <div className="btn login-form__btn">Sign Up</div>
         </form>
       </div>
     </div>
