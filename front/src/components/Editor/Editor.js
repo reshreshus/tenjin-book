@@ -113,7 +113,7 @@ const Editor = ({treeItem}) => {
   }
 
   return (
-    <div className="editor" style={editorChanged ? {backgroundColor: 'green'} : {}}>
+    <div className="editor">
       <HotkeysEditor saveCard={saveCard} />
       {
         editingMode.isEditing ? (

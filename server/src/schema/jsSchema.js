@@ -83,7 +83,7 @@ const updateTreeDb = async (newTree = tree) => {
   updateTree(newTree);
 }
 
-const typeDefs = `
+export const typeDefs = `
   scalar JSON
 
   type TreeItemData {
@@ -129,6 +129,13 @@ const typeDefs = `
     format: String
   }
 
+  type User {
+    id: ID!
+    username: String!
+    password: String!
+    email: String!
+  }
+
   type Query {
     tree: JSON,
     cardEntry(id: ID!): CardEntry
@@ -137,7 +144,7 @@ const typeDefs = `
   type Mutation {
     backup: String,
     items: [JSON],
-    addCardEntry (
+      addCardEntry(
       name: String!
       content: JSON
       type: String!
@@ -204,7 +211,7 @@ Date.prototype.addDays = function(days) {
 }
 
 // TODO: no error checking here
-const resolvers = {
+export const resolvers = {
   JSON: GraphQLJSON,
   Query: {
     tree: () => tree,
@@ -332,7 +339,7 @@ const resolvers = {
 };
 
 // export const jsSchema = makeExecutableSchema({ typeDefs, resolvers });
-export const server = new ApolloServer({ cors: {
-      origin: '*'}			// <- allow request from all domains
-      // credentials: true}		// <- enable CORS response for requests with credentials (cookies, http authentication)
-  , typeDefs, resolvers });
+// export const server = new ApolloServer({ cors: {
+//       origin: '*'}			// <- allow request from all domains
+//       // credentials: true}		// <- enable CORS response for requests with credentials (cookies, http authentication)
+//   , typeDefs, resolvers });
