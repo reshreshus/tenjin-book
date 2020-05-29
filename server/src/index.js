@@ -1,4 +1,5 @@
-import { typeDefs, resolvers } from './schema/jsSchema';
+import { typeDefs } from './graphql/schema';
+import { resolvers } from './graphql/resolvers';
 require('dotenv').config();
 import express from 'express';
 import bodyParser from 'body-parser';
@@ -36,7 +37,7 @@ const addUser = async (req) => {
 const app = express();
 
 app.use(cors('*'));
-app.use('/graphiql', graphqlExpress({
+app.use('/graphiql', graphiqlExpress({
   endpointURL: 'graphql'
 }))
 // app.use(addUser);
