@@ -23,7 +23,7 @@ const schema = makeExecutableSchema({
 const SECRET = process.env.SECRET;
 
 const addUser = async (req) => {
-  const token = jwt.headers.authorization;
+  const token = req.headers.authorization;
   try {
     const { user } = await jwt.verify(token, SECRET);
     req.user = user;
@@ -36,6 +36,7 @@ const addUser = async (req) => {
 
 const app = express();
 
+app.use(addUser);
 app.use(cors('*'));
 app.use('/graphiql', graphiqlExpress({
   endpointURL: 'graphql'
@@ -44,6 +45,7 @@ app.use('/graphiql', graphiqlExpress({
 
 app.use('/graphql', bodyParser.json(), graphqlExpress(
   req => ({
+    user: req.user,
     schema,
     SECRET
   })

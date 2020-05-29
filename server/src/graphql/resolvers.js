@@ -2,61 +2,16 @@ const GraphQLJSON = require('graphql-type-json');
 import { getTree, getItem, updateTree, updateItem, insertItem, backup } from '../db';
 import { advanceCardSm2 } from '../srs/algo';
 import { newCard, newTopic, newDeckTreeItem } from './templates';
+import jwt from 'jsonwebtoken';
 
 let tree = {}
 getTree().then(result => tree = result);
 
-
-const ID = () => {
-  return '_' + Math.random().toString(36).substr(2, 9);
-};
-
-const addTreeItem = (parentId, id) => {
-  let treeItem = Object.assign({}, newDeckTreeItem);
-  // even if you copy object, children have the same reference.
-  // so you have to create a brand new array for children
-  treeItem.children = [];
-  treeItem.parentId = parentId;
-  treeItem.id = id;
-  tree.items[parentId].children.push(id);
-  tree.items[parentId].hasChildren = true;
-  tree.items[parentId].isExpanded = true;
-  tree.items[id] = treeItem;
-  return treeItem;
+const getUserTree = () => {
+  return tree;
 }
 
-const updateTreeDb = async (newTree = tree) => {
-  updateTree(newTree);
-}
-
-// TODO: no logic for advancing Topics is sm2
-const advanceCard = (treeItem, q) => {
-  let date = new Date();
-  let stats = treeItem.data.repetitionStatsSm2;
-  stats = advanceCardSm2(stats, q, date);
-}
-
-const deleteTreeItemChildren = (childrenIds) => {
-  console.log("deleteTreeItemChildren", childrenIds);
-  if (!childrenIds) {
-    console.error("no children");
-    return;
-  }
-  let treeItem;
-  childrenIds.forEach(id => {
-    treeItem = tree.items[id];
-    if (treeItem.hasChildren) {
-      deleteTreeItemChildren(treeItem.children);
-    }
-    delete tree.items[id];
-  })
-}
-
-Date.prototype.addDays = function(days) {
-  var date = new Date(this.valueOf());
-  date.setDate(date.getDate() + days);
-  return date;
-}
+const users = []
 
 // TODO: no error checking here
 export const resolvers = {
@@ -69,6 +24,26 @@ export const resolvers = {
       const user = args;
       console.log({user});
       user.password = await bcrypt.hash(user.password, 12);
+      users.push(user);
+    },
+    login: async (_, { email, password }, { SECRET }) => {
+      const user = users.filter(u => u.email === email)[0];
+      if (!user) {
+        throw new Error('No user with that email');
+      }
+
+      const valid = bcrypt.compare(password, user.password);
+      if (!valid) {
+        throw new Error('Incorrect password');
+      }
+
+      const token = jwt.sign(
+        { user },
+        SECRET,
+        { expiresIn: '1d'}
+      );
+
+      return token;
     },
     backup: () => {
       backup();
@@ -190,3 +165,54 @@ export const resolvers = {
     }
   }
 };
+
+const ID = () => {
+  return '_' + Math.random().toString(36).substr(2, 9);
+};
+
+const addTreeItem = (parentId, id) => {
+  let treeItem = Object.assign({}, newDeckTreeItem);
+  // even if you copy object, children have the same reference.
+  // so you have to create a brand new array for children
+  treeItem.children = [];
+  treeItem.parentId = parentId;
+  treeItem.id = id;
+  tree.items[parentId].children.push(id);
+  tree.items[parentId].hasChildren = true;
+  tree.items[parentId].isExpanded = true;
+  tree.items[id] = treeItem;
+  return treeItem;
+}
+
+const updateTreeDb = async (newTree = tree) => {
+  updateTree(newTree);
+}
+
+// TODO: no logic for advancing Topics is sm2
+const advanceCard = (treeItem, q) => {
+  let date = new Date();
+  let stats = treeItem.data.repetitionStatsSm2;
+  stats = advanceCardSm2(stats, q, date);
+}
+
+const deleteTreeItemChildren = (childrenIds) => {
+  console.log("deleteTreeItemChildren", childrenIds);
+  if (!childrenIds) {
+    console.error("no children");
+    return;
+  }
+  let treeItem;
+  childrenIds.forEach(id => {
+    treeItem = tree.items[id];
+    if (treeItem.hasChildren) {
+      deleteTreeItemChildren(treeItem.children);
+    }
+    delete tree.items[id];
+  })
+}
+
+Date.prototype.addDays = function(days) {
+  var date = new Date(this.valueOf());
+  date.setDate(date.getDate() + days);
+  return date;
+}
