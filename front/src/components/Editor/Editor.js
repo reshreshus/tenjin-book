@@ -65,7 +65,7 @@ const Editor = ({treeItem}) => {
   if(!card) {
     return <div>loading</div>
   } else {
-    console.warn({card})
+    // console.warn({card})
   }
   const { entries } = card;
   editorEntries.length = 0;

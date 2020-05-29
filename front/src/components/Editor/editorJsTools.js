@@ -26,9 +26,9 @@ export const EDITOR_JS_TOOLS = {
     class: ImageTool,
     config: {
       endpoints: {
-        byFile: 'http://localhost:5000/uploadByFile', // Your backend file uploader endpoint
+        byFile: 'http://localhost:4000/uploadByFile', // Your backend file uploader endpoint
         // TODO: don't even know what it means
-        byUrl: 'http://localhost:5000/uploadByUrl', // Your endpoint that provides uploading by Url
+        byUrl: 'http://localhost:4000/uploadByUrl', // Your endpoint that provides uploading by Url
       }
     }
   },

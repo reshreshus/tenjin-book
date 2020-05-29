@@ -142,6 +142,8 @@ export const typeDefs = `
   }
 
   type Mutation {
+    register(username: String!, email: String!, password: String!): User!,
+    login(email: String!, password: String): String!
     backup: String,
     items: [JSON],
       addCardEntry(
@@ -217,6 +219,11 @@ export const resolvers = {
     tree: () => tree,
   },
   Mutation: {
+    register: async (parent, args) => {
+      const user = args;
+      console.log({user});
+      user.password = await bcrypt.hash(user.password, 12);
+    },
     backup: () => {
       backup();
       return "ok"
@@ -337,9 +344,3 @@ export const resolvers = {
     }
   }
 };
-
-// export const jsSchema = makeExecutableSchema({ typeDefs, resolvers });
-// export const server = new ApolloServer({ cors: {
-//       origin: '*'}			// <- allow request from all domains
-//       // credentials: true}		// <- enable CORS response for requests with credentials (cookies, http authentication)
-//   , typeDefs, resolvers });
