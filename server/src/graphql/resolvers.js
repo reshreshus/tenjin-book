@@ -1,63 +1,11 @@
 const GraphQLJSON = require('graphql-type-json');
 import { getTree, getItem, updateTree, updateItem, insertItem, backup } from '../db';
 import { advanceCardSm2 } from '../srs/algo';
+import { newCard, newTopic, newDeckTreeItem } from './templates';
 
 let tree = {}
 getTree().then(result => tree = result);
 
-const newCard = {
-  templateId: "from db",
-  templateTitle: "Basic",
-  entries: [
-    {
-      id: 0,
-      name: "Front",
-      content: {
-        tree: [{
-          type: "paragraph",
-          data: { text: "" }
-        }]
-      },
-      type: "Q",
-    },
-    {
-      id: 1,
-      name: "Back",
-      content: {
-        tree: [{
-          type: "paragraph",
-          data: { text: "" }
-        }]
-      },
-      type: "A",
-    }
-  ]
-}
-
-const newTopic = {
-  templateId: "from db",
-  templateTitle: "Basic Topic",
-  entries: [
-    {
-      id: 0,
-      name: "Custom field",
-      type: "C",
-      content: {
-        tree: [{
-          type: "paragraph",
-          data: { text: "" }
-        }]
-      }
-    }
-  ]
-}
-
-const newDeckTreeItem = {
-  hasChildren: false,
-  children: [],
-  isExpanded: false,
-  data: { }
-}
 
 const ID = () => {
   return '_' + Math.random().toString(36).substr(2, 9);
