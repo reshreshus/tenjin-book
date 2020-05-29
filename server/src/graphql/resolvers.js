@@ -3,6 +3,7 @@ import { getTree, getItem, updateTree, updateItem, insertItem, backup } from '..
 import { advanceCardSm2 } from '../srs/algo';
 import { newCard, newTopic, newDeckTreeItem } from './templates';
 import jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
 
 let tree = {}
 getTree().then(result => tree = result);
@@ -26,6 +27,8 @@ export const resolvers = {
       console.log({user});
       user.password = await bcrypt.hash(user.password, 12);
       users.push(user);
+
+      return user;
     },
     login: async (_, { email, password }, { SECRET }) => {
       const user = users.filter(u => u.email === email)[0];

@@ -82,8 +82,9 @@ function CollectionProvider({children,
     console.log('login');
   }
 
-  const registerContext = (username, email, password) => {
-    console.log('register');
+  const registerContext = async (username, email, password) => {
+    const usrname = await register(username, email, password);
+    console.log({usrname});
   }
 
   const toggleLeftSidebar = () => {

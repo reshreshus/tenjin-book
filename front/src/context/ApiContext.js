@@ -44,7 +44,7 @@ export default function ApiContext({children}) {
         password
       }
     });
-    return data.data.login;
+    return data.data.register;
   }
 
   const getItems = async () => {
