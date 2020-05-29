@@ -1,6 +1,6 @@
+require('dotenv').config({path: __dirname + '/.env'});
 import { typeDefs } from './graphql/schema';
 import { resolvers } from './graphql/resolvers';
-require('dotenv').config();
 import express from 'express';
 import bodyParser from 'body-parser';
 import { graphiqlExpress, graphqlExpress } from 'graphql-server-express';
@@ -45,9 +45,11 @@ app.use('/graphiql', graphiqlExpress({
 
 app.use('/graphql', bodyParser.json(), graphqlExpress(
   req => ({
-    user: req.user,
     schema,
-    SECRET
+    context: {
+      user: req.user,
+      SECRET
+    }
   })
 ))
 

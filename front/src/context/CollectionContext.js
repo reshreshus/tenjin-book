@@ -78,8 +78,9 @@ function CollectionProvider({children,
   const [sidebarWidth, updateSidebarWidth] = useStickyState('21rem', 'sidebarWidth');
   const [rightSidebarIsShown, updateRightSidebarIsShown] = useStickyState(true, 'rightSidebarIsShown');
 
-  const loginContext = (email, password) => {
-    console.log('login');
+  const loginContext = async (email, password) => {
+    const token = await login(email, password);
+    console.log({ token })
   }
 
   const registerContext = async (username, email, password) => {

@@ -12,7 +12,7 @@ const getUserTree = () => {
   return tree;
 }
 
-const users = []
+const users = [{ username: 'd', email: 'd@f.com', password: '1'}]
 
 // TODO: no error checking here
 export const resolvers = {
