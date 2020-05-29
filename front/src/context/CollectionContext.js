@@ -40,7 +40,9 @@ function CollectionProvider({children,
   getCard,
   saveTree,
   advanceCard,
-  backup
+  backup,
+  login,
+  register
 })
   {
   const [tree, updateTree] = useStickyState(null, 'tree');
@@ -75,6 +77,14 @@ function CollectionProvider({children,
   const [sidebarIsShown, updateSidebarIsShown] = useStickyState(true, 'sidebarIsShown');
   const [sidebarWidth, updateSidebarWidth] = useStickyState('21rem', 'sidebarWidth');
   const [rightSidebarIsShown, updateRightSidebarIsShown] = useStickyState(true, 'rightSidebarIsShown');
+
+  const loginContext = (email, password) => {
+    console.log('login');
+  }
+
+  const registerContext = (username, email, password) => {
+    console.log('register');
+  }
 
   const toggleLeftSidebar = () => {
     let sidebar = document.querySelector('.sidebar');
@@ -573,6 +583,9 @@ function CollectionProvider({children,
 
     typeIsShown,
     updateTypeIsShown
+    ,
+    loginContext,
+    registerContext,
     }}>
       {children}
       <ContextMenu menuItems={menuItems} appMenuItems={() => appMenuItems(backup)} isAppMenuUsed={isAppMenuUsed}/>

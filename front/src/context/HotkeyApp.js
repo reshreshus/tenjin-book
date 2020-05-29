@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import Hotkeys from 'react-hot-keys';
-import {CollectionConsumer} from '../context/CollectionContext';
+import { CollectionConsumer } from '../context/CollectionContext';
 import {hideContextMenu} from '../helpers/domHelpers';
 
 const HotkeyApp = ({ menuItems, addItemHeaderDeck }) => {

@@ -21,6 +21,7 @@ export const resolvers = {
   },
   Mutation: {
     register: async (parent, args) => {
+      console.log("REGISTER")
       const user = args;
       console.log({user});
       user.password = await bcrypt.hash(user.password, 12);
