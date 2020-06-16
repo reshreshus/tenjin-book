@@ -7,7 +7,7 @@ import { useQuery } from '@apollo/react-hooks';
 
 import { selectElementContents, removeSelections,
      openContextMenu, hideContextMenu } from '../helpers/domHelpers'
-import { getContextMutations } from './contextMutations';
+import { getContextMutations } from './ContextMutations';
 import { appMenuItems } from './appMenuItems';
 
 import { getRandomInt } from '../helpers/jsHelpers';

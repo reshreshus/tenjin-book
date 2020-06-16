@@ -18,7 +18,9 @@ const users = [{ username: 'd', email: 'd@f.com', password: '1'}]
 export const resolvers = {
   JSON: GraphQLJSON,
   Query: {
-    tree: () => tree,
+    tree: () => { 
+      // console.log({ tree });
+      return tree },
   },
   Mutation: {
     register: async (parent, args) => {

@@ -6,12 +6,12 @@ const path = require('path');
 const ncp = require('ncp').ncp;
 ncp.limit = 16;
 
+
 const db = {}
-const dbPath = "C:/Users/Rishat/AppData/Roaming/Tenjin/db"
-const backupsFolder = "C:/Users/Rishat/AppData/Roaming/Tenjin/backups"
-// C:\Users\Rishat\AppData\Roaming\Tenjin\db
-db.items = new Datastore({ filename: "C:\\Users\\Rishat\\AppData\\Roaming\\Tenjin\\db\\items.db", autoload: true });
-db.tree = new Datastore({ filename: "C:\\Users\\Rishat\\AppData\\Roaming\\Tenjin\\db\\tree.db", autoload: true });
+const dbPath = "home/reshi/tenjin/db"
+const backupsFolder = "/home/reshi/tenjin/backup"
+db.items = new Datastore({ filename: "/home/reshi/tenjin/db/items.db", autoload: true });
+db.tree = new Datastore({ filename: "/home/reshi/tenjin/db/tree.db", autoload: true });
 db.items.loadDatabase();
 db.tree.loadDatabase();
 
@@ -52,6 +52,8 @@ export const getTree = async () => await new Promise(resolve =>
   db.tree.find({}, function(err, docs) {
     if (!err) {
       resolve(docs[0])
+    } else {
+      console.err(err);
     }
   })
 )
