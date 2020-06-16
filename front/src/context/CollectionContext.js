@@ -106,7 +106,12 @@ function CollectionProvider({children,
     // TODO: query executes an unusual number of times
     onCompleted: onTreeDownload
   });
-  const {data: meData, loading, networkStatus } = useQuery(GET_ME);
+  const {data: meData, loading : meLoading, networkStatus } = useQuery(GET_ME, {
+    onCompleted: () => {
+      if (meData.me)
+        updateUser(meData.me);
+    }
+  });
   const [isAppMenuUsed, updateIsAppMenuUsed] = useState(false);
 
   const [sidebarIsShown, updateSidebarIsShown] = useStickyState(true, 'sidebarIsShown');
@@ -620,13 +625,13 @@ function CollectionProvider({children,
       token
       }}>
         {
-          (token && meData && meData.me) ?
+          (token) ?
             <div className="app">
               { children }
               <ContextMenu menuItems={menuItems} appMenuItems={() => appMenuItems(backup)} isAppMenuUsed={isAppMenuUsed}/>
               <HotkeyApp menuItems={menuItems} addItemHeaderDeck={addItemHeaderDeck}/>
             </div>
-          : <Login />
+          : ( !meLoading ? <Login /> : 'loading')
         }
       </Collection.Provider>
   )
