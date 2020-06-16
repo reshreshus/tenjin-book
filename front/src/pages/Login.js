@@ -18,6 +18,7 @@ export default function Login() {
               loginContext(email, password);
             } else {
               registerContext(email, username, password);
+              updateIsLogin(true);
             }
           }
 
