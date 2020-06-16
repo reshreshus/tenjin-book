@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from 'react'
+import Login from '../pages/Login';
+import '../styles/main.sass'
+
 import HotkeyApp from './HotkeyApp';
 import ContextMenu from '../components/ContextMenu';
 
-import { GET_TREE} from '../api/queries';
+import { GET_TREE, GET_ME } from '../api/queries';
 import { useQuery } from '@apollo/react-hooks';
 
 import { selectElementContents, removeSelections,
      openContextMenu, hideContextMenu } from '../helpers/domHelpers'
 import { getContextMutations } from './ContextMutations';
 import { appMenuItems } from './appMenuItems';
-
+ 
 import { getRandomInt } from '../helpers/jsHelpers';
 
 import { uploadDeckImage, deleteImage } from '../api/rest';
@@ -54,38 +57,83 @@ function CollectionProvider({children,
   const [typeIsShown, updateTypeIsShown] = useState({
     'f': true,
     'T': true
-  })
+  } )
   const [editingMode, updateEditingMode] = useState({
     isStudying: false, // study or preview
     isEditing: true
   })
   const [rootTreeItem, updateRootTreeItem] = useState();
 
-  const [isEditing, updateIsEditing] = useState(false);
-  const {data: treeData} = useQuery(GET_TREE, {
-    // TODO: query executes an unusual number of times
-    onCompleted:  () => {
-      console.log(treeData.tree);
-      if (treeData.tree) {
-        let tree = calculateDueItemsInTree(treeData.tree);
-        updateTree(tree);
-      }
+  const attachResizerFunc = () => {
+    const e = document.querySelector('.resizer');
+    if (e) {
+      // e.previousElementSibling.style.width = '4rem';
+      // e.nextElementSibling.style.width=
+      // e.parentNode.offsetWidth/3-e.offsetWidth/3+'px';
+      // '600px';
+      e.style.height = e.previousElementSibling.style.height;
+      e.onmousedown= () => {
+      e.parentNode.onmousemove = ev => {
+        // TODO: save every n seconds if changes
+        if (sidebarIsShown) {
+          e.previousElementSibling.style.width =
+          ev.clientX-e.offsetWidth/2+'px';
+          e.nextElementSibling.style.width =
+          e.parentNode.offsetWidth-ev.clientX-e.offsetWidth/2+'px';
+        }
+      };
+      };
+      e.parentNode.onmouseup = () => e.parentNode.onmousemove=undefined
+    } else {
+    //  setTimeout(attachResizerFunc(), 1000);
     }
+  }
+
+  useEffect(() => {
+    attachResizerFunc();
+  })
+
+  const onTreeDownload = () => {
+    if (token & treeData.tree) {
+      console.log("tree data", treeData.tree);
+      let tree = calculateDueItemsInTree(treeData.tree);
+      // let tree = treeData.tree;
+      updateTree(tree);
+    }
+  }
+  const [isEditing, updateIsEditing] = useState(false);
+  const {data: treeData, refetch} = useQuery(GET_TREE, {
+    // TODO: query executes an unusual number of times
+    onCompleted: onTreeDownload
   });
+  const {data: meData, loading, networkStatus } = useQuery(GET_ME);
   const [isAppMenuUsed, updateIsAppMenuUsed] = useState(false);
 
   const [sidebarIsShown, updateSidebarIsShown] = useStickyState(true, 'sidebarIsShown');
   const [sidebarWidth, updateSidebarWidth] = useStickyState('21rem', 'sidebarWidth');
   const [rightSidebarIsShown, updateRightSidebarIsShown] = useStickyState(true, 'rightSidebarIsShown');
 
+  const [user, updateUser] = useState(null);
+  const [token, updateToken] = useStickyState(null, 'token')
+
   const loginContext = async (email, password) => {
     const token = await login(email, password);
-    console.log({ token })
+    console.log("LOGIN", token);
+    updateToken(token);
+    // console.log("local storage token", localStorage.getItem('token'))
+    const { data } = await refetch();
+    updateTree( data.tree );
   }
 
   const registerContext = async (username, email, password) => {
     const usrname = await register(username, email, password);
     console.log({usrname});
+  }
+
+  const logoutContext = async () => {
+    updateTree(null);
+    updateToken(null);
+    localStorage.clear();
   }
 
   const toggleLeftSidebar = () => {
@@ -109,27 +157,6 @@ function CollectionProvider({children,
     }
   }
 
-  useEffect(() => {
-    document.querySelectorAll('.resizer').forEach(e => {
-      // e.previousElementSibling.style.width = '4rem';
-      // e.nextElementSibling.style.width=
-      // e.parentNode.offsetWidth/3-e.offsetWidth/3+'px';
-      // '600px';
-      e.style.height = e.previousElementSibling.style.height;
-      e.onmousedown= () => {
-      e.parentNode.onmousemove = ev => {
-        // TODO: save every n seconds if changes
-        if (sidebarIsShown) {
-          e.previousElementSibling.style.width =
-          ev.clientX-e.offsetWidth/2+'px';
-          e.nextElementSibling.style.width =
-          e.parentNode.offsetWidth-ev.clientX-e.offsetWidth/2+'px';
-        }
-      };
-      };
-      e.parentNode.onmouseup = () => e.parentNode.onmousemove=undefined
-    });
-  })
 
   const zoomInDeckContext = (deckId=contextTreeItem.id) => {
     updateRootTreeItem(tree.items[deckId]);
@@ -301,6 +328,7 @@ function CollectionProvider({children,
   }
 
   const findLastDeck = (treeItem) => {
+    if (!tree) return null;
     // base case
     if (isDeck(treeItem)) {
       return treeItem;
@@ -308,7 +336,7 @@ function CollectionProvider({children,
 
     let parent = tree.items[treeItem.parentId];
     if (!parent) {
-      console.warn("couldn't find a parent");
+      // console.warn("couldn't find a parent");
       return tree.items[tree.rootId];
     }
     // if (parent.data.type === 'D') return parent
@@ -534,65 +562,74 @@ function CollectionProvider({children,
     zoomOutContext
   );
 
-  return (
-  <Collection.Provider value={{
-    updateContextTreeItemAndCleanup,
-    contextTreeItem,
-    updateContextTreeItem,
+  return ( 
+    <Collection.Provider value={{
+      updateContextTreeItemAndCleanup,
+      contextTreeItem,
+      updateContextTreeItem,
 
-    addDeckRootElementContext,
-    addItemRootElementContext,
+      addDeckRootElementContext,
+      addItemRootElementContext,
 
-    tree,
-    updateTree,
-    selectTreeItemToRenameContext,
-    renameTreeItemContext,
-    saveTreeContext,
-    zoomInDeckContext,
-    rootTreeItem,
+      tree,
+      updateTree,
+      selectTreeItemToRenameContext,
+      renameTreeItemContext,
+      saveTreeContext,
+      zoomInDeckContext,
+      rootTreeItem,
 
-    headerDeck,
-    updateHeaderDeck,
+      headerDeck,
+      updateHeaderDeck,
 
-    card,
-    saveCardContext,
-    setCardContext,
-    findLastDeck,
-    addNewEntryContext,
-    deleteEntryContext,
-    chooseTypeContext,
+      card,
+      saveCardContext,
+      setCardContext,
+      findLastDeck,
+      addNewEntryContext,
+      deleteEntryContext,
+      chooseTypeContext,
 
-    isEditing,
-    updateIsEditing,
-    editingMode,
-    updateEditingMode,
+      isEditing,
+      updateIsEditing,
+      editingMode,
+      updateEditingMode,
 
-    setCardToRepeat,
-    advanceCardContext,
-    updateCurrentlyUsedDeck,
-    uploadImageDeckContext,
-    deleteImageDeckContext,
+      setCardToRepeat,
+      advanceCardContext,
+      updateCurrentlyUsedDeck,
+      uploadImageDeckContext,
+      deleteImageDeckContext,
 
-    toggleExpanded,
-    openTreeContextMenu,
-    openAppContextMenu,
-    hideContextMenu,
-    sidebarIsShown,
-    updateSidebarIsShown,
-    rightSidebarIsShown,
-    updateRightSidebarIsShown,
-    toggleLeftSidebar,
+      toggleExpanded,
+      openTreeContextMenu,
+      openAppContextMenu,
+      hideContextMenu,
+      sidebarIsShown,
+      updateSidebarIsShown,
+      rightSidebarIsShown,
+      updateRightSidebarIsShown,
+      toggleLeftSidebar,
 
-    typeIsShown,
-    updateTypeIsShown
-    ,
-    loginContext,
-    registerContext,
-    }}>
-      {children}
-      <ContextMenu menuItems={menuItems} appMenuItems={() => appMenuItems(backup)} isAppMenuUsed={isAppMenuUsed}/>
-      <HotkeyApp menuItems={menuItems} addItemHeaderDeck={addItemHeaderDeck}/>
-  </Collection.Provider>)
+      typeIsShown,
+      updateTypeIsShown
+      ,
+      loginContext,
+      registerContext,
+      logoutContext,
+      token
+      }}>
+        {
+          (token && meData && meData.me) ?
+            <div className="app">
+              { children }
+              <ContextMenu menuItems={menuItems} appMenuItems={() => appMenuItems(backup)} isAppMenuUsed={isAppMenuUsed}/>
+              <HotkeyApp menuItems={menuItems} addItemHeaderDeck={addItemHeaderDeck}/>
+            </div>
+          : <Login />
+        }
+      </Collection.Provider>
+  )
 }
 
 const CollectionConsumer = Collection.Consumer;

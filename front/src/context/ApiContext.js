@@ -2,7 +2,7 @@ import React from 'react'
 import { useMutation } from '@apollo/react-hooks';
 import { GET_CARD, SAVE_CARD, SAVE_TREE, ADD_ITEM,
   RENAME_TREE_ITEM, DELETE_TREE_ITEM, DUPLICATE_TREE_ITEM, ADD_DECK,
-  ADVANCE_CARD, GET_ITEMS, BACKUP, LOGIN, REGISTER
+  ADVANCE_CARD, GET_ITEMS, BACKUP, LOGIN, REGISTER, GET_ME
  } from '../api/queries';
 import {CollectionProvider} from './CollectionContext'
 
@@ -31,7 +31,8 @@ export default function ApiContext({children}) {
       variables: {
         email,
         password
-      }
+      },
+      refetchQueries: [{ query: GET_ME }]
     })
     return data.data.login;
   }

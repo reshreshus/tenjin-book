@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
+import Game from './Game';
 import { BrowserRouter as Router} from 'react-router-dom';
 import ApiContext from './context/ApiContext'
 import { ApolloLink } from 'apollo-link';
@@ -15,10 +15,24 @@ const link = new HttpLink({
   uri: "http://localhost:4000/graphql"
 });
 
+const authLink = new ApolloLink((operation, forward) => {
+  operation.setContext(({ headers = {} }) => {
+    const token =  JSON.parse(localStorage.getItem('token'));
 
+    // console.log({token})
+    if (token) {
+      headers = { ...headers, 'authorization': token };
+    }
+
+    return { headers };
+  });
+
+  return forward(operation);
+});
 
 const client = new ApolloClient({
-  link,
+  link: authLink.concat(link),
+  // link,
   cache: new InMemoryCache()
 });
 
@@ -26,7 +40,7 @@ ReactDOM.render(
     <ApolloProvider client={client}>
         <ApiContext>
             <Router >
-                <App />
+                <Game />
             </Router>
         </ApiContext>
     </ApolloProvider>

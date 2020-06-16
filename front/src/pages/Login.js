@@ -20,6 +20,12 @@ export default function Login() {
               registerContext(email, username, password);
             }
           }
+
+          const handleKeyPress = (event) => {
+            if(event.key === 'Enter'){
+              submit();
+            }
+          }
           return (
             <div className="login">
               {
@@ -27,12 +33,12 @@ export default function Login() {
                 <TenjinIcon className="login-form__img"/>
                 <div className="field">
                   <input type="email" name="email" className="field__input" placeholder=" "
-                  onChange={(e) => {updateEmail(e.target.value)}}/>
+                  onChange={(e) => { updateEmail(e.target.value) }} onKeyPress={handleKeyPress} />
                   <label for="email" className="field__label"> Email </label>
                 </div>
                 <div className="field">
                   <input type={isPasswordShown ? 'text' : 'password'} name="password" className="field__input" placeholder=" "
-                  onChange={e => updatePassword(e.target.value)}/>
+                  onChange={e => updatePassword(e.target.value)} onKeyPress={handleKeyPress} />
                   <label for="password" className="field__label"> Password </label>
                   <span className="toggle-password" onClick={() => updateIsPasswordShown(!isPasswordShown)}>
                     { isPasswordShown ? '🙈' : '👁️' }
@@ -48,17 +54,17 @@ export default function Login() {
                 <TenjinIcon className="login-form__img"/>
                 <div className="field">
                   <input type="username" name="username" className="field__input" placeholder=" "
-                  onChange={e => updateUsername(e.target.value)}/>
+                  onChange={e => updateUsername(e.target.value)} onKeyPress={handleKeyPress} />
                   <label for="username" className="field__label"> Username </label>
                 </div>
                 <div className="field">
                   <input type="email" name="email" className="field__input" placeholder=" "
-                  onChange={e => updateEmail(e.target.value)} />
+                  onChange={e => updateEmail(e.target.value)} onKeyPress={handleKeyPress} />
                   <label for="email" className="field__label"> Email </label>
                 </div>
                 <div className="field">
                   <input type="password" name="password" className="field__input" placeholder=" "
-                  onChange={e => updatePassword(e.target.value)} />
+                  onChange={e => updatePassword(e.target.value)}  onKeyPress={handleKeyPress} />
                   <label for="password" className="field__label"> Password </label>
                 </div>
 

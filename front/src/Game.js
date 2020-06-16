@@ -8,7 +8,7 @@ import Edit from './pages/Edit';
 import ShowDeck from './pages/ShowDeck';
 
 
-export default function Game({match}) {
+export default function Game() {
   return (
     <div className="game">
       <Sidebar />

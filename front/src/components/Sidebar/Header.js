@@ -11,13 +11,12 @@ export default function Header() {
   return (
     <CollectionConsumer>
     {
-      ({updateContextTreeItem, openAppContextMenu, sidebarIsShown, toggleLeftSidebar}) => {
+      ({updateContextTreeItem, openAppContextMenu, sidebarIsShown, toggleLeftSidebar, logoutContext}) => {
         return (
           <div className={`header ${!sidebarIsShown ? 'header--wrapped' : ''}`}>
+            <div className="btn-ed" onClick={() => logoutContext()}>logout</div>
             <Link to="/" className="header__link link">
               <h1 className={`header__title ${!sidebarIsShown ? 'header__title--wrapped': ''}`} onClick={() => updateContextTreeItem(null)}>Tenjin Book </h1>
-              {/* <img  src="tenjinbook.png" alt="header"
-              onClick={() => {toggleLeftSidebar()}} */}
               <TenjinIcon className="header__img" onClick={() => {toggleLeftSidebar()}}/>
             </Link>
             <FontAwesomeIcon

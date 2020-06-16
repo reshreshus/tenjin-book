@@ -26,9 +26,10 @@ const addUser = async (req) => {
   const token = req.headers.authorization;
   try {
     const { user } = await jwt.verify(token, SECRET);
+    // console.log("User found", user)
     req.user = user;
   } catch (err) {
-    // console.error(err);
+    console.log("User not found")
   }
   req.next();
 }
@@ -41,7 +42,7 @@ app.use(cors('*'));
 app.use('/graphiql', graphiqlExpress({
   endpointURL: 'graphql'
 }))
-// app.use(addUser);
+app.use(addUser);
 
 app.use('/graphql', bodyParser.json(), graphqlExpress(
   req => ({
@@ -94,8 +95,14 @@ app.post("/uploadByFile", function (req, res) {
   })
 });
 
+// Error handler
+const errorHandler = (err, req, res, next) => {
+  if (res.headersSent) {
+    return next(err);
+  }
+  const { status } = err;
+  res.status(status).json(err);
+};
+app.use(errorHandler);
+
 app.listen(PORT);
-
-
-
-

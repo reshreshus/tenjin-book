@@ -1,12 +1,10 @@
 export const typeDefs = `
   scalar JSON
-
   type TreeItemData {
     name: String
     type: String
     repetitionStatsSm2: RepetitionStatsSm2
   }
-
   type TreeItem {
     hasChildren: Boolean
     children: [String]
@@ -14,19 +12,16 @@ export const typeDefs = `
     parentId: String
     data: TreeItemData
   }
-
   type RepetitionEvent {
     date: String!
     quality: Int!
   }
-
   type RepetitionStatsSm2 {
     eFactor: String!
     repetitionsCount: Int!
     nextDate: String!
     interval: String
   }
-
   type Card {
     id: ID,
     templateId: String,
@@ -34,7 +29,6 @@ export const typeDefs = `
     entries: [CardEntry],
     repetitionStatsSm2: RepetitionStatsSm2
   }
-
   type CardEntry {
     id: Int,
     name: String,
@@ -43,19 +37,17 @@ export const typeDefs = `
     type: String
     format: String
   }
-
   type User {
     id: ID!
     username: String!
     password: String!
     email: String!
   }
-
   type Query {
     tree: JSON,
     cardEntry(id: ID!): CardEntry
+    me: User
   }
-
   type Mutation {
     register(username: String!, email: String!, password: String!): User!,
     login(email: String!, password: String): String!

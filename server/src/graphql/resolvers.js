@@ -12,15 +12,23 @@ const getUserTree = () => {
   return tree;
 }
 
-const users = [{ username: 'd', email: 'd@f.com', password: '1'}]
+const users = [{ username: 'd', email: 'd@f.com', password: '$2b$12$0O/2f7MtDM5o67Zb/XSUteyCUv2RA0lQ63k7kX2H1Rl2C6QbZSHwu'}]
 
 // TODO: no error checking here
 export const resolvers = {
   JSON: GraphQLJSON,
   Query: {
     tree: () => { 
-      // console.log({ tree });
-      return tree },
+      // console.log({tree})
+      return tree;
+    },
+    me: async (_, args, { user }) => {
+      // console.log("me", {user})
+      if (user) {
+        return user;
+      }
+      return null;
+    },
   },
   Mutation: {
     register: async (parent, args) => {
@@ -33,12 +41,13 @@ export const resolvers = {
       return user;
     },
     login: async (_, { email, password }, { SECRET }) => {
+      // console.log("login");
       const user = users.filter(u => u.email === email)[0];
+      // console.log({user})
       if (!user) {
         throw new Error('No user with that email');
       }
-
-      const valid = bcrypt.compare(password, user.password);
+      const valid = await bcrypt.compare(password, user.password);
       if (!valid) {
         throw new Error('Incorrect password');
       }
@@ -48,7 +57,7 @@ export const resolvers = {
         SECRET,
         { expiresIn: '1d'}
       );
-
+      // console.log({token})
       return token;
     },
     backup: () => {
