@@ -23,7 +23,7 @@ export default function ApiContext({children}) {
 
   const [backupQuery] = useMutation(BACKUP);
 
-  const [loginQuery] = useMutation(LOGIN);
+  const [loginQuery, { error : loginError}] = useMutation(LOGIN);
   const [registerQuery] = useMutation(REGISTER);
 
   const login = async (email, password) => {
@@ -33,7 +33,7 @@ export default function ApiContext({children}) {
         password
       },
       refetchQueries: [{ query: GET_ME }]
-    })
+    });
     return data.data.login;
   }
 

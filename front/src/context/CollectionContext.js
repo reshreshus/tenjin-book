@@ -122,12 +122,17 @@ function CollectionProvider({children,
   const [token, updateToken] = useStickyState(null, 'token')
 
   const loginContext = async (email, password) => {
-    const token = await login(email, password);
-    console.log("LOGIN", token);
-    updateToken(token);
-    // console.log("local storage token", localStorage.getItem('token'))
-    const { data } = await refetch();
-    updateTree( data.tree );
+    const { ok, token, error } = await login(email, password);
+    if (ok) {
+      console.log("LOGIN", token);
+      updateToken(token);
+      // console.log("local storage token", localStorage.getItem('token'))
+      const { data } = await refetch();
+      updateTree( data.tree );
+      return { token }
+    } else {
+      return { error };
+    }
   }
 
   const registerContext = async (username, email, password) => {

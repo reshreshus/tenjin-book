@@ -33,23 +33,42 @@ export const resolvers = {
   Mutation: {
     register: async (parent, args) => {
       console.log("REGISTER")
-      const user = args;
-      console.log({user});
-      user.password = await bcrypt.hash(user.password, 12);
-      users.push(user);
+      try {
 
-      return user;
+        const user = args;
+        console.log({user});
+        user.password = await bcrypt.hash(user.password, 12);
+        users.push(user);
+
+        return {
+          ok: true,
+          user
+        }
+      } catch (e) {
+        return {
+          false: ok,
+          errors: e
+        }
+      }
     },
     login: async (_, { email, password }, { SECRET }) => {
       // console.log("login");
       const user = users.filter(u => u.email === email)[0];
       // console.log({user})
       if (!user) {
-        throw new Error('UNAUTHENTICATED');
+        return {
+          ok: false,
+          token: null,
+          error: 'no user with this email'
+        }
       }
       const valid = await bcrypt.compare(password, user.password);
       if (!valid) {
-        throw new Error('Incorrect password');
+        return {
+          ok: false,
+          token: null,
+          error: 'wrong password'
+        }
       }
 
       const token = jwt.sign(
@@ -58,7 +77,10 @@ export const resolvers = {
         { expiresIn: '1d'}
       );
       // console.log({token})
-      return token;
+      return  {
+        ok: true,
+        token
+      };
     },
     backup: () => {
       backup();

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { ReactComponent as TenjinIcon } from '../assets/svg/tenjin.svg';
 import { CollectionConsumer } from '../context/CollectionContext';
 
@@ -8,17 +8,32 @@ export default function Login() {
   const [email, updateEmail] = useState();
   const [username, updateUsername] = useState();
   const [password, updatePassword] = useState();
-
+  const [ errors, updateErrors ] = useState();
+  useEffect(() => {
+    updateErrors(null);
+  }, [ isLogin ])
+  function Errors() {
+    return (
+      <div className="login-form__errors">
+      {
+        errors && errors.map(e => e) 
+      } </div>
+    )
+  }
   return (
     <CollectionConsumer>
       {
         ({ loginContext, registerContext }) => {
-          const submit = () => {
+          const submit = async () => {
+            let result;
             if (isLogin) {
-              loginContext(email, password);
+              result = await loginContext(email, password);
             } else {
-              registerContext(email, username, password);
+              result = await registerContext(email, username, password);
               updateIsLogin(true);
+            }
+            if (result.error) {
+              updateErrors([result.error])
             }
           }
 
@@ -46,6 +61,7 @@ export default function Login() {
                   </span>
                 </div>
 
+                <Errors />
                 <div className="btn login-form__btn" onClick={() => submit()}>Sign In</div>
                 <div className="btn login-form__option" onClick={() => updateIsLogin(false)}> or <span>Register</span></div>
               </form>
@@ -69,6 +85,7 @@ export default function Login() {
                   <label for="password" className="field__label"> Password </label>
                 </div>
 
+                <Errors />
                 <div className="btn login-form__btn" onClick={() => submit()}>Register</div>
                 <div className="btn login-form__option" onClick={() => updateIsLogin(true)}> or <span>Sign In</span></div>
               </form>

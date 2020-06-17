@@ -49,8 +49,8 @@ export const typeDefs = `
     me: User
   }
   type Mutation {
-    register(username: String!, email: String!, password: String!): User!,
-    login(email: String!, password: String): String!
+    register(username: String!, email: String!, password: String!): JSON!,
+    login(email: String!, password: String): JSON!
     backup: String,
     items: [JSON],
       addCardEntry(
