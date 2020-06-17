@@ -5,6 +5,7 @@ import { BrowserRouter as Router} from 'react-router-dom';
 import ApiContext from './context/ApiContext'
 import { ApolloLink } from 'apollo-link';
 import { HttpLink } from 'apollo-link-http';
+import { onError } from 'apollo-link-error';
 
 import { ApolloClient } from 'apollo-client'
 import { ApolloProvider } from '@apollo/react-hooks';
@@ -30,8 +31,30 @@ const authLink = new ApolloLink((operation, forward) => {
   return forward(operation);
 });
 
+const errorLink = onError(({ graphQLErrors, networkError }) => {
+  if (graphQLErrors) {
+    graphQLErrors.forEach(({ message, locations, path }) => {
+      console.log('GraphQL error', message);
+
+      if (message === 'UNAUTHENTICATED') {
+        // signOut(client);
+        console.log("anauthenticated")
+        return;
+      }
+    });
+  }
+
+  if (networkError) {
+    console.log('Network error', networkError);
+
+    if (networkError.statusCode === 401) {
+      // signOut(client);
+    }
+  }
+});
+
 const client = new ApolloClient({
-  link: authLink.concat(link),
+  link: errorLink.concat(authLink.concat(link)),
   // link,
   cache: new InMemoryCache()
 });

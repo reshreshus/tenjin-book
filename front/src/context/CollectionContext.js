@@ -624,15 +624,17 @@ function CollectionProvider({children,
       logoutContext,
       token
       }}>
-        {
-          (token) ?
-            <div className="app">
-              { children }
-              <ContextMenu menuItems={menuItems} appMenuItems={() => appMenuItems(backup)} isAppMenuUsed={isAppMenuUsed}/>
-              <HotkeyApp menuItems={menuItems} addItemHeaderDeck={addItemHeaderDeck}/>
-            </div>
+        <div className="app">
+          {
+          token ?
+          (<div className="game-container">
+          { children }
+          <ContextMenu menuItems={menuItems} appMenuItems={() => appMenuItems(backup)} isAppMenuUsed={isAppMenuUsed}/>
+          <HotkeyApp menuItems={menuItems} addItemHeaderDeck={addItemHeaderDeck}/>
+          </div>)
           : ( !meLoading ? <Login /> : 'loading')
-        }
+          }
+        </div>
       </Collection.Provider>
   )
 }

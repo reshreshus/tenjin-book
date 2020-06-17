@@ -45,7 +45,7 @@ export const resolvers = {
       const user = users.filter(u => u.email === email)[0];
       // console.log({user})
       if (!user) {
-        throw new Error('No user with that email');
+        throw new Error('UNAUTHENTICATED');
       }
       const valid = await bcrypt.compare(password, user.password);
       if (!valid) {
