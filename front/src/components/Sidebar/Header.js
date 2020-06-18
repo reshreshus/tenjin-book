@@ -19,14 +19,12 @@ export default function Header() {
               <h1 className={`header__title ${!sidebarIsShown ? 'header__title--wrapped': ''}`} onClick={() => updateContextTreeItem(null)}>Tenjin Book </h1>
               <TenjinIcon className="header__img" onClick={() => {toggleLeftSidebar()}}/>
             </Link>
-            <FontAwesomeIcon
+            {/* <FontAwesomeIcon
                 className="header__options"
                 icon={faBraille}
                 size="lg"
                 onClick={(e) => openAppContextMenu(e)}
-                />
-            {/* <img className="header__options" src={dots} alt="dots" height="28px"
-              onClick={(e) => openAppContextMenu(e)}/> */}
+                /> */}
           </div>
         )
       }
