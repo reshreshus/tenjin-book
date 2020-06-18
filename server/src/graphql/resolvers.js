@@ -1,6 +1,6 @@
 const GraphQLJSON = require('graphql-type-json');
 import { getTree, getItem, updateTree, updateItem, insertItem, backup,
-  getUserByEmail, addUser } from '../db';
+  getUserByEmail, addUser, addUserDefaultData } from '../db';
 import { advanceCardSm2 } from '../srs/algo';
 import { newCard, newTopic, newDeckTreeItem } from './templates';
 import jwt from 'jsonwebtoken';
@@ -18,8 +18,7 @@ export const resolvers = {
     tree: async (_, __, { user }) => {
       // console.log("user", user)
       if (user) {
-        let tree = await getTree(user.id);
-        // console.log({tree})
+        let tree = await getTree(user.email);
         return tree;
       }
       else return null
@@ -40,13 +39,15 @@ export const resolvers = {
         const user = args;
         user.password = await bcrypt.hash(user.password, 12);
         addUser(user);
+        addUserDefaultData(user.email);
         return {
           ok: true,
           user
         }
       } catch (e) {
+        console.log("register error", e);
         return {
-          false: ok,
+          ok: false,
           errors: e
         }
       }
@@ -87,11 +88,11 @@ export const resolvers = {
       return "ok"
     },
     advanceCard: async (_, {id, quality : q}, { user }) => {
-      const tree = await getTree(user.id);
+      const tree = await getTree(user.email);
       let itemTreeItem = tree.items[id]
       if (itemTreeItem.data.type === 'f' || itemTreeItem.data.type === 'T') {
         advanceCard(itemTreeItem, q);
-        updateTree(user.id, tree)
+        updateTree(user.email, tree)
         return tree;
       } else {
         console.error("Trying to advance non-item");
@@ -100,22 +101,22 @@ export const resolvers = {
     },
     addDeck: async (_, {parentId}, { user }) => {
       let id = ID();
-      const tree = await getTree(user.id);
+      const tree = await getTree(user.email);
       let treeItem = addTreeItem(tree, parentId, id);
       treeItem.data = {
         type: 'D',
         name: `deck ${id}`,
       }
-      updateTree(user.id, tree);
+      updateTree(user.email, tree);
       return tree;
     },
     addItem: async (_, {type, parentId}, { user }) => {
       if (!user) return null;
       let item = type === 'f' ? Object.assign({}, newCard) : Object.assign({}, newTopic);
       item.id = `_${ID()}`;
-      insertItem(user.id, item);
+      insertItem(user.email, item);
 
-      const tree = await getTree(user.id);
+      const tree = await getTree(user.email);
       let treeItem = addTreeItem(tree, parentId, item.id);
       treeItem.data = {
         type,
@@ -128,46 +129,46 @@ export const resolvers = {
           history: []
         }
       }
-      updateTree(user.id, tree);
+      updateTree(user.email, tree);
       return {newTree : tree, newTreeItem : treeItem};
     },
     addCardEntry: async (_, { id, name, content, type, card_id}, { user }) => {
-      const card = await getItem(user.id, id);
+      const card = await getItem(user.email, id);
       card.entries.push({
         name,
         content,
         type,
         id
       });
-      udateItem(user.id, card.id, card)
+      udateItem(user.email, card.id, card)
       return card.entries;
     },
     card: async (_, { id }, { user }) => {
-      return getItem(user.id, id);
+      return getItem(user.email, id);
     },
     saveCard: async (_, {id, templateTitle, entries}, { user }) => {
-      let card = await getItem(user.id, id);
+      let card = await getItem(user.email, id);
       card = {
         id,
         templateTitle,
         entries
       }
-      updateItem(user.id, card.id, card)
+      updateItem(user.email, card.id, card)
       return card;
     },
     saveTree: async (_, {newTree}, { user }) => {
       const tree = newTree;
-      updateTree(user.id, newTree);
+      updateTree(user.email, newTree);
       return tree;
     },
     renameTreeItem: async (_, {id, newName}, { user }) => {
-      const tree = await getTree(user.id);
+      const tree = await getTree(user.email);
       tree.items[id].data.name = newName;
-      updateTree(user.id, tree);
+      updateTree(user.email, tree);
       return tree.items[id];
     },
     deleteTreeItem: async (_, {id}, { user }) => {
-      const tree = await getTree(user.id)
+      const tree = await getTree(user.email)
       let treeItem = tree.items[id];
       deleteTreeItemChildren(tree, treeItem.children);
       delete tree.items[id];
@@ -178,11 +179,11 @@ export const resolvers = {
         parent.hasChildren = false;
         if (!user) return null;
       }
-      updateTree(user.id, tree);
+      updateTree(user.email, tree);
       return tree;
     },
     duplicateTreeItem: async (_, {id}, { user }) => {
-      const tree = await getTree(user.id)
+      const tree = await getTree(user.email)
       let treeItem = tree.items[id];
       let newTreeItem = Object.assign({}, treeItem);
       let newId = ID();
@@ -198,13 +199,13 @@ export const resolvers = {
       tree.items[newId] = newTreeItem;
       // duplicate flashcard as well
       if (newTreeItem.data.type === 'f' || newTreeItem.data.type === 'T') {
-        getItem(user.id, id).then(result => {
+        getItem(user.email, id).then(result => {
           result.id = newId;
           delete result._id;
-          insertItem(user.id, result);
+          insertItem(user.email, result);
         });
       }
-      updateTree(user.id, tree);
+      updateTree(user.email, tree);
       return tree;
     }
   }

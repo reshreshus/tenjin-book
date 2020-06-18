@@ -18,6 +18,11 @@ if (process.env.PROD_ENV === "pop") {
   populateDb()
 }
 
+export const addUserDefaultData = async (userEmail) => {
+  db.collection('trees').doc(userEmail).set(tree);
+  items.forEach(it => db.collection(userEmail).doc(it.id).set(it) )
+}
+
 export const addUser = async (user) => {
   console.log("addUser");
   db.collection('users').doc(user.email).set(user);
@@ -29,42 +34,42 @@ export const getUserByEmail = async (userEmail) => {
   return returnDocData(doc);
 }
 
-export const updateItem = async (userId, itemId, item) => {
-  console.log("updateItem", userId);
-  if (userId && itemId)
-    db.collection(userId).doc(itemId).set(item);
+export const updateItem = async (userEmail, itemId, item) => {
+  console.log("updateItem", userEmail);
+  if (userEmail && itemId)
+    db.collection(userEmail).doc(itemId).set(item);
 }
 
-export const updateTree = async (userId, tree) => {
-  console.log("updateTree", userId);
-  if (userId)
-    db.collection('trees').doc(userId).set(tree);
+export const updateTree = async (userEmail, tree) => {
+  console.log("updateTree", userEmail);
+  if (userEmail)
+    db.collection('trees').doc(userEmail).set(tree);
 }
 
-export const getItem = async (userId, itemId) => {
-  if (userId && itemId) {
-    const doc = await db.collection(userId).doc(itemId).get();
+export const getItem = async (userEmail, itemId) => {
+  if (userEmail && itemId) {
+    const doc = await db.collection(userEmail).doc(itemId).get();
     return returnDocData(doc);
   } else {
-    console.log("getItem", userId, itemId);
+    console.log("getItem", userEmail, itemId);
   }
 }
 
-export const getTree = async (userId) => {
-  // console.log("getTree", userId);
-  if (userId) {
-    const doc = await db.collection('trees').doc(userId).get();
+export const getTree = async (userEmail) => {
+  // console.log("getTree", userEmail);
+  if (userEmail) {
+    const doc = await db.collection('trees').doc(userEmail).get();
     return returnDocData(doc);
   }
 }
 
-export const insertItem = async (userId, item) => {
-  if (userId)
-    db.collection(userId).doc(item.id).set(item);
+export const insertItem = async (userEmail, item) => {
+  if (userEmail)
+    db.collection(userEmail).doc(item.id).set(item);
 }
 
-export const getItems = async (userId) => {
-  const snapshot = await db.collection(userId).get();
+export const getItems = async (userEmail) => {
+  const snapshot = await db.collection(userEmail).get();
   return snapshot.docs.map(doc => doc.data());
 }
 
