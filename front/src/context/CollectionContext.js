@@ -12,7 +12,7 @@ import { selectElementContents, removeSelections,
      openContextMenu, hideContextMenu } from '../helpers/domHelpers'
 import { getContextMutations } from './ContextMutations';
 import { appMenuItems } from './appMenuItems';
- 
+
 import { getRandomInt } from '../helpers/jsHelpers';
 
 import { uploadDeckImage, deleteImage } from '../api/rest';
@@ -120,14 +120,24 @@ function CollectionProvider({children,
   const [user, updateUser] = useState(null);
   const [token, updateToken] = useStickyState(null, 'token')
 
+  const tryTreeRefetch = () => {
+    setTimeout( async () => {
+      const { data } = await refetch();
+      if (data) {
+        updateTree( data.tree );
+        // const newCTI = data.tree.items[data.tree.rootId]
+        // updateContextTreeItem(newCTI)
+      } else tryTreeRefetch();
+    }, 100)
+  }
+
   const loginContext = async (email, password) => {
     const { ok, token, error } = await login(email, password);
     if (ok) {
       console.log("LOGIN", token);
       updateToken(token);
       // console.log("local storage token", localStorage.getItem('token'))
-      const { data } = await refetch();
-      updateTree( data.tree );
+      tryTreeRefetch();
       return { token }
     } else {
       return { error };
