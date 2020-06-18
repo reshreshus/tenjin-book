@@ -10,9 +10,7 @@ export const GET_ME = gql`
 
 export const REGISTER = gql`
   mutation register($email: String!, $username: String!, $password: String!) {
-    register(email: $email, username: $username, password: $password) {
-      username
-    }
+    register(email: $email, username: $username, password: $password)
   }
 `
 

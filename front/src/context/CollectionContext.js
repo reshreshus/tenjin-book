@@ -145,8 +145,10 @@ function CollectionProvider({children,
   }
 
   const registerContext = async (username, email, password) => {
-    const usrname = await register(username, email, password);
-    console.log({usrname});
+    const { ok, user, error } = register(username, email, password);
+    if (!ok) {
+      return { error }
+    }
   }
 
   const logoutContext = async () => {

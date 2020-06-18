@@ -1,5 +1,6 @@
 const GraphQLJSON = require('graphql-type-json');
-import { getTree, getItem, updateTree, updateItem, insertItem, backup } from '../db';
+import { getTree, getItem, updateTree, updateItem, insertItem, backup,
+  getUserByEmail, addUser } from '../db';
 import { advanceCardSm2 } from '../srs/algo';
 import { newCard, newTopic, newDeckTreeItem } from './templates';
 import jwt from 'jsonwebtoken';
@@ -33,14 +34,12 @@ export const resolvers = {
   },
   Mutation: {
     register: async (parent, args) => {
-      console.log("REGISTER")
+      // console.log("REGISTER")
       try {
 
         const user = args;
-        // console.log({user});
         user.password = await bcrypt.hash(user.password, 12);
-        users.push(user);
-
+        addUser(user);
         return {
           ok: true,
           user
@@ -53,8 +52,8 @@ export const resolvers = {
       }
     },
     login: async (_, { email, password }, { SECRET }) => {
-      // console.log("login");
-      const user = users.filter(u => u.email === email)[0];
+      console.log("login");
+      const user = await getUserByEmail(email);
       // console.log({user})
       if (!user) {
         return {

@@ -18,13 +18,15 @@ if (process.env.PROD_ENV === "pop") {
   populateDb()
 }
 
-const returnDocData = (doc) => {
-  if (!doc.exists) {
-    console.log('No such document');
-    return null;
-  } else {
-    return doc.data();
-  }
+export const addUser = async (user) => {
+  console.log("addUser");
+  db.collection('users').doc(user.email).set(user);
+}
+
+export const getUserByEmail = async (userEmail) => {
+  // const doc = await db.collection('users').where('email', '==', userEmail);
+  const doc = await db.collection('users').doc(userEmail).get()
+  return returnDocData(doc);
 }
 
 export const updateItem = async (userId, itemId, item) => {
@@ -73,4 +75,13 @@ const addZero = (number) => {
 const getDate = (dt = new Date()) => {
   return `${dt.getFullYear()}-${addZero(dt.getMonth() + 1)}-${addZero(dt.getDate())}-${addZero(dt.getHours())}-${addZero(dt.getMinutes())}-${addZero(dt.getSeconds())}`
   // return dt.toISOString();
+}
+
+const returnDocData = (doc) => {
+  if (!doc.exists) {
+    console.log('No such document');
+    return null;
+  } else {
+    return doc.data();
+  }
 }

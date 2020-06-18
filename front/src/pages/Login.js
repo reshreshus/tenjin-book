@@ -3,7 +3,7 @@ import { ReactComponent as TenjinIcon } from '../assets/svg/tenjin.svg';
 import { CollectionConsumer } from '../context/CollectionContext';
 
 export default function Login() {
-  const [isLogin, updateIsLogin] = useState(true);
+  const [isLogin, updateIsLogin] = useState(false);
   const [isPasswordShown, updateIsPasswordShown] = useState(false);
   const [email, updateEmail] = useState();
   const [username, updateUsername] = useState();
@@ -16,7 +16,7 @@ export default function Login() {
     return (
       <div className="login-form__errors">
       {
-        errors && errors.map(e => e) 
+        errors && errors.map(e => e)
       } </div>
     )
   }
