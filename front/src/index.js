@@ -13,7 +13,7 @@ import { ApolloProvider } from '@apollo/react-hooks';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 
 const link = new HttpLink({
-  uri: "http://localhost:4000/graphql"
+  uri: "http://161.35.197.251/graphql"
 });
 
 const authLink = new ApolloLink((operation, forward) => {
