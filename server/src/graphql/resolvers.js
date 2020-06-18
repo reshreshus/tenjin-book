@@ -141,8 +141,8 @@ export const resolvers = {
       updateItem(card.id, card)
       return card.entries;
     },
-    card: (_, { id }) => {
-      return getItem(id);
+    card: (_, { id }, { user }) => {
+      return getItem(user.id, id);
     },
     saveCard: (_, {id, templateTitle, entries}) => {
       let card = getItem(id);

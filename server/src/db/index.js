@@ -13,22 +13,31 @@ const populateDb = () => {
   db.collection('trees').doc('dummy').set(tree);
   items.forEach(it => db.collection('dummy').doc(it.id).set(it));
 }
+
 if (process.env.PROD_ENV === "pop") {
   populateDb()
 }
 
+const returnDocData = (doc) => {
+  if (!doc.exists) {
+    console.log('No such document');
+    return null;
+  } else {
+    return doc.data();
+  }
+}
 
+
+export const getItem = async (userId, itemId) => {
+  const doc = await db.collection(userId).doc(itemId).get();
+  return returnDocData(doc);
+}
 
 export const getTree = async (userId) => {
   // console.log("getTree", userId);
   if (userId) {
     const doc = await db.collection('trees').doc(userId).get();
-    if (!doc.exists) {
-      console.log('No such document');
-      return null;
-    } else {
-      return doc.data();
-    }
+    return returnDocData(doc);
   }
 }
 
