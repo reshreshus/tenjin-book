@@ -16,12 +16,12 @@ export const resolvers = {
   Query: {
     tree: async (_, __, { user }) => {
       console.log("user", user)
-      // if (user) {
-      //   let tree = await getTree(user.id);
-      //   console.log({tree})
-      //   return tree;
-      // }
-      // else return null
+      if (user) {
+        let tree = await getTree(user.id);
+        console.log({tree})
+        return tree;
+      }
+      else return null
       return tree;
     },
     me: async (_, __, { user }) => {
