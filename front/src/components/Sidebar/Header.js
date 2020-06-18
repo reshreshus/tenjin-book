@@ -16,8 +16,9 @@ export default function Header() {
           <div className={`header ${!sidebarIsShown ? 'header--wrapped' : ''}`}>
             <div className="btn-ed" onClick={() => logoutContext()}>logout</div>
             <Link to="/" className="header__link link">
-              <h1 className={`header__title ${!sidebarIsShown ? 'header__title--wrapped': ''}`} onClick={() => updateContextTreeItem(null)}>Tenjin Book </h1>
               <TenjinIcon className="header__img" onClick={() => {toggleLeftSidebar()}}/>
+              <h1 className={`header__title ${!sidebarIsShown ? 'header__title--wrapped': ''}`}
+              onClick={() => updateContextTreeItem(null)}>TB</h1>
             </Link>
             {/* <FontAwesomeIcon
                 className="header__options"
