@@ -1,4 +1,4 @@
 [build]
   command = "CI=false npm run build"
-  publish="front/build"
+  publish="/build"
   base = "front"
