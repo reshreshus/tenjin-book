@@ -15,10 +15,10 @@ export const resolvers = {
   JSON: GraphQLJSON,
   Query: {
     tree: async (_, __, { user }) => {
-      console.log("user", user)
+      // console.log("user", user)
       if (user) {
         let tree = await getTree(user.id);
-        console.log({tree})
+        // console.log({tree})
         return tree;
       }
       else return null
@@ -38,7 +38,7 @@ export const resolvers = {
       try {
 
         const user = args;
-        console.log({user});
+        // console.log({user});
         user.password = await bcrypt.hash(user.password, 12);
         users.push(user);
 
@@ -84,33 +84,32 @@ export const resolvers = {
         token
       };
     },
-    backup: () => {
+    backup: (_, __, { user }) => {
       backup();
       return "ok"
     },
-    items: () => tree,
-    advanceCard: (_, {id, quality : q}) => {
+    advanceCard: (_, {id, quality : q}, { user }) => {
       let itemTreeItem = tree.items[id]
       if (itemTreeItem.data.type === 'f' || itemTreeItem.data.type === 'T') {
         advanceCard(itemTreeItem, q);
-        updateTreeDb(tree)
+        updateTree(user.id, tree)
         return tree;
       } else {
         console.error("Trying to advance non-item");
       }
 
     },
-    addDeck: (_, {parentId}) => {
+    addDeck: (_, {parentId}, { user }) => {
       let id = ID();
       let treeItem = addTreeItem(parentId, id);
       treeItem.data = {
         type: 'D',
         name: `deck ${id}`,
       }
-      updateTreeDb(tree);
+      updateTree(user.id, tree);
       return tree;
     },
-    addItem: (_, {type, parentId}) => {
+    addItem: (_, {type, parentId}, { user }) => {
       let item = type === 'f' ? Object.assign({}, newCard) : Object.assign({}, newTopic);
       item.id = `_${ID()}`;
       insertItem(item);
@@ -127,44 +126,44 @@ export const resolvers = {
           history: []
         }
       }
-      updateTreeDb(tree);
+      updateTree(user.id, tree);
       return {newTree : tree, newTreeItem : treeItem};
     },
-    addCardEntry: (_, { id, name, content, type, card_id}) => {
-      const card = getItem(id);
+    addCardEntry: (_, { id, name, content, type, card_id}, { user }) => {
+      const card = getItem(user.id, id);
       card.entries.push({
         name,
         content,
         type,
         id
       });
-      updateItem(card.id, card)
+      udateItem(user.id, card.id, card)
       return card.entries;
     },
     card: (_, { id }, { user }) => {
       return getItem(user.id, id);
     },
-    saveCard: (_, {id, templateTitle, entries}) => {
-      let card = getItem(id);
+    saveCard: (_, {id, templateTitle, entries}, { user }) => {
+      let card = getItem(user.id, id);
       card = {
         id,
         templateTitle,
         entries
       }
-      updateItem(card.id, card)
+      updateItem(user.id, card.id, card)
       return card;
     },
-    saveTree: (_, {newTree}) => {
+    saveTree: (_, {newTree}, { user }) => {
       tree = newTree;
-      updateTreeDb(newTree);
+      updateTree(user.id, newTree);
       return tree;
     },
-    renameTreeItem: (_, {id, newName}) => {
+    renameTreeItem: (_, {id, newName}, { user }) => {
       tree.items[id].data.name = newName;
-      updateTreeDb(tree);
+      updateTree(user.id, tree);
       return tree.items[id];
     },
-    deleteTreeItem: (_, {id}) => {
+    deleteTreeItem: (_, {id}, { user }) => {
       let treeItem = tree.items[id];
       deleteTreeItemChildren(treeItem.children);
       delete tree.items[id];
@@ -174,10 +173,10 @@ export const resolvers = {
       if (parent.children.length === 0) {
         parent.hasChildren = false;
       }
-      updateTreeDb(tree);
+      updateTree(user.id, tree);
       return tree;
     },
-    duplicateTreeItem: (_, {id}) => {
+    duplicateTreeItem: (_, {id}, { user }) => {
       let treeItem = tree.items[id];
       let newTreeItem = Object.assign({}, treeItem);
       let newId = ID();
@@ -193,13 +192,13 @@ export const resolvers = {
       tree.items[newId] = newTreeItem;
       // duplicate flashcard as well
       if (newTreeItem.data.type === 'f' || newTreeItem.data.type === 'T') {
-        getItem(id).then(result => {
+        getItem(user.id, id).then(result => {
           result.id = newId;
           delete result._id;
           insertItem(result);
         });
       }
-      updateTreeDb(tree);
+      updateTree(user.id, tree);
       return tree;
     }
   }
@@ -221,10 +220,6 @@ const addTreeItem = (parentId, id) => {
   tree.items[parentId].isExpanded = true;
   tree.items[id] = treeItem;
   return treeItem;
-}
-
-const updateTreeDb = async (newTree = tree) => {
-  updateTree(newTree);
 }
 
 // TODO: no logic for advancing Topics is sm2

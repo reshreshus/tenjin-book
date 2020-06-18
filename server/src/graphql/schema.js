@@ -52,8 +52,7 @@ export const typeDefs = `
     register(username: String!, email: String!, password: String!): JSON!,
     login(email: String!, password: String): JSON!
     backup: String,
-    items: [JSON],
-      addCardEntry(
+    addCardEntry(
       name: String!
       content: JSON
       type: String!

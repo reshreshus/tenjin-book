@@ -29,7 +29,7 @@ const addUser = async (req) => {
     // console.log("User found", user)
     req.user = user;
   } catch (err) {
-    console.log("User not found")
+    // console.log("User not found")
   }
   req.next();
 }

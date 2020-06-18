@@ -27,10 +27,25 @@ const returnDocData = (doc) => {
   }
 }
 
+export const updateItem = async (userId, itemId, item) => {
+  console.log("updateItem", userId);
+  if (userId && itemId)
+    db.collection(userId).doc(itemId).set(item);
+}
+
+export const updateTree = async (userId, tree) => {
+  console.log("updateTree", userId);
+  if (userId)
+    db.collection('trees').doc(userId).set(tree);
+}
 
 export const getItem = async (userId, itemId) => {
-  const doc = await db.collection(userId).doc(itemId).get();
-  return returnDocData(doc);
+  if (userId && itemId) {
+    const doc = await db.collection(userId).doc(itemId).get();
+    return returnDocData(doc);
+  } else {
+    console.log("getItem", userId, itemId);
+  }
 }
 
 export const getTree = async (userId) => {
