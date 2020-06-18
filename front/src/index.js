@@ -13,7 +13,7 @@ import { ApolloProvider } from '@apollo/react-hooks';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 
 const link = new HttpLink({
-  uri: "http://tripland.org/graphql"
+  uri: "https://tripland.org/graphql"
 });
 
 const authLink = new ApolloLink((operation, forward) => {
