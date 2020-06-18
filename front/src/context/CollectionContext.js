@@ -626,7 +626,8 @@ function CollectionProvider({children,
       loginContext,
       registerContext,
       logoutContext,
-      token
+      token,
+      user
       }}>
         <div className="app">
           {

@@ -11,15 +11,16 @@ export default function Header() {
   return (
     <CollectionConsumer>
     {
-      ({updateContextTreeItem, openAppContextMenu, sidebarIsShown, toggleLeftSidebar, logoutContext}) => {
+      ({updateContextTreeItem, user, sidebarIsShown, toggleLeftSidebar, logoutContext}) => {
         return (
           <div className={`header ${!sidebarIsShown ? 'header--wrapped' : ''}`}>
-            <div className="btn-ed" onClick={() => logoutContext()}>logout</div>
+              { user && `Hi, ${user.username}` }
             <Link to="/" className="header__link link">
               <TenjinIcon className="header__img" onClick={() => {toggleLeftSidebar()}}/>
               <h1 className={`header__title ${!sidebarIsShown ? 'header__title--wrapped': ''}`}
               onClick={() => updateContextTreeItem(null)}>TB</h1>
             </Link>
+              <div className="btn-ed" onClick={() => logoutContext()}>logout</div>
             {/* <FontAwesomeIcon
                 className="header__options"
                 icon={faBraille}
