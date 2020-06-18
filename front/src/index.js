@@ -21,9 +21,10 @@ const authLink = new ApolloLink((operation, forward) => {
     const token =  JSON.parse(localStorage.getItem('token'));
 
     // console.log({token})
-    if (token) {
-      headers = { ...headers, 'authorization': token };
-    }
+    if (!token) token="dummy"
+    // if (token) {
+    headers = { ...headers, 'authorization': token };
+    // }
 
     return { headers };
   });
