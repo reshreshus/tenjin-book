@@ -94,8 +94,8 @@ function CollectionProvider({children,
   })
 
   const onTreeDownload = () => {
+    console.log( {treeData })
     if (token & treeData.tree) {
-      console.log("tree data", treeData.tree);
       let tree = calculateDueItemsInTree(treeData.tree);
       // let tree = treeData.tree;
       updateTree(tree);

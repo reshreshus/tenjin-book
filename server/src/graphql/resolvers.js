@@ -8,21 +8,23 @@ import bcrypt from 'bcrypt';
 let tree = {}
 getTree().then(result => tree = result);
 
-const getUserTree = () => {
-  return tree;
-}
-
-const users = [{ username: 'd', email: 'd@f.com', password: '$2b$12$0O/2f7MtDM5o67Zb/XSUteyCUv2RA0lQ63k7kX2H1Rl2C6QbZSHwu'}]
+const users = [{ id: 'dummy', username: 'd', email: 'd@f.com', password: '$2b$12$0O/2f7MtDM5o67Zb/XSUteyCUv2RA0lQ63k7kX2H1Rl2C6QbZSHwu'}]
 
 // TODO: no error checking here
 export const resolvers = {
   JSON: GraphQLJSON,
   Query: {
-    tree: () => { 
-      // console.log({tree})
+    tree: async (_, __, { user }) => {
+      console.log("user", user)
+      // if (user) {
+      //   let tree = await getTree(user.id);
+      //   console.log({tree})
+      //   return tree;
+      // }
+      // else return null
       return tree;
     },
-    me: async (_, args, { user }) => {
+    me: async (_, __, { user }) => {
       // console.log("me", {user})
       if (user) {
         return user;
