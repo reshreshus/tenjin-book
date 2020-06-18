@@ -18,7 +18,7 @@ const link = new HttpLink({
 
 const authLink = new ApolloLink((operation, forward) => {
   operation.setContext(({ headers = {} }) => {
-    const token =  JSON.parse(localStorage.getItem('token'));
+    let token =  JSON.parse(localStorage.getItem('token'));
 
     // console.log({token})
     if (!token) token="dummy"
