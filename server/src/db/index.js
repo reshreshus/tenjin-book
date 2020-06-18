@@ -56,7 +56,21 @@ export const getTree = async (userId) => {
   }
 }
 
+export const insertItem = async (userId, item) => {
+  if (userId)
+    db.collection(userId).doc(item.id).set(item);
+}
+
 export const getItems = async (userId) => {
   const snapshot = await db.collection(userId).get();
   return snapshot.docs.map(doc => doc.data());
+}
+
+const addZero = (number) => {
+  return `0${number}`.slice(-2);
+}
+
+const getDate = (dt = new Date()) => {
+  return `${dt.getFullYear()}-${addZero(dt.getMonth() + 1)}-${addZero(dt.getDate())}-${addZero(dt.getHours())}-${addZero(dt.getMinutes())}-${addZero(dt.getSeconds())}`
+  // return dt.toISOString();
 }

@@ -5,8 +5,8 @@ import { newCard, newTopic, newDeckTreeItem } from './templates';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 
-let tree = {}
-getTree().then(result => tree = result);
+// let tree = {}
+// await getTree().then(result => tree = result);
 
 const users = [{ id: 'dummy', username: 'd', email: 'd@f.com', password: '$2b$12$0O/2f7MtDM5o67Zb/XSUteyCUv2RA0lQ63k7kX2H1Rl2C6QbZSHwu'}]
 
@@ -22,7 +22,6 @@ export const resolvers = {
         return tree;
       }
       else return null
-      return tree;
     },
     me: async (_, __, { user }) => {
       // console.log("me", {user})
@@ -84,11 +83,12 @@ export const resolvers = {
         token
       };
     },
-    backup: (_, __, { user }) => {
+    backup: async (_, __, { user }) => {
       backup();
       return "ok"
     },
-    advanceCard: (_, {id, quality : q}, { user }) => {
+    advanceCard: async (_, {id, quality : q}, { user }) => {
+      const tree = await getTree(user.id);
       let itemTreeItem = tree.items[id]
       if (itemTreeItem.data.type === 'f' || itemTreeItem.data.type === 'T') {
         advanceCard(itemTreeItem, q);
@@ -99,9 +99,10 @@ export const resolvers = {
       }
 
     },
-    addDeck: (_, {parentId}, { user }) => {
+    addDeck: async (_, {parentId}, { user }) => {
       let id = ID();
-      let treeItem = addTreeItem(parentId, id);
+      const tree = await getTree(user.id);
+      let treeItem = addTreeItem(tree, parentId, id);
       treeItem.data = {
         type: 'D',
         name: `deck ${id}`,
@@ -109,12 +110,14 @@ export const resolvers = {
       updateTree(user.id, tree);
       return tree;
     },
-    addItem: (_, {type, parentId}, { user }) => {
+    addItem: async (_, {type, parentId}, { user }) => {
+      if (!user) return null;
       let item = type === 'f' ? Object.assign({}, newCard) : Object.assign({}, newTopic);
       item.id = `_${ID()}`;
-      insertItem(item);
+      insertItem(user.id, item);
 
-      let treeItem = addTreeItem(parentId, item.id);
+      const tree = await getTree(user.id);
+      let treeItem = addTreeItem(tree, parentId, item.id);
       treeItem.data = {
         type,
         name: `${type} ${item.id}`,
@@ -129,8 +132,8 @@ export const resolvers = {
       updateTree(user.id, tree);
       return {newTree : tree, newTreeItem : treeItem};
     },
-    addCardEntry: (_, { id, name, content, type, card_id}, { user }) => {
-      const card = getItem(user.id, id);
+    addCardEntry: async (_, { id, name, content, type, card_id}, { user }) => {
+      const card = await getItem(user.id, id);
       card.entries.push({
         name,
         content,
@@ -140,11 +143,11 @@ export const resolvers = {
       udateItem(user.id, card.id, card)
       return card.entries;
     },
-    card: (_, { id }, { user }) => {
+    card: async (_, { id }, { user }) => {
       return getItem(user.id, id);
     },
-    saveCard: (_, {id, templateTitle, entries}, { user }) => {
-      let card = getItem(user.id, id);
+    saveCard: async (_, {id, templateTitle, entries}, { user }) => {
+      let card = await getItem(user.id, id);
       card = {
         id,
         templateTitle,
@@ -153,30 +156,34 @@ export const resolvers = {
       updateItem(user.id, card.id, card)
       return card;
     },
-    saveTree: (_, {newTree}, { user }) => {
-      tree = newTree;
+    saveTree: async (_, {newTree}, { user }) => {
+      const tree = newTree;
       updateTree(user.id, newTree);
       return tree;
     },
-    renameTreeItem: (_, {id, newName}, { user }) => {
+    renameTreeItem: async (_, {id, newName}, { user }) => {
+      const tree = await getTree(user.id);
       tree.items[id].data.name = newName;
       updateTree(user.id, tree);
       return tree.items[id];
     },
-    deleteTreeItem: (_, {id}, { user }) => {
+    deleteTreeItem: async (_, {id}, { user }) => {
+      const tree = await getTree(user.id)
       let treeItem = tree.items[id];
-      deleteTreeItemChildren(treeItem.children);
+      deleteTreeItemChildren(tree, treeItem.children);
       delete tree.items[id];
       let parent = tree.items[treeItem.parentId]
       let idx = parent.children.indexOf(id);
       parent.children.splice(idx, 1);
       if (parent.children.length === 0) {
         parent.hasChildren = false;
+        if (!user) return null;
       }
       updateTree(user.id, tree);
       return tree;
     },
-    duplicateTreeItem: (_, {id}, { user }) => {
+    duplicateTreeItem: async (_, {id}, { user }) => {
+      const tree = await getTree(user.id)
       let treeItem = tree.items[id];
       let newTreeItem = Object.assign({}, treeItem);
       let newId = ID();
@@ -195,7 +202,7 @@ export const resolvers = {
         getItem(user.id, id).then(result => {
           result.id = newId;
           delete result._id;
-          insertItem(result);
+          insertItem(user.id, result);
         });
       }
       updateTree(user.id, tree);
@@ -208,7 +215,7 @@ const ID = () => {
   return '_' + Math.random().toString(36).substr(2, 9);
 };
 
-const addTreeItem = (parentId, id) => {
+const addTreeItem = (tree, parentId, id) => {
   let treeItem = Object.assign({}, newDeckTreeItem);
   // even if you copy object, children have the same reference.
   // so you have to create a brand new array for children
@@ -229,7 +236,7 @@ const advanceCard = (treeItem, q) => {
   stats = advanceCardSm2(stats, q, date);
 }
 
-const deleteTreeItemChildren = (childrenIds) => {
+const deleteTreeItemChildren = (tree, childrenIds) => {
   console.log("deleteTreeItemChildren", childrenIds);
   if (!childrenIds) {
     console.error("no children");
@@ -239,7 +246,7 @@ const deleteTreeItemChildren = (childrenIds) => {
   childrenIds.forEach(id => {
     treeItem = tree.items[id];
     if (treeItem.hasChildren) {
-      deleteTreeItemChildren(treeItem.children);
+      deleteTreeItemChildren(tree, treeItem.children);
     }
     delete tree.items[id];
   })
