@@ -6,9 +6,9 @@ export default function Login() {
   const [isLogin, updateIsLogin] = useState(true);
   const [isPasswordShown, updateIsPasswordShown] = useState(false);
   const [email, updateEmail] = useState();
-  const [username, updateUsername] = useState();
-  const [password, updatePassword] = useState();
-  const [ errors, updateErrors ] = useState();
+  const [username, updateUsername] = useState('');
+  const [password, updatePassword] = useState('');
+  const [ errors, updateErrors ] = useState('');
   useEffect(() => {
     updateErrors(null);
   }, [ isLogin ])
@@ -20,21 +20,30 @@ export default function Login() {
       } </div>
     )
   }
+
   return (
     <CollectionConsumer>
       {
         ({ loginContext, registerContext }) => {
           const submit = async () => {
             let result;
-            if (isLogin) {
-              result = await loginContext(email, password);
-            } else {
-              result = await registerContext(email, username, password);
-              updateIsLogin(true);
-            }
-            if (result.error) {
-              updateErrors([result.error])
-            }
+            const errors = [];
+            const validations = [(email.length >= 6), (username.length >=2), (password.length >=1)]
+            if (!validations[0]) errors.push('email must contain at least 6 characters')
+            if (!isLogin && !validations[1]) result.push('username must contain at least 2 characters')
+            if (!validations[2]) errors.push('password must contain at least 1 character')
+            if (errors.length === 0) {
+              console.log("no Errors");
+              if (isLogin) {
+                result = await loginContext(email, password);
+              } else {
+                result = await registerContext(email, username, password);
+                updateIsLogin(true);
+              }
+              if (result.error) {
+                updateErrors([result.error])
+              }
+            } else updateErrors(errors);
           }
 
           const handleKeyPress = (event) => {
