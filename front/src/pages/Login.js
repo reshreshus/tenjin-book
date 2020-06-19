@@ -3,7 +3,7 @@ import { ReactComponent as TenjinIcon } from '../assets/svg/tenjin.svg';
 import { CollectionConsumer } from '../context/CollectionContext';
 
 export default function Login() {
-  const [isLogin, updateIsLogin] = useState(false);
+  const [isLogin, updateIsLogin] = useState(true);
   const [isPasswordShown, updateIsPasswordShown] = useState(false);
   const [email, updateEmail] = useState();
   const [username, updateUsername] = useState();
@@ -47,6 +47,7 @@ export default function Login() {
               {
                 isLogin && <form className="login-form">
                 <TenjinIcon className="login-form__img"/>
+                { process.env.NODE_ENV }
                 <div className="field">
                   <input type="email" name="email" className="field__input" placeholder=" "
                   onChange={(e) => { updateEmail(e.target.value) }} onKeyPress={handleKeyPress} />

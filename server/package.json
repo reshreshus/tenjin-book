@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "set PORT=4000 && nodemon --exec babel-node src/index.js",
+    "start": "cross-env NODE_END=development nodemon --exec babel-node src/index.js",
+    "start-prod": "cross-env NODE_ENV=production nodemon --exec babel-node src/index.js",
     "populate-default": "cross-env PROD_ENV=pop babel-node src/db/index.js",
     "test": "mocha 'src/test' || exit 0",
     "dev": "set PORT=4000 && nf start"

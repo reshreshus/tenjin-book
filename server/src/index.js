@@ -21,6 +21,7 @@ const schema = makeExecutableSchema({
 })
 
 const SECRET = process.env.SECRET;
+console.log("ENV", process.env.NODE_ENV)
 
 const addUser = async (req) => {
   const token = req.headers.authorization;
@@ -34,11 +35,17 @@ const addUser = async (req) => {
   req.next();
 }
 
-
+const corsOptions = {
+  origin: 'https://tenjin-book.netlify.app/',
+  optionsSuccessStatus: 200
+}
 const app = express();
 
+
+app.use(process.env.NODE_ENV==='production' ? cors(corsOptions) : cors());
+
+
 app.use(addUser);
-app.use(cors('*'));
 app.use('/graphiql', graphiqlExpress({
   endpointURL: 'graphql'
 }))

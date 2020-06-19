@@ -4,9 +4,6 @@ import { CollectionConsumer } from '../../context/CollectionContext';
 // import dots from '../../assets/svg/dots-three-vertical.svg'
 import { ReactComponent as TenjinIcon } from '../../assets/svg/tenjin.svg';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBraille } from '@fortawesome/free-solid-svg-icons';
-
 export default function Header() {
   return (
     <CollectionConsumer>

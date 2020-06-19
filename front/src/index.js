@@ -12,8 +12,10 @@ import { ApolloProvider } from '@apollo/react-hooks';
 
 import { InMemoryCache } from 'apollo-cache-inmemory';
 
+const env = process.env.NODE_ENV;
+
 const link = new HttpLink({
-  uri: "https://tripland.org/graphql"
+  uri: env === 'production' ? "https://tripland.org/graphql" : 'http://localhost:4000/graphql'
 });
 
 const authLink = new ApolloLink((operation, forward) => {
