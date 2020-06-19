@@ -47,7 +47,6 @@ export default function Login() {
               {
                 isLogin && <form className="login-form">
                 <TenjinIcon className="login-form__img"/>
-                { process.env.NODE_ENV }
                 <div className="field">
                   <input type="email" name="email" className="field__input" placeholder=" "
                   onChange={(e) => { updateEmail(e.target.value) }} onKeyPress={handleKeyPress} />
