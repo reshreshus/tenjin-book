@@ -21,7 +21,7 @@ const Editor = ({treeItem}) => {
   }, [treeItem]);
 
   useEffect(() => {
-    console.error({editorChanged})
+    // console.error({editorChanged})
   }, [editorChanged])
 
   const onMarkdownEntryChange = (idx, value) => {
@@ -77,12 +77,19 @@ const Editor = ({treeItem}) => {
   const saveCard = async () => {
     updateEditorChanged(false);
     console.error('saveCard', editorChanged)
+    console.log({editorJsEntries});
+    const entryPromises = []
+    const entries = []
     editorJsEntries.map( async ({entry, instance}) => {
-      const { blocks } = await instance.save();
-      entry.content.blocks = blocks;
+      entryPromises.push(instance.save());
+      entries.push(entry);
     })
-
-    saveCardContext(JSON.parse(JSON.stringify(card)))
+    Promise.all(entryPromises).then((values) => {
+      for (let i = 0; i < entries.length; i++) {
+        entries[i].content.blocks = values[i].blocks;
+      }
+      saveCardContext(JSON.parse(JSON.stringify(card)))
+    })
   }
 
   const saveEditorInstance = (instance, entry) => {

@@ -21,7 +21,6 @@ const schema = makeExecutableSchema({
 })
 
 const SECRET = process.env.SECRET;
-console.log("ENV", process.env.NODE_ENV)
 
 const addUser = async (req) => {
   const token = req.headers.authorization;
