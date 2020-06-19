@@ -75,8 +75,7 @@ const Editor = ({treeItem}) => {
   });
 
   const saveCard = async () => {
-    updateEditorChanged(false);
-    console.error('saveCard', editorChanged)
+    // console.error('saveCard', editorChanged)
     console.log({editorJsEntries});
     const entryPromises = []
     const entries = []
@@ -89,6 +88,7 @@ const Editor = ({treeItem}) => {
         entries[i].content.blocks = values[i].blocks;
       }
       saveCardContext(JSON.parse(JSON.stringify(card)))
+      updateEditorChanged(false);
     })
   }
 

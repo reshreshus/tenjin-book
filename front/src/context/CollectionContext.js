@@ -506,7 +506,6 @@ function CollectionProvider({children,
   }
 
   const saveCardContext = (savedCard) => {
-    console.log("saveCardContext", JSON.stringify(savedCard, null, 2))
     let qEntries = savedCard.entries.filter(e => e.type === 'Q');
     let cEntries = savedCard.entries.filter(e => e.type === 'C');
     let entries = qEntries;
