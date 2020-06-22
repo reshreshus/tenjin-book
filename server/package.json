@@ -8,7 +8,8 @@
     "start-prod": "cross-env NODE_ENV=production nodemon --exec babel-node src/index.js",
     "populate-default": "cross-env PROD_ENV=pop babel-node src/db/index.js",
     "test": "mocha 'src/test' || exit 0",
-    "dev": "set PORT=4000 && nf start"
+    "dev": "set PORT=4000 && nf start",
+    "build": "babel src -s -D -d dist"
   },
   "keywords": [],
   "author": "reshreshus",
@@ -24,6 +25,8 @@
     "mocha": "^7.1.1"
   },
   "dependencies": {
+    "@babel/polyfill": "^7.10.1",
+    "@babel/register": "^7.10.3",
     "bcrypt": "^4.0.1",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",

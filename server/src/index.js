@@ -1,4 +1,5 @@
-#!/usr/bin/env node
+import "core-js/stable";
+import "regenerator-runtime/runtime";
 require('dotenv').config({path: __dirname + '/.env'});
 import { typeDefs } from './graphql/schema';
 import { resolvers } from './graphql/resolvers';
