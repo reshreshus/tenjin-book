@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 require('dotenv').config({path: __dirname + '/.env'});
 import { typeDefs } from './graphql/schema';
 import { resolvers } from './graphql/resolvers';
