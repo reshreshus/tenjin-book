@@ -189,7 +189,7 @@ function CollectionProvider({children,
   }
 
   const uploadImageDeckContext = async (deckId, file) => {
-    const url = await uploadDeckImage(deckId, file);
+    const url = await uploadDeckImage(token, deckId, file);
     const treeItem = tree.items[deckId]
     if (treeItem.data.img) {
       deleteImage(treeItem.data.img)
@@ -203,7 +203,7 @@ function CollectionProvider({children,
   const deleteImageDeckContext = (deckId=contextTreeItem.id) => {
     const treeItem = tree.items[deckId];
     if (treeItem.data.img) {
-      deleteImage(treeItem.data.img)
+      deleteImage(token, treeItem.data.img)
       treeItem.data.img = null
     }
     updateContextTreeItem(treeItem);

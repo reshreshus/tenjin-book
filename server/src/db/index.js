@@ -1,13 +1,16 @@
 const admin = require('firebase-admin');
 const serviceAccount = require('../firebase-service-cred.json');
+const fs = require('fs');
 const { items , tree } = require('./defaultData.js');
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://tenjin-book.firebaseio.com"
+  databaseURL: "https://tenjin-book.firebaseio.com",
+  storageBucket: "tenjin-book.appspot.com"
 });
 
 const db = admin.firestore();
+const bucket = admin.storage().bucket();
 
 const populateDb = () => {
   db.collection('trees').doc('dummy').set(tree);
@@ -17,6 +20,32 @@ const populateDb = () => {
 if (process.env.PROD_ENV === "pop") {
   populateDb()
 }
+
+export const uploadFile = async (req) => await new Promise( resolve => {
+  console.log("uploadFile");
+  const file = req.files.image;
+  // const user = req.user;
+  // console.log(file);
+  // const flieName = `${user.username}_${file.name}`
+  const fileName = file.name;
+  fs.writeFile(fileName, file.data, () => {
+    console.log("file written")
+    bucket.upload(fileName, function(err, file, apiResponse) {
+      // console.log("upload", {file}, { apiResponse });
+    })
+    // const publicUrl = format(`https://storage.googleapis.com/${bucket.name}/${blob.name}`)
+  })
+  // const blob = bucket.file(req.files.image);
+  // const blobStream = blob.createWriteStream(req.files.image.data);
+
+  // blobStream.on('finish', () => {
+    // The public URL can be used to directly access the file via HTTP.
+    // const publicUrl = format(`https://storage.googleapis.com/${bucket.name}/${blob.name}`);
+    // console.log({publicUrl})
+    // resolve(publicUrl);
+  // });
+
+})
 
 export const addUserDefaultData = async (userEmail) => {
   db.collection('trees').doc(userEmail).set(tree);
