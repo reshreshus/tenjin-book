@@ -21,6 +21,17 @@ if (process.env.PROD_ENV === "pop") {
   populateDb()
 }
 
+export const deleteFile = async (fileName) => await new Promise( resolve => {
+  console.log("deleteFile");
+  const ref = bucket.child(fileName);
+  ref.delete().then((_ => {
+    console.log("file deleted");
+  }).catch((err) => {
+    console.err(err);
+  })
+  )
+})
+
 export const uploadFile = async (req) => await new Promise( resolve => {
   const file = req.files.image;
   const user = req.user;

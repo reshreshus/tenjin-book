@@ -16,11 +16,12 @@ export const uploadDeckImage = async (token, deckId, imageFile) => {
   return data.file.url;
 }
 
-export const deleteImage = async (token, url) => {
-  const { data } = await axios.delete(url, {
-    headers: {
-      'authorization': token
-    }
-  });
-  return data.status;
-}
+// export const deleteImage = async (token, url) => {
+//   console.log("deleteImage", url);
+//   const { data } = await axios.delete(url, {
+//     headers: {
+//       'authorization': token
+//     }
+//   });
+//   return data.status;
+// }

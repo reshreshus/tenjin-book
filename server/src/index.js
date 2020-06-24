@@ -3,7 +3,7 @@ import "regenerator-runtime/runtime";
 require('dotenv').config({path: __dirname + '/.env'});
 import { typeDefs } from './graphql/schema';
 import { resolvers } from './graphql/resolvers';
-import { uploadFile } from './db';
+import { uploadFile, deleteFile } from './db';
 import express from 'express';
 const fileUpload = require('express-fileupload');
 import bodyParser from 'body-parser';
@@ -80,9 +80,9 @@ const getDate = (dt = new Date()) => {
 }
 
 app.delete('/media/:name', function (req, res) {
+  console.log("app.delete")
   const fileName = req.params.name;
-  const filePath = path.join(mediaFolder, fileName);
-  fs.unlinkSync(filePath);
+  deleteFile(fileName);
   res.send({
     'status': 'ok'
   })
