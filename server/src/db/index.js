@@ -22,29 +22,22 @@ if (process.env.PROD_ENV === "pop") {
 }
 
 export const uploadFile = async (req) => await new Promise( resolve => {
-  console.log("uploadFile");
   const file = req.files.image;
-  // const user = req.user;
-  // console.log(file);
-  // const flieName = `${user.username}_${file.name}`
-  const fileName = file.name;
+  const user = req.user;
+  const fileName = `${user.username}_${file.name}`
+  console.log({fileName})
   fs.writeFile(fileName, file.data, () => {
-    console.log("file written")
-    bucket.upload(fileName, function(err, file, apiResponse) {
-      // console.log("upload", {file}, { apiResponse });
+    bucket.upload(fileName, async function(err, file) {
+      fs.unlink(fileName, () => {
+        // console.log('unlinked')
+      });
+      const signedUrls = await file.getSignedUrl({
+        action: 'read',
+        expires: '03-09-2491'
+      })
+      resolve(signedUrls[0]);
     })
-    // const publicUrl = format(`https://storage.googleapis.com/${bucket.name}/${blob.name}`)
   })
-  // const blob = bucket.file(req.files.image);
-  // const blobStream = blob.createWriteStream(req.files.image.data);
-
-  // blobStream.on('finish', () => {
-    // The public URL can be used to directly access the file via HTTP.
-    // const publicUrl = format(`https://storage.googleapis.com/${bucket.name}/${blob.name}`);
-    // console.log({publicUrl})
-    // resolve(publicUrl);
-  // });
-
 })
 
 export const addUserDefaultData = async (userEmail) => {

@@ -89,11 +89,7 @@ app.delete('/media/:name', function (req, res) {
 })
 
 app.post("/uploadByFile", async function (req, res) {
-  // console.log({filedata: req.file})
-
-  console.log("uploadByFile", req.user);
   const uploadUrl = await uploadFile(req);
-  // console.log("uploadByFile", uploadUrl)
   res.send({
     "success": 1,
     "file": {
