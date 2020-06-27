@@ -2,6 +2,7 @@ const admin = require('firebase-admin');
 const serviceAccount = require('../firebase-service-cred.json');
 const fs = require('fs');
 const { items , tree } = require('./defaultData.js');
+const uuid = require('uuid');
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
@@ -41,10 +42,11 @@ export const deleteFile = async (fileName) => await new Promise( resolve => {
 export const uploadFile = async (req, endpoint) => await new Promise( resolve => {
   const file = req.files.image;
   const user = req.user;
-  const fileName = `${user.username}_${file.name}`
-  fs.writeFile(fileName, file.data, () => {
-    bucket.upload(fileName, {destination: `${user.username}/${file.name}`}, async function(err, file) {
-      fs.unlink(fileName, () => { });
+  const remoteFilename = `${user.username}/${uuid.v4()}`
+  const localFilename = `${user.username}_${file.name}`
+  fs.writeFile(localFilename, file.data, () => {
+    bucket.upload(localFilename, {destination: remoteFilename}, async function(err, file) {
+      fs.unlink(localFilename, () => { });
       const url = `${endpoint}/media/${file.name}`;
       resolve(url);
     })
