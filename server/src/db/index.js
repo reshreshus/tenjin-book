@@ -42,7 +42,6 @@ export const uploadFile = async (req, endpoint) => await new Promise( resolve =>
   const file = req.files.image;
   const user = req.user;
   const fileName = `${user.username}_${file.name}`
-  console.log({fileName})
   fs.writeFile(fileName, file.data, () => {
     bucket.upload(fileName, {destination: `${user.username}/${file.name}`}, async function(err, file) {
       fs.unlink(fileName, () => { });

@@ -75,8 +75,6 @@ const Editor = ({treeItem}) => {
   });
 
   const saveCard = async () => {
-    // console.error('saveCard', editorChanged)
-    console.log({editorJsEntries});
     const entryPromises = []
     const entries = []
     editorJsEntries.map( async ({entry, instance}) => {
@@ -125,9 +123,6 @@ const Editor = ({treeItem}) => {
       {
         editingMode.isEditing ? (
         <div>
-          <img class="image-tool__image-picture" src="https://storage.googleapis.com/tenjin-book.appspot.com/DIO_image.png?GoogleAccessId=firebase-adminsdk-s7b0e%40tenjin-book.iam.gserviceaccount.com&Expires=16447006800&Signature=gV2srs3og5QdIaZaKmfujOdSdZTxcLYlqLVaFXI5T8NWo98GlES%2Bkm0WHTv35KXqlSkWHVQkCRWDy2RZerTsTj2PL26ddJH6vpFtrKshUptccL8eyTRovXQN5nRXwmPN1W7YZeP%2BCSaqwssDc2wJsA4TlaIPXnmRzz17GH2bix4yxoxmRPTOezrDN83bRKvbchaHFEFgqDuNbph3kJRduntIgRXRasxNj9EFiAZDDgbJktxGAQfuRlhrLtrvMdSnrLZz8xE7%2ByWoRqxlc93Eq49dDSd9sZgmJO6Piu%2BR7XfLnHpnv58Y0qeXt1XxDiSNsi%2Bti4bkgpVUWXCT0J9yxQ%3D%3D"></img>
-          <img class="image-tool__image-picture" src="https://storage.googleapis.com/tenjin-book.appspot.com/DIO_image.png?GoogleAccessId=firebase-adminsdk-s7b0e%40tenjin-book.iam.gserviceaccount.com&amp;Expires=16447006800&amp;Signature=gV2srs3og5QdIaZaKmfujOdSdZTxcLYlqLVaFXI5T8NWo98GlES%2Bkm0WHTv35KXqlSkWHVQkCRWDy2RZerTsTj2PL26ddJH6vpFtrKshUptccL8eyTRovXQN5nRXwmPN1W7YZeP%2BCSaqwssDc2wJsA4TlaIPXnmRzz17GH2bix4yxoxmRPTOezrDN83bRKvbchaHFEFgqDuNbph3kJRduntIgRXRasxNj9EFiAZDDgbJktxGAQfuRlhrLtrvMdSnrLZz8xE7%2ByWoRqxlc93Eq49dDSd9sZgmJO6Piu%2BR7XfLnHpnv58Y0qeXt1XxDiSNsi%2Bti4bkgpVUWXCT0J9yxQ%3D%3D"></img>
-          <img class="image-tool__image-picture" src="https://storage.googleapis.com/tenjin-book.appspot.com/DIO_image.png?GoogleAccessId=firebase-adminsdk-s7b0e%40tenjin-book.iam.gserviceaccount.com&amp;amp;Expires=16447006800&amp;amp;Signature=gV2srs3og5QdIaZaKmfujOdSdZTxcLYlqLVaFXI5T8NWo98GlES%2Bkm0WHTv35KXqlSkWHVQkCRWDy2RZerTsTj2PL26ddJH6vpFtrKshUptccL8eyTRovXQN5nRXwmPN1W7YZeP%2BCSaqwssDc2wJsA4TlaIPXnmRzz17GH2bix4yxoxmRPTOezrDN83bRKvbchaHFEFgqDuNbph3kJRduntIgRXRasxNj9EFiAZDDgbJktxGAQfuRlhrLtrvMdSnrLZz8xE7%2ByWoRqxlc93Eq49dDSd9sZgmJO6Piu%2BR7XfLnHpnv58Y0qeXt1XxDiSNsi%2Bti4bkgpVUWXCT0J9yxQ%3D%3D"></img>
           <EditorEntries
           // markdownEntriesData={markdownEntriesData}
           onMarkdownEntryChange={onMarkdownEntryChange}

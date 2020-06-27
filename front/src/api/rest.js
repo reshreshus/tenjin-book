@@ -5,7 +5,6 @@ const serverUrl = 'http://localhost:4000'
 export const uploadImage = async (token, imageFile) => {
   const formData = new FormData();
   formData.append("image", imageFile);
-  // formData.append("id", deckId);
 
   const { data } = await axios.post(`${serverUrl}/uploadByFile`, formData, {
     headers: {

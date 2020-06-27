@@ -29,9 +29,7 @@ export const EDITOR_JS_TOOLS = {
         uploadByFile(file) {
           console.log('uploadByFile')
           let token = JSON.parse(localStorage.getItem('token'));
-          uploadImage(token, file).then((data) => {
-            console.log({ URL: data.file.url })
-          })
+          return uploadImage(token, file)
         }
       }
     }
