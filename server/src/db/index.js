@@ -21,32 +21,33 @@ if (process.env.PROD_ENV === "pop") {
   populateDb()
 }
 
-export const deleteFile = async (fileName) => await new Promise( resolve => {
-  console.log("deleteFile");
-  const ref = bucket.child(fileName);
-  ref.delete().then((_ => {
-    console.log("file deleted");
-  }).catch((err) => {
-    console.err(err);
+export const getFile = async (localFilename, remoteFilename) => await new Promise( resolve => {
+  bucket.file(remoteFilename).download({ destination: localFilename}).then(() => {
+    resolve(localFilename);
   })
-  )
 })
 
-export const uploadFile = async (req) => await new Promise( resolve => {
+export const deleteFile = async (fileName) => await new Promise( resolve => {
+  console.log("deleteFile");
+  // const ref = bucket.child(fileName);
+  // ref.delete().then((_ => {
+  //   console.log("file deleted");
+  // }).catch((err) => {
+  //   console.err(err);
+  // })
+  // )
+})
+
+export const uploadFile = async (req, endpoint) => await new Promise( resolve => {
   const file = req.files.image;
   const user = req.user;
   const fileName = `${user.username}_${file.name}`
   console.log({fileName})
   fs.writeFile(fileName, file.data, () => {
-    bucket.upload(fileName, async function(err, file) {
-      fs.unlink(fileName, () => {
-        // console.log('unlinked')
-      });
-      const signedUrls = await file.getSignedUrl({
-        action: 'read',
-        expires: '03-09-2491'
-      })
-      resolve(signedUrls[0]);
+    bucket.upload(fileName, {destination: `${user.username}/${file.name}`}, async function(err, file) {
+      fs.unlink(fileName, () => { });
+      const url = `${endpoint}/media/${file.name}`;
+      resolve(url);
     })
   })
 })

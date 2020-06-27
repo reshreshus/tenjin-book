@@ -2,10 +2,10 @@ import axios from 'axios';
 
 const serverUrl = 'http://localhost:4000'
 
-export const uploadDeckImage = async (token, deckId, imageFile) => {
+export const uploadImage = async (token, imageFile) => {
   const formData = new FormData();
   formData.append("image", imageFile);
-  formData.append("id", deckId);
+  // formData.append("id", deckId);
 
   const { data } = await axios.post(`${serverUrl}/uploadByFile`, formData, {
     headers: {
@@ -13,7 +13,7 @@ export const uploadDeckImage = async (token, deckId, imageFile) => {
     'authorization': token
     }
   });
-  return data.file.url;
+  return data;
 }
 
 // export const deleteImage = async (token, url) => {

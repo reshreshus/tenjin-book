@@ -3,7 +3,7 @@ import "regenerator-runtime/runtime";
 require('dotenv').config({path: __dirname + '/.env'});
 import { typeDefs } from './graphql/schema';
 import { resolvers } from './graphql/resolvers';
-import { uploadFile, deleteFile } from './db';
+import { uploadFile, getFile, deleteFile } from './db';
 import express from 'express';
 const fileUpload = require('express-fileupload');
 import bodyParser from 'body-parser';
@@ -11,12 +11,14 @@ import { graphiqlExpress, graphqlExpress } from 'graphql-server-express';
 import { makeExecutableSchema } from 'graphql-tools';
 import cors from 'cors';
 import jwt from 'jsonwebtoken';
+import fs from 'fs';
 
 const path = require('path');
 
 const PORT = process.env.PORT || 4000
 
-const endpoint = `http://localhost:${PORT}`;
+const endpoint = process.env.NODE_ENV==='production' ?
+'https://tenjin-book.netlify.app': `http://localhost:${PORT}`
 
 const schema = makeExecutableSchema({
   typeDefs,
@@ -40,7 +42,7 @@ const addUser = async (req) => {
 
 
 const corsOptions = {
-  origin: 'https://tenjin-book.netlify.app/',
+  origin: endpoint,
   optionsSuccessStatus: 200
 }
 const app = express();
@@ -68,28 +70,31 @@ app.use('/graphql', graphqlExpress(
   })
 ))
 
-
-const dbPath = "C:/Users/Rishat/AppData/Roaming/Tenjin/db"
-const mediaFolder = path.join(dbPath, 'media');
-
-// app.use('/media', express.static(mediaFolder));
-
-const getDate = (dt = new Date()) => {
-  // return `${dt.getFullYear()}${(dt.getMonth() + 1)}${dt.getDate()}`
-  return Date.now();
-}
+app.get('/media/:uid/:name', async function(req, res) {
+  const uid = req.params.uid;
+  const name = req.params.name;
+  // this is very bad
+  const localFilename = `${uid}_${name}`;
+  const remoteFilename = `${uid}/${name}`;
+  await getFile(localFilename, remoteFilename);
+  res.sendFile(localFilename, { root: '.'})
+  setTimeout(() => {
+    fs.unlink(localFilename, () => { });
+  }, 300)
+})
 
 app.delete('/media/:name', function (req, res) {
   console.log("app.delete")
-  const fileName = req.params.name;
-  deleteFile(fileName);
+  const filename = req.params.name;
+  deleteFile(filename);
   res.send({
     'status': 'ok'
   })
 })
 
 app.post("/uploadByFile", async function (req, res) {
-  const uploadUrl = await uploadFile(req);
+  const uploadUrl = await uploadFile(req, endpoint);
+  console.log({uploadUrl})
   res.send({
     "success": 1,
     "file": {
