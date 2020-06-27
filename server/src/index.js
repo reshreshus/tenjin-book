@@ -3,19 +3,22 @@ import "regenerator-runtime/runtime";
 require('dotenv').config({path: __dirname + '/.env'});
 import { typeDefs } from './graphql/schema';
 import { resolvers } from './graphql/resolvers';
+import { uploadFile, getFile, deleteFile } from './db';
 import express from 'express';
+const fileUpload = require('express-fileupload');
 import bodyParser from 'body-parser';
 import { graphiqlExpress, graphqlExpress } from 'graphql-server-express';
 import { makeExecutableSchema } from 'graphql-tools';
 import cors from 'cors';
-const multer  = require("multer");
 import jwt from 'jsonwebtoken';
+import fs from 'fs';
 
 const path = require('path');
 
 const PORT = process.env.PORT || 4000
 
-const endpoint = `http://localhost:${PORT}`;
+const endpoint = process.env.NODE_ENV==='production' ?
+'https://tenjin-book.netlify.app': `http://localhost:${PORT}`
 
 const schema = makeExecutableSchema({
   typeDefs,
@@ -26,6 +29,7 @@ const SECRET = process.env.SECRET;
 
 const addUser = async (req) => {
   const token = req.headers.authorization;
+  // console.log('addUser', token)
   try {
     const { user } = await jwt.verify(token, SECRET);
     // console.log("User found", user)
@@ -36,8 +40,9 @@ const addUser = async (req) => {
   req.next();
 }
 
+
 const corsOptions = {
-  origin: 'https://tenjin-book.netlify.app/',
+  origin: endpoint,
   optionsSuccessStatus: 200
 }
 const app = express();
@@ -45,14 +50,17 @@ const app = express();
 
 app.use(process.env.NODE_ENV==='production' ? cors(corsOptions) : cors());
 
-
-app.use(addUser);
+app.use(fileUpload({
+    createParentPath: true
+}));
 app.use('/graphiql', graphiqlExpress({
   endpointURL: 'graphql'
 }))
 app.use(addUser);
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}))
 
-app.use('/graphql', bodyParser.json(), graphqlExpress(
+app.use('/graphql', graphqlExpress(
   req => ({
     schema,
     context: {
@@ -62,43 +70,35 @@ app.use('/graphql', bodyParser.json(), graphqlExpress(
   })
 ))
 
-
-const dbPath = "C:/Users/Rishat/AppData/Roaming/Tenjin/db"
-const mediaFolder = path.join(dbPath, 'media');
-
-app.use('/media', express.static(mediaFolder));
-
-const getDate = (dt = new Date()) => {
-  // return `${dt.getFullYear()}${(dt.getMonth() + 1)}${dt.getDate()}`
-  return Date.now();
-}
-
-const storageConfig = multer.diskStorage({
-  destination: (req, file, cb) =>{
-    cb(null, mediaFolder);
-  },
-  filename: (req, file, cb) =>{
-    cb(null, getDate() + path.extname(file.originalname));
-  }
-});
+app.get('/media/:uid/:name', async function(req, res) {
+  const uid = req.params.uid;
+  const name = req.params.name;
+  // this is very bad
+  const localFilename = `${uid}_${name}`;
+  const remoteFilename = `${uid}/${name}`;
+  await getFile(localFilename, remoteFilename);
+  res.sendFile(localFilename, { root: '.'})
+  setTimeout(() => {
+    fs.unlink(localFilename, () => { });
+  }, 300)
+})
 
 app.delete('/media/:name', function (req, res) {
-  const fileName = req.params.name;
-  const filePath = path.join(mediaFolder, fileName);
-  fs.unlinkSync(filePath);
+  console.log("app.delete")
+  const filename = req.params.name;
+  deleteFile(filename);
   res.send({
     'status': 'ok'
   })
 })
 
-app.use(multer({storage:storageConfig}).single("image"));
-
-app.post("/uploadByFile", function (req, res) {
-  // console.log({filedata: req.file})
+app.post("/uploadByFile", async function (req, res) {
+  const uploadUrl = await uploadFile(req, endpoint);
+  // console.log({uploadUrl})
   res.send({
     "success": 1,
     "file": {
-      "url": `${endpoint}/media/${req.file.filename}`
+      "url": uploadUrl
     }
   })
 });

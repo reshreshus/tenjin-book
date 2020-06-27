@@ -15,7 +15,7 @@ import { appMenuItems } from './appMenuItems';
 
 import { getRandomInt } from '../helpers/jsHelpers';
 
-import { uploadDeckImage, deleteImage } from '../api/rest';
+import { uploadImage } from '../api/rest';
 
 
 const Collection = React.createContext();
@@ -189,21 +189,23 @@ function CollectionProvider({children,
   }
 
   const uploadImageDeckContext = async (deckId, file) => {
-    const url = await uploadDeckImage(deckId, file);
+    console.log("uploadImageDeckContext")
+    const data = await uploadImage(token, file);
+    const url = data.file.url;
     const treeItem = tree.items[deckId]
-    if (treeItem.data.img) {
-      deleteImage(treeItem.data.img)
-    }
+    // if (treeItem.data.img) {
+    //   deleteImage(token, treeItem.data.img)
+    // }
     treeItem.data.img = url;
-    // ?
     updateContextTreeItem(treeItem);
     saveTreeContext(tree);
   }
 
   const deleteImageDeckContext = (deckId=contextTreeItem.id) => {
+    console.log('deleteImageDeckContext')
     const treeItem = tree.items[deckId];
     if (treeItem.data.img) {
-      deleteImage(treeItem.data.img)
+      // deleteImage(token, treeItem.data.img)
       treeItem.data.img = null
     }
     updateContextTreeItem(treeItem);

@@ -75,8 +75,6 @@ const Editor = ({treeItem}) => {
   });
 
   const saveCard = async () => {
-    // console.error('saveCard', editorChanged)
-    console.log({editorJsEntries});
     const entryPromises = []
     const entries = []
     editorJsEntries.map( async ({entry, instance}) => {
