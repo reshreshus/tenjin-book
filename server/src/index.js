@@ -18,7 +18,7 @@ const path = require('path');
 const PORT = process.env.PORT || 4000
 
 const endpoint = process.env.NODE_ENV==='production' ?
-'https://tenjin-book.netlify.app': `http://localhost:${PORT}`
+'https://jinbook.org': `http://localhost:${PORT}`
 
 const schema = makeExecutableSchema({
   typeDefs,

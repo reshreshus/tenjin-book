@@ -15,7 +15,7 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 const env = process.env.NODE_ENV;
 
 const link = new HttpLink({
-  uri: env === 'production' ? "https://tripland.org/graphql" : 'http://localhost:4000/graphql'
+  uri: env === 'production' ? "https://api.jinbook.org:4001/graphql" : 'http://localhost:4000/graphql'
 });
 
 const authLink = new ApolloLink((operation, forward) => {
