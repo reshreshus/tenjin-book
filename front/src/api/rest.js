@@ -1,6 +1,8 @@
 import axios from 'axios';
 
-const serverUrl = 'http://localhost:4000'
+// TODO DRY
+const serverUrl = process.env.NODE_ENV === 'production' ? "https://api.jinbook.org"
+ : 'http://localhost:4000';
 
 export const uploadImage = async (token, imageFile) => {
   const formData = new FormData();

@@ -17,8 +17,11 @@ const path = require('path');
 
 const PORT = process.env.PORT || 4000
 
-const endpoint = process.env.NODE_ENV==='production' ?
-'https://jinbook.org': `http://localhost:${PORT}`
+const clientUrl = process.env.NODE_ENV==='production' ?
+'https://jinbook.org': 'http://localhost'
+const serverUrl = process.env.NODE_ENV==='production' ?
+'https://api.jinbook.org': `http://localhost:${PORT}`
+
 
 const schema = makeExecutableSchema({
   typeDefs,
@@ -42,7 +45,7 @@ const addUser = async (req) => {
 
 
 const corsOptions = {
-  origin: endpoint,
+  origin: clientUrl,
   optionsSuccessStatus: 200
 }
 const app = express();
@@ -93,7 +96,7 @@ app.delete('/media/:name', function (req, res) {
 })
 
 app.post("/uploadByFile", async function (req, res) {
-  const uploadUrl = await uploadFile(req, endpoint);
+  const uploadUrl = await uploadFile(req, serverUrl);
   // console.log({uploadUrl})
   res.send({
     "success": 1,
