@@ -6,7 +6,7 @@ It is kinda slow but optimizations are possible and I want to make a proper desk
 
 #### What I wanted to see from flashcards applications
 * Free
-* Security
+* Secure
 * Open Source
 * Possibility to use it in all (or most) operating systems and devices.
 * Rich plugin system.
