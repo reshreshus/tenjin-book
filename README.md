@@ -14,7 +14,7 @@ It is kinda slow but optimizations are possible and I want to make a proper desk
 * Possibility to switch to and from other SM applications easily
 
 And I have motivation to build something like that, so stay tuned)
-You can DM me in telegram ([@selopenapela](https:t.me/selopenapela)) if you have any questions.
+You can DM me in telegram ([@selopenapela](https://t.me/selopenapela)) if you have any questions.
 
 #### The app draws inspiration from 
 * [Anki](https://apps.ankiweb.net/)
