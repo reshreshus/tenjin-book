@@ -4,7 +4,7 @@ An awesome flashcards (spaced repetition) and note taking app (not yet).
 You can find a *demo* version at [jinbook.org](https://jinbook.org) (only for desktop browsers).  
 It is kinda slow but optimizations are possible and I want to make a proper desktop application.  
 
-#### What I wanted to see from a flashcards application
+#### What I wanted to see from flashcards applications
 * Free
 * Security
 * Open Source
