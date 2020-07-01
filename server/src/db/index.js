@@ -18,9 +18,9 @@ const populateDb = () => {
   items.forEach(it => db.collection('dummy').doc(it.id).set(it));
 }
 
-if (process.env.PROD_ENV === "pop") {
-  populateDb()
-}
+// if (process.env.PROD_ENV === "pop") {
+//   populateDb()
+// }
 
 export const emailIsUnique = async (email) => {
   const doc = await db.collection('users').doc(email).get()
@@ -70,8 +70,15 @@ export const uploadFile = async (req, endpoint) => await new Promise( resolve =>
 })
 
 export const addUserDefaultData = async (userEmail) => {
-  db.collection('trees').doc(userEmail).set(tree);
-  items.forEach(it => db.collection(userEmail).doc(it.id).set(it) )
+  const exampleData = (await db.collection('trees').doc('example@jinbook.org').get()).data()
+  const exampleItems = await getItems('example@jinbook.org');
+  if (exampleData && exampleItems) {
+    db.collection('trees').doc(userEmail).set(exampleData);
+    exampleItems.forEach(it => db.collection(userEmail).doc(it.id).set(it))
+  } else {
+    db.collection('trees').doc(userEmail).set(tree);
+    items.forEach(it => db.collection(userEmail).doc(it.id).set(it))
+  }
 }
 
 export const addUser = async (user) => {
