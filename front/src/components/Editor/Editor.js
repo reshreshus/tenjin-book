@@ -150,17 +150,19 @@ const Editor = ({treeItem}) => {
           <div onClick={() => saveCard()} className="btn btn-ed editor__save">Save{editorChanged ? "*": ""}</div>
         </div>
       }
-
-      <div onClick={()=> {
-        toggleEditing();
-        updateIsQuestioning(true);
-        updateEditorJsEntries([]);
-      }} className="btn-ed editor__preview-button">
       {
-        !editingMode.isEditing ? 'Edit' :
-        (editingMode.isStudying ? 'Study' : 'Preview')
+        treeItem.data.type === 'f' &&
+        <div onClick={()=> {
+          toggleEditing();
+          updateIsQuestioning(true);
+          updateEditorJsEntries([]);
+        }} className="btn-ed editor__preview-button">
+        {
+          !editingMode.isEditing ? 'Edit' :
+          (editingMode.isStudying ? 'Study' : 'Preview')
+        }
+        </div>
       }
-      </div>
     </div>
   )
   }
