@@ -22,6 +22,22 @@ if (process.env.PROD_ENV === "pop") {
   populateDb()
 }
 
+export const emailIsUnique = async (email) => {
+  const doc = await db.collection('users').doc(email).get()
+  if (!doc.exists) {
+    return true;
+  }
+  return false;
+}
+
+export const usernameIsUnique = async (username) => {
+  const doc = await db.collection('users').where('username', '==', username).get();
+  if (doc.empty) {
+    return true;
+  }
+  return false;
+}
+
 export const getFile = async (localFilename, remoteFilename) => await new Promise( resolve => {
   bucket.file(remoteFilename).download({ destination: localFilename}).then(() => {
     resolve(localFilename);

@@ -132,23 +132,20 @@ function CollectionProvider({children,
   }
 
   const loginContext = async (email, password) => {
-    const { ok, token, error } = await login(email, password);
+    const { ok, token, errors } = await login(email, password);
     if (ok) {
-      console.log("LOGIN", token);
+      // console.log("LOGIN", token);
       updateToken(token);
-      // console.log("local storage token", localStorage.getItem('token'))
       tryTreeRefetch();
       return { token }
     } else {
-      return { error };
+      return { errors };
     }
   }
 
   const registerContext = async (username, email, password) => {
-    const { ok, user, error } = register(username, email, password);
-    if (!ok) {
-      return { error }
-    }
+    return await register(username, email, password);
+ 
   }
 
   const logoutContext = async () => {

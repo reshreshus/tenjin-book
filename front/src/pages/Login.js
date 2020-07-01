@@ -26,6 +26,7 @@ export default function Login() {
       {
         ({ loginContext, registerContext }) => {
           const submit = async () => {
+            // updateErrors([]);
             let result;
             const errors = [];
             const validations = [(email.length >= 6), (username.length >=2), (password.length >=1)]
@@ -33,17 +34,20 @@ export default function Login() {
             if (!isLogin && !validations[1]) result.push('username must contain at least 2 characters')
             if (!validations[2]) errors.push('password must contain at least 1 character')
             if (errors.length === 0) {
-              console.log("no Errors");
               if (isLogin) {
                 result = await loginContext(email, password);
               } else {
                 result = await registerContext(email, username, password);
-                updateIsLogin(true);
               }
-              if (result.error) {
-                updateErrors([result.error])
+              if (result.errors && result.errors.length > 0) {
+                updateErrors(result.errors)
+                return;
               }
-            } else updateErrors(errors);
+            } else {
+              updateErrors(errors);
+              return;
+            }
+            updateIsLogin(true);
           }
 
           const handleKeyPress = (event) => {

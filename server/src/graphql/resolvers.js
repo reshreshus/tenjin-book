@@ -1,6 +1,6 @@
 const GraphQLJSON = require('graphql-type-json');
 import { getTree, getItem, updateTree, updateItem, insertItem, backup,
-  getUserByEmail, addUser, addUserDefaultData } from '../db';
+  getUserByEmail, addUser, addUserDefaultData, usernameIsUnique, emailIsUnique } from '../db';
 import { advanceCardSm2 } from '../srs/algo';
 import { newCard, newTopic, newDeckTreeItem } from './templates';
 import jwt from 'jsonwebtoken';
@@ -38,6 +38,19 @@ export const resolvers = {
 
         const user = args;
         user.password = await bcrypt.hash(user.password, 12);
+
+        const errors = []
+        if (!await emailIsUnique(user.email))
+          errors.push('this email is taken')
+        if (!await usernameIsUnique(user.username))
+          errors.push('this username is taken')
+        if (errors.length > 0) {
+          return {
+            ok: false,
+            errors
+          }
+        }
+
         addUser(user);
         addUserDefaultData(user.email);
         return {
@@ -53,14 +66,12 @@ export const resolvers = {
       }
     },
     login: async (_, { email, password }, { SECRET }) => {
-      console.log("login");
       const user = await getUserByEmail(email);
-      // console.log({user})
       if (!user) {
         return {
           ok: false,
           token: null,
-          error: 'no user with this email'
+          errors: ['no user with this email']
         }
       }
       const valid = await bcrypt.compare(password, user.password);
@@ -68,7 +79,7 @@ export const resolvers = {
         return {
           ok: false,
           token: null,
-          error: 'wrong password'
+          errors: ['wrong password']
         }
       }
 
