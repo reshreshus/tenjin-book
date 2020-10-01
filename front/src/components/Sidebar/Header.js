@@ -11,12 +11,12 @@ export default function Header() {
       ({updateContextTreeItem, user, sidebarIsShown, toggleLeftSidebar, logoutContext}) => {
         return (
           <div className={`header ${!sidebarIsShown ? 'header--wrapped' : ''}`}>
-              { user && `Hi, ${user.username}` }
+             <span className={`header__username ${!sidebarIsShown ? 'hide' : ''}`}> { user && `Hi, ${user.username}` } </span>
             <Link to="/" className="header__link link">
-              <TenjinIcon className="header__img" onClick={() => {toggleLeftSidebar()}}/>
               <h1 className={`header__title ${!sidebarIsShown ? 'header__title--wrapped': ''}`}
               onClick={() => updateContextTreeItem(null)}>TB</h1>
             </Link>
+            <TenjinIcon className="header__img" onClick={() => {toggleLeftSidebar()}}/>
               <div className="btn-ed" onClick={() => logoutContext()}>logout</div>
             {/* <FontAwesomeIcon
                 className="header__options"
