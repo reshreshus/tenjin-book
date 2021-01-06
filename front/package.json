@@ -23,7 +23,7 @@
     "apollo-cache-inmemory": "^1.6.6",
     "apollo-link": "^1.2.14",
     "apollo-link-http": "^1.5.17",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "codemirror": "^5.52.2",
     "graphql": "^14.6.0",
     "hotkeys-js": "^3.7.3",
