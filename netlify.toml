@@ -1,4 +1,0 @@
-[build]
-  base = "front/"
-  command = "CI=false npm run build"
-  publish = "build/"
