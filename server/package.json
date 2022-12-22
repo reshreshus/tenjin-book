@@ -40,7 +40,7 @@
     "graphql-server-express": "^1.4.1",
     "graphql-tools": "^4.0.6",
     "graphql-type-json": "^0.3.1",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "lodash": "^4.17.15",
     "multer": "^1.4.2",
     "ncp": "^2.0.0",
